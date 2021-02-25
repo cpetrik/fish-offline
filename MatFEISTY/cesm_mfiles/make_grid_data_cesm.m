@@ -83,8 +83,8 @@ GRD.ID = ID;
 GRD.N = NID;
 GRD.LON = TLONG(ID);
 GRD.LAT = TLAT(ID);
-GRD.Z   = HT(ID);
-GRD.area = TAREA(ID);
+GRD.Z   = HT(ID) * 1e-2;     %from cm to m
+GRD.area = TAREA(ID) * 1e-4; %from cm2 to m2
 GRD.lmask = mask(ID);
 
 %% Save needed variables

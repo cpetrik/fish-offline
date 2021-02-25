@@ -1,28 +1,28 @@
 % Visualize output of FEISTY
-% Historic 1949-2014
+% CESM Spinup first year of FOSI
 % Time series plots and maps
 
 clear all
 close all
 
 %% Fish data
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_CC80_RE00100';
-mod = 'gfdl';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+mod = 'All_fish03';
 
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/FishMIP6/';
-fpath=['/Volumes/MIP/NC/FishMIP/GFDL_CMIP6/' cfile '/'];
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([fpath 'Means_Hist_2000-2010_' cfile '.mat']);
+load([fpath 'Means_Spinup_' cfile '.mat']);
 
 % Map data
-cpath = '/Volumes/MIP/Fish-MIP/CMIP6/GFDL/';
-load('/Volumes/MIP/Fish-MIP/CMIP6/GFDL/gridspec_gfdl_cmip6.mat');
-load([cpath 'Data_grid_gfdl.mat']);
+cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI//';
+load([cpath 'gridspec_POP_gx1v6.mat']);
+load([cpath 'Data_grid_POP_gx1v6.mat']);
 
-[ni,nj]=size(LON);
+[ni,nj]=size(TLONG);
 
 plotminlat=-90; %Set these bounds for your data
 plotmaxlat=90;
@@ -30,6 +30,8 @@ plotminlon=-180;
 plotmaxlon=180;
 latlim=[plotminlat plotmaxlat];
 lonlim=[plotminlon plotmaxlon];
+
+load coastlines;     
 
 %% colors
 cm10=[0.5 0.5 0;... %tan/army
@@ -47,7 +49,7 @@ set(groot,'defaultAxesColorOrder',cm10);
 
 %% Plots in time
 t = 1:length(sp_tmean); %time;
-y = 1950 + (t-1)/12;
+y = t/12;
 
 % All size classes of all
 figure(1)
@@ -66,9 +68,9 @@ xlim([y(1) y(end)])
 %ylim([-5 2])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
-title('Hist')
+title('Spinup')
 stamp(mod)
-print('-dpng',[ppath 'Hist_empHP_',mod,'_all_sizes.png'])
+print('-dpng',[ppath 'Spinup_',mod,'_all_sizes.png'])
 
 %% Types together
 F = sf_tmean+mf_tmean;
@@ -87,13 +89,11 @@ xlim([y(1) y(end)])
 %ylim([-5 2])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
-title('Hist')
+title('Spinup')
 stamp(mod)
-print('-dpng',[ppath 'Hist_empHP_',mod,'_all_types.png'])
+print('-dpng',[ppath 'Spinup_',mod,'_all_types.png'])
  
 %% Plots in space
-
-%(mo>2000 & mo<=2010)
 
 Zsf=NaN*ones(ni,nj);
 Zsp=NaN*ones(ni,nj);
@@ -130,18 +130,15 @@ FracLM = AllL ./ (AllL+AllM);
 figure(3)
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,log10(Zb))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-%caxis([-2 2]);
-%caxis([1 4]);
+surfm(TLAT,TLONG,log10(Zb))
+colormap('jet')                %decent looking coastlines
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-1 2]);
 hcb = colorbar('h');
 set(gcf,'renderer','painters')
-title('Hist 2000-2010 log10 mean benthic biomass (g m^-^2)')
-stamp(mod)
-print('-dpng',[ppath 'Hist_empHP_',mod,'_global_BENT.png'])
+title('Spinup log10 mean benthic biomass (g m^-^2)')
+stamp('')
+print('-dpng',[ppath 'Spinup_',mod,'_global_BENT.png'])
 
 %% All 4 on subplots
 figure(4)
@@ -149,10 +146,9 @@ figure(4)
 subplot('Position',[0 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,log10(AllF))
+surfm(TLAT,TLONG,log10(AllF))
 colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 colorbar('Position',[0.25 0.5 0.5 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
@@ -162,10 +158,9 @@ title('log10 mean All F (g m^-^2)')
 subplot('Position',[0 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,log10(AllD))
+surfm(TLAT,TLONG,log10(AllD))
 colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All D (g m^-^2)')
@@ -174,10 +169,9 @@ title('log10 mean All D (g m^-^2)')
 subplot('Position',[0.5 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,log10(AllP))
+surfm(TLAT,TLONG,log10(AllP))
 colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All P (g m^-^2)')
@@ -186,15 +180,14 @@ title('log10 mean All P (g m^-^2)')
 subplot('Position',[0.5 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,log10(All))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+surfm(TLAT,TLONG,log10(All))
+colormap('jet')               
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All fishes (g m^-^2)')
-stamp(mod)
-print('-dpng',[ppath 'Hist_empHP_',mod,'_global_All_subplot.png'])
+stamp('')
+print('-dpng',[ppath 'Spinup_',mod,'_global_All_subplot.png'])
 
 %% Ratios on subplots red-white-blue
 % 3 figure subplot P:D, P:F, M:L
@@ -203,10 +196,9 @@ subplot('Position',[0 0.53 0.5 0.5])
 %P:D
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,FracPD)
+surfm(TLAT,TLONG,FracPD)
 cmocean('balance')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([0 1]);
 set(gcf,'renderer','painters')
 title('Fraction Large Pelagics vs. Demersals')
@@ -215,10 +207,9 @@ title('Fraction Large Pelagics vs. Demersals')
 subplot('Position',[0.5 0.53 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,FracPF)
+surfm(TLAT,TLONG,FracPF)
 cmocean('balance')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([0 1]);
 set(gcf,'renderer','painters')
 title('Fraction Large Pelagics vs. Forage Fishes')
@@ -227,15 +218,13 @@ title('Fraction Large Pelagics vs. Forage Fishes')
 subplot('Position',[0.25 0.0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,FracLM)
+surfm(TLAT,TLONG,FracLM)
 cmocean('balance')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([0 1]);
 colorbar('Position',[0.2 0.485 0.6 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
 title('Fraction Large vs. Medium')
-stamp(mod)
-print('-dpng',[ppath 'Hist_empHP_',mod,'_global_ratios_subplot.png'])
+stamp('')
+print('-dpng',[ppath 'Spinup_',mod,'_global_ratios_subplot.png'])
 
-%% MZ loss plots

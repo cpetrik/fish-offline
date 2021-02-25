@@ -1,12 +1,23 @@
 %============== INITIAL CONDITIONS =============%
-function [Sf,Sp,Sd,Mf,Mp,Md,Lp,Ld,BENT] = sub_init_fish(ID,Sf,Sp,Sd,Mf,Mp,Md,Lp,Ld,BENT)
+function [Sf,Sp,Sd,Mf,Mp,Md,Lp,Ld,BENT] = sub_init_fish_spin(ID,DAYS)
 
-% Initialize variables not saved from spinup
-% (Only biomass saved from spinup)
+% Initialize all variables including biomass for spinup
+% Starts at very low biomass
 
 %===== VARIABLES =====%
     %%%! Number of spatial cells
     NX = length(ID);
+
+    %%%! Fish biomass
+    X = 1.0e-5; % very small amount
+    Sf.bio = ones(NX,1) * X;
+    Sp.bio = ones(NX,1) * X;
+    Sd.bio = ones(NX,1) * X;
+    Mf.bio = ones(NX,1) * X;
+    Mp.bio = ones(NX,1) * X;
+    Md.bio = ones(NX,1) * X;
+    Lp.bio = ones(NX,1) * X;
+    Ld.bio = ones(NX,1) * X;
 
     %%%! Fraction of time in pelagic
     Sf.td = ones(NX,1);
@@ -33,8 +44,18 @@ function [Sf,Sp,Sd,Mf,Mp,Md,Lp,Ld,BENT] = sub_init_fish(ID,Sf,Sp,Sd,Mf,Mp,Md,Lp,
         Ld.(nzero{i}) = zeros(NX,1);
     end
     
-   
+    %%%! Proportion of population spawning (needed for phenology runs)
+    Sf.S = ones(NX,DAYS);
+    Sp.S = ones(NX,DAYS);
+    Sd.S = ones(NX,DAYS);
+    Mf.S = ones(NX,DAYS);
+    Mp.S = ones(NX,DAYS);
+    Md.S = ones(NX,DAYS);
+    Lp.S = ones(NX,DAYS);
+    Ld.S = ones(NX,DAYS);
+
     %%%! Detritus
+    BENT.mass = ones(NX,1) * X;
     BENT.pred = zeros(NX,1);
 
 end
