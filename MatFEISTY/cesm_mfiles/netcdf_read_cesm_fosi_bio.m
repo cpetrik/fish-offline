@@ -262,6 +262,8 @@ save([fpath 'Annual_Means_FOSI_' cfile '.mat'],'time',...
     'lp_aprod','ld_aprod',...
     'mz_mtf')
 
+%%
+mo = time/12;
 figure
 plot(mo,log10(lp_tmean),'b'); hold on;
 plot(mo,log10(mf_tmean),'r'); hold on;

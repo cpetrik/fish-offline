@@ -1,28 +1,30 @@
 % Visualize output of FEISTY
-% Historic 1949-2014
+% CESM FOSI
 % Time series plots and maps
 
 clear all
 close all
 
 %% Fish data
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_CC80_RE00100';
-mod = 'gfdl';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+mod = 'All_fish03';
 
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/FishMIP6/';
-fpath=['/Volumes/MIP/NC/FishMIP/GFDL_CMIP6/' cfile '/'];
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([fpath 'Means_Hist_2000-2010_' cfile '.mat']);
+load([fpath 'Time_Means_FOSI_' cfile '.mat']);
+load([fpath 'Space_Means_FOSI_' cfile '.mat']);
+load([fpath 'Annual_Means_FOSI_' cfile '.mat'],'mz_mtf');
 
 % Map data
-cpath = '/Volumes/MIP/Fish-MIP/CMIP6/GFDL/';
-load('/Volumes/MIP/Fish-MIP/CMIP6/GFDL/gridspec_gfdl_cmip6.mat');
-load([cpath 'Data_grid_gfdl.mat']);
+cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI//';
+load([cpath 'gridspec_POP_gx1v6.mat']);
+load([cpath 'Data_grid_POP_gx1v6.mat']);
 
-[ni,nj]=size(LON);
+[ni,nj]=size(TLONG);
 
 plotminlat=-90; %Set these bounds for your data
 plotmaxlat=90;
@@ -30,6 +32,8 @@ plotminlon=-180;
 plotmaxlon=180;
 latlim=[plotminlat plotmaxlat];
 lonlim=[plotminlon plotmaxlon];
+
+load coastlines;     
 
 %% colors
 cm10=[0.5 0.5 0;... %tan/army
@@ -45,9 +49,11 @@ cm10=[0.5 0.5 0;... %tan/army
 
 set(groot,'defaultAxesColorOrder',cm10);
 
+cmBP50=cbrewer('seq','BuPu',50,'PCHIP');
+
 %% Plots in time
 t = 1:length(sp_tmean); %time;
-y = 1950 + (t-1)/12;
+y = t/12;
 
 % All size classes of all
 figure(1)
@@ -63,12 +69,12 @@ plot(y,log10(b_tmean),'Linewidth',1); hold on;
 legend('SF','MF','SP','MP','LP','SD','MD','LD','B')
 legend('location','eastoutside')
 xlim([y(1) y(end)])
-%ylim([-5 2])
+ylim([-3 1])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
-title('Hist')
+title('FOSI')
 stamp(mod)
-print('-dpng',[ppath 'Hist_empHP_',mod,'_all_sizes.png'])
+print('-dpng',[ppath 'FOSI_',mod,'_all_sizes.png'])
 
 %% Types together
 F = sf_tmean+mf_tmean;
@@ -82,18 +88,16 @@ plot(y,log10(F),'r','Linewidth',2); hold on;
 plot(y,log10(P),'b','Linewidth',2); hold on;
 plot(y,log10(D),'k','Linewidth',2); hold on;
 legend('B','F','P','D')
-legend('location','east')
+legend('location','west')
 xlim([y(1) y(end)])
 %ylim([-5 2])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
-title('Hist')
+title('FOSI')
 stamp(mod)
-print('-dpng',[ppath 'Hist_empHP_',mod,'_all_types.png'])
+print('-dpng',[ppath 'FOSI_',mod,'_all_types.png'])
  
 %% Plots in space
-
-%(mo>2000 & mo<=2010)
 
 Zsf=NaN*ones(ni,nj);
 Zsp=NaN*ones(ni,nj);
@@ -105,15 +109,15 @@ Zlp=NaN*ones(ni,nj);
 Zld=NaN*ones(ni,nj);
 Zb=NaN*ones(ni,nj);
 
-Zsf(GRD.ID)=sf_mean;
-Zsp(GRD.ID)=sp_mean;
-Zsd(GRD.ID)=sd_mean;
-Zmf(GRD.ID)=mf_mean;
-Zmp(GRD.ID)=mp_mean;
-Zmd(GRD.ID)=md_mean;
-Zlp(GRD.ID)=lp_mean;
-Zld(GRD.ID)=ld_mean;
-Zb(GRD.ID)=b_mean;
+Zsf(GRD.ID)=sf_sbio;
+Zsp(GRD.ID)=sp_sbio;
+Zsd(GRD.ID)=sd_sbio;
+Zmf(GRD.ID)=mf_sbio;
+Zmp(GRD.ID)=mp_sbio;
+Zmd(GRD.ID)=md_sbio;
+Zlp(GRD.ID)=lp_sbio;
+Zld(GRD.ID)=ld_sbio;
+Zb(GRD.ID)=b_sbio;
 
 All = Zsp+Zsf+Zsd+Zmp+Zmf+Zmd+Zlp+Zld;
 AllF = Zsf+Zmf;
@@ -130,18 +134,15 @@ FracLM = AllL ./ (AllL+AllM);
 figure(3)
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,log10(Zb))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-%caxis([-2 2]);
-%caxis([1 4]);
+surfm(TLAT,TLONG,log10(Zb))
+colormap(cmBP50)                %decent looking coastlines
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-1 2]);
 hcb = colorbar('h');
 set(gcf,'renderer','painters')
-title('Hist 2000-2010 log10 mean benthic biomass (g m^-^2)')
-stamp(mod)
-print('-dpng',[ppath 'Hist_empHP_',mod,'_global_BENT.png'])
+title('FOSI log10 mean benthic biomass (g m^-^2)')
+stamp('')
+print('-dpng',[ppath 'FOSI_',mod,'_global_BENT.png'])
 
 %% All 4 on subplots
 figure(4)
@@ -149,10 +150,9 @@ figure(4)
 subplot('Position',[0 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,log10(AllF))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+surfm(TLAT,TLONG,log10(AllF))
+colormap(cmBP50)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 colorbar('Position',[0.25 0.5 0.5 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
@@ -162,10 +162,9 @@ title('log10 mean All F (g m^-^2)')
 subplot('Position',[0 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,log10(AllD))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+surfm(TLAT,TLONG,log10(AllD))
+colormap(cmBP50)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All D (g m^-^2)')
@@ -174,10 +173,9 @@ title('log10 mean All D (g m^-^2)')
 subplot('Position',[0.5 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,log10(AllP))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+surfm(TLAT,TLONG,log10(AllP))
+colormap(cmBP50)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All P (g m^-^2)')
@@ -186,15 +184,14 @@ title('log10 mean All P (g m^-^2)')
 subplot('Position',[0.5 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,log10(All))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+surfm(TLAT,TLONG,log10(All))
+colormap(cmBP50)               
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All fishes (g m^-^2)')
-stamp(mod)
-print('-dpng',[ppath 'Hist_empHP_',mod,'_global_All_subplot.png'])
+stamp('')
+print('-dpng',[ppath 'FOSI_',mod,'_global_All_subplot.png'])
 
 %% Ratios on subplots red-white-blue
 % 3 figure subplot P:D, P:F, M:L
@@ -203,10 +200,9 @@ subplot('Position',[0 0.53 0.5 0.5])
 %P:D
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,FracPD)
+surfm(TLAT,TLONG,FracPD)
 cmocean('balance')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([0 1]);
 set(gcf,'renderer','painters')
 title('Fraction Large Pelagics vs. Demersals')
@@ -215,10 +211,9 @@ title('Fraction Large Pelagics vs. Demersals')
 subplot('Position',[0.5 0.53 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,FracPF)
+surfm(TLAT,TLONG,FracPF)
 cmocean('balance')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([0 1]);
 set(gcf,'renderer','painters')
 title('Fraction Large Pelagics vs. Forage Fishes')
@@ -227,15 +222,81 @@ title('Fraction Large Pelagics vs. Forage Fishes')
 subplot('Position',[0.25 0.0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(LAT,LON,FracLM)
+surfm(TLAT,TLONG,FracLM)
 cmocean('balance')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([0 1]);
 colorbar('Position',[0.2 0.485 0.6 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
 title('Fraction Large vs. Medium')
-stamp(mod)
-print('-dpng',[ppath 'Hist_empHP_',mod,'_global_ratios_subplot.png'])
+stamp('')
+print('-dpng',[ppath 'FOSI_',mod,'_global_ratios_subplot.png'])
 
 %% MZ loss plots
+[nx,nt] = size(mz_mtf);
+%Mean fraction
+Cmz_smfrac = mz_smfrac;
+%Total times it happens over time
+Cmz_ttover = mz_ttf/nx;
+%Total times it happens in each year in space?
+Cmz_stover5 = mz_stf/nt;
+
+%%
+%happens whole year
+test2=floor(Cmz_stover5);
+%histogram(test2)
+sum(test2)/length(test2) % = 2.1673
+
+%happens >=50% of year
+test4=round(Cmz_stover5);
+%histogram(test4)
+sum(test4)/length(test4) % = 2.4560
+
+%% Plot in time
+figure(6)
+plot(y, Cmz_ttover,'k','LineWidth',2); hold on;
+xlabel('Years')
+ylabel('Fraction of grid cells over-consumed')
+print('-dpng',[ppath 'FOSI_',mod '_timeseries_zoop_overcon.png'])
+
+%% Plots in space
+CFmz=NaN*ones(ni,nj);
+COmz=NaN*ones(ni,nj);
+COmz5=NaN*ones(ni,nj);
+CFmz(GRD.ID)=Cmz_smfrac;
+COmz(GRD.ID)=Cmz_stover5;
+
+% save([bpath 'FOSI_' mod '_ts_map_zoop_overcon.mat'],...
+%     'Cmz_ttover','CFmz','COmz','-append');
+
+cmBP=cbrewer('seq','BuPu',10,'PCHIP');
+cmBP2 = cmBP;
+cmBP2(11,:) = [0 0 0];
+
+%% 2 plots of both maps
+figure(7)
+%1 - m frac
+subplot('Position',[0.01 0.5 0.9 0.45])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,CFmz)
+colormap(cmBP2)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([0 1.1]);
+colorbar
+set(gcf,'renderer','painters')
+text(0,1.6,'Mean fraction MZ hploss consumed','HorizontalAlignment','center')
+
+%2 - m over
+subplot('Position',[0.01 0.01 0.9 0.45])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,COmz)
+colormap(cmBP)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([0 1]);
+colorbar
+set(gcf,'renderer','painters')
+text(0,1.6,'Mean times MZ overconsumed','HorizontalAlignment','center')
+print('-dpng',[ppath 'FOSI_',mod '_global_zoop_overcon.png'])
+

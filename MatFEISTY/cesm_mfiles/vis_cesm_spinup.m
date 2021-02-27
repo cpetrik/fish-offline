@@ -47,6 +47,8 @@ cm10=[0.5 0.5 0;... %tan/army
 
 set(groot,'defaultAxesColorOrder',cm10);
 
+cmBP50=cbrewer('seq','BuPu',50,'PCHIP');
+
 %% Plots in time
 t = 1:length(sp_tmean); %time;
 y = t/12;
@@ -65,7 +67,7 @@ plot(y,log10(b_tmean),'Linewidth',1); hold on;
 legend('SF','MF','SP','MP','LP','SD','MD','LD','B')
 legend('location','eastoutside')
 xlim([y(1) y(end)])
-%ylim([-5 2])
+ylim([-5 2])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
 title('Spinup')
@@ -86,7 +88,7 @@ plot(y,log10(D),'k','Linewidth',2); hold on;
 legend('B','F','P','D')
 legend('location','east')
 xlim([y(1) y(end)])
-%ylim([-5 2])
+ylim([-5 2])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
 title('Spinup')
@@ -131,7 +133,7 @@ figure(3)
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,log10(Zb))
-colormap('jet')                %decent looking coastlines
+colormap(cmBP50)                %decent looking coastlines
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-1 2]);
 hcb = colorbar('h');
@@ -147,7 +149,7 @@ subplot('Position',[0 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,log10(AllF))
-colormap('jet')
+colormap(cmBP50)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 colorbar('Position',[0.25 0.5 0.5 0.05],'orientation','horizontal')
@@ -159,7 +161,7 @@ subplot('Position',[0 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,log10(AllD))
-colormap('jet')
+colormap(cmBP50)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
@@ -170,7 +172,7 @@ subplot('Position',[0.5 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,log10(AllP))
-colormap('jet')
+colormap(cmBP50)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
@@ -181,7 +183,7 @@ subplot('Position',[0.5 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,log10(All))
-colormap('jet')               
+colormap(cmBP50)               
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
