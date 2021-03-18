@@ -8,6 +8,7 @@ close all
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 mod = 'All_fish03';
+exper = 'climatol_'; %varFood, varTemp, climatol
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -15,9 +16,9 @@ ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([fpath 'Time_Means_FOSI_' cfile '.mat']);
-load([fpath 'Space_Means_FOSI_' cfile '.mat']);
-load([fpath 'Annual_Means_FOSI_' cfile '.mat'],'mz_mtf');
+load([fpath 'Time_Means_FOSI_' exper cfile '.mat']);
+load([fpath 'Space_Means_FOSI_' exper cfile '.mat']);
+load([fpath 'Annual_Means_FOSI_' exper cfile '.mat'],'mz_mtf');
 
 % Map data
 cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI//';
@@ -73,8 +74,8 @@ ylim([-3 1])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
 title('FOSI')
-stamp(mod)
-print('-dpng',[ppath 'FOSI_',mod,'_all_sizes.png'])
+stamp(exper)
+print('-dpng',[ppath 'FOSI_',exper mod,'_all_sizes.png'])
 
 %% Types together
 F = sf_tmean+mf_tmean;
@@ -94,8 +95,8 @@ xlim([y(1) y(end)])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
 title('FOSI')
-stamp(mod)
-print('-dpng',[ppath 'FOSI_',mod,'_all_types.png'])
+stamp(exper)
+print('-dpng',[ppath 'FOSI_',exper mod,'_all_types.png'])
  
 %% Plots in space
 
@@ -131,7 +132,7 @@ FracPF = AllP ./ (AllP+AllF);
 FracLM = AllL ./ (AllL+AllM);
 
 %% save outputs for comparison
-save([fpath 'Plot_Means_FOSI_' cfile '.mat'],'F','P','D','B',...
+save([fpath 'Plot_Means_FOSI_' exper cfile '.mat'],'F','P','D','B',...
     'AllF','AllP','AllD','AllS','AllM','AllL');
 
 %% bent
@@ -145,8 +146,8 @@ caxis([-1 2]);
 hcb = colorbar('h');
 set(gcf,'renderer','painters')
 title('FOSI log10 mean benthic biomass (g m^-^2)')
-stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_global_BENT.png'])
+stamp(exper)
+print('-dpng',[ppath 'FOSI_',exper mod,'_global_BENT.png'])
 
 %% All 4 on subplots
 figure(4)
@@ -194,8 +195,8 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All fishes (g m^-^2)')
-stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_global_All_subplot.png'])
+stamp(exper)
+print('-dpng',[ppath 'FOSI_',exper mod,'_global_All_subplot.png'])
 
 %% Ratios on subplots red-white-blue
 % 3 figure subplot P:D, P:F, M:L
@@ -233,8 +234,8 @@ caxis([0 1]);
 colorbar('Position',[0.2 0.485 0.6 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
 title('Fraction Large vs. Medium')
-stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_global_ratios_subplot.png'])
+stamp(exper)
+print('-dpng',[ppath 'FOSI_',exper mod,'_global_ratios_subplot.png'])
 
 %% MZ loss plots
 [nx,nt] = size(mz_mtf);
@@ -261,7 +262,7 @@ figure(6)
 plot(y, Cmz_ttover,'k','LineWidth',2); hold on;
 xlabel('Years')
 ylabel('Fraction of grid cells over-consumed')
-print('-dpng',[ppath 'FOSI_',mod '_timeseries_zoop_overcon.png'])
+print('-dpng',[ppath 'FOSI_',exper mod '_timeseries_zoop_overcon.png'])
 
 %% Plots in space
 CFmz=NaN*ones(ni,nj);
@@ -302,5 +303,6 @@ caxis([0 1]);
 colorbar
 set(gcf,'renderer','painters')
 text(0,1.6,'Mean times MZ overconsumed','HorizontalAlignment','center')
-print('-dpng',[ppath 'FOSI_',mod '_global_zoop_overcon.png'])
+stamp(exper)
+print('-dpng',[ppath 'FOSI_',exper mod '_global_zoop_overcon.png'])
 
