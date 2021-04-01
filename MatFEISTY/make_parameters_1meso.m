@@ -1,7 +1,7 @@
 %============== Parameters of the model =============%
 %============= PARAMETER TYPE ==========%
 function param = make_parameters_1meso(param)
-%! Integration parameters
+    %! Integration parameters
     param.DT = 1.0;       % time step
     param.tstep = 1.0;    % time step in hours for adv-diff
 
