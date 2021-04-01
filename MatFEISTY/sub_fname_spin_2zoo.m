@@ -1,8 +1,9 @@
 %%%% File naming system
-function [fname,simname] = sub_fname_spin(param)
+function [fname,simname] = sub_fname_spin_2zoo(param,model)
 
 frate = param.frate;
 
+tsm = num2str(1000+int64(100 * param.Sm));
 td = num2str(1000+int64(100 * param.D));
 ta = num2str(1000+int64(100 * param.A));
 tbe = num2str(100+int64(100 * param.bent_eff));
@@ -55,9 +56,9 @@ tbcmx = num2str(1000+int64(1000 * param.bcmx));
 tlam = num2str(1000+int64(1000 * param.Lambda));
 
 if (param.CC==0)
-    simname = [coup,'_Lam',tlam(2:end),'_enc',tefn,'-b',tbenc(2:end),'_m',tmfn,'-b',tbfn(2:end),'-k',tkfn(2:end),'_c',tcfn,'-b',tbcmx(2:end),'_D',td(2:end),'_A',ta(2:end),'_nmort',tmort,'_BE',tbe(2:end),'_noCC_RE',tre(2:end)];
+    simname = [coup,'_Lam',tlam(2:end),'_enc',tefn,'-b',tbenc(2:end),'_m',tmfn,'-b',tbfn(2:end),'-k',tkfn(2:end),'_c',tcfn,'-b',tbcmx(2:end),'_D',td(2:end),'_A',ta(2:end),'_Sm',tsm(2:end),'_nmort',tmort,'_BE',tbe(2:end),'_noCC_RE',tre(2:end)];
 else
-    simname = [coup,'_Lam',tlam(2:end),'_enc',tefn,'-b',tbenc(2:end),'_m',tmfn,'-b',tbfn(2:end),'-k',tkfn(2:end),'_c',tcfn,'-b',tbcmx(2:end),'_D',td(2:end),'_A',ta(2:end),'_nmort',tmort,'_BE',tbe(2:end),'_CC',tcc,'_RE',tre(2:end)];    
+    simname = [coup,'_Lam',tlam(2:end),'_enc',tefn,'-b',tbenc(2:end),'_m',tmfn,'-b',tbfn(2:end),'-k',tkfn(2:end),'_c',tcfn,'-b',tbcmx(2:end),'_D',td(2:end),'_A',ta(2:end),'_Sm',tsm(2:end),'_nmort',tmort,'_BE',tbe(2:end),'_CC',tcc,'_RE',tre(2:end)];    
 end
 
 if (~isfolder(['/Volumes/MIP/NC/CESM_MAPP/',simname]))
@@ -66,13 +67,13 @@ end
 
 %! Setup netcdf path to store to
 if (frate==0)
-    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup'];
+    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname,'/',model,'_Spinup'];
 elseif (param.Jsel~=0.1)
-    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_', sel,'_fish',tfish(2:end),'_Juve',tJ(2:end)];
+    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname,'/',model,'_Spinup_', sel,'_fish',tfish(2:end),'_Juve',tJ(2:end)];
 elseif (param.MFsel~=param.LPsel)
-    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_fish_F',tF(2:end),'_P',tP(2:end),'_D',tD(2:end)];
+    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname,'/',model,'_Spinup_fish_F',tF(2:end),'_P',tP(2:end),'_D',tD(2:end)];
 else
-    fname  = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_', sel,'_fish',tfish(2:end)];  
+    fname  = ['/Volumes/MIP/NC/CESM_MAPP/',simname,'/',model,'_Spinup_', sel,'_fish',tfish(2:end)];  
 end
 
 
