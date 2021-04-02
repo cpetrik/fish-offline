@@ -16,13 +16,17 @@ load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo.mat'],...
     'LzooC_150m','Lzoo_loss_150m');
 load([fpath 'gridspec_POP_gx1v6.mat'],'mask');
 
-%% nans
+%% nans & zeros
 TEMP_150m = double(TEMP_150m);
 TEMP_bottom = double(TEMP_bottom);
 POC_FLUX_IN_bottom = double(POC_FLUX_IN_bottom);
 
 TEMP_bottom(TEMP_bottom >= 9.9e+36) = nan;
 POC_FLUX_IN_bottom(POC_FLUX_IN_bottom >= 9.9e+36) = nan;
+
+LzooC_150m(LzooC_150m<0) = 0.0;
+Lzoo_loss_150m(Lzoo_loss_150m<0) = 0.0;
+POC_FLUX_IN_bottom(POC_FLUX_IN_bottom<0) = 0.0;
 
 %% Units
 %poc flux: mmol/m^3 cm/s
@@ -115,7 +119,7 @@ for y = 1:nyrs
         yi = interp1(Time, Y, Tdays,'linear','extrap');
         D_Tb(j,:) = yi;
         
-        % meso zoo: nmolC cm-2 to g(WW) m-2 
+        % meso zoo: nmolC cm-2 to g(WW) m-2
         % 1e9 nmol in 1 mol C
         % 1e4 cm2 in 1 m2
         % 12.01 g C in 1 mol C
@@ -123,7 +127,7 @@ for y = 1:nyrs
         Y = squeeze(Zm(m,n,:));
         yi = interp1(Time, Y, Tdays,'linear','extrap');
         D_Zm(j,:) = yi * 1e-9 * 1e4 * 12.01 * 9.0;
-
+        
         % medium zoo mortality: nmolC cm-2 s-1 to g(WW) m-2 d-1
         % 1e9 nmol in 1 mol C
         % 1e4 cm2 in 1 m2

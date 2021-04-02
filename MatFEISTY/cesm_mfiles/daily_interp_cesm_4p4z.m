@@ -25,6 +25,12 @@ zoo4C_150m = double(zoo4C_150m);
 zoo3_loss_150m = double(zoo3_loss_150m);
 zoo4_loss_150m = double(zoo4_loss_150m);
 
+zoo3C_150m(zoo3C_150m<0) = 0.0;
+zoo4C_150m(zoo4C_150m<0) = 0.0;
+zoo3_loss_150m(zoo3_loss_150m<0) = 0.0;
+zoo4_loss_150m(zoo4_loss_150m<0) = 0.0;
+POC_FLUX_IN_bottom(POC_FLUX_IN_bottom<0) = 0.0;
+
 %% Units
 %poc flux: mmol/m^3 cm/s
 %zoo loss: mmol/m^3/s cm
@@ -167,7 +173,8 @@ for y = 1:nyrs
         
     end
     
-    % Negative biomass or mortality loss from interp
+    % Negative biomass or mortality loss from interp - maybe do before
+    % interp
     D_Zm(D_Zm<0) = 0.0;
     D_Zl(D_Zl<0) = 0.0;
     D_dZm(D_dZm<0) = 0.0;
