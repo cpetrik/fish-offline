@@ -184,3 +184,56 @@ plot(mo,log10(lp_tmean),'b'); hold on;
 plot(mo,log10(mf_tmean),'r'); hold on;
 plot(mo,log10(ld_tmean),'k'); hold on;
 
+%% Zoop loss
+% MZ loss
+ncid = netcdf.open([fpath '4P4Z_Spinup_' harv '_mzoo.nc'],'NC_NOWRITE');
+[ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
+for i = 1:nvars
+    varname = netcdf.inqVar(ncid, i-1);
+    eval([ varname ' = netcdf.getVar(ncid,i-1);']);
+    eval([ varname '(' varname ' == 99999) = NaN;']);
+end
+netcdf.close(ncid);
+
+MZ.frac = fraction;
+clear fraction
+
+%% LZ loss
+ncid = netcdf.open([fpath '4P4Z_Spinup_' harv '_lzoo.nc'],'NC_NOWRITE');
+[ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
+for i = 1:nvars
+    varname = netcdf.inqVar(ncid, i-1);
+    eval([ varname ' = netcdf.getVar(ncid,i-1);']);
+    eval([ varname '(' varname ' == 99999) = NaN;']);
+end
+netcdf.close(ncid);
+
+LZ.frac = fraction;
+clear fraction
+
+%% Total times overcon happens in last year
+[nid,nt] = size(MZ.frac);
+lyr = time(end-11:end);
+
+mfrac_lyr = MZ.frac(:,lyr);
+lfrac_lyr = LZ.frac(:,lyr);
+
+MZ.over = nan*ones(nid,12);
+MZ.over(mfrac_lyr > 1) = ones;
+MZ.over(mfrac_lyr <= 1) = zeros;
+
+LZ.over = nan*ones(nid,12);
+LZ.over(lfrac_lyr > 1) = ones;
+LZ.over(lfrac_lyr <= 1) = zeros;
+
+% Time
+mz_ttf=nansum(MZ.over,1);
+lz_ttf=nansum(LZ.over,1);
+% Space
+mz_stf=nansum(MZ.over,2);
+lz_stf=nansum(LZ.over,2);
+
+%%
+plot(1:12,mz_ttf/nid,'b'); hold on; %~6.5%
+plot(1:12,lz_ttf/nid,'r');          %~77%
+
