@@ -26,8 +26,10 @@ load([cpath 'Data_grid_POP_gx1v6.mat']);
 
 plotminlat=-90; %Set these bounds for your data
 plotmaxlat=90;
-plotminlon=-180;
-plotmaxlon=180;
+% plotminlon=-180;
+% plotmaxlon=180;
+plotminlon=-280;
+plotmaxlon=80;
 latlim=[plotminlat plotmaxlat];
 lonlim=[plotminlon plotmaxlon];
 

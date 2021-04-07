@@ -10,7 +10,7 @@ param.dfrate = param.frate/365.0;
 param = make_parameters_1meso(param);
 
 %! Grid
-load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6.mat','GRD');
+load('/Volumes/MIP/GCM_DATA/CESM/4P4Z/Data_grid_POP_gx1v6_4p4z.mat','GRD');
 param.NX = GRD.N;
 param.ID = 1:param.NX;
 NX = param.NX;

@@ -1,13 +1,13 @@
 %%%%!! RUN HISTORIC FOR ALL LOCATIONS
-function Spinup_4p4z()
+function CESM_4p4z_comb()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Set fishing rate
 param.frate = 0.3;
 param.dfrate = param.frate/365.0;
 
-%! Make core parameters/constants 
-param = make_parameters(param); 
+%! Make core parameters/constants
+param = make_parameters_1meso(param);
 
 %! Grid
 load('/Volumes/MIP/GCM_DATA/CESM/4P4Z/Data_grid_POP_gx1v6_4p4z.mat','GRD');
@@ -17,18 +17,17 @@ NX = param.NX;
 ID = 1:param.NX;
 
 %! How long to run the model
-YEARS = 200;
+YEARS = 61;
 DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-model = '4P4Z';
-[fname,simname] = sub_fname_spin_2zoo(param,model);
+model = '4P4Z_comb';
+[fname,simname] = sub_fname_cesm_1meso(param,model);
 
 %! Storage variables
 S_Bent_bio = zeros(NX,DAYS);
 S_Mzoo_frac = zeros(NX,DAYS);
-S_Lzoo_frac = zeros(NX,DAYS);
 
 S_Sml_f = zeros(NX,DAYS);
 S_Sml_p = zeros(NX,DAYS);
@@ -49,7 +48,10 @@ S_Lrg_d = zeros(NX,DAYS);
 % P_Lrg_d = zeros(NX,DAYS);
 
 %! Initialize
-[Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish_spin(ID,DAYS);
+init_sim = simname;
+load(['/Volumes/MIP/NC/CESM_MAPP/',init_sim '/Last_mo_4p4z_comb_spin_' init_sim '.mat']);
+BENT.mass = BENT.bio;
+[Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish(ID,Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT);
 
 %%%%%%%%%%%%%%% Setup NetCDF save
 %! Setup netcdf path to store to
@@ -63,7 +65,6 @@ file_lrg_p = [fname,'_lrg_p.nc'];
 file_lrg_d = [fname,'_lrg_d.nc'];
 file_bent  = [fname,'_bent.nc'];
 file_mzoo  = [fname,'_mzoo.nc'];
-file_lzoo  = [fname,'_lzoo.nc'];
 
 ncidSF = netcdf.create(file_sml_f,'NC_WRITE');
 ncidSP = netcdf.create(file_sml_p,'NC_WRITE');
@@ -75,7 +76,6 @@ ncidLP = netcdf.create(file_lrg_p,'NC_WRITE');
 ncidLD = netcdf.create(file_lrg_d,'NC_WRITE');
 ncidB  = netcdf.create(file_bent,'NC_WRITE');
 ncidMZ = netcdf.create(file_mzoo,'NC_WRITE');
-ncidLZ = netcdf.create(file_lzoo,'NC_WRITE');
 
 %! Dims of netcdf file
 nt = 12*YEARS;
@@ -143,34 +143,27 @@ vidfracMZ   = netcdf.defVar(ncidMZ,'fraction','double',[xy_dim,time_dim]);
 vidTMZ      = netcdf.defVar(ncidMZ,'time','double',time_dim);
 netcdf.endDef(ncidMZ);
 
-xy_dim      = netcdf.defDim(ncidLZ,'nid',NX);
-time_dim    = netcdf.defDim(ncidLZ,'ntime',nt);
-vidfracLZ   = netcdf.defVar(ncidLZ,'fraction','double',[xy_dim,time_dim]);
-vidTLZ      = netcdf.defVar(ncidLZ,'time','double',time_dim);
-netcdf.endDef(ncidLZ);
-
 %% %%%%%%%%%%%%%%%%%%%% Run the Model
-%! Loop over first year of forcing
-load('/Volumes/MIP/GCM_DATA/CESM/4P4Z/Data_cesm_4P4Z_daily_1.mat','ESM');
 MNT = 0;
-%! Run model 
+%! Run model
 for YR = 1:YEARS % years
+    %! Load a year's ESM data
     ti = num2str(YR)
+    load(['/Volumes/MIP/GCM_DATA/CESM/4P4Z/Data_cesm_4p4z_daily_',ti,'.mat'],'ESM')
     
     for DAY = 1:param.DT:DAYS % days
-        
+
         %%%! Future time step
         DY = int64(ceil(DAY));
 %         [num2str(YR),' , ', num2str(mod(DY,365))]
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
-            sub_futbio(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
+            sub_futbio_2zoo_comb(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
             Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
-        
+
         %! Store
         S_Bent_bio(:,DY) = BENT.mass;
         S_Mzoo_frac(:,DY) = ENVR.fZm;
-        S_Lzoo_frac(:,DY) = ENVR.fZl;
-        
+
         S_Sml_f(:,DY) = Sml_f.bio;
         S_Sml_p(:,DY) = Sml_p.bio;
         S_Sml_d(:,DY) = Sml_d.bio;
@@ -188,26 +181,23 @@ for YR = 1:YEARS % years
 %         P_Med_d(:,DY) = Med_d.prod;
 %         P_Lrg_p(:,DY) = Lrg_p.prod;
 %         P_Lrg_d(:,DY) = Lrg_d.prod;
-        
+
     end %Days
-    
+
     %! Calculate monthly means and save
     aa = (cumsum(MNTH)+1);
     a = [1,aa(1:end-1)]; % start of the month
     b = cumsum(MNTH);    % end of the month
     for i = 1:12
         MNT = MNT+1;     % Update monthly ticker
-        
+
         %! Put vars of netcdf file
         netcdf.putVar(ncidB,vidbioB,[0 MNT-1],[NX 1],mean(S_Bent_bio(:,a(i):b(i)),2));
         netcdf.putVar(ncidB,vidTB,MNT-1,1,MNT);
 
         netcdf.putVar(ncidMZ,vidfracMZ,[0 MNT-1],[NX 1],mean(S_Mzoo_frac(:,a(i):b(i)),2));
         netcdf.putVar(ncidMZ,vidTMZ,MNT-1,1,MNT);
-        
-        netcdf.putVar(ncidLZ,vidfracLZ,[0 MNT-1],[NX 1],mean(S_Lzoo_frac(:,a(i):b(i)),2));
-        netcdf.putVar(ncidLZ,vidTLZ,MNT-1,1,MNT);
-        
+
         netcdf.putVar(ncidSF,vidbioSF,[0 MNT-1],[NX 1],mean(S_Sml_f(:,a(i):b(i)),2));
         netcdf.putVar(ncidSP,vidbioSP,[0 MNT-1],[NX 1],mean(S_Sml_p(:,a(i):b(i)),2));
         netcdf.putVar(ncidSD,vidbioSD,[0 MNT-1],[NX 1],mean(S_Sml_d(:,a(i):b(i)),2));
@@ -216,7 +206,7 @@ for YR = 1:YEARS % years
         netcdf.putVar(ncidMD,vidbioMD,[0 MNT-1],[NX 1],mean(S_Med_d(:,a(i):b(i)),2));
         netcdf.putVar(ncidLP,vidbioLP,[0 MNT-1],[NX 1],mean(S_Lrg_p(:,a(i):b(i)),2));
         netcdf.putVar(ncidLD,vidbioLD,[0 MNT-1],[NX 1],mean(S_Lrg_d(:,a(i):b(i)),2));
-       
+
 %         netcdf.putVar(ncidSF,vidprodSF,[0 MNT-1],[NX 1],mean(P_Sml_f(:,a(i):b(i)),2));
 %         netcdf.putVar(ncidSP,vidprodSP,[0 MNT-1],[NX 1],mean(P_Sml_p(:,a(i):b(i)),2));
 %         netcdf.putVar(ncidSD,vidprodSD,[0 MNT-1],[NX 1],mean(P_Sml_d(:,a(i):b(i)),2));
@@ -225,10 +215,10 @@ for YR = 1:YEARS % years
 %         netcdf.putVar(ncidMD,vidprodMD,[0 MNT-1],[NX 1],mean(P_Med_d(:,a(i):b(i)),2));
 %         netcdf.putVar(ncidLP,vidprodLP,[0 MNT-1],[NX 1],mean(P_Lrg_p(:,a(i):b(i)),2));
 %         netcdf.putVar(ncidLD,vidprodLD,[0 MNT-1],[NX 1],mean(P_Lrg_d(:,a(i):b(i)),2));
-%        
-        
+%
+
     end %Monthly mean
-    
+
 end %Years
 
 %%
@@ -243,6 +233,5 @@ netcdf.close(ncidLP);
 netcdf.close(ncidLD);
 netcdf.close(ncidB);
 netcdf.close(ncidMZ);
-netcdf.close(ncidLZ);
 
 end

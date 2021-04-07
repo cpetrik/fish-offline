@@ -1,5 +1,5 @@
 % Visualize output of FEISTY
-% CESM FOSI
+% CESM 4P4Z_comb
 % Time series plots and maps
 
 clear all
@@ -9,20 +9,20 @@ close all
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 mod = 'All_fish03';
 
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/4P4Z/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([fpath 'Time_Means_FOSI_' cfile '.mat']);
-load([fpath 'Space_Means_FOSI_' cfile '.mat']);
-load([fpath 'Annual_Means_FOSI_' cfile '.mat'],'mz_mtf');
+load([fpath 'Time_Means_4P4Z_comb_' cfile '.mat']);
+load([fpath 'Space_Means_4P4Z_comb_' cfile '.mat']);
+load([fpath 'Annual_Means_4P4Z_comb_' cfile '.mat'],'mz_mtf');
 
 % Map data
-cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
-load([cpath 'gridspec_POP_gx1v6.mat']);
-load([cpath 'Data_grid_POP_gx1v6.mat']);
+cpath = '/Volumes/MIP/GCM_DATA/CESM/4P4Z/';
+load([cpath 'gridspec_POP_gx1v6_4p4z.mat']);
+load([cpath 'Data_grid_POP_gx1v6_4p4z.mat']);
 
 [ni,nj]=size(TLONG);
 
@@ -72,9 +72,9 @@ xlim([y(1) y(end)])
 ylim([-3 1])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
-title('FOSI')
+title('4P4Z comb')
 stamp(mod)
-print('-dpng',[ppath 'FOSI_',mod,'_all_sizes.png'])
+print('-dpng',[ppath '4P4Z_comb_',mod,'_all_sizes.png'])
 
 %% Types together
 F = sf_tmean+mf_tmean;
@@ -93,9 +93,9 @@ xlim([y(1) y(end)])
 %ylim([-5 2])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
-title('FOSI')
+title('4P4Z comb')
 stamp(mod)
-print('-dpng',[ppath 'FOSI_',mod,'_all_types.png'])
+print('-dpng',[ppath '4P4Z_comb_',mod,'_all_types.png'])
  
 %% Plots in space
 
@@ -131,7 +131,7 @@ FracPF = AllP ./ (AllP+AllF);
 FracLM = AllL ./ (AllL+AllM);
 
 %% save outputs for comparison
-save([fpath 'Plot_Means_FOSI_' cfile '.mat'],'F','P','D','B',...
+save([fpath 'Plot_Means_4P4Z_comb_' cfile '.mat'],'F','P','D','B',...
     'AllF','AllP','AllD','AllS','AllM','AllL');
 
 %% bent
@@ -144,9 +144,9 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-1 2]);
 hcb = colorbar('h');
 set(gcf,'renderer','painters')
-title('FOSI log10 mean benthic biomass (g m^-^2)')
+title('4P4Z comb log10 mean benthic biomass (g m^-^2)')
 stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_global_BENT.png'])
+print('-dpng',[ppath '4P4Z_comb_',mod,'_global_BENT.png'])
 
 %% All 4 on subplots
 figure(4)
@@ -195,7 +195,7 @@ caxis([-2 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All fishes (g m^-^2)')
 stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_global_All_subplot.png'])
+print('-dpng',[ppath '4P4Z_comb_',mod,'_global_All_subplot.png'])
 
 %% Ratios on subplots red-white-blue
 % 3 figure subplot P:D, P:F, M:L
@@ -234,7 +234,7 @@ colorbar('Position',[0.2 0.485 0.6 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
 title('Fraction Large vs. Medium')
 stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_global_ratios_subplot.png'])
+print('-dpng',[ppath '4P4Z_comb_',mod,'_global_ratios_subplot.png'])
 
 %% MZ loss plots
 [nx,nt] = size(mz_mtf);
@@ -249,19 +249,19 @@ Cmz_stover5 = mz_stf/nt;
 %happens whole year
 test2=floor(Cmz_stover5);
 %histogram(test2)
-sum(test2)/length(test2) % = 2.1675
+sum(test2)/length(test2) % = 4.70
 
 %happens >=50% of year
 test4=round(Cmz_stover5);
 %histogram(test4)
-sum(test4)/length(test4) % = 2.4561
+sum(test4)/length(test4) % = 5.15
 
 %% Plot in time
 figure(6)
 plot(y, Cmz_ttover,'k','LineWidth',2); hold on;
 xlabel('Years')
 ylabel('Fraction of grid cells over-consumed')
-print('-dpng',[ppath 'FOSI_',mod '_timeseries_zoop_overcon.png'])
+print('-dpng',[ppath '4P4Z_comb_',mod '_timeseries_zoop_overcon.png'])
 
 %% Plots in space
 CFmz=NaN*ones(ni,nj);
@@ -270,7 +270,7 @@ COmz5=NaN*ones(ni,nj);
 CFmz(GRD.ID)=Cmz_smfrac;
 COmz(GRD.ID)=Cmz_stover5;
 
-% save([bpath 'FOSI_' mod '_ts_map_zoop_overcon.mat'],...
+% save([bpath '4P4Z_comb_' mod '_ts_map_zoop_overcon.mat'],...
 %     'Cmz_ttover','CFmz','COmz','-append');
 
 cmBP=cbrewer('seq','BuPu',10,'PCHIP');
@@ -302,5 +302,5 @@ caxis([0 1]);
 colorbar
 set(gcf,'renderer','painters')
 text(0,1.6,'Mean times MZ overconsumed','HorizontalAlignment','center')
-print('-dpng',[ppath 'FOSI_',mod '_global_zoop_overcon.png'])
+print('-dpng',[ppath '4P4Z_comb_',mod '_global_zoop_overcon.png'])
 

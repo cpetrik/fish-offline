@@ -14,7 +14,7 @@ load([fpath 'g.e22a06.G1850ECOIAF_JRA_PHYS_DEV.TL319_g17.4p4z.004.FIESTY-forcing
     'TEMP_bottom_units','POC_FLUX_IN_bottom','POC_FLUX_IN_bottom_units',...
     'TLAT','TLONG','TAREA','time','yr','zoo3C_150m','zoo3_loss_150m',...
     'zoo4C_150m','zoo4_loss_150m');
-load([gpath 'gridspec_POP_gx1v6.mat'],'mask');
+load([fpath 'Data_grid_POP_gx1v6_4p4z.mat'],'GRD');
 
 %% doubles
 TEMP_150m = double(TEMP_150m);
@@ -94,6 +94,12 @@ shading flat
 print('-dpng',[pp 'cesm_4p4z.png'])
 
 %%
+% index of water cells
+[ni,nj,nt] = size(TEMP_bottom);
+%WID = find(~isnan(mask));  % spatial index of water cells
+WID = find(~isnan(test2));  % use bottom temp instead
+NID = length(WID);         % number of water cells
+
 for y = 1:nyrs
     yr = yrs(y)
     
@@ -105,19 +111,19 @@ for y = 1:nyrs
     dZl = (zoo4_loss_150m(:,:,mstart(y):mend(y)));
     det = (POC_FLUX_IN_bottom(:,:,mstart(y):mend(y)));
     
-    % index of water cells
-    [ni,nj,nt] = size(TEMP_bottom);
-    WID = find(~isnan(mask));  % spatial index of water cells
-    NID = length(WID);         % number of water cells
-    
     % setup FEISTY data files
     D_Tp  = nan*zeros(NID,365);
     D_Tb  = nan*zeros(NID,365);
     D_Zm  = nan*zeros(NID,365);
     D_Zl  = nan*zeros(NID,365);
-    D_dZm  = nan*zeros(NID,365);
-    D_dZl  = nan*zeros(NID,365);
+    D_dZm = nan*zeros(NID,365);
+    D_dZl = nan*zeros(NID,365);
     D_det = nan*zeros(NID,365);
+%     D_Zm  = zeros(NID,365);
+%     D_Zl  = zeros(NID,365);
+%     D_dZm = zeros(NID,365);
+%     D_dZl = zeros(NID,365);
+%     D_det = zeros(NID,365);
     
     %% interpolate to daily resolution
     for j = 1:NID
@@ -134,7 +140,7 @@ for y = 1:nyrs
         yi = interp1(Time, Y, Tdays,'linear','extrap');
         D_Tb(j,:) = yi;
         
-        % meso zoo: nmolC cm-2 to g(WW) m-2 
+        % meso zoo: nmolC cm-2 to g(WW) m-2
         % 1e9 nmol in 1 mol C
         % 1e4 cm2 in 1 m2
         % 12.01 g C in 1 mol C
@@ -143,11 +149,11 @@ for y = 1:nyrs
         yi = interp1(Time, Y, Tdays,'linear','extrap');
         D_Zm(j,:) = yi * 1e-9 * 1e4 * 12.01 * 9.0;
         
-        % macro zoo: nmolC cm-2 to g(WW) m-2 
+        % macro zoo: nmolC cm-2 to g(WW) m-2
         Y = squeeze(Zl(m,n,:));
         yi = interp1(Time, Y, Tdays,'linear','extrap');
         D_Zl(j,:) = yi * 1e-9 * 1e4 * 12.01 * 9.0;
-
+        
         % medium zoo mortality: nmolC cm-2 s-1 to g(WW) m-2 d-1
         % 1e9 nmol in 1 mol C
         % 1e4 cm2 in 1 m2
@@ -173,13 +179,18 @@ for y = 1:nyrs
         
     end
     
-    % Negative biomass or mortality loss from interp - maybe do before
-    % interp
+    % Negative biomass or mortality loss from interp
     D_Zm(D_Zm<0) = 0.0;
     D_Zl(D_Zl<0) = 0.0;
     D_dZm(D_dZm<0) = 0.0;
     D_dZl(D_dZl<0) = 0.0;
     D_det(D_det<0) = 0.0;
+    
+%     D_Zm(isnan(D_Zm)) = 0.0;
+%     D_Zl(isnan(D_Zl)) = 0.0;
+%     D_dZm(isnan(D_dZm)) = 0.0;
+%     D_dZl(isnan(D_dZl)) = 0.0;
+%     D_det(isnan(D_det)) = 0.0;
     
     ESM.Tp = D_Tp;
     ESM.Tb = D_Tb;
