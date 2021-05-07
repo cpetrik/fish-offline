@@ -1,0 +1,379 @@
+% Use seasonal climatologies of phys & BGC to create 
+% experimental time-series
+% Log-transform abund
+% No transform environ (temp)
+% These are before adding noise of known spectral color
+
+
+clear all
+close all
+
+fpath='/Volumes/MIP/GCM_DATA/CORE-forced/';
+
+cpath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/cobalt_data/';
+load([cpath 'COBALT_hist_biomes_1950_2005.mat']);
+
+%% Climatologies
+
+load([fpath 'cobalt_biome_core_climatol_1950_2007.mat']);
+
+%% CORE-forced output
+load([fpath 'ocean_cobalt_temp100_monthly_1950_2007.mat'],'tp_100');
+load([fpath 'ocean_cobalt_temp_btm_monthly_1950_2007.mat'],'tb');
+load([fpath 'ocean_cobalt_mz100_monthly_1950_2007.mat'],'mz_100','units_vint');
+load([fpath 'ocean_cobalt_lz100_monthly_1950_2007.mat'],'lz_100');
+load([fpath 'ocean_cobalt_hploss_mz100_monthly_1950_2007.mat'],'hploss_mz_100');
+load([fpath 'ocean_cobalt_hploss_lz100_monthly_1950_2007.mat'],'hploss_lz_100');
+load([fpath 'ocean_cobalt_fndet_btm_monthly_1950_2007.mat']); %,'det_btm'
+
+[ni,nj,nt] = size(tb);
+
+tp_100 = double(reshape(tp_100,ni*nj,nt));
+tb = double(reshape(tb,ni*nj,nt));
+mz_100 = double(reshape(mz_100,ni*nj,nt));
+lz_100 = double(reshape(lz_100,ni*nj,nt));
+det_btm = double(reshape(det_btm,ni*nj,nt));
+hploss_mz_100 = double(reshape(hploss_mz_100,ni*nj,nt));
+hploss_lz_100 = double(reshape(hploss_lz_100,ni*nj,nt));
+
+%% Convert Units to be same as fish (g WW m-2)
+%det btm: mol N m-2 s-1
+%zoo: mol N kg-1 integrated to mol N m-2 (1 kg of water = 1 m3)
+%zoo loss: mol N m-2 s-1
+%tp: degC
+%tb: degC
+
+mz = mz_100 * (106.0/16.0) * 12.01 * 9.0;
+lz = lz_100 * (106.0/16.0) * 12.01 * 9.0;
+mz_hp = hploss_mz_100 * (106.0/16.0) * 12.01 * 9.0;
+lz_hp = hploss_lz_100 * (106.0/16.0) * 12.01 * 9.0;
+det = det_btm * (106.0/16.0) * 12.01 * 9.0 * 60 * 60 *24;
+
+%% Find quantiles in each biome
+for L=1:4
+    lid = find(biome4_hist==L);
+    Btp(:,L) = quantile(tp_100(lid,:),[0.1 0.3 0.5 0.7 0.9],'all');
+    Btb(:,L) = quantile(tb(lid,:),[0.1 0.3 0.5 0.7 0.9],'all');
+    Bdet(:,L) = quantile(det(lid,:),[0.1 0.3 0.5 0.7 0.9],'all');
+    Bmz(:,L) = quantile(mz(lid,:),[0.1 0.3 0.5 0.7 0.9],'all');
+    Blz(:,L) = quantile(lz(lid,:),[0.1 0.3 0.5 0.7 0.9],'all');
+    Bhpmz(:,L) = quantile(mz_hp(lid,:),[0.1 0.3 0.5 0.7 0.9],'all');
+    Bhplz(:,L) = quantile(lz_hp(lid,:),[0.1 0.3 0.5 0.7 0.9],'all');
+end
+
+%%
+for L=1:4
+    lid = find(biome4_hist==L);
+    Mtp(:,L) = quantile(tp_100(lid,:),[0.25 0.5 0.75],'all');
+    Mtb(:,L) = quantile(tb(lid,:),[0.25 0.5 0.75],'all');
+    Mdet(:,L) = quantile(det(lid,:),[0.25 0.5 0.75],'all');
+    Mmz(:,L) = quantile(mz(lid,:),[0.25 0.5 0.75],'all');
+    Mlz(:,L) = quantile(lz(lid,:),[0.25 0.5 0.75],'all');
+    Mhpmz(:,L) = quantile(mz_hp(lid,:),[0.25 0.5 0.75],'all');
+    Mhplz(:,L) = quantile(lz_hp(lid,:),[0.25 0.5 0.75],'all');
+end
+
+%% convert abund to non-log-transformed
+mz_clim = 10.^(mz_clim);
+lz_clim = 10.^(lz_clim);
+mhp_clim = 10.^(mhp_clim);
+lhp_clim = 10.^(lhp_clim);
+det_clim = 10.^(det_clim);
+
+%% METHOD 1 - normalize cycles, use 3 diff min-max from quantiles
+% Varies the timing of the peak and trough more than anything else
+% normalize cycles 0-1
+tp_nclim = (tp_clim' - min(tp_clim')) ./ (max(tp_clim') - min(tp_clim'));
+tb_nclim = (tb_clim' - min(tb_clim')) ./ (max(tb_clim') - min(tb_clim'));
+mz_nclim = (mz_clim' - min(mz_clim')) ./ (max(mz_clim') - min(mz_clim'));
+lz_nclim = (lz_clim' - min(lz_clim')) ./ (max(lz_clim') - min(lz_clim'));
+mhp_nclim = (mhp_clim' - min(mhp_clim')) ./ (max(mhp_clim') - min(mhp_clim'));
+lhp_nclim = (lhp_clim' - min(lhp_clim')) ./ (max(lhp_clim') - min(lhp_clim'));
+det_nclim = (det_clim' - min(det_clim')) ./ (max(det_clim') - min(det_clim'));
+
+%%
+tpL = tp_nclim.*(Btp(3,:)-Btp(1,:)) + Btp(1,:);
+tpM = tp_nclim.*(Btp(4,:)-Btp(2,:)) + Btp(2,:);
+tpH = tp_nclim.*(Btp(5,:)-Btp(3,:)) + Btp(3,:);
+
+tbL = tb_nclim.*(Btb(3,:)-Btb(1,:)) + Btb(1,:);
+tbM = tb_nclim.*(Btb(4,:)-Btb(2,:)) + Btb(2,:);
+tbH = tb_nclim.*(Btb(5,:)-Btb(3,:)) + Btb(3,:);
+
+mzL = mz_nclim.*(Bmz(3,:)-Bmz(1,:)) + Bmz(1,:);
+mzM = mz_nclim.*(Bmz(4,:)-Bmz(2,:)) + Bmz(2,:);
+mzH = mz_nclim.*(Bmz(5,:)-Bmz(3,:)) + Bmz(3,:);
+
+lzL = lz_nclim.*(Blz(3,:)-Blz(1,:)) + Blz(1,:);
+lzM = lz_nclim.*(Blz(4,:)-Blz(2,:)) + Blz(2,:);
+lzH = lz_nclim.*(Blz(5,:)-Blz(3,:)) + Blz(3,:);
+
+hpmzL = mhp_nclim.*(Bhpmz(3,:)-Bhpmz(1,:)) + Bhpmz(1,:);
+hpmzM = mhp_nclim.*(Bhpmz(4,:)-Bhpmz(2,:)) + Bhpmz(2,:);
+hpmzH = mhp_nclim.*(Bhpmz(5,:)-Bhpmz(3,:)) + Bhpmz(3,:);
+
+hplzL = lhp_nclim.*(Bhplz(3,:)-Bhplz(1,:)) + Bhplz(1,:);
+hplzM = lhp_nclim.*(Bhplz(4,:)-Bhplz(2,:)) + Bhplz(2,:);
+hplzH = lhp_nclim.*(Bhplz(5,:)-Bhplz(3,:)) + Bhplz(3,:);
+
+detL = det_nclim.*(Bdet(3,:)-Bdet(1,:)) + Bdet(1,:);
+detM = det_nclim.*(Bdet(4,:)-Bdet(2,:)) + Bdet(2,:);
+detH = det_nclim.*(Bdet(5,:)-Bdet(3,:)) + Bdet(3,:);
+
+%% METHOD 2 - use 3 diff means from quantiles with biome amplitudes
+% range of each
+rtp = max(tp_clim') - min(tp_clim');
+rtb = max(tb_clim') - min(tb_clim');
+rmz = max(mz_clim') - min(mz_clim');
+rlz = max(lz_clim') - min(lz_clim');
+rmhp = max(mhp_clim') - min(mhp_clim');
+rlhp = max(lhp_clim') - min(lhp_clim');
+rdet = max(det_clim') - min(det_clim');
+
+%%
+tp25 = tp_nclim.*repmat(rtp,12,1) + repmat(Mtp(1,:),12,1) - 0.5*repmat(rtp,12,1);
+tp50 = tp_nclim.*repmat(rtp,12,1) + repmat(Mtp(2,:),12,1) - 0.5*repmat(rtp,12,1);
+tp75 = tp_nclim.*repmat(rtp,12,1) + repmat(Mtp(3,:),12,1) - 0.5*repmat(rtp,12,1);
+
+tb25 = tb_nclim.*repmat(rtb,12,1) + repmat(Mtb(1,:),12,1) - 0.5*repmat(rtb,12,1);
+tb50 = tb_nclim.*repmat(rtb,12,1) + repmat(Mtb(2,:),12,1) - 0.5*repmat(rtb,12,1);
+tb75 = tb_nclim.*repmat(rtb,12,1) + repmat(Mtb(3,:),12,1) - 0.5*repmat(rtb,12,1);
+
+mz25 = mz_nclim.*repmat(rmz,12,1) + repmat(Mmz(1,:),12,1) - 0.5*repmat(rmz,12,1);
+mz50 = mz_nclim.*repmat(rmz,12,1) + repmat(Mmz(2,:),12,1) - 0.5*repmat(rmz,12,1);
+mz75 = mz_nclim.*repmat(rmz,12,1) + repmat(Mmz(3,:),12,1) - 0.5*repmat(rmz,12,1);
+
+lz25 = lz_nclim.*repmat(rlz,12,1) + repmat(Mlz(1,:),12,1) - 0.5*repmat(rlz,12,1);
+lz50 = lz_nclim.*repmat(rlz,12,1) + repmat(Mlz(2,:),12,1) - 0.5*repmat(rlz,12,1);
+lz75 = lz_nclim.*repmat(rlz,12,1) + repmat(Mlz(3,:),12,1) - 0.5*repmat(rlz,12,1);
+
+hpmz25 = mhp_nclim.*rmhp + Mhpmz(1,:);
+hpmz50 = mhp_nclim.*rmhp + Mhpmz(2,:);
+hpmz75 = mhp_nclim.*rmhp + Mhpmz(3,:);
+
+hplz25 = lhp_nclim.*rlhp + Mhplz(1,:);
+hplz50 = lhp_nclim.*rlhp + Mhplz(2,:);
+hplz75 = lhp_nclim.*rlhp + Mhplz(3,:);
+
+det25 = det_nclim.*repmat(rdet,12,1) + repmat(Mdet(1,:),12,1) - 0.5*repmat(rdet,12,1);
+det50 = det_nclim.*repmat(rdet,12,1) + repmat(Mdet(2,:),12,1) - 0.5*repmat(rdet,12,1);
+det75 = det_nclim.*repmat(rdet,12,1) + repmat(Mdet(3,:),12,1) - 0.5*repmat(rdet,12,1);
+
+%% Look at differences
+%Tp
+figure(1)
+subplot(3,3,1)
+plot(1:12,tpL)
+ylim([-2 30])
+
+subplot(3,3,2)
+plot(1:12,tpM)
+ylim([-2 30])
+title('T pelagic')
+
+subplot(3,3,3)
+plot(1:12,tpH)
+ylim([-2 30])
+
+subplot(3,3,5)
+plot(1:12,tp_clim)
+ylim([-2 30])
+
+subplot(3,3,7)
+plot(1:12,tp25)
+ylim([-2 30])
+
+subplot(3,3,8)
+plot(1:12,tp50)
+ylim([-2 30])
+
+subplot(3,3,9)
+plot(1:12,tp75)
+ylim([-2 30])
+
+%% Tb
+figure(2)
+subplot(3,3,1)
+plot(1:12,tbL)
+ylim([-2 25])
+
+subplot(3,3,2)
+plot(1:12,tbM)
+ylim([-2 25])
+title('T bottom')
+
+subplot(3,3,3)
+plot(1:12,tbH)
+ylim([-2 25])
+
+subplot(3,3,5)
+plot(1:12,tb_clim)
+ylim([-2 25])
+
+subplot(3,3,7)
+plot(1:12,tb25)
+ylim([-2 25])
+
+subplot(3,3,8)
+plot(1:12,tb50)
+ylim([-2 25])
+
+subplot(3,3,9)
+plot(1:12,tb75)
+ylim([-2 25])
+
+%% Det
+figure(3)
+subplot(3,3,1)
+plot(1:12,log10(detL))
+ylim([-2 0.5])
+
+subplot(3,3,2)
+plot(1:12,log10(detM))
+ylim([-2 0.5])
+title('log_1_0 Det')
+
+subplot(3,3,3)
+plot(1:12,log10(detH))
+ylim([-2 0.5])
+
+subplot(3,3,5)
+plot(1:12,log10(det_clim))
+ylim([-2 0.5])
+
+subplot(3,3,7)
+plot(1:12,log10(det25))
+ylim([-2 0.5])
+
+subplot(3,3,8)
+plot(1:12,log10(det50))
+ylim([-2 0.5])
+
+subplot(3,3,9)
+plot(1:12,log10(det75))
+ylim([-2 0.5])
+
+%% MZ
+figure(4)
+subplot(3,3,1)
+plot(1:12,log10(mzL))
+ylim([0 1])
+
+subplot(3,3,2)
+plot(1:12,log10(mzM))
+ylim([0 1])
+title('log_1_0 MZ')
+
+subplot(3,3,3)
+plot(1:12,log10(mzH))
+ylim([0 1])
+
+subplot(3,3,5)
+plot(1:12,log10(mz_clim))
+ylim([0 1])
+
+subplot(3,3,7)
+plot(1:12,log10(mz25))
+ylim([0 1])
+
+subplot(3,3,8)
+plot(1:12,log10(mz50))
+ylim([0 1])
+
+subplot(3,3,9)
+plot(1:12,log10(mz75))
+ylim([0 1])
+
+%% LZ
+figure(5)
+subplot(3,3,1)
+plot(1:12,log10(lzL))
+ylim([0 1])
+
+subplot(3,3,2)
+plot(1:12,log10(lzM))
+ylim([0 1])
+title('log_1_0 LZ')
+
+subplot(3,3,3)
+plot(1:12,log10(lzH))
+ylim([0 1])
+
+subplot(3,3,5)
+plot(1:12,log10(lz_clim))
+ylim([0 1])
+
+subplot(3,3,7)
+plot(1:12,log10(lz25))
+ylim([0 1])
+
+subplot(3,3,8)
+plot(1:12,log10(lz50))
+ylim([0 1])
+
+subplot(3,3,9)
+plot(1:12,log10(lz75))
+ylim([0 1])
+
+%% hpMZ
+figure(6)
+subplot(3,3,1)
+plot(1:12,log10(hpmzL))
+ylim([-6.8 -5.2])
+
+subplot(3,3,2)
+plot(1:12,log10(hpmzM))
+ylim([-6.8 -5.2])
+title('log_1_0 hpMZ')
+
+subplot(3,3,3)
+plot(1:12,log10(hpmzH))
+ylim([-6.8 -5.2])
+
+subplot(3,3,5)
+plot(1:12,log10(mhp_clim))
+ylim([-6.8 -5.2])
+
+subplot(3,3,7)
+plot(1:12,log10(hpmz25))
+ylim([-6.8 -5.2])
+
+subplot(3,3,8)
+plot(1:12,log10(hpmz50))
+ylim([-6.8 -5.2])
+
+subplot(3,3,9)
+plot(1:12,log10(hpmz75))
+ylim([-6.8 -5.2])
+
+%% hpLZ
+figure(7)
+subplot(3,3,1)
+plot(1:12,log10(hplzL))
+ylim([-7 -5.5])
+
+subplot(3,3,2)
+plot(1:12,log10(hplzM))
+ylim([-7 -5.5])
+title('log_1_0 hpLZ')
+
+subplot(3,3,3)
+plot(1:12,log10(hplzH))
+ylim([-7 -5.5])
+
+subplot(3,3,5)
+plot(1:12,log10(lhp_clim))
+ylim([-7 -5.5])
+
+subplot(3,3,7)
+plot(1:12,log10(hplz25))
+ylim([-7 -5.5])
+
+subplot(3,3,8)
+plot(1:12,log10(hplz50))
+ylim([-7 -5.5])
+
+subplot(3,3,9)
+plot(1:12,log10(hplz75))
+ylim([-7 -5.5])
+
