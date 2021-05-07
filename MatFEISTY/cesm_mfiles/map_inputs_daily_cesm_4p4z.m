@@ -9,8 +9,8 @@ fpath='/Volumes/MIP/GCM_DATA/CESM/4P4Z/';
 gpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/4P4Z/';
 
-load([gpath 'gridspec_POP_gx1v6.mat']);
-load([gpath 'Data_grid_POP_gx1v6.mat'],'GRD');
+load([fpath 'gridspec_POP_gx1v6_4p4z.mat']);
+load([fpath 'Data_grid_POP_gx1v6_4p4z.mat'],'GRD');
 load([fpath 'Data_cesm_4p4z_daily_1.mat']);
 
 %%
@@ -41,7 +41,7 @@ cdZl(GRD.ID) = c_dZl;
 
 %%
 clatlim=[-90 90];
-clonlim=[-180 180];
+clonlim=[-280 80];
 
 figure(2)
 subplot('Position',[0 0.51 0.5 0.5])

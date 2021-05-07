@@ -85,7 +85,7 @@ function param = make_parameters(param)
     %large piscivore eats medium forage fish, medium piscivore, medium detritivore
     %large detritivore eats detritus, medium forage fish, medium piscivore, medium detrivore
     
-    param.Sm = 0.25;  %Feeding 2 sizes down
+    param.Sm = 0.25;  %Feeding 2 sizes down, 0.25
     param.D = 0.75;   %Demersal feeding in pelagic reduction
     param.A = 0.5;    %Adult predation reduction %*****
 

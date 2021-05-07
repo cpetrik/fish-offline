@@ -3,7 +3,7 @@
 clear all
 close all
 
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_Sm025_nmort1_BE08_noCC_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_Sm100_nmort1_BE08_noCC_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 harv = 'All_fish03';
@@ -211,6 +211,12 @@ netcdf.close(ncid);
 LZ.frac = fraction;
 clear fraction
 
+%%
+mz_tmfrac=nanmean(MZ.frac,1);
+lz_tmfrac=nanmean(LZ.frac,1);
+mz_smfrac= nanmean(MZ.frac,2);
+lz_smfrac= nanmean(LZ.frac,2);
+
 %% Total times overcon happens in last year
 [nid,nt] = size(MZ.frac);
 lyr = time(end-11:end);
@@ -234,6 +240,13 @@ mz_stf=nansum(MZ.over,2);
 lz_stf=nansum(LZ.over,2);
 
 %%
-plot(1:12,mz_ttf/nid,'b'); hold on; %~6.5%
-plot(1:12,lz_ttf/nid,'r');          %~77%
+figure
+plot(1:12,mz_ttf/nid,'b'); hold on; %~6.5% (10% Sm=1)
+plot(1:12,lz_ttf/nid,'r');          %~77% (82% Sm=1)
+
+%%
+save([fpath 'Means_4P4Z_Spinup_' cfile '.mat'],...
+    'mz_tmfrac','mz_ttf','lz_tmfrac','lz_ttf',...
+    'mz_smfrac','mz_stf','lz_smfrac','lz_stf','-append')
+
 
