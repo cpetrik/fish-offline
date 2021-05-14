@@ -1,0 +1,428 @@
+% Visualize difference between
+% ESM2M Hindcast 50yr mean and
+% CESM FOSI mean
+
+clear all
+close all
+
+%% COBALT Hindcast grid
+hpath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/grid_cobalt/';
+load([hpath 'hindcast_gridspec.mat'],'geolon_t','geolat_t'); %geolon_t,geolat_t
+grid = csvread([hpath 'grid_csv.csv']); %grid
+[hi,hj]=size(geolon_t);
+
+%% CESM FOSI grid
+cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+load([cpath 'gridspec_POP_gx1v6.mat']);
+load([cpath 'Data_grid_POP_gx1v6.mat']);
+
+[ni,nj]=size(TLONG);
+ID = GRD.ID;
+
+%% FEISTY Output
+cfile2 = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+mod = 'All_fish03';
+harv = 'All_fish03';
+tharv = 'Harvest all fish 0.3 yr^-^1';
+
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+ppath = [pp cfile2 '/'];
+if (~isfolder(ppath))
+    mkdir(ppath)
+end
+
+%COBALT
+cfile1 = 'Dc_enc70-b200_m4-b175-k086_c20-b250_D075_J100_A050_Sm025_nmort1_BE08_noCC_RE00100';
+gpath=['/Volumes/MIP/NC/Matlab_new_size/' cfile1 '/Historic_ESM2M/'];
+load([gpath 'Means_Historic_',harv,'_' cfile1 '.mat'],...
+    'sf_mean50','sp_mean50','sd_mean50',...
+    'mf_mean50','mp_mean50','md_mean50',...
+    'lp_mean50','ld_mean50','b_mean50');
+
+%CESM
+fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile2 '/'];
+load([fpath 'Space_Means_FOSI_' cfile2 '.mat']);
+
+%% Put biomass on grid
+Csf=NaN*ones(ni,nj);
+Csp=NaN*ones(ni,nj);
+Csd=NaN*ones(ni,nj);
+Cmf=NaN*ones(ni,nj);
+Cmp=NaN*ones(ni,nj);
+Cmd=NaN*ones(ni,nj);
+Clp=NaN*ones(ni,nj);
+Cld=NaN*ones(ni,nj);
+Cb =NaN*ones(ni,nj);
+Csf(ID)=sf_sbio;
+Csp(ID)=sp_sbio;
+Csd(ID)=sd_sbio;
+Cmf(ID)=mf_sbio;
+Cmp(ID)=mp_sbio;
+Cmd(ID)=md_sbio;
+Clp(ID)=lp_sbio;
+Cld(ID)=ld_sbio;
+Cb(ID) =b_sbio;
+
+Hsf=NaN*ones(hi,hj);
+Hsp=NaN*ones(hi,hj);
+Hsd=NaN*ones(hi,hj);
+Hmf=NaN*ones(hi,hj);
+Hmp=NaN*ones(hi,hj);
+Hmd=NaN*ones(hi,hj);
+Hlp=NaN*ones(hi,hj);
+Hld=NaN*ones(hi,hj);
+Hb =NaN*ones(hi,hj);
+Hsf(grid(:,1))=sf_mean50;
+Hsp(grid(:,1))=sp_mean50;
+Hsd(grid(:,1))=sd_mean50;
+Hmf(grid(:,1))=mf_mean50;
+Hmp(grid(:,1))=mp_mean50;
+Hmd(grid(:,1))=md_mean50;
+Hlp(grid(:,1))=lp_mean50;
+Hld(grid(:,1))=ld_mean50;
+Hb(grid(:,1)) =b_mean50;
+
+CF = Csf+Cmf;
+CP = Csp+Cmp+Clp;
+CD = Csd+Cmd+Cld;
+CS = Csp+Csf+Csd;
+CM = Cmp+Cmf+Cmd;
+CL = Clp+Cld;
+
+HF = Hsf+Hmf;
+HP = Hsp+Hmp+Hlp;
+HD = Hsd+Hmd+Hld;
+HS = Hsp+Hsf+Hsd;
+HM = Hmp+Hmf+Hmd;
+HL = Hlp+Hld;
+
+%% Interpolate to same grid
+%tlat       [-79.2205 89.7064]
+%geolat_t   [-81.5 89.4879]
+%tlon       [0.0147 359.996]
+%geolon_t   [-279.9803 79.9803]
+
+%%
+figure
+pcolor(TLONG)
+shading flat
+colorbar
+
+figure
+pcolor(geolon_t)
+shading flat
+colorbar
+
+%% Need to fix both longitudes
+test = TLONG;
+id=find(test>180);
+test(id)=test(id)-360;
+lon = test;
+
+clat = TLAT';
+clon = lon';
+
+test2=geolon_t;
+id=find(test2<-180);
+test2(id)=test2(id)+360;
+geolon = test2;
+
+geolat = geolat_t';
+geolon = geolon';
+
+lats = -89.5:89.5;
+lons = -179.5:179.5;
+[glon,glat] = meshgrid(lons,lats);
+
+%%
+hF = griddata(geolat,geolon,HF',glat,glon);
+hP = griddata(geolat,geolon,HP',glat,glon);
+hD = griddata(geolat,geolon,HD',glat,glon);
+hB = griddata(geolat,geolon,Hb',glat,glon);
+hS = griddata(geolat,geolon,HS',glat,glon);
+hM = griddata(geolat,geolon,HM',glat,glon);
+hL = griddata(geolat,geolon,HL',glat,glon);
+
+cF = griddata(clat,clon,CF',glat,glon);
+cP = griddata(clat,clon,CP',glat,glon);
+cD = griddata(clat,clon,CD',glat,glon);
+cB = griddata(clat,clon,Cb',glat,glon);
+cS = griddata(clat,clon,CS',glat,glon);
+cM = griddata(clat,clon,CM',glat,glon);
+cL = griddata(clat,clon,CL',glat,glon);
+
+%% plot info
+plotminlat=-90; %Set these bounds for your data
+plotmaxlat=90;
+plotminlon=-280;
+plotmaxlon=80;
+latlim=[plotminlat plotmaxlat];
+lonlim=[plotminlon plotmaxlon]; %[-255 -60] = Pac
+
+load coastlines
+
+%%
+cAll = cF+cP+cD;
+cFracPD = cP ./ (cP+cD);
+cFracPF = cP ./ (cP+cF);
+cFracLM = cL ./ (cL+cM);
+
+hAll = hF+hP+hD;
+hFrahPD = hP ./ (hP+hD);
+hFrahPF = hP ./ (hP+hF);
+hFrahLM = hL ./ (hL+hM);
+
+diffF = (cF-hF);
+diffP = (cP-hP);
+diffD = (cD-hD);
+diffB = (cB-hB);
+diffAll = (cAll-hAll);
+
+pdiffF = (cF-hF) ./ cF;
+pdiffP = (cP-hP) ./ cP;
+pdiffD = (cD-hD) ./ cD;
+pdiffB = (cB-hB) ./ cB;
+pdiffAll = (cAll-hAll) ./ cAll;
+
+%% Maps
+figure(1)
+subplot(2,1,1)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) %,'origin',[0 -100 0])
+surfm(glat,glon,real(log10(hF)))
+colormap('jet')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 1]);
+colorbar
+set(gcf,'renderer','painters')
+title('COBALT F');
+
+subplot(2,1,2)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) %,'origin',[0 -100 0])
+surfm(glat,glon,real(log10(cF)))
+colormap('jet')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 1]);
+colorbar
+set(gcf,'renderer','painters')
+title('CESM F');
+print('-dpng',[ppath 'CESM_COBALT_' harv '_global_F.png'])
+
+%P
+figure(2)
+subplot(2,1,1)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) %,'origin',[0 -100 0])
+surfm(glat,glon,real(log10(hP)))
+colormap('jet')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 1]);
+colorbar
+set(gcf,'renderer','painters')
+title('COBALT P');
+
+subplot(2,1,2)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) %,'origin',[0 -100 0])
+surfm(glat,glon,real(log10(cP)))
+colormap('jet')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 1]);
+colorbar
+set(gcf,'renderer','painters')
+title('CESM P');
+print('-dpng',[ppath 'CESM_COBALT_' harv '_global_P.png'])
+
+% D
+figure(3)
+subplot(2,1,1)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) %,'origin',[0 -100 0])
+surfm(glat,glon,real(log10(hD)))
+colormap('jet')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 1]);
+colorbar
+set(gcf,'renderer','painters')
+title('COBALT D');
+
+subplot(2,1,2)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) %,'origin',[0 -100 0])
+surfm(glat,glon,real(log10(cD)))
+colormap('jet')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 1]);
+colorbar
+set(gcf,'renderer','painters')
+title('CESM D');
+print('-dpng',[ppath 'CESM_COBALT_' harv '_global_D.png'])
+
+%4
+figure(4)
+subplot(2,1,1)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) %,'origin',[0 -100 0])
+surfm(glat,glon,real(log10(hAll)))
+colormap('jet')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 2]);
+colorbar
+set(gcf,'renderer','painters')
+title('COBALT All');
+
+subplot(2,1,2)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) %,'origin',[0 -100 0])
+surfm(glat,glon,real(log10(cAll)))
+colormap('jet')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 2]);
+colorbar
+set(gcf,'renderer','painters')
+title('CESM All');
+print('-dpng',[ppath 'CESM_COBALT_' harv '_global_All.png'])
+
+%% B
+figure(5)
+subplot(2,1,1)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) %,'origin',[0 -100 0])
+surfm(glat,glon,real(log10(hB)))
+colormap('jet')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1.5 0.5]);
+colorbar
+set(gcf,'renderer','painters')
+title('COBALT Benthos');
+
+subplot(2,1,2)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) %,'origin',[0 -100 0])
+surfm(glat,glon,real(log10(cB)))
+colormap('jet')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1.5 0.5]);
+colorbar
+set(gcf,'renderer','painters')
+title('CESM Benthos');
+print('-dpng',[ppath 'CESM_COBALT_' harv '_global_Bent.png'])
+
+%% diffs
+% all F
+subplot('Position',[0 0.51 0.5 0.5])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,log10(AllF))
+colormap(cmBP50)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-2 2]);
+colorbar('Position',[0.25 0.5 0.5 0.05],'orientation','horizontal')
+set(gcf,'renderer','painters')
+title('log10 mean All F (g m^-^2)')
+
+% all D
+subplot('Position',[0 0 0.5 0.5])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,log10(AllD))
+colormap(cmBP50)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-2 2]);
+set(gcf,'renderer','painters')
+title('log10 mean All D (g m^-^2)')
+
+% All P
+subplot('Position',[0.5 0.51 0.5 0.5])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,log10(AllP))
+colormap(cmBP50)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-2 2]);
+set(gcf,'renderer','painters')
+title('log10 mean All P (g m^-^2)')
+
+% All
+subplot('Position',[0.5 0 0.5 0.5])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,log10(All))
+colormap(cmBP50)               
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-2 2]);
+set(gcf,'renderer','painters')
+title('log10 mean All fishes (g m^-^2)')
+stamp('')
+print('-dpng',[ppath 'FOSI_',mod,'_global_All_subplot.png'])
+
+%
+%F
+figure(6)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) 
+surfm(glat,glon,diffF)
+cmocean('balance')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 1]);
+colorbar
+set(gcf,'renderer','painters')
+title('CESM - COBALT F');
+print('-dpng',[ppath 'CESM_COBALT_' harv '_global_diffF.png'])
+
+%P
+figure(7)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) 
+surfm(glat,glon,diffP)
+cmocean('balance')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 1]);
+colorbar
+set(gcf,'renderer','painters')
+title('CESM - COBALT P');
+print('-dpng',[ppath 'CESM_COBALT_' harv '_global_diffP.png'])
+
+figure(8)
+%D
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) 
+surfm(glat,glon,diffD)
+cmocean('balance')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 1]);
+colorbar
+set(gcf,'renderer','painters')
+title('CESM - COBALT D');
+print('-dpng',[ppath 'CESM_COBALT_' harv '_global_diffD.png'])
+
+%diif all
+figure(9)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) 
+surfm(glat,glon,diffAll)
+cmocean('balance')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 1]);
+colorbar
+set(gcf,'renderer','painters')
+title('CESM - COBALT All');
+print('-dpng',[ppath 'CESM_COBALT_' harv '_global_diffAll.png'])
+
+%% B
+figure(10)
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1) 
+surfm(glat,glon,diffB)
+cmocean('balance')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-1 1]);
+colorbar
+set(gcf,'renderer','painters')
+title('CESM - COBALT B');
+print('-dpng',[ppath 'CESM_COBALT_' harv '_global_diffB.png'])
+
+%% Calc differences in total biomass
+
+
