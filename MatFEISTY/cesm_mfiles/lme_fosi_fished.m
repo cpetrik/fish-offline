@@ -1,96 +1,77 @@
-% Calc LME biomass of POEM
-% Climatology
-% 150 years
-% Saved as mat files
+% Calc LME biomass of FEISTY
+% CESM FOSI
 
 clear all
 close all
 
-cpath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/grid_cobalt/';
-Pdir = '/Volumes/FEISTY/POEM_JLD/esm26_hist/';
-cdir='/Volumes/FEISTY/GCM_DATA/ESM26_hist/';
-load([Pdir 'ESM26_1deg_5yr_clim_191_195_gridspec.mat']);
-load([cpath 'esm26_lme_mask_onedeg_SAU_66.mat']);
-load([cpath 'esm26_area_1deg.mat']);
-load([cdir 'temp_100_1deg_ESM26_5yr_clim_191_195.mat'])
-load([cdir 'btm_temp_1deg_ESM26_5yr_clim_191_195.mat'])
+%% Fish data
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+mod = 'All_fish03';
 
-ptemp_mean_clim=squeeze(nanmean(temp_100,1));
-btemp_mean_clim=squeeze(nanmean(btm_temp,1));
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+ppath = [pp cfile '/'];
+if (~isfolder(ppath))
+    mkdir(ppath)
+end
+load([fpath 'Space_Means_FOSI_' cfile '.mat'],'units_yield','units_catch',...
+    'mf_smy','mp_smy','md_smy','lp_smy','ld_smy',...
+    'mf_smc','mp_smc','md_smc','lp_smc','ld_smc',...
+    'mf_sty','mp_sty','md_sty','lp_sty','ld_sty',...
+    'mf_stc','mp_stc','md_stc','lp_stc','ld_stc');
 
-%%
-AREA_OCN = max(area,1);
+%% Map data
+cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+load([cpath 'gridspec_POP_gx1v6.mat']);
+load([cpath 'Data_grid_POP_gx1v6.mat']);
+load([cpath 'LME-mask-POP_gx1v6.mat']);
 
-cfile = 'Dc_enc70-b200_m4-b175-k086_c20-b250_D075_J100_A080_Sm025_nmort1_BE08_noCC_RE00100';
-harv = 'All_fish03';
-tharv = 'Harvest all fish 0.3 yr^-^1';
+[ni,nj]=size(TLONG);
 
-dpath=['/Volumes/FEISTY/NC/Clim_comp_tests/' cfile '/NoNuUpdate_'];
-ppath = ['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/clim_complete/post_proc/pp_figs/',...
-    cfile,'/NoNuUpdate_'];
+plotminlat=-90; %Set these bounds for your data
+plotmaxlat=90;
+plotminlon=-280;
+plotmaxlon=80;
+latlim=[plotminlat plotmaxlat];
+lonlim=[plotminlon plotmaxlon];
 
-load([dpath 'Means_Climatol_' harv '_' cfile '.mat']);
+load coastlines;     
 
 %% Plots in space
-[ni,nj]=size(lon);
-
-Zsf=NaN*ones(ni,nj);
-Zsp=NaN*ones(ni,nj);
-Zsd=NaN*ones(ni,nj);
-Zmf=NaN*ones(ni,nj);
-Zmp=NaN*ones(ni,nj);
-Zmd=NaN*ones(ni,nj);
-Zlp=NaN*ones(ni,nj);
-Zld=NaN*ones(ni,nj);
-Zb=NaN*ones(ni,nj);
-Zd1=NaN*ones(ni,nj);
-Zd2=NaN*ones(ni,nj);
-Zm1=NaN*ones(ni,nj);
-Zm2=NaN*ones(ni,nj);
-
-Tsf=NaN*ones(ni,nj);
-Tsp=NaN*ones(ni,nj);
-Tsd=NaN*ones(ni,nj);
-Tmf=NaN*ones(ni,nj);
-Tmp=NaN*ones(ni,nj);
-Tmd=NaN*ones(ni,nj);
-Tlp=NaN*ones(ni,nj);
-Tld=NaN*ones(ni,nj);
-
 Cmf=NaN*ones(ni,nj);
 Cmp=NaN*ones(ni,nj);
 Cmd=NaN*ones(ni,nj);
 Clp=NaN*ones(ni,nj);
 Cld=NaN*ones(ni,nj);
 
-Zsf(ID)=sf_mean;
-Zsp(ID)=sp_mean;
-Zsd(ID)=sd_mean;
-Zmf(ID)=mf_mean;
-Zmp(ID)=mp_mean;
-Zmd(ID)=md_mean;
-Zlp(ID)=lp_mean;
-Zld(ID)=ld_mean;
-Zb(ID)=b_mean;
-Zd1(ID)=all_median1;
-Zd2(ID)=all_median2;
-Zm1(ID)=all_mean1;
-Zm2(ID)=all_mean2;
+Cmf(GRD.ID)=mf_smy;
+Cmp(GRD.ID)=mp_smy;
+Cmd(GRD.ID)=md_smy;
+Clp(GRD.ID)=lp_smy;
+Cld(GRD.ID)=ld_smy;
 
-Tsf(ID)=sf_tot;
-Tsp(ID)=sp_tot;
-Tsd(ID)=sd_tot;
-Tmf(ID)=mf_tot;
-Tmp(ID)=mp_tot;
-Tmd(ID)=md_tot;
-Tlp(ID)=lp_tot;
-Tld(ID)=ld_tot;
+AllF = Cmf;
+AllP = Cmp+Clp;
+AllD = Cmd+Cld;
+AllM = Cmp+Cmf+Cmd;
+AllL = Clp+Cld;
+FracPD = AllP ./ (AllP+AllD);
 
-Cmf(ID)=mf_my;
-Cmp(ID)=mp_my;
-Cmd(ID)=md_my;
-Clp(ID)=lp_my;
-Cld(ID)=ld_my;
+Tmf=NaN*ones(ni,nj);
+Tmp=NaN*ones(ni,nj);
+Tmd=NaN*ones(ni,nj);
+Tlp=NaN*ones(ni,nj);
+Tld=NaN*ones(ni,nj);
+
+Tmf(GRD.ID)=mf_sty;
+Tmp(GRD.ID)=mp_sty;
+Tmd(GRD.ID)=md_sty;
+Tlp(GRD.ID)=lp_sty;
+Tld(GRD.ID)=ld_sty;
+
+%% Catches
+%TAREA units 'cm^2'
+AREA_OCN = TAREA * 1e-4;
 
 % g/m2/d --> total g
 Amf_mcatch = Cmf .* AREA_OCN * 365; %mean fish catch per yr
@@ -98,55 +79,19 @@ Amp_mcatch = Cmp .* AREA_OCN * 365;
 Amd_mcatch = Cmd .* AREA_OCN * 365;
 Alp_mcatch = Clp .* AREA_OCN * 365;
 Ald_mcatch = Cld .* AREA_OCN * 365;
-% g/m2 --> total g
-Asf_mean = Zsf .* AREA_OCN;
-Asp_mean = Zsp .* AREA_OCN;
-Asd_mean = Zsd .* AREA_OCN;
-Amf_mean = Zmf .* AREA_OCN;
-Amp_mean = Zmp .* AREA_OCN;
-Amd_mean = Zmd .* AREA_OCN;
-Alp_mean = Zlp .* AREA_OCN;
-Ald_mean = Zld .* AREA_OCN;
-Ab_mean  = Zb .* AREA_OCN;
-all_men1 = Zm1 .* AREA_OCN;
-all_men2 = Zm2 .* AREA_OCN;
-all_med1 = Zd1 .* AREA_OCN;
-all_med2 = Zd2 .* AREA_OCN;
 
-Asf_tot = Tsf .* AREA_OCN;
-Asp_tot = Tsp .* AREA_OCN;
-Asd_tot = Tsd .* AREA_OCN;
 Amf_tot = Tmf .* AREA_OCN;
 Amp_tot = Tmp .* AREA_OCN;
 Amd_tot = Tmd .* AREA_OCN;
 Alp_tot = Tlp .* AREA_OCN;
 Ald_tot = Tld .* AREA_OCN;
 
-%% Total biomass (compare to J&C15)
-tot_bio1 = nansum(all_med1(:)) * 1e-6
-tot_bio2 = nansum(all_med2(:)) * 1e-6
-tot_bio3 = nansum(all_men1(:)) * 1e-6
-tot_bio4 = nansum(all_men2(:)) * 1e-6
-
-%Too high by 1e2
-tot_bio5 = nansum(Asf_tot(:) + Asp_tot(:) + Asd_tot(:) +...
-    Amf_tot(:) + Amp_tot(:) + Amd_tot(:) +...
-    Alp_tot(:) + Ald_tot(:)) * 1e-6;
-tot_bio6 = nansum(Asf_mean(:) + Asp_mean(:) + Asd_mean(:) +...
-    Amf_mean(:) + Amp_mean(:) + Amd_mean(:) +...
-    Alp_mean(:) + Ald_mean(:)) * 1e-6;
-tot_bioML = nansum(Amf_mean(:) + Amp_mean(:) + Amd_mean(:) +...
-    Alp_mean(:) + Ald_mean(:)) * 1e-6;
-
-
 %% Calc LMEs
 tlme = lme_mask_onedeg;
 
 lme_mcatch = NaN*ones(66,5);
-lme_mbio = NaN*ones(66,9);
-lme_sbio = NaN*ones(66,9);
+lme_tcatch = NaN*ones(66,9);
 lme_area = NaN*ones(66,1);
-lme_med = NaN*ones(66,2);
 
 for L=1:66
     lid = find(tlme==L);
@@ -156,37 +101,17 @@ for L=1:66
     lme_mcatch(L,3) = nansum(Amd_mcatch(lid));
     lme_mcatch(L,4) = nansum(Alp_mcatch(lid));
     lme_mcatch(L,5) = nansum(Ald_mcatch(lid));
-    %mean biomass
-    lme_mbio(L,1) = nanmean(Asf_mean(lid));
-    lme_mbio(L,2) = nanmean(Asp_mean(lid));
-    lme_mbio(L,3) = nanmean(Asd_mean(lid));
-    lme_mbio(L,4) = nanmean(Amf_mean(lid));
-    lme_mbio(L,5) = nanmean(Amp_mean(lid));
-    lme_mbio(L,6) = nanmean(Amd_mean(lid));
-    lme_mbio(L,7) = nanmean(Alp_mean(lid));
-    lme_mbio(L,8) = nanmean(Ald_mean(lid));
-    lme_mbio(L,9) = nanmean(Ab_mean(lid));
-    %median/mean of all
-    lme_med(L,1) = nansum(all_med1(lid));
-    lme_med(L,2) = nansum(all_men1(lid));
-    %total biomass
-    lme_sbio(L,1) = nansum(Asf_mean(lid));
-    lme_sbio(L,2) = nansum(Asp_mean(lid));
-    lme_sbio(L,3) = nansum(Asd_mean(lid));
-    lme_sbio(L,4) = nansum(Amf_mean(lid));
-    lme_sbio(L,5) = nansum(Amp_mean(lid));
-    lme_sbio(L,6) = nansum(Amd_mean(lid));
-    lme_sbio(L,7) = nansum(Alp_mean(lid));
-    lme_sbio(L,8) = nansum(Ald_mean(lid));
-    lme_sbio(L,9) = nansum(Ab_mean(lid));
+    %total catch g
+    lme_tcatch(L,1) = nansum(Amf_mean(lid));
+    lme_tcatch(L,2) = nansum(Amp_mean(lid));
+    lme_tcatch(L,3) = nansum(Amd_mean(lid));
+    lme_tcatch(L,4) = nansum(Alp_mean(lid));
+    lme_tcatch(L,5) = nansum(Ald_mean(lid));
+    lme_tcatch(L,6) = nansum(Ab_mean(lid));
     %total area of LME
     lme_area(L,1) = nansum(AREA_OCN(lid));
 end
 
-%biomass in lmes
-Tlme_med = sum(lme_med)* 1e-6;
-frac_med_lme = Tlme_med(1)/tot_bio1
-frac_men_lme = Tlme_med(2)/tot_bio3
 %catch in lmes
 Tlme_mcatch = sum(lme_mcatch(:));
 tot_catch = (Amf_mcatch+Amp_mcatch+Amd_mcatch+Alp_mcatch+Ald_mcatch);
@@ -194,180 +119,9 @@ tot_catch2 = nansum(tot_catch(:));
 frac_mcatch_lme = Tlme_mcatch/tot_catch2
 
 %%
-save([dpath 'LME_clim_fished_',harv,'_' cfile '.mat'],...
-    'lme_mcatch','lme_mbio','lme_sbio','lme_area');
-
-%% Figures
-load([dpath 'LME_clim_fished_',harv,'_' cfile '.mat'],...
-    'lme_mcatch','lme_mbio','lme_sbio','lme_area');
-
-tlme = lme_mask_onedeg;
-[ni,nj]=size(lon);
-
-clme_mf = NaN*ones(ni,nj);
-clme_mp = clme_mf;
-clme_md = clme_mf;
-clme_lp = clme_mf;
-clme_ld = clme_mf;
-
-lme_sf = NaN*ones(ni,nj);
-lme_sp = lme_sf;
-lme_sd = lme_sf;
-lme_mf = lme_sf;
-lme_mp = lme_sf;
-lme_md = lme_sf;
-lme_lp = lme_sf;
-lme_ld = lme_sf;
-lme_b = lme_sf;
-
-for L=1:66
-    lid = find(tlme==L);
-
-    clme_mf(lid) = lme_mcatch(L,1);
-    clme_mp(lid) = lme_mcatch(L,2);
-    clme_md(lid) = lme_mcatch(L,3);
-    clme_lp(lid) = lme_mcatch(L,4);
-    clme_ld(lid) = lme_mcatch(L,5);
-
-    lme_sf(lid) = lme_mbio(L,1);
-    lme_sp(lid) = lme_mbio(L,2);
-    lme_sd(lid) = lme_mbio(L,3);
-    lme_mf(lid) = lme_mbio(L,4);
-    lme_mp(lid) = lme_mbio(L,5);
-    lme_md(lid) = lme_mbio(L,6);
-    lme_lp(lid) = lme_mbio(L,7);
-    lme_ld(lid) = lme_mbio(L,8);
-    lme_b(lid) = lme_mbio(L,9);
-end
-
-clme_All = clme_mf+clme_mp+clme_md+clme_lp+clme_ld;
-clme_AllF = clme_mf;
-clme_AllP = clme_mp+clme_lp;
-clme_AllD = clme_md+clme_ld;
-clme_AllM = clme_mf+clme_mp+clme_md;
-clme_AllL = clme_lp+clme_ld;
-
-lme_All = lme_sf+lme_sp+lme_sd+lme_mf+lme_mp+lme_md+lme_lp+lme_ld;
-lme_AllF = lme_sf+lme_mf;
-lme_AllP = lme_sp+lme_mp+lme_lp;
-lme_AllD = lme_sd+lme_md+lme_ld;
-
-%% plot info
-geolon_t = double(lon);
-geolat_t = double(lat);
-plotminlat=-90; %Set these bounds for your data
-plotmaxlat=90;
-plotminlon=-280;
-plotmaxlon=80;
-latlim=[plotminlat plotmaxlat];
-lonlim=[plotminlon plotmaxlon]; %[-255 -60] = Pac
-% ENTER -100 TO MAP ORIGIN LONG
+save([dpath 'LME_fosi_fished_',harv,'_' cfile '.mat'],...
+    'lme_mcatch','lme_tcatch','lme_area');
 
 
 
-%% Catch
-
-% all
-figure(1)
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(geolat_t,geolon_t,real(log10(clme_All*1e-6)))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([5 7]);
-hcb = colorbar('h');
-set(gcf,'renderer','painters')
-title('Climatology LME mean log_1_0 total annual catch (MT) All Fishes')
-stamp(cfile)
-print('-dpng',[ppath 'Clim_fished_',harv,'_LME_catch_All.png'])
-
-%% all F
-figure(2)
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(geolat_t,geolon_t,real(log10(clme_AllF*1e-6)))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([3.5 6.5]);
-hcb = colorbar('h');
-ylim(hcb,[3.5 6.5])                   %Set color axis if needed
-set(gcf,'renderer','painters')
-title('Historic 2051-2100 LME mean log10 total annual catch (MT) Forage Fishes')
-stamp(cfile)
-print('-dpng',[ppath 'Clim_fished_',harv,'_LME_catch_AllF.png'])
-
-% all P
-figure(3)
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(geolat_t,geolon_t,real(log10(clme_AllP*1e-6)))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([3.5 6.5]);
-hcb = colorbar('h');
-ylim(hcb,[3.5 6.5])                   %Set color axis if needed
-set(gcf,'renderer','painters')
-title('Historic 2051-2100 LME mean log10 total annual catch (MT) Pelagic Fishes')
-stamp(cfile)
-print('-dpng',[ppath 'Clim_fished_',harv,'_LME_catch_AllP.png'])
-
-% All D
-figure(4)
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(geolat_t,geolon_t,real(log10(clme_AllD*1e-6)))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([3.5 6.5]);
-hcb = colorbar('h');
-ylim(hcb,[3.5 6.5])                   %Set color axis if needed
-set(gcf,'renderer','painters')
-title('Historic 2051-2100 LME mean log10 total annual catch (MT) Demersal Fishes')
-stamp(cfile)
-print('-dpng',[ppath 'Clim_fished_',harv,'_LME_catch_AllD.png'])
-
-% all M
-figure(5)
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(geolat_t,geolon_t,real(log10(clme_AllM*1e-6)))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([3.5 6.5]);
-hcb = colorbar('h');
-ylim(hcb,[3.5 6.5])                   %Set color axis if needed
-set(gcf,'renderer','painters')
-title('Historic 2051-2100 LME mean log10 total annual catch (MT) Medium Fishes')
-stamp(cfile)
-print('-dpng',[ppath 'Clim_fished_',harv,'_LME_catch_AllM.png'])
-
-% all L
-figure(6)
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(geolat_t,geolon_t,real(log10(clme_AllL*1e-6)))
-colormap('jet')
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([3.5 6.5]);
-hcb = colorbar('h');
-ylim(hcb,[3.5 6.5])                   %Set color axis if needed
-set(gcf,'renderer','painters')
-title('Historic 2051-2100 LME mean log10 total annual catch (MT) Large Fishes')
-stamp(cfile)
-print('-dpng',[ppath 'Clim_fished_',harv,'_LME_catch_AllL.png'])
-
-
-%% blank map
-figure(10)
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-load coast;                     %decent looking coastlines
-h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-print('-dpng',[ppath 'Map_blank.png'])
 

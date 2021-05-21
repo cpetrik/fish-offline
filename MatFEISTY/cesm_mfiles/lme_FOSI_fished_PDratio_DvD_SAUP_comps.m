@@ -1,37 +1,32 @@
 % P:D ratio by LME 
-% Climatology
-% 150 years
-% Saved as mat files
+% CESM FOSI
 % Compare to Daniel's model results &SAUP
 
 clear all
 close all
 
 spath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/SAUP/';
-gpath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/grid_cobalt/';
-cpath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/cobalt_data/';
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/Matlab_New_sizes/';
-dp = '/Volumes/GFDL/NC/Matlab_new_size/';
+cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+load([cpath 'gridspec_POP_gx1v6.mat']);
+load([cpath 'Data_grid_POP_gx1v6.mat']);
+load([cpath 'LME-mask-POP_gx1v6.mat']);
 
-load('/Users/cpetrik/Dropbox/Princeton/POEM_other/grid_cobalt/hindcast_gridspec.mat',...
-    'geolon_t','geolat_t','AREA_OCN');
-grid = csvread([gpath 'grid_csv.csv']);
-load([gpath 'lme_mask_esm2m.mat']);
-load([cpath 'LME_hist9095_temp_zoop_det.mat'],'lme_ptemp','lme_area');
-
-AREA_OCN = AREA_OCN*510072000*1e6;
-AREA_OCN = max(AREA_OCN,1);
+%TAREA units 'cm^2'
+AREA_OCN = TAREA * 1e-4;
 tlme = lme_mask_esm2m';
 
 %% FEISTY 
-cfile = 'Dc_enc70-b200_m4-b175-k086_c20-b250_D075_J100_A050_Sm025_nmort1_BE08_noCC_RE00100';
-harv = 'All_fish03';
-tharv = 'Harvest all fish 0.3 yr^-^1';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+mod = 'All_fish03';
+
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 ppath = [pp cfile '/'];
-dpath = [dp cfile '/'];
-load([dpath 'LME_hist_90-95_fished_',harv,'_' cfile '.mat']);
-%load([dpath 'LME_clim_fished_',harv,'_' cfile '.mat'],'lme_area');
-% MAY NEED TO CHANGE TO ESM2M AREA
+if (~isfolder(ppath))
+    mkdir(ppath)
+end
+
+load([dpath 'LME_fosi_fished_',mod,'_' cfile '.mat']);
 
 lme_area_km2 = lme_area * 1e-6;
 
@@ -124,7 +119,7 @@ fish_stat(3,3) = FPD;
 Fstat = array2table(fish_stat,'RowNames',{'r','RMSE','Fmed'},...
     'VariableNames',{'DvDAllLMEs','DvDnoLELC','SAUnoLELC'});
 writetable(Fstat,[dpath 'Hist_LME_DvD_SAU_stats_' cfile '.csv'],'Delimiter',',','WriteRowNames',true)
-save([dpath 'Hist_LME_DvD_SAU_stats_' cfile '.mat'],'fish_stat')
+save([dpath 'FOSI_LME_DvD_SAU_stats_' cfile '.mat'],'fish_stat')
 
 %% Plot info
 [ni,nj]=size(geolon_t);
@@ -199,7 +194,7 @@ xlabel('vanD')
 ylabel('FEISTY')
 %title('Fraction Large Pelagics')
 %stamp(cfile)
-print('-dpng',[ppath 'Hist_' harv '_LME_fracPD_catch_SAUP_DvD_comp_subplot_Fmed.png'])
+print('-dpng',[ppath 'FOSI_' harv '_LME_fracPD_catch_SAUP_DvD_comp_subplot_Fmed.png'])
 
 %% Subplot with maps and corr no Fmed
 figure(2)
@@ -255,6 +250,6 @@ xlabel('vanD')
 ylabel('FEISTY')
 %title('Fraction Large Pelagics')
 %stamp(cfile)
-print('-dpng',[ppath 'Hist_' harv '_LME_fracPD_catch_SAUP_DvD_comp_subplot.png'])
+print('-dpng',[ppath 'FOSI_' harv '_LME_fracPD_catch_SAUP_DvD_comp_subplot.png'])
 
 

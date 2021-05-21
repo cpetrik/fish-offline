@@ -10,56 +10,58 @@ load([cpath 'gridspec_POP_gx1v6.mat']);
 load([cpath 'Data_grid_POP_gx1v6.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
 
-%TAREA units 'cm^2'
-AREA_OCN = TAREA * 1e-4;
-
 %% use weighted catches
-% load([spath 'SAUP_LME_Catch_annual.mat'],'yr','totcatch','lme_catch',...
-%     'Flme_wcatch','Dlme_wcatch','Plme_wcatch');
-
-load(['/Users/cpetrik/Dropbox/Princeton/POEM_other/poem_ms/',...
-    'Stock_PNAS_catch_oceanprod_output.mat'],'notLELC')
-keep = notLELC;
+load([spath 'SAUP_LME_Catch_annual.mat'],'yr','totcatch','lme_catch',...
+    'Flme_wcatch','Dlme_wcatch','Plme_wcatch');
 
 %Colormap
 load('MyColormaps.mat')
 load('cmap_ppt_angles.mat')
+
+%TAREA units 'cm^2'
+AREA_OCN = TAREA * 1e-4;
 
 %% FEISTY file info
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 mod = 'All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
 
-load([dpath 'LME_fosi_fished_',mod,'_' cfile '.mat']);
+load([dpath 'LME_clim_fished_',harv,'_' cfile '.mat']);
 lme_area_km2 = lme_area * 1e-6;
 
+
 %% plot info
-[ni,nj]=size(TLONG);
-geolon_t = double(TLONG);
-geolat_t = double(TLAT);
-plotminlat=-90; 
+[ni,nj]=size(lon);
+geolon_t = double(lon);
+geolat_t = double(lat);
+plotminlat=-90; %Set these bounds for your data
 plotmaxlat=90;
 plotminlon=-280;
 plotmaxlon=80;
 latlim=[plotminlat plotmaxlat];
-lonlim=[plotminlon plotmaxlon]; 
+lonlim=[plotminlon plotmaxlon]; %[-255 -60] = Pac
 
-load coastlines
+land=-999*ones(ni,nj);
+land(ID)=NaN*ones(size(ID));
 
 % Assign a color to each LME based on temp
-% tmap=colormap(jet(66));
-% lme_ptemp(:,2)=1:length(lme_ptemp);
-% [B,I] = sort(lme_ptemp(:,1));
-% I(:,2)=1:length(lme_ptemp);
-% [B2,I2] = sort(I(:,1));
-% tid = I(I2,:);
-% close all
+tmap=colormap(jet(66));
+lme_ptemp(:,2)=1:length(lme_ptemp);
+[B,I] = sort(lme_ptemp(:,1));
+I(:,2)=1:length(lme_ptemp);
+[B2,I2] = sort(I(:,1));
+tid = I(I2,:);
+close all
+
+load(['/Users/cpetrik/Dropbox/Princeton/POEM_other/poem_ms/',...
+    'Stock_PNAS_catch_oceanprod_output.mat'],'notLELC')
+keep = notLELC;
 
 x=-8:0.5:8;
 x2h = x+log10(2);
@@ -76,17 +78,20 @@ l10sF=log10(Flme_mcatch10+eps);
 l10sP=log10(Plme_mcatch10+eps);
 l10sD=log10(Dlme_mcatch10+eps);
 
-%% FEISTY LME biomass in MT
+%% POEM LME biomass in MT
 plme_mcatch = nansum(lme_mcatch,2) * 1e-6;
 plme_Fmcatch = (lme_mcatch(:,1)) * 1e-6;
 plme_Pmcatch = (lme_mcatch(:,2)+lme_mcatch(:,4)) * 1e-6;
 plme_Dmcatch = (lme_mcatch(:,3)+lme_mcatch(:,5)) * 1e-6;
-
+plme_Bmbio = lme_mbio(:,9) * 1e-6;
+plme_Bsbio = lme_sbio(:,9) * 1e-6;
 % MT/km2
 plme_mcatch = plme_mcatch ./ lme_area_km2;
 plme_Fmcatch = plme_Fmcatch ./ lme_area_km2;
 plme_Pmcatch = plme_Pmcatch ./ lme_area_km2;
 plme_Dmcatch = plme_Dmcatch ./ lme_area_km2;
+plme_Bmbio = plme_Bmbio ./ lme_area_km2;
+plme_Bsbio = plme_Bsbio ./ lme_area_km2;
 
 pFracPD = plme_Pmcatch ./ (plme_Pmcatch + plme_Dmcatch);
 
@@ -127,7 +132,45 @@ diffF = (l10pF_grid - l10sF_grid);
 diffP = (l10pP_grid - l10sP_grid);
 
 %% Drop Arctic, Antarctic, Hawaii, Australia -------------------------
-% Stats
+
+% Table of Zoop, Det, Bent, Temp, modcatch, SAUcatch
+%mean zoop (lme_az) in g(WW) from mgC/m2
+%mean zoop loss (lme_azl) in g(WW) from mgC/m2/d
+%mean det (lme_adet) in g(WW) from mgC/m2/d 
+
+% MT/km2
+%means of all grid cells in an LME
+lme_az_mtkm2 = lme_az * 1e-6 ./ lme_area_km2;
+lme_azl_mtkm2 = lme_azl * 1e-6 ./ lme_area_km2;
+lme_adet_mtkm2 = lme_adet * 1e-6 ./ lme_area_km2;
+%sum of all grid cells in an LME
+lme_asz_mtkm2 = lme_asz * 1e-6 ./ lme_area_km2;
+lme_aszl_mtkm2 = lme_aszl * 1e-6 ./ lme_area_km2;
+lme_asdet_mtkm2 = lme_asdet * 1e-6 ./ lme_area_km2;
+
+% MT/km2
+tab(:,1)=keep;
+tab(:,2)=lme_aszl_mtkm2(keep);
+tab(:,3)=lme_asdet_mtkm2(keep);
+tab(:,4)=plme_Bsbio(keep);
+tab(:,5)=lme_ptemp(keep);
+tab(:,6)=plme_mcatch(keep);
+tab(:,7)=slme_mcatch10(keep);
+
+% gC/m2
+%MTWW -> gWW = 1e6
+%gWW -> gC = 1/9
+%1/km2 -> 1/m2 = 1e-6
+tab2 = tab;
+tab2(:,2:4) = tab(:,2:4)*(1/9);
+tab2(:,6:7) = tab(:,6:7)*(1/9);
+
+T1 = array2table(tab,'VariableNames',{'LME','ZP','Det','Bent','T','Pcatch','Scatch'});
+T2 = array2table(tab2,'VariableNames',{'LME','ZP','Det','Bent','T','Pcatch','Scatch'});
+
+save([dpath 'LME_prod_catch_SAUP_' cfile '.mat'],'tab','tab2')
+
+%% Stats
 %r
 [rall,pall]=corr(l10s(keep),l10p(keep));
 [rF,pF]=corr(l10sF(keep),l10pF(keep));
@@ -262,5 +305,5 @@ axis([-2 2 -2 2])
 xlabel('SAU')
 ylabel('FEISTY ')
 title('All fishes')
-print('-dpng',[ppath 'FOSI_',harv,'_SAUP_comp_types_temp_Stock_LELC.png'])
+print('-dpng',[ppath 'Clim_',harv,'_SAUP_comp_types_temp_Stock_LELC.png'])
 

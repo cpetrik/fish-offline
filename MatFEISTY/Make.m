@@ -16,8 +16,8 @@ if spinup_cesm
 %     Spinup_4p4z_comb()
 end
 if fosi_cesm
-    Locs_CESM_4p4z()
-%     FOSI_cesm()
+%     Locs_CESM_4p4z()
+    FOSI_cesm_catch()
 %     CESM_4p4z()
 %     CESM_4p4z_comb()
 %     FOSI_cesm_climatol()

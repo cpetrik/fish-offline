@@ -1,0 +1,189 @@
+% FEISTY output at all locations
+
+clear all
+close all
+
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+
+fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+harv = 'All_fish03';
+
+%% MP
+ncid = netcdf.open([fpath 'FOSI_' harv '_med_p.nc'],'NC_NOWRITE');
+[ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
+for i = 1:nvars
+    varname = netcdf.inqVar(ncid, i-1);
+    eval([ varname ' = netcdf.getVar(ncid,i-1);']);
+    eval([ varname '(' varname ' == 99999) = NaN;']);
+end
+netcdf.close(ncid);
+
+[ni,nt] = size(yield);
+
+MP.yield = yield;
+clear yield 
+
+% MF
+ncid = netcdf.open([fpath 'FOSI_' harv '_med_f.nc'],'NC_NOWRITE');
+[ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
+for i = 1:nvars
+    varname = netcdf.inqVar(ncid, i-1);
+    eval([ varname ' = netcdf.getVar(ncid,i-1);']);
+    eval([ varname '(' varname ' == 99999) = NaN;']);
+end
+netcdf.close(ncid);
+
+MF.yield = yield;
+clear yield 
+
+% MD
+ncid = netcdf.open([fpath 'FOSI_' harv '_med_d.nc'],'NC_NOWRITE');
+[ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
+for i = 1:nvars
+    varname = netcdf.inqVar(ncid, i-1);
+    eval([ varname ' = netcdf.getVar(ncid,i-1);']);
+    eval([ varname '(' varname ' == 99999) = NaN;']);
+end
+netcdf.close(ncid);
+
+MD.yield = yield;
+clear yield 
+
+% LP
+ncid = netcdf.open([fpath 'FOSI_' harv '_lrg_p.nc'],'NC_NOWRITE');
+[ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
+for i = 1:nvars
+    varname = netcdf.inqVar(ncid, i-1);
+    eval([ varname ' = netcdf.getVar(ncid,i-1);']);
+    eval([ varname '(' varname ' == 99999) = NaN;']);
+end
+netcdf.close(ncid);
+
+LP.yield = yield;
+clear yield 
+
+% LD
+ncid = netcdf.open([fpath 'FOSI_' harv '_lrg_d.nc'],'NC_NOWRITE');
+[ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
+for i = 1:nvars
+    varname = netcdf.inqVar(ncid, i-1);
+    eval([ varname ' = netcdf.getVar(ncid,i-1);']);
+    eval([ varname '(' varname ' == 99999) = NaN;']);
+end
+netcdf.close(ncid);
+
+LD.yield = yield;
+clear yield 
+
+%% Take means and totals
+% Totals only in lmes
+cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+load([cpath 'gridspec_POP_gx1v6.mat']);
+load([cpath 'Data_grid_POP_gx1v6.mat']);
+load([cpath 'LME-mask-POP_gx1v6.mat']);
+ID = GRD.ID;
+
+tlme = lme_mask_esm2m;
+tlme(~isnan(tlme)) = 1;
+lme_grid = tlme(ID);
+
+%TAREA units 'cm^2'
+AREA_OCN = TAREA * 1e-4;
+area = AREA_OCN(ID);
+area_km2 = area * 1e-6;
+
+[ni,nt] = size(LD.yield);
+MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
+nyr = nt/12;
+mos = repmat(MNTH,ni,nyr);
+mns = repmat(MNTH,ni,1);
+area_mat = repmat(area_km2,1,nt);
+lme_mat = repmat(lme_grid,1,nt);
+
+%% Units
+units_yield = 'g_m2_day';
+units_catch = 'g_km2_mo';
+
+MF.catch = MF.yield .*mos .*area_mat .*lme_mat;
+MP.catch = MP.yield .*mos .*area_mat .*lme_mat;
+MD.catch = MD.yield .*mos .*area_mat .*lme_mat;
+LP.catch = LP.yield .*mos .*area_mat .*lme_mat;
+LD.catch = LD.yield .*mos .*area_mat .*lme_mat;
+
+%% Time
+%mean yield per mo
+mf_tmc=nanmean(MF.catch,1);
+mp_tmc=nanmean(MP.catch,1);
+md_tmc=nanmean(MD.catch,1);
+lp_tmc=nanmean(LP.catch,1);
+ld_tmc=nanmean(LD.catch,1);
+
+%total yield per mo
+mf_ttc=nansum(MF.catch,1);
+mp_ttc=nansum(MP.catch,1);
+md_ttc=nansum(MD.catch,1);
+lp_ttc=nansum(LP.catch,1);
+ld_ttc=nansum(LD.catch,1);
+
+%% Spatially
+%mean yield per mo
+mf_smc=nanmean(MF.catch,2);
+mp_smc=nanmean(MP.catch,2);
+md_smc=nanmean(MD.catch,2);
+lp_smc=nanmean(LP.catch,2);
+ld_smc=nanmean(LD.catch,2);
+
+%total yield per mo
+mf_stc=nansum(MF.catch,2);
+mp_stc=nansum(MP.catch,2);
+md_stc=nansum(MD.catch,2);
+lp_stc=nansum(LP.catch,2);
+ld_stc=nansum(LD.catch,2);
+
+%% Every year
+st=1:12:length(time);
+en=12:12:length(time);
+
+mf_tyc = nan*ones(ni,nyr);
+mp_tyc = nan*ones(ni,nyr);
+md_tyc = nan*ones(ni,nyr);
+lp_tyc = nan*ones(ni,nyr);
+ld_tyc = nan*ones(ni,nyr);
+for n=1:length(st)
+    
+    mp_tyc(:,n)=nansum(MP.catch(:,st(n):en(n)),2);
+    mf_tyc(:,n)=nansum(MF.catch(:,st(n):en(n)),2);
+    md_tyc(:,n)=nansum(MD.catch(:,st(n):en(n)),2);
+    lp_tyc(:,n)=nansum(LP.catch(:,st(n):en(n)),2);
+    ld_tyc(:,n)=nansum(LD.catch(:,st(n):en(n)),2);
+end
+
+tmn = mf_tyc + mp_tyc + md_tyc + lp_tyc + ld_tyc;
+stmn = sum(tmn);
+
+mp_tsyc = nansum(mp_tyc);
+mf_tsyc = nansum(mf_tyc);
+md_tsyc = nansum(md_tyc);
+lp_tsyc = nansum(lp_tyc);
+ld_tsyc = nansum(ld_tyc);
+
+%%
+save([fpath 'Time_Means_FOSI_' cfile '.mat']);
+
+save([fpath 'Space_Means_FOSI_' cfile '.mat']);
+
+save([fpath 'Annual_Means_FOSI_' cfile '.mat'],'time',...
+    'mf_tyc','mp_tyc','md_tyc','lp_tyc','ld_tyc',...
+    'mf_tsyc','mp_tsyc','md_tsyc','lp_tsyc','ld_tsyc',...
+    'units_yield','units_catch','-append');
+
+%%
+mo = time/12;
+figure
+plot(mo,log10(lp_tmean),'b'); hold on;
+plot(mo,log10(mf_tmean),'r'); hold on;
+plot(mo,log10(ld_tmean),'k'); hold on;
+
+[nid,nt] = size(MZ.frac);
+figure
+plot(mo,mz_ttf/nid,'b'); hold on; %~20.5%
