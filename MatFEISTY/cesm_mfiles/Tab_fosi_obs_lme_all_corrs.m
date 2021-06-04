@@ -2,33 +2,43 @@
 clear all
 close all
 
-spath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/SAUP/';
-gpath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/grid_cobalt/';
-cpath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/cobalt_data/';
+%% CESM FOSI grid
+cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+load([cpath 'gridspec_POP_gx1v6.mat']);
+load([cpath 'Data_grid_POP_gx1v6.mat']);
 
-harv = 'All_fish03';
-
-%% Clim grid
-Pdir = '/Volumes/FEISTY/POEM_JLD/esm26_hist/';
-cdir='/Volumes/FEISTY/GCM_DATA/ESM26_hist/';
-load([Pdir 'ESM26_1deg_5yr_clim_191_195_gridspec.mat']);
-load([gpath 'esm26_lme_mask_onedeg_SAU_66.mat']);
-load([gpath 'esm26_area_1deg.mat']);
-load([gpath 'LME_clim_temp_zoop_det.mat']);
-
-%% FEISTY No Nu Update
-cfile = 'Dc_enc70-b200_m4-b175-k086_c20-b250_D075_J100_A080_Sm025_nmort1_BE08_noCC_RE00100';
-ppath = ['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/clim_complete/post_proc/pp_figs/',...
-    cfile,'/NoNuUpdate_'];
-fpath=['/Volumes/FEISTY/NC/Clim_comp_tests/' cfile '/NoNuUpdate_'];
-load([fpath 'LME_clim_fished_',harv,'_' cfile '.mat']);
-load([fpath 'TEeffDet_Climatol_All_fish03_' cfile '.mat'],'lme_te');
-
-%%
-hlme_ptemp = lme_ptemp;
-hlme_area_km2 = lme_area * 1e-6;
-hlme = lme_mask_onedeg;
+[ni,nj]=size(TLONG);
+ID = GRD.ID;
 hID = ID;
+
+load([cpath 'LME-mask-POP_gx1v6.mat']);
+load([cpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'],...
+    'lme_tp_fosi','lme_area');
+
+hlme_ptemp = lme_tp_fosi;
+
+hlme_area = lme_area;
+hlme_area_km2 = lme_area * 1e-6;
+clear lme_area
+
+hlme = lme_mask;
+
+%% FEISTY Output
+cfile2 = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+mod = 'All_fish03';
+harv = 'All_fish03';
+tharv = 'Harvest all fish 0.3 yr^-^1';
+
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+ppath = [pp cfile2 '/'];
+if (~isfolder(ppath))
+    mkdir(ppath)
+end
+
+% CESM
+fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile2 '/'];
+load([fpath 'LME_fosi_fished_',mod,'_' cfile2 '.mat'],'lme_mcatch',...
+    'lme_mbio');
 
 %%
 hlme_mcatch = nansum(lme_mcatch,2) * 1e-6;
@@ -58,11 +68,12 @@ l10pP=log10(hlme_Pmcatch);
 l10pD=log10(hlme_Dmcatch);
 l10pB=log10(hlme_Bmbio);
 
-l10ATL = log10(lme_te(:,2));
-l10HTL = log10(lme_te(:,3));
-l10LTL = log10(lme_te(:,4));
+% l10ATL = log10(lme_te(:,2));
+% l10HTL = log10(lme_te(:,3));
+% l10LTL = log10(lme_te(:,4));
 
 %% SAUP: All, F, P, D, Frac P
+spath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/SAUP/';
 load([spath 'SAUP_LME_Catch_top10_Stock.mat']);
 load(['/Users/cpetrik/Dropbox/Princeton/POEM_other/poem_ms/',...
     'Stock_PNAS_catch_oceanprod_output.mat'],'notLELC')
@@ -75,6 +86,7 @@ l10sF=log10(Flme_mcatch10+eps);
 l10sP=log10(Plme_mcatch10+eps);
 l10sD=log10(Dlme_mcatch10+eps);
 
+%% Stats
 %r
 [rall,pall]=corr(l10s(keep),l10p(keep));
 [rF,pF]=corr(l10sF(keep),l10pF(keep));
@@ -120,6 +132,49 @@ FP=10^(median(l10sP(keep)-l10pP(keep)));
 FD=10^(median(l10sD(keep)-l10pD(keep)));
 FPD=10^(median(sFracPD(keep)-pFracPD(keep)));
 
+% Bias (FOSI minus SAUP)
+%average error = bias
+%skill(3,c) = nansum(p-o) / n;
+p=l10p(keep);
+o=l10s(keep);
+n = length(o);
+bias = nansum(o-p) / n;
+
+p=l10pF(keep);
+o=l10sF(keep);
+n = length(o);
+biasF = nansum(o-p) / n;
+
+p=l10pP(keep);
+o=l10sP(keep);
+n = length(o);
+biasP = nansum(o-p) / n;
+
+p=l10pD(keep);
+o=l10sD(keep);
+n = length(o);
+biasD = nansum(o-p) / n;
+
+p=pFracPD(keep);
+o=sFracPD(keep);
+n = length(o);
+biasPD = nansum(o-p) / n;
+
+% o=l10pATL(keep);
+% p=l10sATL(keep);
+% n = length(o);
+% biasATL = nansum(o-p) / n;
+% 
+% o=l10pHTL(keep);
+% p=l10sHTL(keep);
+% n = length(o);
+% biasHTL = nansum(o-p) / n;
+% 
+% o=l10pLTL(keep);
+% p=l10sLTL(keep);
+% n = length(o);
+% biasLTL = nansum(o-p) / n;
+
 %% DvD: Frac P
 load('/Users/cpetrik/Dropbox/Princeton/POEM_other/DanielVD_PelDem/Colleen_modeledfish_LME.mat')
 
@@ -147,6 +202,17 @@ rmseDvD2 = sqrt(num/n);
 FDvD=10^(median(FracLP(did)-pFracPD(did)));
 FDvD2=10^(median(FracLP(did2)-pFracPD(did2)));
 
+%Bias
+o=FracLP(did);
+p=pFracPD(did);
+n = length(o);
+biasDvD = nansum(o-p) / n;
+
+o=FracLP(did2);
+p=pFracPD(did2);
+n = length(o);
+biasDvD2 = nansum(o-p) / n;
+
 %% Stock: All
 %Reconciling Fisheries Catch and Ocean Productivity
 %***TEMPLATE FOR FEEDBACK, PENDING FINAL CHECKS***
@@ -165,7 +231,7 @@ load(['/Users/cpetrik/Dropbox/Princeton/POEM_other/poem_ms/',...
 %gWW
 wlme_mcatch = nansum(lme_mcatch,2);
 %gWW/m2
-wmlme_mcatch = wlme_mcatch ./ lme_area;
+wmlme_mcatch = wlme_mcatch ./ hlme_area;
 %gC/m2
 glme_mcatch = wmlme_mcatch / 9;
 
@@ -181,6 +247,33 @@ rmsePNAS = sqrt(num/n);
 
 %Fmed
 FPNAS=10^(median(StockPNAS(:,7)-glme_mcatch(keep)));
+
+o=StockPNAS(:,7);
+p=glme_mcatch(keep);
+n = length(o);
+biasPNAS = nansum(o-p) / n;
+
+x=-5:0.5:5;
+x2h = x+log10(2);
+x2l = x-log10(2);
+x5h = x+log10(5);
+x5l = x-log10(5);
+figure(1)
+plot(x,x,'--k'); hold on;
+plot(x,x2h,':b'); hold on;
+plot(x,x2l,':b'); hold on;
+plot(x,x5h,':r'); hold on;
+plot(x,x5l,':r'); hold on;
+scatter(StockPNAS(:,7),glme_mcatch(keep),20,lme_tp_fosi(keep,1),'filled'); hold on;
+cmocean('thermal');
+text(-0.25,1.4,['r = ' sprintf('%2.2f',rPNAS) ' (p = ' sprintf('%2.2f',pPNAS) ')'])
+text(-0.25,1.3,['RMSE = ' sprintf('%2.2f',rmsePNAS)])
+axis([-0.5 1.5 -0.5 1.5])
+xlabel('Stock PNAS')
+ylabel('FOSI CESM')
+title('All fishes')
+stamp([harv '_' cfile2])
+print('-dpng',[ppath 'FOSI_StockPNAS_',harv,'_comp_temp.png'])
 
 %% Mauread TE eff
 spath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/poem_ms/';
@@ -231,13 +324,20 @@ fish_stat(4,3) = rmseD;
 fish_stat(5,3) = rmsePD;
 fish_stat(6,3) = rmseDvD;
 fish_stat(7,3) = rmsePNAS;
+fish_stat(1,4) = bias;
+fish_stat(2,4) = biasF;
+fish_stat(3,4) = biasP;
+fish_stat(4,4) = biasD;
+fish_stat(5,4) = biasPD;
+fish_stat(6,4) = biasDvD;
+fish_stat(7,4) = biasPNAS;
 
 % save
-Fstat = array2table(fish_stat,'VariableNames',{'r','p','RMSE'},...
+Fstat = array2table(fish_stat,'VariableNames',{'r','p','RMSE','Bias'},...
     'RowNames',{'SAU All Fish','SAU F','SAU P','SAU D','SAU Frac Pelagic',...
     'vanD Frac Pelagic','Stock All Fish'});
-writetable(Fstat,[fpath 'Clim_obs_LME_all_ms_stats_' cfile '.csv'],'Delimiter',',',...
+writetable(Fstat,[fpath 'FOSI_obs_LME_all_ms_stats_' cfile2 '.csv'],'Delimiter',',',...
     'WriteRowNames',true)
-save([fpath 'Clim_obs_LME_all_ms_stats_' cfile '.mat'],'fish_stat')
+save([fpath 'FOSI_obs_LME_all_ms_stats_' cfile2 '.mat'],'fish_stat')
 
 

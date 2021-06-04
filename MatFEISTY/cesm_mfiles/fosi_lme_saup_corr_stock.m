@@ -9,6 +9,7 @@ cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6.mat']);
 load([cpath 'Data_grid_POP_gx1v6.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
+load([fpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'],'lme_tp_fosi')
 
 %TAREA units 'cm^2'
 AREA_OCN = TAREA * 1e-4;
@@ -96,13 +97,14 @@ l10pP=log10(plme_Pmcatch);
 l10pD=log10(plme_Dmcatch);
 
 %% on grid
-tlme = lme_mask_onedeg;
-pFracPD_grid = NaN*ones(180,360);
-sFracPD_grid = NaN*ones(180,360);
-l10sF_grid = NaN*ones(180,360);
-l10pF_grid = NaN*ones(180,360);
-l10sP_grid = NaN*ones(180,360);
-l10pP_grid = NaN*ones(180,360);
+tlme = double(lme_mask);
+tlme(tlme<0) = nan;
+pFracPD_grid = NaN*ones(ni,nj);
+sFracPD_grid = NaN*ones(ni,nj);
+l10sF_grid = NaN*ones(ni,nj);
+l10pF_grid = NaN*ones(ni,nj);
+l10sP_grid = NaN*ones(ni,nj);
+l10pP_grid = NaN*ones(ni,nj);
 for L=1:66
     lid = find(tlme==L);
     pFracPD_grid(lid) = pFracPD(L);
@@ -204,12 +206,12 @@ plot(x,x2h,':b'); hold on;
 plot(x,x2l,':b'); hold on;
 plot(x,x5h,':r'); hold on;
 plot(x,x5l,':r'); hold on;
-scatter(l10sF(keep),l10pF(keep),20,lme_ptemp(keep,1),'filled'); hold on;
+% scatter(l10sF(keep),l10pF(keep),20,'k','filled'); hold on;
+scatter(l10sF(keep),l10pF(keep),20,lme_tp_fosi(keep,1),'filled'); hold on;
 cmocean('thermal');
 colorbar('Position',[0.375 0.5 0.3 0.025],'orientation','horizontal')
-text(-5.5,1.5,'A')
-text(-5.5,1.0,['r = ' sprintf('%2.2f',rF) ' (p = ' sprintf('%2.2f',pF) ')'])
-text(-5.5,0.5,['RMSE = ' sprintf('%2.2f',rmseF)])
+text(-5.5,1.5,['r = ' sprintf('%2.2f',rF) ' (p = ' sprintf('%2.2f',pF) ')'])
+text(-5.5,1.0,['RMSE = ' sprintf('%2.2f',rmseF)])
 axis([-6 2 -6 2])
 xlabel('SAU')
 ylabel('FEISTY ')
@@ -221,12 +223,12 @@ plot(x,x2h,':b'); hold on;
 plot(x,x2l,':b'); hold on;
 plot(x,x5h,':r'); hold on;
 plot(x,x5l,':r'); hold on;
-scatter(l10sP(keep),l10pP(keep),20,lme_ptemp(keep,1),'filled'); hold on;
+% scatter(l10sP(keep),l10pP(keep),20,'k','filled'); hold on;
+scatter(l10sP(keep),l10pP(keep),20,lme_tp_fosi(keep,1),'filled'); hold on;
 cmocean('thermal');
-text(-5.5,1.5,'B')
-text(-5.5,1.0,['r = ' sprintf('%2.2f',rP) ' (p = ' sprintf('%2.2f',pP) ')'])
-text(-5.5,0.5,['RMSE = ' sprintf('%2.2f',rmseP)])
-axis([-6 2 -6 2])
+text(-4.5,1.5,['r = ' sprintf('%2.2f',rP) ' (p = ' sprintf('%2.2f',pP) ')'])
+text(-4.5,1.0,['RMSE = ' sprintf('%2.2f',rmseP)])
+axis([-5 2 -5 2])
 xlabel('SAU')
 ylabel('FEISTY ')
 title('Large Pelagics')
@@ -237,11 +239,11 @@ plot(x,x2h,':b'); hold on;
 plot(x,x2l,':b'); hold on;
 plot(x,x5h,':r'); hold on;
 plot(x,x5l,':r'); hold on;
-scatter(l10sD(keep),l10pD(keep),20,lme_ptemp(keep,1),'filled'); hold on;
+% scatter(l10sD(keep),l10pD(keep),20,'k','filled'); hold on;
+scatter(l10sD(keep),l10pD(keep),20,lme_tp_fosi(keep,1),'filled'); hold on;
 cmocean('thermal');
-text(-1.75,1.7,'C')
-text(-1.75,1.4,['r = ' sprintf('%2.2f',rD) ' (p = ' sprintf('%2.2f',pD) ')'])
-text(-1.75,1.1,['RMSE = ' sprintf('%2.2f',rmseD)])
+text(-1.75,1.7,['r = ' sprintf('%2.2f',rD) ' (p = ' sprintf('%2.2f',pD) ')'])
+text(-1.75,1.4,['RMSE = ' sprintf('%2.2f',rmseD)])
 axis([-2 2 -2 2])
 xlabel('SAU')
 ylabel('FEISTY ')
@@ -253,14 +255,61 @@ plot(x,x2h,':b'); hold on;
 plot(x,x2l,':b'); hold on;
 plot(x,x5h,':r'); hold on;
 plot(x,x5l,':r'); hold on;
-scatter(l10s(keep),l10p(keep),20,lme_ptemp(keep,1),'filled'); hold on;
+% scatter(l10s(keep),l10p(keep),20,'k','filled'); hold on;
+scatter(l10s(keep),l10p(keep),20,lme_tp_fosi(keep,1),'filled'); hold on;
 cmocean('thermal');
-text(-1.75,1.7,'D')
-text(-1.75,1.4,['r = ' sprintf('%2.2f',rall) ' (p = ' sprintf('%2.2f',pall) ')'])
-text(-1.75,1.1,['RMSE = ' sprintf('%2.2f',rmse)])
+text(-1.75,1.7,['r = ' sprintf('%2.2f',rall) ' (p = ' sprintf('%2.2f',pall) ')'])
+text(-1.75,1.4,['RMSE = ' sprintf('%2.2f',rmse)])
 axis([-2 2 -2 2])
 xlabel('SAU')
 ylabel('FEISTY ')
 title('All fishes')
-print('-dpng',[ppath 'FOSI_',harv,'_SAUP_comp_types_temp_Stock_LELC.png'])
+%print('-dpng',[ppath 'FOSI_',mod,'_SAUP_comp_types_Stock_LELC.png'])
+print('-dpng',[ppath 'FOSI_',mod,'_SAUP_comp_types_temp_Stock_LELC.png'])
+
+%% P outliers
+figure(2)
+plot(x,x,'--k'); hold on;
+plot(x,x2h,':b'); hold on;
+plot(x,x2l,':b'); hold on;
+plot(x,x5h,':r'); hold on;
+plot(x,x5l,':r'); hold on;
+% scatter(l10sP(keep),l10pP(keep),20,'k','filled'); hold on;
+scatter(l10sP(keep),l10pP(keep),20,lme_tp_fosi(keep,1),'filled'); hold on;
+cmocean('thermal');
+for i=1:length(keep)
+    if (l10pP(keep(i))<-3)
+        text(l10sP(keep(i)),l10pP(keep(i)),num2str(keep(i)))
+    end
+end
+axis([-3 2 -65 2])
+xlabel('SAU')
+ylabel('FEISTY ')
+title('Large Pelagics')
+print('-dpng',[ppath 'FOSI_',mod,'_SAUP_comp_P_Stock_LELC_temp.png'])
+
+%% without outliers
+keep2 = keep([1:18,21:42,45]);
+[rP2,pP2]=corr(l10sP(keep2),l10pP(keep2));
+
+%root mean square error
+o=l10sP(keep2);
+p=l10pP(keep2);
+n = length(o);
+num=nansum((p-o).^2);
+rmseP2 = sqrt(num/n);
+
+%% P:D ratio
+figure(3)
+plot(x,x,'--k'); hold on;
+% scatter(sFracPD(keep),pFracPD(keep),20,'k','filled'); hold on;
+scatter(sFracPD(keep),pFracPD(keep),20,lme_tp_fosi(keep,1),'filled'); hold on;
+cmocean('thermal');
+axis([0 1 0 1])
+text(0.05,0.96,['r = ' sprintf('%2.2f',rPD) ' (p = ' sprintf('%2.2f',pPD) ')'])
+text(0.05,0.9,['RMSE = ' sprintf('%2.2f',rmsePD)])
+xlabel('SAU')
+ylabel('FEISTY ')
+title('Large Pelagics vs Demersals')
+%print('-dpng',[ppath 'FOSI_',mod,'_SAUP_comp_PDratio_Stock_LELC_temp.png'])
 

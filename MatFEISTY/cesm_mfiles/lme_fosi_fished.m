@@ -9,12 +9,12 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC
 mod = 'All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([fpath 'Space_Means_FOSI_' cfile '.mat'],'units_yield','units_catch',...
+load([dpath 'Space_Means_FOSI_' cfile '.mat'],'units_yield','units_catch',...
     'mf_smy','mp_smy','md_smy','lp_smy','ld_smy',...
     'mf_smc','mp_smc','md_smc','lp_smc','ld_smc',...
     'mf_sty','mp_sty','md_sty','lp_sty','ld_sty',...
@@ -69,8 +69,15 @@ Tmd(GRD.ID)=md_sty;
 Tlp(GRD.ID)=lp_sty;
 Tld(GRD.ID)=ld_sty;
 
+% tAllF = Tmf;
+% tAllP = Tmp+Tlp;
+% tAllD = Tmd+Tld;
+% tAllM = Tmp+Tmf+Tmd;
+% tAllL = Tlp+Tld;
+% tFracPD = tAllP ./ (tAllP+tAllD);
+
 %% Catches
-%TAREA units 'cm^2'
+%TAREA units 'cm^2' to m2
 AREA_OCN = TAREA * 1e-4;
 
 % g/m2/d --> total g
@@ -87,7 +94,8 @@ Alp_tot = Tlp .* AREA_OCN;
 Ald_tot = Tld .* AREA_OCN;
 
 %% Calc LMEs
-tlme = lme_mask_onedeg;
+tlme = double(lme_mask);
+tlme(tlme<0) = nan;
 
 lme_mcatch = NaN*ones(66,5);
 lme_tcatch = NaN*ones(66,9);
@@ -102,12 +110,11 @@ for L=1:66
     lme_mcatch(L,4) = nansum(Alp_mcatch(lid));
     lme_mcatch(L,5) = nansum(Ald_mcatch(lid));
     %total catch g
-    lme_tcatch(L,1) = nansum(Amf_mean(lid));
-    lme_tcatch(L,2) = nansum(Amp_mean(lid));
-    lme_tcatch(L,3) = nansum(Amd_mean(lid));
-    lme_tcatch(L,4) = nansum(Alp_mean(lid));
-    lme_tcatch(L,5) = nansum(Ald_mean(lid));
-    lme_tcatch(L,6) = nansum(Ab_mean(lid));
+    lme_tcatch(L,1) = nansum(Amf_tot(lid));
+    lme_tcatch(L,2) = nansum(Amp_tot(lid));
+    lme_tcatch(L,3) = nansum(Amd_tot(lid));
+    lme_tcatch(L,4) = nansum(Alp_tot(lid));
+    lme_tcatch(L,5) = nansum(Ald_tot(lid));
     %total area of LME
     lme_area(L,1) = nansum(AREA_OCN(lid));
 end
@@ -119,7 +126,7 @@ tot_catch2 = nansum(tot_catch(:));
 frac_mcatch_lme = Tlme_mcatch/tot_catch2
 
 %%
-save([dpath 'LME_fosi_fished_',harv,'_' cfile '.mat'],...
+save([dpath 'LME_fosi_fished_',mod,'_' cfile '.mat'],...
     'lme_mcatch','lme_tcatch','lme_area');
 
 

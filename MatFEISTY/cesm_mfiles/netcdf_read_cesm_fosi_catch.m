@@ -9,7 +9,7 @@ fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 harv = 'All_fish03';
 
 %% MP
-ncid = netcdf.open([fpath 'FOSI_' harv '_med_p.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv '_catch_med_p.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -17,14 +17,14 @@ for i = 1:nvars
     eval([ varname '(' varname ' == 99999) = NaN;']);
 end
 netcdf.close(ncid);
-
+%%
 [ni,nt] = size(yield);
 
 MP.yield = yield;
 clear yield 
 
 % MF
-ncid = netcdf.open([fpath 'FOSI_' harv '_med_f.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv '_catch_med_f.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -37,7 +37,7 @@ MF.yield = yield;
 clear yield 
 
 % MD
-ncid = netcdf.open([fpath 'FOSI_' harv '_med_d.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv '_catch_med_d.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -50,7 +50,7 @@ MD.yield = yield;
 clear yield 
 
 % LP
-ncid = netcdf.open([fpath 'FOSI_' harv '_lrg_p.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv '_catch_lrg_p.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -63,7 +63,7 @@ LP.yield = yield;
 clear yield 
 
 % LD
-ncid = netcdf.open([fpath 'FOSI_' harv '_lrg_d.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv '_catch_lrg_d.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -83,7 +83,8 @@ load([cpath 'Data_grid_POP_gx1v6.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
 ID = GRD.ID;
 
-tlme = lme_mask_esm2m;
+tlme = double(lme_mask);
+tlme(tlme<0) = nan;
 tlme(~isnan(tlme)) = 1;
 lme_grid = tlme(ID);
 
@@ -92,7 +93,6 @@ AREA_OCN = TAREA * 1e-4;
 area = AREA_OCN(ID);
 area_km2 = area * 1e-6;
 
-[ni,nt] = size(LD.yield);
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 nyr = nt/12;
 mos = repmat(MNTH,ni,nyr);
@@ -165,8 +165,8 @@ lp_stc=nansum(LP.catch,2);
 ld_stc=nansum(LD.catch,2);
 
 %% Every year
-st=1:12:length(time);
-en=12:12:length(time);
+st=1:12:nt;
+en=12:12:nt;
 
 mf_tac = nan*ones(ni,nyr);
 mp_tac = nan*ones(ni,nyr);
@@ -192,7 +192,8 @@ lp_tsac = nansum(lp_tac);
 ld_tsac = nansum(ld_tac);
 
 %%
-save([fpath 'Time_Means_FOSI_' cfile '.mat'],'time','units_yield','units_catch',...
+fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+save([fpath 'Time_Means_FOSI_' cfile '.mat'],'units_yield','units_catch',...
     'mf_tmy','mp_tmy','md_tmy','lp_tmy','ld_tmy',...
     'mf_tmc','mp_tmc','md_tmc','lp_tmc','ld_tmc',...
     'mf_tty','mp_tty','md_tty','lp_tty','ld_tty',...
@@ -204,7 +205,7 @@ save([fpath 'Space_Means_FOSI_' cfile '.mat'],'units_yield','units_catch',...
     'mf_sty','mp_sty','md_sty','lp_sty','ld_sty',...
     'mf_stc','mp_stc','md_stc','lp_stc','ld_stc','-append');
 
-save([fpath 'Annual_Means_FOSI_' cfile '.mat'],'time',...
+save([fpath 'Annual_Means_FOSI_' cfile '.mat'],...
     'mf_tac','mp_tac','md_tac','lp_tac','ld_tac',...
     'mf_tsac','mp_tsac','md_tsac','lp_tsac','ld_tsac',...
     'units_yield','units_catch','-append');
