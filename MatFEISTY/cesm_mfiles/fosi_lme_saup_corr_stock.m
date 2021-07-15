@@ -76,6 +76,9 @@ l10s=log10(slme_mcatch10+eps);
 l10sF=log10(Flme_mcatch10+eps);
 l10sP=log10(Plme_mcatch10+eps);
 l10sD=log10(Dlme_mcatch10+eps);
+%all P and D
+Llme_mcatch10 = Plme_mcatch10 + Dlme_mcatch10; 
+l10sL = log10(Llme_mcatch10+eps); 
 
 %% FEISTY LME biomass in MT
 plme_mcatch = nansum(lme_mcatch,2) * 1e-6;
@@ -91,10 +94,13 @@ plme_Dmcatch = plme_Dmcatch ./ lme_area_km2;
 
 pFracPD = plme_Pmcatch ./ (plme_Pmcatch + plme_Dmcatch);
 
-l10p=log10(plme_mcatch);
-l10pF=log10(plme_Fmcatch);
-l10pP=log10(plme_Pmcatch);
-l10pD=log10(plme_Dmcatch);
+l10p=log10(plme_mcatch+eps);
+l10pF=log10(plme_Fmcatch+eps);
+l10pP=log10(plme_Pmcatch+eps);
+l10pD=log10(plme_Dmcatch+eps);
+%all P and D
+plme_Lmcatch = plme_Pmcatch + plme_Dmcatch; 
+l10pL = log10(plme_Lmcatch+eps);
 
 %% on grid
 tlme = double(lme_mask);
@@ -135,6 +141,7 @@ diffP = (l10pP_grid - l10sP_grid);
 [rF,pF]=corr(l10sF(keep),l10pF(keep));
 [rP,pP]=corr(l10sP(keep),l10pP(keep));
 [rD,pD]=corr(l10sD(keep),l10pD(keep));
+[rL,pL]=corr(l10sL(keep),l10pL(keep));
 [rPD,pPD]=corr(sFracPD(keep),pFracPD(keep));
 
 %root mean square error
@@ -162,6 +169,12 @@ n = length(o);
 num=nansum((p-o).^2);
 rmseD = sqrt(num/n);
 
+o=l10sL(keep);
+p=l10pL(keep);
+n = length(o);
+num=nansum((p-o).^2);
+rmseL = sqrt(num/n);
+
 o=sFracPD(keep);
 p=pFracPD(keep);
 n = length(o);
@@ -173,6 +186,7 @@ Fall=10^(median(l10s(keep)-l10p(keep)));
 FF=10^(median(l10sF(keep)-l10pF(keep)));
 FP=10^(median(l10sP(keep)-l10pP(keep)));
 FD=10^(median(l10sD(keep)-l10pD(keep)));
+FL=10^(median(l10sL(keep)-l10pL(keep)));
 FPD=10^(median(sFracPD(keep)-pFracPD(keep)));
 
 % Table
@@ -180,25 +194,28 @@ fish_stat(1,1) = rall;
 fish_stat(2,1) = rF;
 fish_stat(3,1) = rP;
 fish_stat(4,1) = rD;
+fish_stat(5,1) = rL;
+fish_stat(6,1) = rPD;
 fish_stat(1,2) = rmse;
 fish_stat(2,2) = rmseF;
 fish_stat(3,2) = rmseP;
 fish_stat(4,2) = rmseD;
+fish_stat(5,2) = rmseL;
+fish_stat(6,2) = rmsePD;
 fish_stat(1,3) = Fall;
 fish_stat(2,3) = FF;
 fish_stat(3,3) = FP;
 fish_stat(4,3) = FD;
-fish_stat(5,1) = rPD;
-fish_stat(5,2) = rmsePD;
-fish_stat(5,3) = FPD;
+fish_stat(5,3) = FL;
+fish_stat(6,3) = FPD;
 
 Fstat = array2table(fish_stat,'VariableNames',{'r','RMSE','Fmed'},...
-    'RowNames',{'All','F','P','D','FracP'});
+    'RowNames',{'All','F','P','D','L','FracP'});
 writetable(Fstat,[dpath 'LME_SAUP_stats_' cfile '.csv'],'Delimiter',',',...
     'WriteRowNames',true)
 save([dpath 'LME_SAUP_stats_' cfile '.mat'],'fish_stat')
 
-%% Plots
+%% Plots - same as ms
 figure(1)
 subplot(2,2,1)
 plot(x,x,'--k'); hold on;
@@ -264,8 +281,67 @@ axis([-2 2 -2 2])
 xlabel('SAU')
 ylabel('FEISTY ')
 title('All fishes')
-%print('-dpng',[ppath 'FOSI_',mod,'_SAUP_comp_types_Stock_LELC.png'])
 print('-dpng',[ppath 'FOSI_',mod,'_SAUP_comp_types_temp_Stock_LELC.png'])
+
+%% 4plot - no Forage
+figure(10)
+subplot(2,2,1)
+plot(x,x,'--k'); hold on;
+plot(x,x2h,':b'); hold on;
+plot(x,x2l,':b'); hold on;
+plot(x,x5h,':r'); hold on;
+plot(x,x5l,':r'); hold on;
+scatter(l10sP(keep),l10pP(keep),20,lme_tp_fosi(keep,1),'filled'); hold on;
+cmocean('thermal');
+text(-4.5,1.5,['r = ' sprintf('%2.2f',rP) ' (p = ' sprintf('%2.2f',pP) ')'])
+text(-4.5,1.0,['RMSE = ' sprintf('%2.2f',rmseP)])
+axis([-5 2 -5 2])
+xlabel('SAU')
+ylabel('FEISTY ')
+title('Large Pelagics')
+
+subplot(2,2,2)
+plot(x,x,'--k'); hold on;
+plot(x,x2h,':b'); hold on;
+plot(x,x2l,':b'); hold on;
+plot(x,x5h,':r'); hold on;
+plot(x,x5l,':r'); hold on;
+scatter(l10sD(keep),l10pD(keep),20,lme_tp_fosi(keep,1),'filled'); hold on;
+cmocean('thermal');
+text(-1.75,1.7,['r = ' sprintf('%2.2f',rD) ' (p = ' sprintf('%2.2f',pD) ')'])
+text(-1.75,1.4,['RMSE = ' sprintf('%2.2f',rmseD)])
+axis([-2 2 -2 2])
+xlabel('SAU')
+ylabel('FEISTY ')
+title('Demersals')
+
+subplot(2,2,3)
+plot(x,x,'--k'); hold on;
+plot(x,x2h,':b'); hold on;
+plot(x,x2l,':b'); hold on;
+plot(x,x5h,':r'); hold on;
+plot(x,x5l,':r'); hold on;
+scatter(l10sL(keep),l10pL(keep),20,lme_tp_fosi(keep,1),'filled'); hold on;
+cmocean('thermal');
+text(-1.75,1.7,['r = ' sprintf('%2.2f',rL) ' (p = ' sprintf('%2.2f',pL) ')'])
+text(-1.75,1.4,['RMSE = ' sprintf('%2.2f',rmseL)])
+axis([-2 2 -2 2])
+xlabel('SAU')
+ylabel('FEISTY ')
+title('Large pelagics + Demersals')
+
+subplot(2,2,4)
+plot(x,x,'--k'); hold on;
+% scatter(sFracPD(keep),pFracPD(keep),20,'k','filled'); hold on;
+scatter(sFracPD(keep),pFracPD(keep),20,lme_tp_fosi(keep,1),'filled'); hold on;
+cmocean('thermal');
+axis([0 1.05 0 1.05])
+text(0.05,0.99,['r = ' sprintf('%2.2f',rPD) ' (p = ' sprintf('%2.2f',pPD) ')'])
+text(0.05,0.93,['RMSE = ' sprintf('%2.2f',rmsePD)])
+xlabel('SAU')
+ylabel('FEISTY ')
+title('Large Pelagics vs Demersals')
+print('-dpng',[ppath 'FOSI_',mod,'_SAUP_comp_types_temp_Stock_LELC_noF.png'])
 
 %% P outliers
 figure(2)
