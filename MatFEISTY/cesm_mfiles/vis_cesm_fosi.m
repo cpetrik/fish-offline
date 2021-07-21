@@ -7,6 +7,7 @@ close all
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+%mod = 'quad_All_fish03';
 mod = 'All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
@@ -15,6 +16,9 @@ ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
+% load([fpath 'Time_Means_FOSI_' mod '_' cfile '.mat']);
+% load([fpath 'Space_Means_FOSI_' mod '_' cfile '.mat']);
+% load([fpath 'Annual_Means_FOSI_' mod '_' cfile '.mat'],'mz_mtf');
 load([fpath 'Time_Means_FOSI_' cfile '.mat']);
 load([fpath 'Space_Means_FOSI_' cfile '.mat']);
 load([fpath 'Annual_Means_FOSI_' cfile '.mat'],'mz_mtf');
@@ -90,7 +94,7 @@ plot(y,log10(D),'k','Linewidth',2); hold on;
 legend('B','F','P','D')
 legend('location','west')
 xlim([y(1) y(end)])
-%ylim([-5 2])
+%ylim([0.05 0.5])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
 title('FOSI')

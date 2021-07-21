@@ -6,10 +6,10 @@ close all
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-harv = 'All_fish03';
+harv = 'quad_All_fish03_';
 
 %% SP
-ncid = netcdf.open([fpath 'FOSI_' harv '_sml_p.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv 'sml_p.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -26,7 +26,7 @@ SP.prod = prod;
 clear biomass prod
 
 %% SF
-ncid = netcdf.open([fpath 'FOSI_' harv '_sml_f.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv 'sml_f.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -40,7 +40,7 @@ SF.prod = prod;
 clear biomass prod
 
 % SD
-ncid = netcdf.open([fpath 'FOSI_' harv '_sml_d.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv 'sml_d.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -54,7 +54,7 @@ SD.prod = prod;
 clear biomass prod
 
 % MP
-ncid = netcdf.open([fpath 'FOSI_' harv '_med_p.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv 'med_p.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -68,7 +68,7 @@ MP.prod = prod;
 clear biomass prod
 
 % MF
-ncid = netcdf.open([fpath 'FOSI_' harv '_med_f.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv 'med_f.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -82,7 +82,7 @@ MF.prod = prod;
 clear biomass prod
 
 % MD
-ncid = netcdf.open([fpath 'FOSI_' harv '_med_d.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv 'med_d.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -96,7 +96,7 @@ MD.prod = prod;
 clear biomass prod
 
 % LP
-ncid = netcdf.open([fpath 'FOSI_' harv '_lrg_p.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv 'lrg_p.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -110,7 +110,7 @@ LP.prod = prod;
 clear biomass prod
 
 % LD
-ncid = netcdf.open([fpath 'FOSI_' harv '_lrg_d.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv 'lrg_d.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -124,7 +124,7 @@ LD.prod = prod;
 clear biomass prod
 
 % Benthic material
-ncid = netcdf.open([fpath 'FOSI_' harv '_bent.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv 'bent.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -137,7 +137,7 @@ Bent.bio = biomass;
 clear biomass
 
 %% MZ loss
-ncid = netcdf.open([fpath 'FOSI_' harv '_mzoo.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'FOSI_' harv 'mzoo.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -173,16 +173,18 @@ lp_tprod = nanmean(LP.prod,1);
 ld_tprod = nanmean(LD.prod,1);
 
 %% Space
-sp_sbio = nanmean(SP.bio,2);
-sf_sbio = nanmean(SF.bio,2);
-sd_sbio = nanmean(SD.bio,2);
-mp_sbio = nanmean(MP.bio,2);
-mf_sbio = nanmean(MF.bio,2);
-md_sbio = nanmean(MD.bio,2);
-lp_sbio = nanmean(LP.bio,2);
-ld_sbio = nanmean(LD.bio,2);
-b_sbio  = nanmean(Bent.bio,2);
-mz_smfrac= nanmean(MZ.frac,2);
+%exclude weird jump at yr 43 (mo=517)
+tid = 1:516;
+sp_sbio = nanmean(SP.bio(:,tid),2);
+sf_sbio = nanmean(SF.bio(:,tid),2);
+sd_sbio = nanmean(SD.bio(:,tid),2);
+mp_sbio = nanmean(MP.bio(:,tid),2);
+mf_sbio = nanmean(MF.bio(:,tid),2);
+md_sbio = nanmean(MD.bio(:,tid),2);
+lp_sbio = nanmean(LP.bio(:,tid),2);
+ld_sbio = nanmean(LD.bio(:,tid),2);
+b_sbio  = nanmean(Bent.bio(:,tid),2);
+mz_smfrac= nanmean(MZ.frac(:,tid),2);
 
 sp_sprod = nanmean(SP.prod,2);
 sf_sprod = nanmean(SF.prod,2);
@@ -194,9 +196,9 @@ lp_sprod = nanmean(LP.prod,2);
 ld_sprod = nanmean(LD.prod,2);
 
 %% Total times overcon happens
-MZ.over = nan*ones(size(MZ.frac));
-MZ.over(MZ.frac > 1) = ones;
-MZ.over(MZ.frac <= 1) = zeros;
+MZ.over = nan*ones(size(MZ.frac(:,tid)));
+MZ.over(MZ.frac(:,tid) > 1) = ones;
+MZ.over(MZ.frac(:,tid) <= 1) = zeros;
 % Time
 mz_ttf=nansum(MZ.over,1);
 % Space
@@ -235,7 +237,7 @@ for n=1:length(st)
 end
 
 %%
-save([fpath 'Time_Means_FOSI_' cfile '.mat'],'time',...
+save([fpath 'Time_Means_FOSI_' harv cfile '.mat'],'time',...
     'sf_tmean','sp_tmean','sd_tmean',...
     'mf_tmean','mp_tmean','md_tmean',...
     'lp_tmean','ld_tmean','b_tmean',...
@@ -244,7 +246,7 @@ save([fpath 'Time_Means_FOSI_' cfile '.mat'],'time',...
     'lp_tprod','ld_tprod','b_tmean',...
     'mz_tmfrac','mz_ttf')
 
-save([fpath 'Space_Means_FOSI_' cfile '.mat'],'time',...
+save([fpath 'Space_Means_FOSI_' harv cfile '.mat'],'time',...
     'sf_sbio','sp_sbio','sd_sbio',...
     'mf_sbio','mp_sbio','md_sbio',...
     'lp_sbio','ld_sbio','b_sbio',...
@@ -253,7 +255,7 @@ save([fpath 'Space_Means_FOSI_' cfile '.mat'],'time',...
     'lp_sprod','ld_sprod',...
     'mz_smfrac','mz_stf')
 
-save([fpath 'Annual_Means_FOSI_' cfile '.mat'],'time',...
+save([fpath 'Annual_Means_FOSI_' harv cfile '.mat'],'time',...
     'sf_abio','sp_abio','sd_abio',...
     'mf_abio','mp_abio','md_abio',...
     'lp_abio','ld_abio','b_abio',...

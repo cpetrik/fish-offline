@@ -121,7 +121,7 @@ colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
 text(0.2,1.65,'log_1_0 Zoo loss','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
-print('-dpng',[pp 'Map_CESM_FOSI_mean_forcings.png'])
+%print('-dpng',[pp 'Map_CESM_FOSI_mean_forcings.png'])
 
 %%
 figure(2)
@@ -269,5 +269,38 @@ colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
 text(0.2,1.65,'log_1_0 Zoo quad loss','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 print('-dpng',[pp 'Map_CESM_FOSI_mean_losses_zeros.png'])
+
+%%
+figure(5)
+subplot(2,2,1)
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,cZ)
+cmocean('balance')
+caxis([-0.1 0.1])
+colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
+text(0.2,1.65,'Zoo biom','HorizontalAlignment','center','FontWeight','bold')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+subplot(2,2,2)
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,cZl)
+cmocean('balance')
+caxis([-0.1 0.1])
+colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
+text(0.2,1.65,'Zoo loss','HorizontalAlignment','center','FontWeight','bold')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+subplot(2,2,4)
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,cZq)
+cmocean('balance')
+caxis([-0.1 0.1])
+colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
+text(0.2,1.65,'Zoo quad loss','HorizontalAlignment','center','FontWeight','bold')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+%print('-dpng',[pp 'Map_CESM_FOSI_mean_zoop_negs.png'])
 
 
