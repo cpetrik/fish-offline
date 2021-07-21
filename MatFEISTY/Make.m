@@ -10,14 +10,18 @@ fosi_cesm = true;
 tic
 
 if spinup_cesm
-    Locs_CESM_4p4z_spinup()
+%    Locs_CESM_4p4z_spinup()
 %     Spinup_cesm()
+    Spinup_cesm_quad()
 %     Spinup_4p4z()
 %     Spinup_4p4z_comb()
 end
 if fosi_cesm
 %     Locs_CESM_4p4z()
-    FOSI_cesm_catch()
+%    FOSI_cesm()
+%    FOSI_cesm_catch()
+   FOSI_cesm_quad()
+%   FOSI_cesm_quad_catch()
 %     CESM_4p4z()
 %     CESM_4p4z_comb()
 %     FOSI_cesm_climatol()

@@ -1,5 +1,5 @@
 %%%% File naming system
-function [fname,simname] = sub_fname_spin(param)
+function [fname,simname] = sub_fname_spin(param,exper)
 
 frate = param.frate;
 
@@ -66,13 +66,13 @@ end
 
 %! Setup netcdf path to store to
 if (frate==0)
-    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup'];
+    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_',exper,'pristine'];
 elseif (param.Jsel~=0.1)
-    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_', sel,'_fish',tfish(2:end),'_Juve',tJ(2:end)];
+    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_',exper,sel,'_fish',tfish(2:end),'_Juve',tJ(2:end)];
 elseif (param.MFsel~=param.LPsel)
-    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_fish_F',tF(2:end),'_P',tP(2:end),'_D',tD(2:end)];
+    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_',exper,'fish_F',tF(2:end),'_P',tP(2:end),'_D',tD(2:end)];
 else
-    fname  = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_', sel,'_fish',tfish(2:end)];  
+    fname  = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_',exper,sel,'_fish',tfish(2:end)];  
 end
 
 

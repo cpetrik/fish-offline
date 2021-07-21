@@ -85,6 +85,11 @@ adet = det - nanmean(det,3);
 azoo = zoo - nanmean(zoo,3);
 azlos = zlos - nanmean(zlos,3);
 
+save([fpath 'CESM_FOSI_interann_mean_forcings_anom.mat'],...
+    'tp','tb','det','zoo','zlos',...
+    'atp','atb','adet','azoo','azlos');
+
+
 %% var by grid cell
 vtp = var(atp,0,3,'omitnan');
 vtb = var(atb,0,3,'omitnan');
@@ -201,7 +206,4 @@ print('-dpng',[pp 'Map_CESM_FOSI_interann_var_forcings.png'])
 save([fpath 'CESM_FOSI_interann_var_forcings.mat'],...
     'vtp','vtb','vdet','vzoo','vzlos',...
     'lme_tp_var1','lme_tb_var1','lme_det_var1','lme_mz_var1','lme_mzl_var1');
-
-save([fpath 'CESM_FOSI_interann_mean_forcings_anom.mat'],...
-    'atp','atb','adet','azoo','azlos');
 

@@ -6,7 +6,7 @@ close all
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-harv = 'All_fish03';
+harv = 'quad_All_fish03';
 
 %% SP
 ncid = netcdf.open([fpath 'Spinup_' harv '_sml_p.nc'],'NC_NOWRITE');
@@ -140,7 +140,7 @@ Lrg_p.bio = nanmean(LP.bio(:,nt-11:nt),2);
 Lrg_d.bio = nanmean(LD.bio(:,nt-11:nt),2);
 BENT.bio  = nanmean(Bent.bio(:,nt-11:nt),2);
 
-save([fpath 'Last_mo_spin_' cfile '.mat'],'Sml_f','Sml_p','Sml_d',... 
+save([fpath 'Last_mo_spin_quad_' cfile '.mat'],'Sml_f','Sml_p','Sml_d',... 
     'Med_f','Med_p','Med_d','Lrg_p','Lrg_d','BENT')
 
 %% Take means for my own visualization
@@ -169,7 +169,7 @@ lp_mean=mean(LP.bio(:,yrP),2);
 ld_mean=mean(LD.bio(:,yrP),2);
 b_mean =mean(Bent.bio(:,yrP),2);
 
-save([fpath 'Means_Spinup_' cfile '.mat'],'time','yrP',...
+save([fpath 'Means_Spinup_quad_' cfile '.mat'],'time','yrP',...
     'sf_tmean','sp_tmean','sd_tmean',...
     'mf_tmean','mp_tmean','md_tmean',...
     'lp_tmean','ld_tmean','b_tmean',...

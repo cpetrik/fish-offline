@@ -45,6 +45,14 @@ mask(mask==0) = NaN;
 figure
 pcolor(mask)
 
+%% compare to manual
+field_masked = nan(size(KMT));
+field_masked(KMT(:) > 0) = 1;
+field_masked(KMT(:) <= 0) = nan;
+
+figure
+pcolor(field_masked)
+
 %%
 clatlim=[-90 90];
 clonlim=[-180 180];
@@ -59,9 +67,13 @@ title('CESM depth')
 LID = find(~isnan(mask(:))); 
 WID = find(HT(:)~=0);
 NID = length(WID); %86212
+KID = find(KMT(:)>0);
 
 eq1 = (WID==LID); 
 sum(eq1)
+
+eq2 = (KID==LID); 
+sum(eq2)
 
 %% compare this against vars
 load([Cdir 'g.e11_LENS.GECOIAF.T62_g16.009.FIESTY-forcing.mat'],...
