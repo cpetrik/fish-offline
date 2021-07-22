@@ -17,19 +17,19 @@ missing_value = 9.969209968386869e+36;
 
 % zooC_150m
 zooC_150m_units = 'mmol/m^3 cm';
-zooC_150m_name  = 'thickness of layer k';
+zooC_150m_name  = 'zoo biomass';
 
 % zoo_loss_150m
 zoo_loss_150m_units = 'mmol/m^3/s cm';
-zoo_loss_150m_name  = 'thickness of layer k';
+zoo_loss_150m_name  = 'zoo loss';
 
 % diatC_150m
 diatC_150m_units = 'mmol/m^3 cm';
-diatC_150m_name  = 'thickness of layer k';
+diatC_150m_name  = 'diatom biomass';
 
 % spC_150m
 spC_150m_units = 'mmol/m^3 cm';
-spC_150m_name  = 'thickness of layer k';
+spC_150m_name  = 'SP biomass';
 
 %% doubles
 zooC_150m = double(zooC_150m); 

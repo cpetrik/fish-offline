@@ -10,6 +10,48 @@ load([cpath 'gridspec_POP_gx1v6_4p4z.mat']);
 load([cpath 'Data_grid_POP_gx1v6_4p4z.mat']);
 
 %% fix lon shift
+
+geolat = TLAT;
+geolon = TLONG;
+test = geolon-360;
+id=find(test<-180);
+test(id)=test(id)+360;
+geolon = test;
+figure
+pcolor(TLONG);
+figure
+pcolor(geolon)
+
+figure
+pcolor(TLAT);
+
+%%
+clatlim=[-90 90];
+clonlim=[-280 80];
+load coastlines
+
+figure
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,TLONG)
+colorbar
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+figure
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,geolon,geolon)
+colorbar
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+figure
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,geolon)
+colorbar
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+%%
 geolat = GRD.LAT;
 geolon = GRD.LON;
 test = geolon-360;
