@@ -57,12 +57,11 @@ zmort2 = parm_z_mort2 .* Tfn;
 Lzoo_quad_150m = Lzoo_loss_150m - (zmort .* Zprime);
 
 nid = find(Lzoo_quad_150m(:)<0);
-length(nid)/(320*384*816) %0.0717 = 7.17% of time/space
+length(nid)/(320*384*816) %0.0717 = 7.17%
+%Lzoo_quad_150m = max(Lzoo_quad_150m,0);
 
-Lzoo_quad_150m = max(Lzoo_quad_150m,0);
-
-save([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo.mat'],...
-    'Lzoo_quad_150m','-append');
+% save([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo.mat'],...
+%     'Lzoo_quad_150m','-append');
 
 %%
 cTp = mean(TEMP_150m,3);
