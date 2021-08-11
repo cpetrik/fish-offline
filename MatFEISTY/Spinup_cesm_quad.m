@@ -23,7 +23,7 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-exper = 'quad_v2_';
+exper = 'quad_v3_';
 [fname,simname] = sub_fname_spin(param,exper);
 
 %! Storage variables
@@ -155,7 +155,7 @@ for YR = 1:YEARS % years
         DY = int64(ceil(DAY));
 %         [num2str(YR),' , ', num2str(mod(DY,365))]
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
-            sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
+            sub_futbio_1meso_quad(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
             Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
         
         %! Store
