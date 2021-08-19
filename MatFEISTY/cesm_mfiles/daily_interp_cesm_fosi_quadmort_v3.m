@@ -12,7 +12,7 @@ load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.FIESTY-forcing.mat'],...
     'FillValue','missing_value','TEMP_150m','TEMP_150m_units','TEMP_bottom',...
     'TEMP_bottom_units','POC_FLUX_IN_bottom','POC_FLUX_IN_bottom_units',...
     'TLAT','TLONG','TAREA','time','yr');
-load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo_v2.mat'],...
+load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo_v3.mat'],...
     'LzooC_150m','Lzoo_loss_150m','Lzoo_quad_150m');
 load([fpath 'gridspec_POP_gx1v6.mat'],'mask');
 
@@ -154,9 +154,9 @@ for y = 1:nyrs
     D_dZm(D_dZm<0) = 0.0;
     D_det(D_det<0) = 0.0;
     
-    D_Zm(isnan(D_Zm)) = 0.0;
-    D_dZm(isnan(D_dZm)) = 0.0;
-    D_det(isnan(D_det)) = 0.0;
+%     D_Zm(isnan(D_Zm)) = 0.0;
+%     D_dZm(isnan(D_dZm)) = 0.0;
+%     D_det(isnan(D_det)) = 0.0;
     
     ESM.Tp = D_Tp;
     ESM.Tb = D_Tb;
@@ -165,7 +165,7 @@ for y = 1:nyrs
     ESM.det = D_det;
     
     % save
-    save([fpath 'Data_cesm_fosi_quad_v2_daily_',num2str(yr),'.mat'], 'ESM');
+    save([fpath 'Data_cesm_fosi_quad_v3_daily_',num2str(yr),'.mat'], 'ESM');
     
     
 end

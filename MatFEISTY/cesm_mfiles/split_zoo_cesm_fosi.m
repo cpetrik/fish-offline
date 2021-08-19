@@ -37,14 +37,6 @@ zoo_loss_150m = double(zoo_loss_150m);
 diatC_150m = double(diatC_150m); 
 spC_150m = double(spC_150m); 
 
-%% fraction large phyto -> frac large zoo
-fracL = diatC_150m ./ (diatC_150m + spC_150m);
-LzooC_150m = fracL .* zooC_150m;
-Lzoo_loss_150m = fracL .* zoo_loss_150m;
-
-%%
-save([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo.mat'],...
-    'fracL','LzooC_150m','Lzoo_loss_150m','zooC_150m_units','zoo_loss_150m_units');
 
 
 

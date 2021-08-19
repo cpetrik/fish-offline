@@ -1,6 +1,8 @@
 %%%%!! RUN HISTORIC FOR ALL LOCATIONS
 %Uses calc quad mort instead of tot mort
-function Spinup_cesm_quad()
+%Calc quad mort before splitting into Lzoo
+%Use phyto prod instead of phyto biom to split
+function Spinup_cesm_quad_v3()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Set fishing rate
@@ -23,7 +25,7 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-exper = 'quad_v5_';
+exper = 'quad_v7_';
 [fname,simname] = sub_fname_spin(param,exper);
 
 %! Storage variables
@@ -146,7 +148,7 @@ netcdf.endDef(ncidMZ);
 % Daily interp without quad loss
 %load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_daily_1.mat','ESM');
 % Daily interp with quad loss
-load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_quad_daily_1.mat','ESM');
+load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_quad_v3_daily_1.mat','ESM');
 MNT = 0;
 %! Run model 
 for YR = 1:YEARS % years

@@ -10,7 +10,7 @@ pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 
 load([fpath 'gridspec_POP_gx1v6.mat']);
 load([fpath 'Data_grid_POP_gx1v6.mat'],'GRD');
-load([fpath 'Data_cesm_fosi_daily_1.mat']);
+load([fpath 'Data_cesm_fosi_quad_daily_1.mat']);
 
 %%
 c_Tp = mean(ESM.Tp,2);
@@ -35,6 +35,7 @@ cZl(GRD.ID) =c_Zl;
 %%
 clatlim=[-90 90];
 clonlim=[-180 180];
+load coastlines;
 
 figure(2)
 subplot('Position',[0 0.51 0.5 0.5])
@@ -45,35 +46,38 @@ cmocean('thermal')
 caxis([0 35])
 colorbar('Position',[0.05 0.56 0.4 0.03],'orientation','horizontal')
 title('Tp')
-% load coast;                     
-% h=patchm(lat+0.5,long+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-
-subplot('Position',[0 0 0.5 0.5])
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,cTb)
-cmocean('thermal')
-caxis([0 35])
-colorbar('Position',[0.05 0.05 0.4 0.03],'orientation','horizontal')
-title('Tb')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.5 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cZ))
+surfm(TLAT,TLONG,cD)
 cmocean('tempo')
 caxis([0 2])
 colorbar('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
+title('Det')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+subplot('Position',[0 0 0.5 0.5])
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,log10(cZ))
+cmocean('tempo')
+caxis([0 1.5])
+colorbar('Position',[0.05 0.05 0.4 0.03],'orientation','horizontal')
 title('log_1_0 Zoo')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.5 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,cD)
+surfm(TLAT,TLONG,log10(cZl))
 cmocean('tempo')
-caxis([0 3])
+caxis([-1.5 1])
 colorbar('Position',[0.55 0.05 0.4 0.03],'orientation','horizontal')
-title('Det')
-%print('-dpng',[pp 'Map_CESM_FOSI_yr1_from_daily_interp_forcings.png'])
+title('log_1_0 Zoo quad loss')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+print('-dpng',[pp 'Map_CESM_FOSI_daily_quad_yr1.png'])
 
 % WORKS NOW!!!

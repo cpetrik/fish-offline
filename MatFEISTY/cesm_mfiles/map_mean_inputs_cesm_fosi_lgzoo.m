@@ -11,59 +11,79 @@ pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 load([fpath 'gridspec_POP_gx1v6.mat'],'mask');
 load([fpath 'Data_grid_POP_gx1v6.mat'],'GRD');
 
-%% FEISTY Inputs
+%% FEISTY Inputs - Calc quad mort after split
 load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.FIESTY-forcing.mat'],...
-    'FillValue','missing_value','TEMP_150m','TEMP_150m_units','TEMP_bottom',...
-    'TEMP_bottom_units','POC_FLUX_IN_bottom','POC_FLUX_IN_bottom_units',...
     'TLAT','TLONG','TAREA','time','yr');
 load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo.mat'],...
     'LzooC_150m','Lzoo_loss_150m','Lzoo_quad_150m');
 
-%% nans & zeros
-TEMP_150m = double(TEMP_150m);
-TEMP_bottom = double(TEMP_bottom);
-POC_FLUX_IN_bottom = double(POC_FLUX_IN_bottom);
-
-TEMP_bottom(TEMP_bottom >= 9.9e+36) = nan;
-POC_FLUX_IN_bottom(POC_FLUX_IN_bottom >= 9.9e+36) = nan;
-
+% nans & zeros
 LzooC_150m(LzooC_150m<0) = 0.0;
 Lzoo_loss_150m(Lzoo_loss_150m<0) = 0.0;
-POC_FLUX_IN_bottom(POC_FLUX_IN_bottom<0) = 0.0;
+Lzoo_quad_150m(Lzoo_quad_150m<0) = 0.0;
 
-%% Units
-%poc flux: mmol/m^3 cm/s
-%zoo loss: mmol/m^3/s cm
-%zoo: mmolC/m^3 cm
-%tp: degC
-%tb: degC
-
+% Units
 % meso zoo: nmolC cm-2 to g(WW) m-2
-% 1e9 nmol in 1 mol C
-% 1e4 cm2 in 1 m2
-% 12.01 g C in 1 mol C
-% 1 g dry W in 9 g wet W (Pauly & Christiansen)
 LzooC_150m = LzooC_150m * 1e-9 * 1e4 * 12.01 * 9.0;
 
 % meso zoo mortality: nmolC cm-2 s-1 to g(WW) m-2 d-1
-% detrital flux to benthos: nmolC cm-2 s-1 to g(WW) m-2 d-1
-% 1e9 nmol in 1 mol C
-% 1e4 cm2 in 1 m2
-% 12.01 g C in 1 mol C
-% 1 g dry W in 9 g wet W (Pauly & Christiansen)
 Lzoo_loss_150m = Lzoo_loss_150m * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
 Lzoo_quad_150m = Lzoo_quad_150m * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
-POC_FLUX_IN_bottom = POC_FLUX_IN_bottom * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
 
-%quad already in correct units
+%
+oZ = mean(LzooC_150m,3);
+oZl = mean(Lzoo_loss_150m,3);
+oZq = mean(Lzoo_quad_150m,3);
 
-%%
-cTp = mean(TEMP_150m,3);
-cTb = mean(TEMP_bottom,3);
-cD = mean(POC_FLUX_IN_bottom,3);
-cZ = mean(LzooC_150m,3);
-cZl = mean(Lzoo_loss_150m,3);
-cZq = mean(Lzoo_quad_150m,3);
+clear LzooC_150m Lzoo_loss_150m Lzoo_quad_150m
+
+%% FEISTY Inputs - Calc quad mort before split
+load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo_v2.mat'],...
+    'LzooC_150m','Lzoo_loss_150m','Lzoo_quad_150m');
+
+% nans & zeros
+LzooC_150m(LzooC_150m<0) = 0.0;
+Lzoo_loss_150m(Lzoo_loss_150m<0) = 0.0;
+Lzoo_quad_150m(Lzoo_quad_150m<0) = 0.0;
+
+% Units
+% meso zoo: nmolC cm-2 to g(WW) m-2
+LzooC_150m = LzooC_150m * 1e-9 * 1e4 * 12.01 * 9.0;
+
+% mebo zoo mortality: nmolC cm-2 s-1 to g(WW) m-2 d-1
+Lzoo_loss_150m = Lzoo_loss_150m * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
+Lzoo_quad_150m = Lzoo_quad_150m * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
+
+%
+bZ = mean(LzooC_150m,3);
+bZl = mean(Lzoo_loss_150m,3);
+bZq = mean(Lzoo_quad_150m,3);
+
+clear LzooC_150m Lzoo_loss_150m Lzoo_quad_150m
+
+%% FEISTY Inputs - Calc quad mort after split, use prod to split
+load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo_v3.mat'],...
+    'LzooC_150m','Lzoo_loss_150m','Lzoo_quad_150m');
+
+% nans & zeros
+LzooC_150m(LzooC_150m<0) = 0.0;
+Lzoo_loss_150m(Lzoo_loss_150m<0) = 0.0;
+Lzoo_quad_150m(Lzoo_quad_150m<0) = 0.0;
+
+% Units
+% meso zoo: nmolC cm-2 to g(WW) m-2
+LzooC_150m = LzooC_150m * 1e-9 * 1e4 * 12.01 * 9.0;
+
+% meso zoo mortality: nmolC cm-2 s-1 to g(WW) m-2 d-1
+Lzoo_loss_150m = Lzoo_loss_150m * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
+Lzoo_quad_150m = Lzoo_quad_150m * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
+
+%
+pZ = mean(LzooC_150m,3);
+pZl = mean(Lzoo_loss_150m,3);
+pZq = mean(Lzoo_quad_150m,3);
+
+clear LzooC_150m Lzoo_loss_150m Lzoo_quad_150m
 
 %%
 clatlim=[-90 90];
@@ -75,171 +95,126 @@ figure(1)
 subplot('Position',[0.01 0.68 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,cTp)
-cmocean('thermal')
-caxis([0 35])
+surfm(TLAT,TLONG,log10(oZ))
+cmocean('tempo')
+caxis([0 1.5])
 colorbar%('Position',[0.05 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'Tp','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'LZ from biom','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.41 0.68 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,cTb)
-cmocean('thermal')
-caxis([0 35])
+surfm(TLAT,TLONG,log10(oZl))
+cmocean('tempo')
+caxis([-1.5 1])
 colorbar%('Position',[0.05 0.05 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'Tb','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'LZloss from biom after','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.01 0.37 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cZ))
+surfm(TLAT,TLONG,log10(bZ))
 cmocean('tempo')
-caxis([0 2])
+caxis([0 1.5])
 colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Zoo','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'LZ from biom','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.41 0.37 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cD))
+surfm(TLAT,TLONG,log10(bZl))
 cmocean('tempo')
-caxis([-2.5 1.5])
+caxis([-1.5 1])
 colorbar%('Position',[0.55 0.05 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Det','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'LZloss from biom before','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.01 0.06 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cZl))
+surfm(TLAT,TLONG,log10(pZ))
 cmocean('tempo')
-caxis([-1 1])
+caxis([0 1.5])
 colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Zoo loss','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'LZ from prod','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
-%print('-dpng',[pp 'Map_CESM_FOSI_mean_forcings.png'])
+subplot('Position',[0.41 0.06 0.4 0.3])
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,log10(pZl))
+cmocean('tempo')
+caxis([-1.5 1])
+colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
+text(0.2,1.65,'LZloss from prod before','HorizontalAlignment','center','FontWeight','bold')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+print('-dpng',[pp 'Map_CESM_FOSI_mean_LZ_forcings_biom_loss.png'])
 
 %%
 figure(2)
 subplot('Position',[0.01 0.68 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,cTp)
-cmocean('thermal')
-caxis([0 35])
+surfm(TLAT,TLONG,log10(oZq))
+cmocean('tempo')
+caxis([-1.5 1])
 colorbar%('Position',[0.05 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'Tp','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'LZquad from biom after','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.41 0.68 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,cTb)
-cmocean('thermal')
-caxis([0 35])
+surfm(TLAT,TLONG,log10(oZl))
+cmocean('tempo')
+caxis([-1.5 1])
 colorbar%('Position',[0.05 0.05 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'Tb','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'LZloss from biom after','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.01 0.37 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cZ))
+surfm(TLAT,TLONG,log10(bZq))
 cmocean('tempo')
-caxis([0 2])
+caxis([-1.5 1])
 colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Zoo','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'LZquad from biom before','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.41 0.37 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cD))
+surfm(TLAT,TLONG,log10(bZl))
 cmocean('tempo')
-caxis([-2.5 1.5])
+caxis([-1.5 1])
 colorbar%('Position',[0.55 0.05 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Det','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'LZloss from biom before','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.01 0.06 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cZq))
+surfm(TLAT,TLONG,log10(pZq))
 cmocean('tempo')
-caxis([-1 1])
+caxis([-1.5 1])
 colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Zoo quad loss','HorizontalAlignment','center','FontWeight','bold')
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-
-print('-dpng',[pp 'Map_CESM_FOSI_mean_forcings_quad.png'])
-
-%%
-figure(3)
-subplot('Position',[0.01 0.68 0.4 0.3])
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,cTp)
-cmocean('thermal')
-caxis([0 35])
-colorbar%('Position',[0.05 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'Tp','HorizontalAlignment','center','FontWeight','bold')
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-
-subplot('Position',[0.41 0.68 0.4 0.3])
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,cTb)
-cmocean('thermal')
-caxis([0 35])
-colorbar%('Position',[0.05 0.05 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'Tb','HorizontalAlignment','center','FontWeight','bold')
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-
-subplot('Position',[0.01 0.37 0.4 0.3])
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cZ))
-cmocean('tempo')
-caxis([0 2])
-colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Zoo','HorizontalAlignment','center','FontWeight','bold')
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-
-subplot('Position',[0.41 0.37 0.4 0.3])
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cD))
-cmocean('tempo')
-caxis([-2.5 1.5])
-colorbar%('Position',[0.55 0.05 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Det','HorizontalAlignment','center','FontWeight','bold')
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-
-subplot('Position',[0.01 0.06 0.4 0.3])
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cZl))
-cmocean('tempo')
-caxis([-1 1])
-colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Zoo loss','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'LZquad from prod before','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.41 0.06 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cZq))
+surfm(TLAT,TLONG,log10(pZl))
 cmocean('tempo')
-caxis([-1 1])
+caxis([-1.5 1])
 colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Zoo quad loss','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'LZloss from prod before','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-print('-dpng',[pp 'Map_CESM_FOSI_mean_forcings_all.png'])
+print('-dpng',[pp 'Map_CESM_FOSI_mean_LZ_forcings_quad_loss.png'])
 
 %% Map where zloss = 0
 nzLoss = cZl;

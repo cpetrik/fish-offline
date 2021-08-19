@@ -310,6 +310,128 @@ set(gcf,'renderer','painters')
 title('CESM Benthos');
 print('-dpng',[ppath 'CESM_COBALT_' harv '_global_Bent.png'])
 
+%% side by side on one fig
+cmBP50=cbrewer('seq','BuPu',50,'PCHIP');
+
+f1 = figure('Units','inches','Position',[1 3 7.5 10]);
+%f1.Units = 'inches';
+
+%1 - Hist cmcc
+subplot('Position',[0.025 0.825 0.4 0.165])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(glat,glon,real(log10(hAll)))
+colormap(cmBP50)
+caxis([-1 2])
+text(0,1.75,'ESM2M-CORE','HorizontalAlignment','center','FontWeight','bold')
+text(-1.75,1.75,'All','HorizontalAlignment','center')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+%2 - Hist cnrm
+subplot('Position',[0.025 0.66 0.4 0.165])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(glat,glon,real(log10(hF)))
+colormap(cmBP50)
+caxis([-1 2])
+text(-1.75,1.75,'Forage','HorizontalAlignment','center')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+%3 - Hist gfdl
+subplot('Position',[0.025 0.495 0.4 0.165])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(glat,glon,real(log10(hP)))
+colormap(cmBP50)
+caxis([-1 2])
+text(-1.75,1.75,'Lg Pelagic','HorizontalAlignment','center')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+%4 - CESM D
+subplot('Position',[0.025 0.33 0.4 0.165])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(glat,glon,real(log10(hD)))
+colormap(cmBP50)
+caxis([-1 2])
+text(-1.75,1.75,'Demersal','HorizontalAlignment','center')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+%5 - CESM B
+subplot('Position',[0.025 0.165 0.4 0.165])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(glat,glon,real(log10(hB)))
+colormap(cmBP50)
+caxis([-1 2])
+text(-1.75,1.75,'Benthos','HorizontalAlignment','center')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+%6 - Hist obs
+% subplot('Position',[0.025 0.0 0.4 0.165])
+% axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+%     'Grid','off','FLineWidth',1)
+% surfm(lat_o,lon_o,biomes_o)
+% colormap(cmBP50)
+% caxis([-1 2])
+% text(-1.75,1.75,'obs','HorizontalAlignment','center')
+% h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+% 7 - GFDL All
+subplot('Position',[0.43 0.825 0.4 0.165])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(glat,glon,real(log10(cAll)))
+colormap(cmBP50)
+caxis([-1 2])
+text(0,1.75,'CESM-FOSI','HorizontalAlignment','center','FontWeight','bold')
+text(-1.75,1.75,'All','HorizontalAlignment','center')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+%8 - GFDL F
+subplot('Position',[0.43 0.66 0.4 0.165])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(glat,glon,real(log10(cF)))
+colormap(cmBP50)
+caxis([-1 2])
+text(-1.75,1.75,'Fprage','HorizontalAlignment','center')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+%9 - GFDL P
+subplot('Position',[0.43 0.495 0.4 0.165])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(glat,glon,real(log10(cP)))
+colormap(cmBP50)
+caxis([-1 2])
+text(-1.75,1.75,'Lg Pelagic','HorizontalAlignment','center')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+cb = colorbar('Position',[0.8 0.45 0.025 0.25]);
+xlabel(cb,'biomass (log_1_0 g m^-^2)')
+
+%10 - GFDL D
+subplot('Position',[0.43 0.33 0.4 0.165])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(glat,glon,real(log10(cD)))
+colormap(cmBP50)
+caxis([-1 2])
+text(-1.75,1.75,'Demersal','HorizontalAlignment','center')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+%11 - GFDL B
+subplot('Position',[0.43 0.165 0.4 0.165])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(glat,glon,real(log10(cB)))
+colormap(cmBP50)
+caxis([-1 2])
+text(-1.75,1.75,'Benthos','HorizontalAlignment','center')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+print('-dpng',[ppath 'CESM_COBALT_' harv '_global_all_types.png']);
+
 %% diffs
 figure(6)
 % All F

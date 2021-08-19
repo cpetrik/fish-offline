@@ -154,9 +154,9 @@ for y = 1:nyrs
     D_dZm(D_dZm<0) = 0.0;
     D_det(D_det<0) = 0.0;
     
-    D_Zm(isnan(D_Zm)) = 0.0;
-    D_dZm(isnan(D_dZm)) = 0.0;
-    D_det(isnan(D_det)) = 0.0;
+%     D_Zm(isnan(D_Zm)) = 0.0;
+%     D_dZm(isnan(D_dZm)) = 0.0;
+%     D_det(isnan(D_det)) = 0.0;
     
     ESM.Tp = D_Tp;
     ESM.Tb = D_Tb;
