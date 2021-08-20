@@ -8,6 +8,7 @@ close all
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 mod = 'quad_v6_All_fish03';
+%mod = 'All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -16,6 +17,7 @@ if (~isfolder(ppath))
     mkdir(ppath)
 end
 load([fpath 'Means_Spinup_quad_v6_' cfile '.mat']);
+%load([fpath 'Means_Spinup_' cfile '.mat']);
 
 % Map data
 cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI//';
@@ -49,7 +51,8 @@ cm10=[0.5 0.5 0;... %tan/army
 
 set(groot,'defaultAxesColorOrder',cm10);
 
-cmBP50=cbrewer('seq','BuPu',50,'PCHIP');
+%cmBP50=cbrewer('seq','BuPu',50,'PCHIP');
+cmBP50=cbrewer('seq','YlGnBu',10,'PCHIP');
 
 %% Plots in time
 t = 1:length(sp_tmean); %time;
@@ -153,7 +156,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(TLAT,TLONG,log10(AllF))
 colormap(cmBP50)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-2 2]);
+caxis([-3 2]);
 colorbar('Position',[0.25 0.5 0.5 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
 title('log10 mean All F (g m^-^2)')
@@ -165,7 +168,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(TLAT,TLONG,log10(AllD))
 colormap(cmBP50)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-2 2]);
+caxis([-3 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All D (g m^-^2)')
 
@@ -176,7 +179,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(TLAT,TLONG,log10(AllP))
 colormap(cmBP50)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-2 2]);
+caxis([-3 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All P (g m^-^2)')
 
@@ -187,7 +190,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(TLAT,TLONG,log10(All))
 colormap(cmBP50)               
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-2 2]);
+caxis([-3 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All fishes (g m^-^2)')
 stamp('')
@@ -231,4 +234,13 @@ set(gcf,'renderer','painters')
 title('Fraction Large vs. Medium')
 stamp('')
 print('-dpng',[ppath 'Spinup_',mod,'_global_ratios_subplot.png'])
+
+%% Find & save locations of very low values
+fid = find(AllF < 1e-50);
+pid = find(AllP < 1e-50);
+
+save([fpath 'Means_Spinup_',mod,'_lowbiom.mat'],'fid','pid');
+
+
+
 

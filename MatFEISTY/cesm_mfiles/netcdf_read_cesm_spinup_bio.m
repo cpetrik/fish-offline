@@ -6,7 +6,7 @@ close all
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-harv = 'quad_v7_All_fish03';
+harv = 'quad_v6_All_fish03';
 
 %% SP
 ncid = netcdf.open([fpath 'Spinup_' harv '_sml_p.nc'],'NC_NOWRITE');
@@ -146,30 +146,30 @@ save([fpath 'Last_mo_spin_quad_' cfile '.mat'],'Sml_f','Sml_p','Sml_d',...
 %% Take means for my own visualization
 
 %Time
-sp_tmean=mean(SP.bio,1);
-sf_tmean=mean(SF.bio,1);
-sd_tmean=mean(SD.bio,1);
-mp_tmean=mean(MP.bio,1);
-mf_tmean=mean(MF.bio,1);
-md_tmean=mean(MD.bio,1);
-lp_tmean=mean(LP.bio,1);
-ld_tmean=mean(LD.bio,1);
-b_tmean=mean(Bent.bio,1);
+sp_tmean=nanmean(SP.bio,1);
+sf_tmean=nanmean(SF.bio,1);
+sd_tmean=nanmean(SD.bio,1);
+mp_tmean=nanmean(MP.bio,1);
+mf_tmean=nanmean(MF.bio,1);
+md_tmean=nanmean(MD.bio,1);
+lp_tmean=nanmean(LP.bio,1);
+ld_tmean=nanmean(LD.bio,1);
+b_tmean=nanmean(Bent.bio,1);
 
 %% Space
 yrP=[nt-11:nt]; 
 
-sp_mean=mean(SP.bio(:,yrP),2);
-sf_mean=mean(SF.bio(:,yrP),2);
-sd_mean=mean(SD.bio(:,yrP),2);
-mp_mean=mean(MP.bio(:,yrP),2);
-mf_mean=mean(MF.bio(:,yrP),2);
-md_mean=mean(MD.bio(:,yrP),2);
-lp_mean=mean(LP.bio(:,yrP),2);
-ld_mean=mean(LD.bio(:,yrP),2);
-b_mean =mean(Bent.bio(:,yrP),2);
+sp_mean=nanmean(SP.bio(:,yrP),2);
+sf_mean=nanmean(SF.bio(:,yrP),2);
+sd_mean=nanmean(SD.bio(:,yrP),2);
+mp_mean=nanmean(MP.bio(:,yrP),2);
+mf_mean=nanmean(MF.bio(:,yrP),2);
+md_mean=nanmean(MD.bio(:,yrP),2);
+lp_mean=nanmean(LP.bio(:,yrP),2);
+ld_mean=nanmean(LD.bio(:,yrP),2);
+b_mean =nanmean(Bent.bio(:,yrP),2);
 
-save([fpath 'Means_Spinup_quad_v7_' cfile '.mat'],'time','yrP',...
+save([fpath 'Means_Spinup_quad_v6_' cfile '.mat'],'time','yrP',...
     'sf_tmean','sp_tmean','sd_tmean',...
     'mf_tmean','mp_tmean','md_tmean',...
     'lp_tmean','ld_tmean','b_tmean',...

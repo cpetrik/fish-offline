@@ -24,7 +24,7 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-exper = 'quad_v6_';
+exper = 'quad_v8_';
 [fname,simname] = sub_fname_spin(param,exper);
 
 %! Storage variables
