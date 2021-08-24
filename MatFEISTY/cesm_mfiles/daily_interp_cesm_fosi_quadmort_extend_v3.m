@@ -1,6 +1,7 @@
 % Make mat files of interpolated time series from CESM FOSI
 % Quadratic mort back calc from total
 % Lg zoo calc from frac diat prod
+% Add last mon y-1 and 1st mo y+1 to interp
 
 clear all
 close all
@@ -54,7 +55,6 @@ nyrs = mos/12;
 yrs = 1:nyrs;
 
 Tdays=1:365;
-Time=Tdays(15:30:end);
 
 %% test that all same orientation
 test1 = squeeze(double(TEMP_150m(:,:,200)));
@@ -87,11 +87,22 @@ shading flat
 for y = 1:nyrs
     yr = yrs(y)
     
-    Tp  = (TEMP_150m(:,:,mstart(y):mend(y)));
-    Tb  = (TEMP_bottom(:,:,mstart(y):mend(y)));
-    Zm  = (LzooC_150m(:,:,mstart(y):mend(y)));
-    dZm = (Lzoo_quad_150m(:,:,mstart(y):mend(y)));
-    det = (POC_FLUX_IN_bottom(:,:,mstart(y):mend(y)));
+    if y==1
+        range = mstart(y):(mend(y)+1);
+        Time=15:30:395;
+    elseif y==nyrs
+        range = (mstart(y)-1):mend(y);
+        Time=-15:30:365;
+    else
+        range = (mstart(y)-1):(mend(y)+1);
+        Time=-15:30:395;
+    end
+    
+    Tp  = (TEMP_150m(:,:,range));
+    Tb  = (TEMP_bottom(:,:,range));
+    Zm  = (LzooC_150m(:,:,range));
+    dZm = (Lzoo_quad_150m(:,:,range));
+    det = (POC_FLUX_IN_bottom(:,:,range));
     
     % index of water cells
     [ni,nj,nt] = size(TEMP_bottom);
@@ -166,7 +177,7 @@ for y = 1:nyrs
     ESM.det = D_det;
     
     % save
-    save([fpath 'Data_cesm_fosi_quad_v3.2_daily_',num2str(yr),'.mat'], 'ESM');
+    save([fpath 'Data_cesm_fosi_quad_v3.3_daily_',num2str(yr),'.mat'], 'ESM');
     
     
 end

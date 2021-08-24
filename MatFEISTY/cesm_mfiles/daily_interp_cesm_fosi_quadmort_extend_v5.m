@@ -1,6 +1,7 @@
 % Make mat files of interpolated time series from CESM FOSI
-% Quadratic mort back calc from total
+% Total mort 
 % Lg zoo calc from frac diat prod
+% Add last mon y-1 and 1st mo y+1 to interp
 
 clear all
 close all
@@ -12,8 +13,8 @@ load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.FIESTY-forcing.mat'],...
     'FillValue','missing_value','TEMP_150m','TEMP_150m_units','TEMP_bottom',...
     'TEMP_bottom_units','POC_FLUX_IN_bottom','POC_FLUX_IN_bottom_units',...
     'TLAT','TLONG','TAREA','time','yr');
-load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo_v3.mat'],...
-    'LzooC_150m','Lzoo_loss_150m','Lzoo_quad_150m');
+load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo_v5.mat'],...
+    'LzooC_150m','Lzoo_loss_150m');
 load([fpath 'gridspec_POP_gx1v6.mat'],'mask');
 
 %% nans & zeros
@@ -23,10 +24,11 @@ POC_FLUX_IN_bottom = double(POC_FLUX_IN_bottom);
 
 TEMP_bottom(TEMP_bottom >= 9.9e+36) = nan;
 POC_FLUX_IN_bottom(POC_FLUX_IN_bottom >= 9.9e+36) = nan;
+LzooC_150m(TEMP_bottom >= 9.9e+36) = nan;
+Lzoo_loss_150m(TEMP_bottom >= 9.9e+36) = nan;
 
 LzooC_150m(LzooC_150m<0) = 0.0;
 Lzoo_loss_150m(Lzoo_loss_150m<0) = 0.0;
-Lzoo_quad_150m(Lzoo_quad_150m<0) = 0.0;
 POC_FLUX_IN_bottom(POC_FLUX_IN_bottom<0) = 0.0;
 
 %% Units
@@ -54,13 +56,12 @@ nyrs = mos/12;
 yrs = 1:nyrs;
 
 Tdays=1:365;
-Time=Tdays(15:30:end);
 
 %% test that all same orientation
 test1 = squeeze(double(TEMP_150m(:,:,200)));
 test2 = squeeze(double(TEMP_bottom(:,:,200)));
 test3 = squeeze(double(LzooC_150m(:,:,200)));
-test4 = squeeze(double(Lzoo_quad_150m(:,:,200)));
+test4 = squeeze(double(Lzoo_loss_150m(:,:,200)));
 test5 = squeeze(double(POC_FLUX_IN_bottom(:,:,200)));
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
@@ -87,11 +88,22 @@ shading flat
 for y = 1:nyrs
     yr = yrs(y)
     
-    Tp  = (TEMP_150m(:,:,mstart(y):mend(y)));
-    Tb  = (TEMP_bottom(:,:,mstart(y):mend(y)));
-    Zm  = (LzooC_150m(:,:,mstart(y):mend(y)));
-    dZm = (Lzoo_quad_150m(:,:,mstart(y):mend(y)));
-    det = (POC_FLUX_IN_bottom(:,:,mstart(y):mend(y)));
+    if y==1
+        range = mstart(y):(mend(y)+1);
+        Time=15:30:395;
+    elseif y==nyrs
+        range = (mstart(y)-1):mend(y);
+        Time=-15:30:365;
+    else
+        range = (mstart(y)-1):(mend(y)+1);
+        Time=-15:30:395;
+    end
+    
+    Tp  = (TEMP_150m(:,:,range));
+    Tb  = (TEMP_bottom(:,:,range));
+    Zm  = (LzooC_150m(:,:,range));
+    dZm = (Lzoo_loss_150m(:,:,range));
+    det = (POC_FLUX_IN_bottom(:,:,range));
     
     % index of water cells
     [ni,nj,nt] = size(TEMP_bottom);
@@ -102,7 +114,7 @@ for y = 1:nyrs
     D_Tp  = nan*zeros(NID,365);
     D_Tb  = nan*zeros(NID,365);
     D_Zm  = nan*zeros(NID,365);
-    D_dZm  = nan*zeros(NID,365);
+    D_dZm = nan*zeros(NID,365);
     D_det = nan*zeros(NID,365);
     
     %% interpolate to daily resolution
@@ -166,7 +178,7 @@ for y = 1:nyrs
     ESM.det = D_det;
     
     % save
-    save([fpath 'Data_cesm_fosi_quad_v3.2_daily_',num2str(yr),'.mat'], 'ESM');
+    save([fpath 'Data_cesm_fosi_loss_v5_daily_',num2str(yr),'.mat'], 'ESM');
     
     
 end

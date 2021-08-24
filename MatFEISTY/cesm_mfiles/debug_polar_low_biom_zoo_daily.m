@@ -11,19 +11,22 @@ cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6.mat']);
 load([cpath 'Data_grid_POP_gx1v6.mat']);
 
-load([cpath 'Data_cesm_fosi_quad_v2_daily_1.mat']);
+load([cpath 'Data_cesm_fosi_quad_v3.3_daily_1.mat']);
 
 [ni,nj]=size(TLONG);
 
 %% Fish ids
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'quad_v6_All_fish03';
-% fish v6 = zoo v2
-% fish v7 = zoo v3
+mod = 'quad_v11';
+% fish v6,8,10 = zoo v2, v2.2, v2.3
+% fish v7,9,11 = zoo v3, v3.2, v3.3
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-load([fpath 'Means_Spinup_',mod,'_lowbiom.mat']);
+
+%orig loactions of low biomass
+mod0 = 'quad_v7_All_fish03';
+load([fpath 'Means_Spinup_',mod0,'_lowbiom.mat']);
 
 %%
 plotminlat=-90; %Set these bounds for your data
@@ -100,7 +103,7 @@ subplot(2,1,2)
 plot(y,log10(Fzq_tmean),'r','Linewidth',2); hold on;
 plot(y,log10(Pzq_tmean),'b','Linewidth',2); hold on;
 xlim([y(1) y(end)])
-%ylim([-5 2])
+%ylim([-0.05 0.8])
 xlabel('Time (y)')
 ylabel('log_1_0 Quad loss (g m^-^2 d^-^1)')
 stamp(mod)

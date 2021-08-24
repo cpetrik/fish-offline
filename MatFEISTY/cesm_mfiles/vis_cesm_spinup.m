@@ -7,7 +7,7 @@ close all
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'quad_v6_All_fish03';
+mod = 'quad_v11_All_fish03';
 %mod = 'All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
@@ -16,7 +16,7 @@ ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([fpath 'Means_Spinup_quad_v6_' cfile '.mat']);
+load([fpath 'Means_Spinup_quad_v11_' cfile '.mat']);
 %load([fpath 'Means_Spinup_' cfile '.mat']);
 
 % Map data

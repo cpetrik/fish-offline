@@ -24,7 +24,7 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-exper = 'quad_v8_';
+exper = 'quad_v10_';
 [fname,simname] = sub_fname_spin(param,exper);
 
 %! Storage variables
@@ -147,7 +147,7 @@ netcdf.endDef(ncidMZ);
 % Daily interp without quad loss
 %load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_daily_1.mat','ESM');
 % Daily interp with quad loss
-load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_quad_v2_daily_1.mat','ESM');
+load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_quad_v2.3_daily_1.mat','ESM');
 MNT = 0;
 %! Run model 
 for YR = 1:YEARS % years
