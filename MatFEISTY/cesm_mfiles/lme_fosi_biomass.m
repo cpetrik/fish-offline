@@ -6,7 +6,7 @@ close all
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'All_fish03';
+mod = 'v12_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -14,7 +14,7 @@ ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([dpath 'Space_Means_FOSI_' cfile '.mat'],'sf_sbio','sp_sbio','sd_sbio',...
+load([dpath 'Space_Means_FOSI_' mod cfile '.mat'],'sf_sbio','sp_sbio','sd_sbio',...
     'mf_sbio','mp_sbio','md_sbio',...
     'lp_sbio','ld_sbio','b_sbio');
 
@@ -107,7 +107,7 @@ for L=1:66
 end
 
 %%
-save([dpath 'LME_fosi_fished_',mod,'_' cfile '.mat'],...
+save([dpath 'LME_fosi_fished_',mod,cfile '.mat'],...
     'lme_mbio','lme_sbio','-append');
 
 

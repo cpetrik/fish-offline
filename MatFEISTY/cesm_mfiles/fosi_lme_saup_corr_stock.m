@@ -28,7 +28,7 @@ load('cmap_ppt_angles.mat')
 
 %% FEISTY file info
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'All_fish03';
+mod = 'v12_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -37,7 +37,7 @@ if (~isfolder(ppath))
     mkdir(ppath)
 end
 
-load([dpath 'LME_fosi_fished_',mod,'_' cfile '.mat']);
+load([dpath 'LME_fosi_fished_',mod,cfile '.mat']);
 lme_area_km2 = lme_area * 1e-6;
 
 %% plot info
@@ -211,9 +211,9 @@ fish_stat(6,3) = FPD;
 
 Fstat = array2table(fish_stat,'VariableNames',{'r','RMSE','Fmed'},...
     'RowNames',{'All','F','P','D','L','FracP'});
-writetable(Fstat,[dpath 'LME_SAUP_stats_' cfile '.csv'],'Delimiter',',',...
+writetable(Fstat,[dpath 'LME_SAUP_stats_' mod cfile '.csv'],'Delimiter',',',...
     'WriteRowNames',true)
-save([dpath 'LME_SAUP_stats_' cfile '.mat'],'fish_stat')
+save([dpath 'LME_SAUP_stats_' mod cfile '.mat'],'fish_stat')
 
 %% Plots - same as ms
 figure(1)

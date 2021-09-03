@@ -8,8 +8,8 @@ pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 
 load(['/Users/cpetrik/Dropbox/Princeton/POEM_other/poem_ms/',...
     'Stock_PNAS_catch_oceanprod_output.mat'],'notLELC')
-%keep = notLELC;
-keep=1:66;
+keep = notLELC;
+%keep=1:66;
 
 %% COBALT Hindcast grid
 hpath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/grid_cobalt/';
@@ -53,7 +53,7 @@ clme = lme_mask;
 
 %% FEISTY Output
 cfile2 = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'All_fish03';
+mod = 'v12_All_fish03_';
 harv = 'All_fish03';
 tharv = 'Harvest all fish 0.3 yr^-^1';
 
@@ -107,7 +107,7 @@ clear lme_mcatch lme_mbio lme_sbio
 
 %% CESM
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile2 '/'];
-load([fpath 'LME_fosi_fished_',mod,'_' cfile2 '.mat'],'lme_mcatch',...
+load([fpath 'LME_fosi_fished_',mod,cfile2 '.mat'],'lme_mcatch',...
     'lme_mbio','lme_sbio');
 
 % clme_mcatch = lme_mcatch;
@@ -343,9 +343,9 @@ fish_stat(8,4) = biasLM;
 Fstat = array2table(fish_stat,'VariableNames',{'r','p','RMSE','Bias'},...
     'RowNames',{'All Fish','F','P','D','B','Frac Pel-Dem','Frac Pel-Forage',...
     'Frac Large-Med'});%,'TEeffL','TEeffHTL','TEeffLTL'});
-writetable(Fstat,[fpath 'LME_fosi_hist_stats_' cfile2 '.csv'],'Delimiter',',',...
+writetable(Fstat,[fpath 'LME_fosi_hist_stats_' mod cfile2 '.csv'],'Delimiter',',',...
     'WriteRowNames',true)
-save([fpath 'LME_fosi_hist_stats_' cfile2 '.mat'],'fish_stat')
+save([fpath 'LME_fosi_hist_stats_' mod cfile2 '.mat'],'fish_stat')
 
 %% Figures
 x=-8:0.5:8;
@@ -416,7 +416,7 @@ xlabel('Hist COBALT')
 ylabel('FOSI CESM')
 title('All fishes')
 stamp([harv '_' cfile2])
-print('-dpng',[ppath 'FOSI_Hist_',harv,'_comp_types_temp.png'])
+print('-dpng',[ppath 'FOSI_Hist_',mod,'comp_types_temp.png'])
 
 %%
 figure(10)
@@ -465,7 +465,7 @@ xlabel('Hist COBALT')
 ylabel('FOSI CESM')
 title('All fishes')
 stamp([harv '_' cfile2])
-print('-dpng',[ppath 'FOSI_Hist_',harv,'_comp_types_temp_outliers.png'])
+print('-dpng',[ppath 'FOSI_Hist_',mod,'comp_types_temp_outliers.png'])
 
 %% Fractions
 figure(2)
@@ -530,7 +530,7 @@ xlabel('Hist COBALT')
 ylabel('FOSI CESM')
 title('Benthos')
 stamp([harv '_' cfile2])
-print('-dpng',[ppath 'FOSI_Hist_',harv,'_comp_fracs_temp.png'])
+print('-dpng',[ppath 'FOSI_Hist_',mod,'comp_fracs_temp.png'])
 
 
 %% TEeffs
@@ -582,5 +582,5 @@ ylabel('FOSI CESM')
 title('log_1_0 TEeff LTL')
 
 stamp([harv '_' cfile])
-print('-dpng',[ppath 'FOSI_Hist_',harv,'_comp_TEeffs_temp.png'])
+print('-dpng',[ppath 'FOSI_Hist_',mod,'comp_TEeffs_temp.png'])
 

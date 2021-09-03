@@ -7,7 +7,7 @@ close all
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'quad_v11_All_fish03';
+mod = 'v12_All_fish03';
 %mod = 'All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
@@ -16,7 +16,7 @@ ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([fpath 'Means_Spinup_quad_v11_' cfile '.mat']);
+load([fpath 'Means_Spinup_v12_' cfile '.mat']);
 %load([fpath 'Means_Spinup_' cfile '.mat']);
 
 % Map data
@@ -51,8 +51,8 @@ cm10=[0.5 0.5 0;... %tan/army
 
 set(groot,'defaultAxesColorOrder',cm10);
 
-%cmBP50=cbrewer('seq','BuPu',50,'PCHIP');
-cmBP50=cbrewer('seq','YlGnBu',10,'PCHIP');
+cmBP50=cbrewer('seq','BuPu',50,'PCHIP');
+cmYGB10=cbrewer('seq','YlGnBu',10,'PCHIP');
 
 %% Plots in time
 t = 1:length(sp_tmean); %time;
@@ -156,7 +156,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(TLAT,TLONG,log10(AllF))
 colormap(cmBP50)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-3 2]);
+caxis([-2 2]);
 colorbar('Position',[0.25 0.5 0.5 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
 title('log10 mean All F (g m^-^2)')
@@ -168,7 +168,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(TLAT,TLONG,log10(AllD))
 colormap(cmBP50)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-3 2]);
+caxis([-2 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All D (g m^-^2)')
 
@@ -179,7 +179,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(TLAT,TLONG,log10(AllP))
 colormap(cmBP50)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-3 2]);
+caxis([-2 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All P (g m^-^2)')
 
@@ -190,11 +190,60 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(TLAT,TLONG,log10(All))
 colormap(cmBP50)               
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-2 2]);
+set(gcf,'renderer','painters')
+title('log10 mean All fishes (g m^-^2)')
+stamp('')
+print('-dpng',[ppath 'Spinup_',mod,'_global_All_subplot_BP50.png'])
+
+%% All 4 on subplots
+figure(14)
+% all F
+subplot('Position',[0 0.51 0.5 0.5])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,log10(AllF))
+colormap(cmYGB10)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-3 2]);
+colorbar('Position',[0.25 0.5 0.5 0.05],'orientation','horizontal')
+set(gcf,'renderer','painters')
+title('log10 mean All F (g m^-^2)')
+
+% all D
+subplot('Position',[0 0 0.5 0.5])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,log10(AllD))
+colormap(cmYGB10)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-3 2]);
+set(gcf,'renderer','painters')
+title('log10 mean All D (g m^-^2)')
+
+% All P
+subplot('Position',[0.5 0.51 0.5 0.5])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,log10(AllP))
+colormap(cmYGB10)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+caxis([-3 2]);
+set(gcf,'renderer','painters')
+title('log10 mean All P (g m^-^2)')
+
+% All
+subplot('Position',[0.5 0 0.5 0.5])
+axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,log10(All))
+colormap(cmYGB10)               
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-3 2]);
 set(gcf,'renderer','painters')
 title('log10 mean All fishes (g m^-^2)')
 stamp('')
-print('-dpng',[ppath 'Spinup_',mod,'_global_All_subplot.png'])
+print('-dpng',[ppath 'Spinup_',mod,'_global_All_subplot_YGB10.png'])
 
 %% Ratios on subplots red-white-blue
 % 3 figure subplot P:D, P:F, M:L

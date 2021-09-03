@@ -7,8 +7,8 @@ close all
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-%mod = 'quad_All_fish03';
-mod = 'All_fish03';
+mod = 'v12_All_fish03';
+%mod = 'All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -16,12 +16,12 @@ ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-% load([fpath 'Time_Means_FOSI_' mod '_' cfile '.mat']);
-% load([fpath 'Space_Means_FOSI_' mod '_' cfile '.mat']);
-% load([fpath 'Annual_Means_FOSI_' mod '_' cfile '.mat'],'mz_mtf');
-load([fpath 'Time_Means_FOSI_' cfile '.mat']);
-load([fpath 'Space_Means_FOSI_' cfile '.mat']);
-load([fpath 'Annual_Means_FOSI_' cfile '.mat'],'mz_mtf');
+load([fpath 'Time_Means_FOSI_' mod '_' cfile '.mat']);
+load([fpath 'Space_Means_FOSI_' mod '_' cfile '.mat']);
+load([fpath 'Annual_Means_FOSI_' mod '_' cfile '.mat'],'mz_mtf');
+% load([fpath 'Time_Means_FOSI_' cfile '.mat']);
+% load([fpath 'Space_Means_FOSI_' cfile '.mat']);
+% load([fpath 'Annual_Means_FOSI_' cfile '.mat'],'mz_mtf');
 
 % Map data
 cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
@@ -135,7 +135,7 @@ FracPF = AllP ./ (AllP+AllF);
 FracLM = AllL ./ (AllL+AllM);
 
 %% save outputs for comparison
-save([fpath 'Plot_Means_FOSI_' cfile '.mat'],'F','P','D','B',...
+save([fpath 'Plot_Means_FOSI_' mod '_' cfile '.mat'],'F','P','D','B',...
     'AllF','AllP','AllD','AllS','AllM','AllL');
 
 %% bent

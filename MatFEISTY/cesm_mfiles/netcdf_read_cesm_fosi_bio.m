@@ -6,7 +6,7 @@ close all
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-harv = 'quad_All_fish03_';
+harv = 'v12_All_fish03_';
 
 %% SP
 ncid = netcdf.open([fpath 'FOSI_' harv 'sml_p.nc'],'NC_NOWRITE');
@@ -174,17 +174,28 @@ ld_tprod = nanmean(LD.prod,1);
 
 %% Space
 %exclude weird jump at yr 43 (mo=517)
-tid = 1:516;
-sp_sbio = nanmean(SP.bio(:,tid),2);
-sf_sbio = nanmean(SF.bio(:,tid),2);
-sd_sbio = nanmean(SD.bio(:,tid),2);
-mp_sbio = nanmean(MP.bio(:,tid),2);
-mf_sbio = nanmean(MF.bio(:,tid),2);
-md_sbio = nanmean(MD.bio(:,tid),2);
-lp_sbio = nanmean(LP.bio(:,tid),2);
-ld_sbio = nanmean(LD.bio(:,tid),2);
-b_sbio  = nanmean(Bent.bio(:,tid),2);
-mz_smfrac= nanmean(MZ.frac(:,tid),2);
+% tid = 1:516;
+% sp_sbio = nanmean(SP.bio(:,tid),2);
+% sf_sbio = nanmean(SF.bio(:,tid),2);
+% sd_sbio = nanmean(SD.bio(:,tid),2);
+% mp_sbio = nanmean(MP.bio(:,tid),2);
+% mf_sbio = nanmean(MF.bio(:,tid),2);
+% md_sbio = nanmean(MD.bio(:,tid),2);
+% lp_sbio = nanmean(LP.bio(:,tid),2);
+% ld_sbio = nanmean(LD.bio(:,tid),2);
+% b_sbio  = nanmean(Bent.bio(:,tid),2);
+% mz_smfrac= nanmean(MZ.frac(:,tid),2);
+
+sp_sbio = nanmean(SP.bio,2);
+sf_sbio = nanmean(SF.bio,2);
+sd_sbio = nanmean(SD.bio,2);
+mp_sbio = nanmean(MP.bio,2);
+mf_sbio = nanmean(MF.bio,2);
+md_sbio = nanmean(MD.bio,2);
+lp_sbio = nanmean(LP.bio,2);
+ld_sbio = nanmean(LD.bio,2);
+b_sbio  = nanmean(Bent.bio,2);
+mz_smfrac= nanmean(MZ.frac,2);
 
 sp_sprod = nanmean(SP.prod,2);
 sf_sprod = nanmean(SF.prod,2);
@@ -196,9 +207,9 @@ lp_sprod = nanmean(LP.prod,2);
 ld_sprod = nanmean(LD.prod,2);
 
 %% Total times overcon happens
-MZ.over = nan*ones(size(MZ.frac(:,tid)));
-MZ.over(MZ.frac(:,tid) > 1) = ones;
-MZ.over(MZ.frac(:,tid) <= 1) = zeros;
+MZ.over = nan*ones(size(MZ.frac));
+MZ.over(MZ.frac > 1) = ones;
+MZ.over(MZ.frac <= 1) = zeros;
 % Time
 mz_ttf=nansum(MZ.over,1);
 % Space

@@ -6,7 +6,7 @@ close all
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-harv = 'quad_v11_All_fish03';
+harv = 'quad_v12_All_fish03';
 
 %% SP
 ncid = netcdf.open([fpath 'Spinup_' harv '_sml_p.nc'],'NC_NOWRITE');

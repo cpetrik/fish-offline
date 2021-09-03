@@ -4,8 +4,8 @@ clear all
 close all
 
 %%%%!! EXPERIMENTS
-spinup_cesm = true;
-fosi_cesm = false;
+spinup_cesm = false;
+fosi_cesm = true;
 
 tic
 
@@ -14,7 +14,7 @@ if spinup_cesm
 %     Spinup_cesm()
 %     Spinup_cesm_quad()
     Spinup_cesm_quad_v2()
-    Spinup_cesm_quad_v3()
+%    Spinup_cesm_quad_v3()
 %     Spinup_4p4z()
 %     Spinup_4p4z_comb()
 end
@@ -22,7 +22,8 @@ if fosi_cesm
 %     Locs_CESM_4p4z()
 %    FOSI_cesm()
 %    FOSI_cesm_catch()
-   FOSI_cesm_quad()
+      FOSI_cesm_search()
+%   FOSI_cesm_quad()
 %   FOSI_cesm_quad_catch()
 %     CESM_4p4z()
 %     CESM_4p4z_comb()

@@ -25,7 +25,7 @@ hlme = lme_mask;
 
 %% FEISTY Output
 cfile2 = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'All_fish03';
+mod = 'v12_All_fish03_';
 harv = 'All_fish03';
 tharv = 'Harvest all fish 0.3 yr^-^1';
 
@@ -37,7 +37,7 @@ end
 
 % CESM
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile2 '/'];
-load([fpath 'LME_fosi_fished_',mod,'_' cfile2 '.mat'],'lme_mcatch',...
+load([fpath 'LME_fosi_fished_',mod,cfile2 '.mat'],'lme_mcatch',...
     'lme_mbio');
 
 %%
@@ -273,7 +273,7 @@ xlabel('Stock PNAS')
 ylabel('FOSI CESM')
 title('All fishes')
 stamp([harv '_' cfile2])
-print('-dpng',[ppath 'FOSI_StockPNAS_',harv,'_comp_temp.png'])
+print('-dpng',[ppath 'FOSI_StockPNAS_',mod,'comp_temp.png'])
 
 %% Mauread TE eff
 spath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/poem_ms/';
@@ -308,36 +308,36 @@ fish_stat(2,1) = rF;
 fish_stat(3,1) = rP;
 fish_stat(4,1) = rD;
 fish_stat(5,1) = rPD;
-fish_stat(6,1) = rDvD;
+fish_stat(6,1) = rDvD2;
 fish_stat(7,1) = rPNAS;
 fish_stat(1,2) = pall;
 fish_stat(2,2) = pF;
 fish_stat(3,2) = pP;
 fish_stat(4,2) = pD;
 fish_stat(5,2) = pPD;
-fish_stat(6,2) = pDvD;
+fish_stat(6,2) = pDvD2;
 fish_stat(7,2) = pPNAS;
 fish_stat(1,3) = rmse;
 fish_stat(2,3) = rmseF;
 fish_stat(3,3) = rmseP;
 fish_stat(4,3) = rmseD;
 fish_stat(5,3) = rmsePD;
-fish_stat(6,3) = rmseDvD;
+fish_stat(6,3) = rmseDvD2;
 fish_stat(7,3) = rmsePNAS;
 fish_stat(1,4) = bias;
 fish_stat(2,4) = biasF;
 fish_stat(3,4) = biasP;
 fish_stat(4,4) = biasD;
 fish_stat(5,4) = biasPD;
-fish_stat(6,4) = biasDvD;
+fish_stat(6,4) = biasDvD2;
 fish_stat(7,4) = biasPNAS;
 
 % save
 Fstat = array2table(fish_stat,'VariableNames',{'r','p','RMSE','Bias'},...
     'RowNames',{'SAU All Fish','SAU F','SAU P','SAU D','SAU Frac Pelagic',...
     'vanD Frac Pelagic','Stock All Fish'});
-writetable(Fstat,[fpath 'FOSI_obs_LME_all_ms_stats_' cfile2 '.csv'],'Delimiter',',',...
+writetable(Fstat,[fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.csv'],'Delimiter',',',...
     'WriteRowNames',true)
-save([fpath 'FOSI_obs_LME_all_ms_stats_' cfile2 '.mat'],'fish_stat')
+save([fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.mat'],'fish_stat')
 
 

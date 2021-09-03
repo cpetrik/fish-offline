@@ -22,7 +22,8 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-[fname,simname] = sub_fname_cesm_fosi(param);
+exper = 'v12_';
+[fname,simname] = sub_fname_cesm_fosi_exper(param,exper);
 
 %! Storage variables
 S_Med_f = zeros(NX,DAYS);
@@ -32,8 +33,8 @@ S_Lrg_p = zeros(NX,DAYS);
 S_Lrg_d = zeros(NX,DAYS);
 
 %! Initialize
-init_sim = simname;
-load(['/Volumes/MIP/NC/CESM_MAPP/',init_sim '/Last_mo_spin_' init_sim '.mat']);
+init_sim = [exper simname];
+load(['/Volumes/MIP/NC/CESM_MAPP/',simname '/Last_mo_spin_' init_sim '.mat']);
 BENT.mass = BENT.bio;
 [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish(ID,Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT);
 
@@ -88,7 +89,7 @@ MNT = 0;
 for YR = 1:YEARS % years
     %! Load a year's ESM data
     ti = num2str(YR)
-    load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_daily_',ti,'.mat'],'ESM');
+    load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_loss_v5_daily_',ti,'.mat'],'ESM');
     
     for DAY = 1:param.DT:DAYS % days
         

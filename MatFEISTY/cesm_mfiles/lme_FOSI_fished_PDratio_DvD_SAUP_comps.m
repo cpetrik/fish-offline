@@ -20,7 +20,7 @@ load([fpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'],'lme_tp_fosi')
 
 %% FEISTY 
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'All_fish03';
+mod = 'v12_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -29,7 +29,7 @@ if (~isfolder(ppath))
     mkdir(ppath)
 end
 
-load([dpath 'LME_fosi_fished_',mod,'_' cfile '.mat']);
+load([dpath 'LME_fosi_fished_',mod,cfile '.mat']);
 
 lme_area_km2 = lme_area * 1e-6;
 
@@ -81,7 +81,7 @@ did2 = notLELC(notLELC<=63);
 diffD = rPD_grid - dlme_Pfrac;
 diffS = rPD_grid - sFracPD_grid;
 
-%r
+%r - FEISTY has NaNs at 23, 33, 62
 rall=corr(FracLP(did),plme_rPDcatch(did));
 rall2=corr(FracLP(did2),plme_rPDcatch(did2));
 rPD=corr(sFracPD(notLELC),plme_rPDcatch(notLELC));
@@ -124,8 +124,8 @@ fish_stat(3,3) = FPD;
 
 Fstat = array2table(fish_stat,'RowNames',{'r','RMSE','Fmed'},...
     'VariableNames',{'DvDAllLMEs','DvDnoLELC','SAUnoLELC'});
-writetable(Fstat,[dpath 'FOSI_LME_DvD_SAU_stats_' cfile '.csv'],'Delimiter',',','WriteRowNames',true)
-save([dpath 'FOSI_LME_DvD_SAU_stats_' cfile '.mat'],'fish_stat')
+writetable(Fstat,[dpath 'FOSI_LME_DvD_SAU_stats_' mod cfile '.csv'],'Delimiter',',','WriteRowNames',true)
+save([dpath 'FOSI_LME_DvD_SAU_stats_' mod cfile '.mat'],'fish_stat')
 
 %% Plot info
 geolon_t = double(TLONG);
@@ -189,12 +189,12 @@ plot(x,x,'--k');hold on;
 %scatter(FracLP(did),plme_rPDcatch(did),20,'k','filled'); hold on;
 scatter(FracLP(did),plme_rPDcatch(did),20,lme_tp_fosi(did,1),'filled'); hold on;
 cmocean('thermal');
-text(0.75,0.55,['r = ' sprintf('%2.2f',rall)])
+text(0.75,0.55,['r = ' sprintf('%2.2f',rall2)])
 text(0.75,0.5,['RMSE = ' sprintf('%2.2f',rmse)])
 axis([0 1.05 0 1.05])
 xlabel('vanD')
 ylabel('FEISTY')
 %title('Fraction Large Pelagics')
 %stamp(cfile)
-print('-dpng',[ppath 'FOSI_' mod '_LME_fracPD_catch_SAUP_DvD_comp_subplot_temp.png'])
+print('-dpng',[ppath 'FOSI_' mod 'LME_fracPD_catch_SAUP_DvD_comp_subplot_temp.png'])
 

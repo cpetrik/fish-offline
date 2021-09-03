@@ -6,7 +6,7 @@ close all
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'All_fish03';
+mod = 'v12_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -14,7 +14,7 @@ ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([dpath 'Space_Means_FOSI_' cfile '.mat'],'units_yield','units_catch',...
+load([dpath 'Space_Means_FOSI_' mod cfile '.mat'],'units_yield','units_catch',...
     'mf_smy','mp_smy','md_smy','lp_smy','ld_smy',...
     'mf_smc','mp_smc','md_smc','lp_smc','ld_smc',...
     'mf_sty','mp_sty','md_sty','lp_sty','ld_sty',...
@@ -120,13 +120,13 @@ for L=1:66
 end
 
 %catch in lmes
-Tlme_mcatch = sum(lme_mcatch(:));
+Tlme_mcatch = nansum(lme_mcatch(:));
 tot_catch = (Amf_mcatch+Amp_mcatch+Amd_mcatch+Alp_mcatch+Ald_mcatch);
 tot_catch2 = nansum(tot_catch(:));
 frac_mcatch_lme = Tlme_mcatch/tot_catch2
 
 %%
-save([dpath 'LME_fosi_fished_',mod,'_' cfile '.mat'],...
+save([dpath 'LME_fosi_fished_',mod,cfile '.mat'],...
     'lme_mcatch','lme_tcatch','lme_area');
 
 
