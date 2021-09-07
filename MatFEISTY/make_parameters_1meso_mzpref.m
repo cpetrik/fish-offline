@@ -89,10 +89,10 @@ function param = make_parameters_1meso_mzpref(param,mzp)
     param.A = 0.5;    %Adult predation reduction %*****
     param.MZ = mzp;
 
-    param.MF_phi_MZ = 1.0; %param.MZ;
+    param.MF_phi_MZ = 0.5 * param.MZ;
     param.MF_phi_S  = 1.0;
 
-    param.MP_phi_MZ = 1.0; %param.MZ;
+    param.MP_phi_MZ = 0.5 * param.MZ;
     param.MP_phi_S  = 1.0;
 
     param.MD_phi_BE = 1.0;

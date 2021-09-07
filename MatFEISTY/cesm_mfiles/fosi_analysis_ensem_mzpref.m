@@ -1,5 +1,5 @@
 % FEISTY forced by FOSI
-% changed mzpref on S and M equally
+% changed mzpref on S and M equally or unequally
 % initialized with spinup pref=1
 % mean of all 68 yrs saved
 
@@ -51,7 +51,7 @@ mis_all = NaN*ones(length(mz),45,5);
 for M=1:length(mz)
     mzp = mz(M);
     tmzp = num2str(1000+int64(100*mzp));
-    exper = ['v12_mMZ' tmzp(2:end) '_'];
+    exper = ['sMZ' tmzp(2:end) '_'];
 
     sname = ['FOSI_',exper,'All_fish03_means'];
     load([spath 'FOSI_',exper,'All_fish03_means.mat']);
@@ -120,7 +120,7 @@ for M=1:length(mz)
 end
 
 %%
-save([spath 'FOSI_v12_ensemble_S1_Mmzpref.mat'],'SF','SP','SD',...
+save([spath 'FOSI_v12_ensemble_M1_Smzpref.mat'],'SF','SP','SD',...
     'MF','MP','MD','BI','LP','LD','MFc','MPc','MDc','LPc','LDc',...
     'lme_Fmcatch','lme_Pmcatch','lme_Dmcatch','lme_AllF','lme_AllP',...
     'r_all','rmse_all','ss_all','mis_all','mz')

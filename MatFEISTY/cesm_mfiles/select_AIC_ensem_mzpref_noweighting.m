@@ -56,6 +56,18 @@ for n=1:length(mz)
     fx_all{n+10} = ['M' num2str(mz(n))];
 end
 
+%% param ensemble results with mz = 0.1:0.1:0.9 for S only
+load([dpath 'FOSI_v12_ensemble_M1_Smzpref.mat'],'rmse_all','mis_all','mz',...
+    'r_all');
+
+mis_all0 = [mis_all0; mis_all];
+r_all0 = [r_all0,r_all];
+rmse_all0 = [rmse_all0,rmse_all];
+
+for n=1:length(mz)
+    fx_all{n+19} = ['S' num2str(mz(n))];
+end
+
 %% SAU comparison
 % SAUP data
 load('/Users/cpetrik/Dropbox/Princeton/POEM_other/SAUP/SAUP_Stock_top10.mat');
@@ -115,7 +127,7 @@ caicv(:,2) = caic_srt;
 caicv(:,3) = cdel;
 caicv(:,4) = cw;
 cT = array2table(caicv,'VariableNames',{'ParamSet','AIC','delta','weight'});
-writetable(cT,[dpath 'AIC_FOSI_v12_ensemble_mzpref_equal_S1_Mmzpref.csv'])
+writetable(cT,[dpath 'AIC_FOSI_v12_ensemble_mzpref_equal_S1_Mmzpref_M1_Smzpref.csv'])
 
 %% AICs <= AIC(orig) + 2
 pset(:,1) = nan*ones(length(idc),1);
@@ -130,5 +142,5 @@ pT = array2table(pset,'VariableNames',{'MZpref','ParamSet','AIC','dAIC',...
 % pT(:,1) = test2;
 pT(:,16) = fx_all(idc)';
 
-writetable(pT,[dpath 'bestAIC_FOSI_ensemble_mzpref_equal_S1_Mmzpref.csv'])
+writetable(pT,[dpath 'bestAIC_FOSI_ensemble_mzpref_equal_S1_Mmzpref_M1_Smzpref.csv'])
 
