@@ -53,8 +53,8 @@ for M=1:length(mz)
 %     tmzp = num2str(1000+int64(100*mzp));
 %     exper = ['sMZ' tmzp(2:end) '_'];
     tmzp = num2str(1000+int64(100*mzp));
-    %sum to 1
-    tmzp2 = num2str(1000+int64(100*(1-mzp)));
+    %S is 1/2 of M pref
+    tmzp2 = num2str(1000+int64(100*2*mzp));
     exper = ['v12_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
 
     sname = ['FOSI_',exper,'All_fish03_means'];
@@ -124,7 +124,7 @@ for M=1:length(mz)
 end
 
 %%
-save([spath 'FOSI_v12_ensemble_mzpref_SMsum1.mat'],'SF','SP','SD',...
+save([spath 'FOSI_v12_ensemble_mzpref_ShalfM.mat'],'SF','SP','SD',...
     'MF','MP','MD','BI','LP','LD','MFc','MPc','MDc','LPc','LDc',...
     'lme_Fmcatch','lme_Pmcatch','lme_Dmcatch','lme_AllF','lme_AllP',...
     'r_all','rmse_all','ss_all','mis_all','mz')
