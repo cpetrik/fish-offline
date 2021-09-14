@@ -23,7 +23,7 @@ paramI.dfrate = paramI.frate/365.0;
 paramI = make_parameters_1meso(paramI);
 
 %! Create a directory for output
-experI = 'v12_';
+experI = 'v13_';
 [fnameI,simnameI] = sub_fname_cesm_fosi_exper(paramI,experI);
 init_sim = [experI simnameI];
 
@@ -40,7 +40,7 @@ for n=1:length(mz)
     tmzp = num2str(1000+int64(100*mzp));
     %M is 1/2 of S pref
     tmzp2 = num2str(1000+int64(100*(1-mzp)));
-    exper = ['v12_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
+    exper = ['v13_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
     [fname,simname] = sub_fname_cesm_fosi_exper(param,exper);
     
     %! Initialize
@@ -94,7 +94,7 @@ for n=1:length(mz)
         %! Load a year's ESM data
         ti = num2str(YR);
         [num2str(n) ',' num2str(ti)]
-        load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_loss_v5_daily_',ti,'.mat'],'ESM');
+        load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v6_daily_',ti,'.mat'],'ESM');
         
         for DAY = 1:param.DT:DAYS % days
             
