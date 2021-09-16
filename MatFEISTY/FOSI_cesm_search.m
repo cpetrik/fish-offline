@@ -28,7 +28,7 @@ experI = 'v13_';
 init_sim = [experI simnameI];
 
 %% Loop over search parameter
-mz = (0.1:0.1:0.9);
+mz = (0.1:0.1:0.9)/2;
 for n=1:length(mz)
     %! Make core parameters/constants with new permutation
     param.frate = 0.3;
@@ -38,8 +38,8 @@ for n=1:length(mz)
     
     %! Create a directory for output
     tmzp = num2str(1000+int64(100*mzp));
-    %M is 1/2 of S pref
-    tmzp2 = num2str(1000+int64(100*(1-mzp)));
+    %S is 1/2 of M pref
+    tmzp2 = num2str(1000+int64(100*2*mzp));
     exper = ['v13_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
     [fname,simname] = sub_fname_cesm_fosi_exper(param,exper);
     
