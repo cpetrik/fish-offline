@@ -40,7 +40,8 @@ for n=1:length(mz)
     tmzp = num2str(1000+int64(100*mzp));
     %S = M pref
     tmzp2 = num2str(1000+int64(100*mzp));
-    exper = ['v13_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
+    %exper = ['v13_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
+    exper = ['v13_mMZ' tmzp2(2:end) '_'];
     [fname,simname] = sub_fname_cesm_fosi_exper(param,exper);
     
     %! Initialize
@@ -101,8 +102,11 @@ for n=1:length(mz)
             %%%! Future time step
             DY = int64(ceil(DAY));
             %         [num2str(YR),' , ', num2str(mod(DY,365))]
+%             [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
+%                 sub_futbio_1meso_mzpref(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
+%                 Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
             [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
-                sub_futbio_1meso_mzpref(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
+                sub_futbio_1meso_mzprefM(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
                 Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
             
             %! Store
