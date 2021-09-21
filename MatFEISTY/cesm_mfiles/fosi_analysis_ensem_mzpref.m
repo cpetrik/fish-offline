@@ -50,13 +50,34 @@ mis_all = NaN*ones(length(mz),45,5);
 %%
 for M=1:length(mz)
     mzp = mz(M);
-%     tmzp = num2str(1000+int64(100*mzp));
-%     exper = ['sMZ' tmzp(2:end) '_'];
+    
+    % Equal
     tmzp = num2str(1000+int64(100*mzp));
-    %sum to 1
-    tmzp2 = num2str(1000+int64(100*(1-mzp)));
-    exper = ['v12_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
-
+    exper = ['v13_sMZ' tmzp(2:end) '_mMZ' tmzp(2:end) '_'];
+%     
+%     % S = 2M
+%     tmzp = num2str(1000+int64(100*mzp));
+%     tmzp2 = num2str(1000+int64(100*(0.5*mzp)));
+%     exper = ['v13_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
+%     
+%     % M = 2S
+%     tmzp = num2str(1000+int64(100*mzp));
+%     tmzp2 = num2str(1000+int64(100*(2*mzp)));
+%     exper = ['v13_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
+%     
+%     % S=1, M varies
+%     tmzp = num2str(1000+int64(100*mzp));
+%     exper = ['v13_mMZ' tmzp(2:end) '_'];
+%     
+%     % M=1, S varies
+%     tmzp = num2str(1000+int64(100*mzp));
+%     exper = ['v13_sMZ' tmzp(2:end) '_'];
+%     
+%     % S+M=1
+%     tmzp = num2str(1000+int64(100*mzp));
+%     tmzp2 = num2str(1000+int64(100*(1-mzp)));
+%     exper = ['v13_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
+    
     sname = ['FOSI_',exper,'All_fish03_means'];
     load([spath 'FOSI_',exper,'All_fish03_means.mat']);
     
@@ -124,7 +145,14 @@ for M=1:length(mz)
 end
 
 %%
-save([spath 'FOSI_v12_ensemble_mzpref_SMsum1.mat'],'SF','SP','SD',...
+% [spath 'FOSI_v13_ensemble_mzpref_equal.mat']
+% [spath 'FOSI_v13_ensemble_mzpref_MhalfS.mat']
+% [spath 'FOSI_v13_ensemble_mzpref_ShalfM.mat']
+% [spath 'FOSI_v13_ensemble_mzpref_S1_Mmzpref.mat']
+% [spath 'FOSI_v13_ensemble_mzpref_M1_Smzpref.mat']
+% [spath 'FOSI_v13_ensemble_mzpref_SMsum1.mat']
+
+save([spath 'FOSI_v13_ensemble_mzpref_equal.mat'],'SF','SP','SD',...
     'MF','MP','MD','BI','LP','LD','MFc','MPc','MDc','LPc','LDc',...
     'lme_Fmcatch','lme_Pmcatch','lme_Dmcatch','lme_AllF','lme_AllP',...
     'r_all','rmse_all','ss_all','mis_all','mz')

@@ -19,43 +19,8 @@ if (~isfolder(ppath))
     mkdir(ppath)
 end
 
-%% split P results
-modP = 'v12_All_fish03_';
-load([dpath 'FOSI_v12_ensemble_mzpref_all.mat']);
-
-r_allP = r_all0;
-mis_allP = mis_all0;
-rmse_allP = rmse_all0;
-
-for n=1:length(fx_all)
-    fx_allP{n} = ['P' fx_all{n}];
-end
-
-clear rmse_all0 mis_all0 r_all0 fx_all
-
-%% split B results
-modB = 'v13_All_fish03_';
-load([dpath 'FOSI_v13_ensemble_mzpref_all.mat']);
-
-r_allB = r_all0;
-mis_allB = mis_all0;
-rmse_allB = rmse_all0;
-
-for n=1:length(fx_all)
-    fx_allB{n} = ['B' fx_all{n}];
-end
-
-clear rmse_all0 mis_all0 r_all0 fx_all
-
-%% combine
-mis_all0 = [mis_allP; mis_allB];
-r_all0 = [r_allP,r_allB];
-rmse_all0 = [rmse_allP,rmse_allB];
-fx_all = [fx_allP,fx_allB];
-
 %% save total ensemble to merge with other ensemble
-save([dpath 'FOSI_v12_v13_ensemble_mzpref_all.mat'],'rmse_all0','mis_all0',...
-    'r_all0','fx_all');
+load([dpath 'FOSI_v12_v13_ensemble_mzpref_all.mat']);
 
 %% SAU comparison
 % SAUP data
@@ -78,15 +43,13 @@ n = length(l10all);
 %mean square error
 mse_all = rmse_all0.^2;
 
-%% Just look at F, P, and D ind
-mis_all_F = mis_all0(:,:,2);
-mis_all_F2 = mis_all_F;
+%% Just look at P and D ind
 mis_all_P = mis_all0(:,:,3);
 mis_all_P2 = mis_all_P;
 mis_all_D = mis_all0(:,:,4);
 
 %put residuals of all fn types in one vector
-mis_combo = [mis_all_F2,mis_all_P2,mis_all_D];
+mis_combo = [mis_all_P2,mis_all_D];
 
 %% Classic AIC 
 % AIC = -2*log(L) + 2*K
@@ -105,7 +68,7 @@ caicv(:,2) = caic_srt;
 caicv(:,3) = cdel;
 caicv(:,4) = cw;
 cT = array2table(caicv,'VariableNames',{'ParamSet','AIC','delta','weight'});
-writetable(cT,[dpath 'AIC_FOSI_v12_v13_ensemble_mzpref.csv'])
+writetable(cT,[dpath 'AIC_FOSI_v12_v13_ensemble_mzpref_noF.csv'])
 
 %% AICs <= AIC(orig) + 2
 pset(:,1) = nan*ones(length(idc),1);
@@ -120,5 +83,5 @@ pT = array2table(pset,'VariableNames',{'MZpref','ParamSet','AIC','dAIC',...
 % pT(:,1) = test2;
 pT(:,16) = fx_all(idc)';
 
-writetable(pT,[dpath 'bestAIC_FOSI_v12_v13_ensemble_mzpref.csv'])
+writetable(pT,[dpath 'bestAIC_FOSI_v12_v13_ensemble_mzpref_noF.csv'])
 

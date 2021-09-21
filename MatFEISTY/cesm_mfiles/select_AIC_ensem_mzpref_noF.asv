@@ -78,9 +78,7 @@ n = length(l10all);
 %mean square error
 mse_all = rmse_all0.^2;
 
-%% Just look at F, P, and D ind
-mis_all_F = mis_all0(:,:,2);
-mis_all_F2 = mis_all_F;
+%% Just look at P and D ind
 mis_all_P = mis_all0(:,:,3);
 mis_all_P2 = mis_all_P;
 mis_all_D = mis_all0(:,:,4);
