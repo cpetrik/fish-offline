@@ -20,7 +20,7 @@ load([fpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'],'lme_tp_fosi')
 
 %% FEISTY 
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'v12_All_fish03_';
+mod = 'v13_sMZ090_mMZ045_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];

@@ -85,14 +85,14 @@ function param = make_parameters_1meso_mzpref(param,mzp)
     %large piscivore eats medium forage fish, medium piscivore, medium detritivore
     %large detritivore eats detritus, medium forage fish, medium piscivore, medium detrivore
 
-    param.D = 0.75;   %Demersal feeding in pelagic reduction
-    param.A = 0.5;    %Adult predation reduction %*****
-    param.MZ = mzp;
+    param.D  = 0.75;   %Demersal feeding in pelagic reduction
+    param.A  = 0.5;    %Adult predation reduction %*****
+    param.MZ = 0.9;    %Preference on one mesozooplankton group
 
-    param.MF_phi_MZ = 1.0; %param.MZ;
+    param.MF_phi_MZ = 0.5*param.MZ;
     param.MF_phi_S  = 1.0;
 
-    param.MP_phi_MZ = 1.0; %param.MZ;
+    param.MP_phi_MZ = 0.5*param.MZ;
     param.MP_phi_S  = 1.0;
 
     param.MD_phi_BE = 1.0;

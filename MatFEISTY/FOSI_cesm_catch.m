@@ -7,7 +7,7 @@ param.frate = 0.3;
 param.dfrate = param.frate/365.0;
 
 %! Make core parameters/constants 
-param = make_parameters_1meso(param); 
+param = make_parameters_1meso_mzpref(param); 
 
 %! Grid
 load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6.mat','GRD');
@@ -22,7 +22,10 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-exper = 'v13_';
+%exper = 'v13_';
+tmzp = num2str(1000+int64(100*param.MZ));
+tmzp2 = num2str(1000+int64(100*param.MF_phi_MZ));
+exper = ['v13_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
 [fname,simname] = sub_fname_cesm_fosi_exper(param,exper);
 
 %! Storage variables
@@ -97,7 +100,7 @@ for YR = 1:YEARS % years
         DY = int64(ceil(DAY));
 %         [num2str(YR),' , ', num2str(mod(DY,365))]
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
-            sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
+            sub_futbio_1meso_mzpref(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
             Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
         
         %! Store
