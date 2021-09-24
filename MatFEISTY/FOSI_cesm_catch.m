@@ -2,12 +2,8 @@
 function FOSI_cesm_catch()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
-%! Set fishing rate
-param.frate = 0.3;
-param.dfrate = param.frate/365.0;
-
 %! Make core parameters/constants 
-param = make_parameters_1meso_mzpref(param); 
+param = make_parameters_1meso(); 
 
 %! Grid
 load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6.mat','GRD');

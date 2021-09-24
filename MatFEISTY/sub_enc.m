@@ -20,5 +20,6 @@ function enc = sub_enc(param,Tp,Tb,wgt,prey,tpel,tprey,pref)
     ID = (tprey>0);
     frac(ID) = 1.0;
     
+    % g/m2 * g/g/d * -- * --
     enc = prey.*A.*frac.*pref;
 end

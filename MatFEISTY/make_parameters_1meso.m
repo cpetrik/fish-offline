@@ -1,12 +1,16 @@
 %============== Parameters of the model =============%
 %============= PARAMETER TYPE ==========%
-function param = make_parameters_1meso(param)
+function param = make_parameters_1meso()
     %! Integration parameters
     param.DT = 1.0;       % time step
     param.tstep = 1.0;    % time step in hours for adv-diff
 
     % define diffusivity
     param.K = 600.0;
+    
+    %! Set fishing rate
+    param.frate = 0.3;
+    param.dfrate = param.frate/365.0;
 
     %! Which fishes harvested
     param.MFsel = 1;
@@ -60,11 +64,6 @@ function param = make_parameters_1meso(param)
     %%%! Reproductive efficiency
     param.rfrac = 0.01;
 
-    %! Fraction of time spent swimming (from Van Leeuwen)
-    param.Tu_s = 1.0;
-    param.Tu_m = 1.0; %0.5
-    param.Tu_l = 1.0; %0.1
-
     %%%! Background mortality
     param.Nat_mrt = 0.1/365;
     %0=none, 1=constant, 6=const wgt, T-dep, 7=const T, wgt-dep
@@ -87,11 +86,12 @@ function param = make_parameters_1meso(param)
 
     param.D = 0.75;   %Demersal feeding in pelagic reduction
     param.A = 0.5;    %Adult predation reduction %*****
+    param.MZ = 0.9;   %Preference on one mesozooplankton group
 
-    param.MF_phi_MZ = 1.0;
+    param.MF_phi_MZ = 0.5 * param.MZ;
     param.MF_phi_S  = 1.0;
 
-    param.MP_phi_MZ = 1.0;
+    param.MP_phi_MZ = 0.5 * param.MZ;
     param.MP_phi_S  = 1.0;
 
     param.MD_phi_BE = 1.0;

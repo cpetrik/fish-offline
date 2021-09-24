@@ -2,12 +2,8 @@
 function FOSI_cesm()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
-%! Set fishing rate
-param.frate = 0.3;
-param.dfrate = param.frate/365.0;
-
 %! Make core parameters/constants 
-param = make_parameters_1meso_mzpref(param); 
+param = make_parameters_1meso(); 
 
 %! Grid
 load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6.mat','GRD');
@@ -22,10 +18,7 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-%exper = 'v13_';
-tmzp = num2str(1000+int64(100*param.MZ));
-tmzp2 = num2str(1000+int64(100*param.MF_phi_MZ));
-exper = ['v13_sMZ' tmzp(2:end) '_mMZ' tmzp2(2:end) '_'];
+exper = 'v13_';
 [fname,simname] = sub_fname_cesm_fosi_exper(param,exper);
 
 %! Storage variables
