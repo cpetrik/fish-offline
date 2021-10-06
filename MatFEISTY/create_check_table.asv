@@ -1,0 +1,81 @@
+% Create check table for FEISTY functions
+clear all
+close all
+
+%% ! Make core parameters/constants 
+param = make_parameters_1meso(); 
+
+%! Grid locations - just do 2, one coastal, one deep
+param.NX = 2;
+param.ID = 1:param.NX;
+NX = param.NX;
+ID = 1:param.NX;
+
+%! How long to run the model
+YEARS = 68;
+DAYS = 365;
+MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
+
+%% ! Create a directory for output
+exper = 'v13_';
+[fname,simname] = sub_fname_cesm_fosi_exper(param,exper);
+
+%% ! Initialize
+init_sim = [exper simname];
+load(['/Volumes/MIP/NC/CESM_MAPP/',simname '/Last_mo_spin_' init_sim '.mat']);
+BENT.mass = BENT.bio;
+[Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish(ID,Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT);
+
+%%
+Sml_f.bio = round(nanmean(Sml_f.bio),2,'significant');
+Sml_f.bio(2,1) = round(nanmean(Sml_f.bio),2,'significant');
+
+Sml_p.bio = round(nanmean(Sml_p.bio),2,'significant');
+Sml_p.bio(2,1) = round(nanmean(Sml_p.bio),2,'significant');
+
+Sml_d.bio = round(nanmean(Sml_d.bio),2,'significant');
+Sml_d.bio(2,1) = round(nanmean(Sml_d.bio),2,'significant');
+
+Med_f.bio = round(nanmean(Med_f.bio),2,'significant');
+Med_f.bio(2,1) = round(nanmean(Med_f.bio),2,'significant');
+
+Med_p.bio = round(nanmean(Med_p.bio),2,'significant');
+Med_p.bio(2,1) = round(nanmean(Med_p.bio),2,'significant');
+
+Med_d.bio = round(nanmean(Med_d.bio),2,'significant');
+Med_d.bio(2,1) = round(nanmean(Med_d.bio),2,'significant');
+
+Lrg_p.bio = round(nanmean(Lrg_p.bio),2,'significant');
+Lrg_p.bio(2,1) = round(nanmean(Lrg_p.bio),2,'significant');
+
+Lrg_d.bio = round(nanmean(Lrg_d.bio),2,'significant');
+Lrg_d.bio(2,1) = round(nanmean(Lrg_d.bio),2,'significant');
+
+BENT.bio = round(nanmedian(BENT.mass),2,'significant');
+BENT.bio(2,1) = round(nanmedian(BENT.mass),2,'significant');
+
+%%
+Sf = Sml_f;
+Sp = Sml_p;
+Sd = Sml_d;
+Mf = Med_f;
+Mp = Med_p;
+Md = Med_d;
+Lp = Lrg_p;
+Ld = Lrg_d;
+
+%%
+load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6.mat','GRD');
+YR=1;
+ti = num2str(YR);
+load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v6_daily_',ti,'.mat'],'ESM');
+    
+cst = GRD.Z<=200;
+
+%% save
+Fstat = array2table(fish_stat,'VariableNames',{'r','p','RMSE','Bias'},...
+    'RowNames',{'SAU All Fish','SAU F','SAU P','SAU D','SAU Frac Pelagic',...
+    'vanD Frac Pelagic','Stock All Fish'});
+writetable(Fstat,[fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.csv'],'Delimiter',',',...
+    'WriteRowNames',true)
+save([fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.mat'],'fish_stat')

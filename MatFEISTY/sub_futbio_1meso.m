@@ -2,8 +2,6 @@
 %%% DEMOGRAPHIC CALCULATIONS
 function [Sf,Sp,Sd,Mf,Mp,Md,Lp,Ld,BENT,ENVR] = sub_futbio_1meso(DY,ESM,GRD,Sf,Sp,Sd,Mf,Mp,Md,Lp,Ld,BENT,param)
 
-dfrate = param.dfrate;
-
 %%% If biomass < individual fish mass per grid cell, set all rates to zero? %%%
 
 %%% ESM information
