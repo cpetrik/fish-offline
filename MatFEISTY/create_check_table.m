@@ -164,6 +164,41 @@ Ld.con_p  = sub_cons(param,ENVR.Tp,ENVR.Tb,Ld.td,param.M_l,[Ld.enc_p,Ld.enc_f,Ld
 Ld.con_d  = sub_cons(param,ENVR.Tp,ENVR.Tb,Ld.td,param.M_l,[Ld.enc_d,Ld.enc_p,Ld.enc_f,Ld.enc_be]);
 Ld.con_be = sub_cons(param,ENVR.Tp,ENVR.Tb,Ld.td,param.M_l,[Ld.enc_be,Ld.enc_f,Ld.enc_p,Ld.enc_d]);
 
+%% Offline coupling
+[Sf.con_zm,Sp.con_zm,Sd.con_zm,Mf.con_zm,Mp.con_zm,ENVR.fZm] = ...
+    sub_offline_zm(Sf.con_zm,Sp.con_zm,Sd.con_zm,Mf.con_zm,Mp.con_zm,...
+    Sf.bio,Sp.bio,Sd.bio,Mf.bio,Mp.bio,ENVR.dZm);
+
+%% Total consumption rates (could factor in handling times here; g m-2 d-1)
+Sf.I = Sf.con_zm;
+Sp.I = Sp.con_zm;
+Sd.I = Sd.con_zm;
+Mf.I = Mf.con_zm + Mf.con_f + Mf.con_p + Mf.con_d;
+Mp.I = Mp.con_zm + Mp.con_f + Mp.con_p + Mp.con_d;
+Md.I = Md.con_be;
+Lp.I = Lp.con_f + Lp.con_p + Lp.con_d;
+Ld.I = Ld.con_f + Ld.con_p + Ld.con_d + Ld.con_be;
+
+%% Consumption related to Cmax
+Sf.clev = sub_clev(param,Sf.I,ENVR.Tp,ENVR.Tb,Sf.td,param.M_s);
+Sp.clev = sub_clev(param,Sp.I,ENVR.Tp,ENVR.Tb,Sp.td,param.M_s);
+Sd.clev = sub_clev(param,Sd.I,ENVR.Tp,ENVR.Tb,Sd.td,param.M_s);
+Mf.clev = sub_clev(param,Mf.I,ENVR.Tp,ENVR.Tb,Mf.td,param.M_m);
+Mp.clev = sub_clev(param,Mp.I,ENVR.Tp,ENVR.Tb,Mp.td,param.M_m);
+Md.clev = sub_clev(param,Md.I,ENVR.Tp,ENVR.Tb,Md.td,param.M_m);
+Lp.clev = sub_clev(param,Lp.I,ENVR.Tp,ENVR.Tb,Lp.td,param.M_l);
+Ld.clev = sub_clev(param,Ld.I,ENVR.Tp,ENVR.Tb,Ld.td,param.M_l);
+
+%temp save here
+
+%% Death rates (g m-2 d-1)
+Sf.die = Mp.con_f.*Mp.bio + Mf.con_f.*Mf.bio;
+Sp.die = Mp.con_p.*Mp.bio + Mf.con_p.*Mf.bio;
+Sd.die = Mp.con_d.*Mp.bio + Mf.con_d.*Mf.bio;
+Mf.die = Lp.con_f.*Lp.bio + Ld.con_f.*Ld.bio;
+Mp.die = Lp.con_p.*Lp.bio + Ld.con_p.*Ld.bio;
+Md.die = Lp.con_d.*Lp.bio + Ld.con_d.*Ld.bio;
+
 %% save
 Fstat = array2table(fish_stat,'VariableNames',{'r','p','RMSE','Bias'},...
     'RowNames',{'SAU All Fish','SAU F','SAU P','SAU D','SAU Frac Pelagic',...
