@@ -281,12 +281,49 @@ Ld.bio = sub_update_fi(Ld.bio,Ld.rec,Ld.nu,Ld.rep,Ld.gamma,Ld.die,Ld.nmort);
 [Lp.bio, Lp.caught, Lp.fmort] = sub_fishing_rate(Lp.bio,param.dfrate,param.LPsel);
 [Ld.bio, Ld.caught, Ld.fmort] = sub_fishing_rate(Ld.bio,param.dfrate,param.LDsel);
 
-%%
-
 %% save
-Fstat = array2table(fish_stat,'VariableNames',{'r','p','RMSE','Bias'},...
-    'RowNames',{'SAU All Fish','SAU F','SAU P','SAU D','SAU Frac Pelagic',...
-    'vanD Frac Pelagic','Stock All Fish'});
-% writetable(Fstat,[fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.csv'],'Delimiter',',',...
-%     'WriteRowNames',true)
-% save([fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.mat'],'fish_stat')
+SF = struct2table(Sf);
+SP = struct2table(Sp);
+SD = struct2table(Sd);
+MF = struct2table(Mf);
+MP = struct2table(Mp);
+MD = struct2table(Md);
+LP = struct2table(Lp);
+LD = struct2table(Ld);
+BE = struct2table(BENT);
+
+SFmat = SF.Variables;
+SPmat = SP.Variables;
+SDmat = SD.Variables;
+MFmat = MF.Variables;
+MPmat = MP.Variables;
+MDmat = MD.Variables;
+LPmat = LP.Variables;
+LDmat = LD.Variables;
+BEmat = BE.Variables;
+
+varnames = SF.Properties.VariableNames;
+bnames = BE.Properties.VariableNames;
+
+tSF = array2table(SFmat','VariableNames',{'Coastal','Deep'},'RowNames',varnames);
+tSP = array2table(SPmat','VariableNames',{'Coastal','Deep'},'RowNames',varnames);
+tSD = array2table(SDmat','VariableNames',{'Coastal','Deep'},'RowNames',varnames);
+tMF = array2table(MFmat','VariableNames',{'Coastal','Deep'},'RowNames',varnames);
+tMP = array2table(MPmat','VariableNames',{'Coastal','Deep'},'RowNames',varnames);
+tMD = array2table(MDmat','VariableNames',{'Coastal','Deep'},'RowNames',varnames);
+tLP = array2table(LPmat','VariableNames',{'Coastal','Deep'},'RowNames',varnames);
+tLD = array2table(LDmat','VariableNames',{'Coastal','Deep'},'RowNames',varnames);
+tBE = array2table(BEmat','VariableNames',{'Coastal','Deep'},'RowNames',bnames);
+
+fpath = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/fish-offline/docs/';
+writetable(tSF,[fpath 'SF_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);
+writetable(tSP,[fpath 'SP_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);
+writetable(tSD,[fpath 'SD_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);
+writetable(tMF,[fpath 'MF_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);
+writetable(tMP,[fpath 'MP_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);
+writetable(tMD,[fpath 'MD_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);
+writetable(tLP,[fpath 'LP_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);
+writetable(tLD,[fpath 'LD_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);
+writetable(tBE,[fpath 'BE_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);
+
+save([fpath 'check_table_output.mat'])
