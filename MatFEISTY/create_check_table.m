@@ -199,10 +199,94 @@ Mf.die = Lp.con_f.*Lp.bio + Ld.con_f.*Ld.bio;
 Mp.die = Lp.con_p.*Lp.bio + Ld.con_p.*Ld.bio;
 Md.die = Lp.con_d.*Lp.bio + Ld.con_d.*Ld.bio;
 
+%% biomass-specific predation rates (m-2 d-1)
+Sf.pred = Sf.die ./ Sf.bio;
+Sp.pred = Sp.die ./ Sp.bio;
+Sd.pred = Sd.die ./ Sd.bio;
+Mf.pred = Mf.die ./ Mf.bio;
+Mp.pred = Mp.die ./ Mp.bio;
+Md.pred = Md.die ./ Md.bio;
+
+%% Natural mortality rates
+Sf.nmort = sub_nmort(param,ENVR.Tp,ENVR.Tb,Sf.td,param.M_s);
+Sp.nmort = sub_nmort(param,ENVR.Tp,ENVR.Tb,Sp.td,param.M_s);
+Sd.nmort = sub_nmort(param,ENVR.Tp,ENVR.Tb,Sd.td,param.M_s);
+Mf.nmort = sub_nmort(param,ENVR.Tp,ENVR.Tb,Mf.td,param.M_m);
+Mp.nmort = sub_nmort(param,ENVR.Tp,ENVR.Tb,Mp.td,param.M_m);
+Md.nmort = sub_nmort(param,ENVR.Tp,ENVR.Tb,Md.td,param.M_m);
+Lp.nmort = sub_nmort(param,ENVR.Tp,ENVR.Tb,Lp.td,param.M_l);
+Ld.nmort = sub_nmort(param,ENVR.Tp,ENVR.Tb,Ld.td,param.M_l);
+
+%% Energy available for somatic growth nu
+[Sf.nu, Sf.prod] = sub_nu(param,Sf.I,Sf.bio,Sf.met);
+[Sp.nu, Sp.prod] = sub_nu(param,Sp.I,Sp.bio,Sp.met);
+[Sd.nu, Sd.prod] = sub_nu(param,Sd.I,Sd.bio,Sd.met);
+[Mf.nu, Mf.prod] = sub_nu(param,Mf.I,Mf.bio,Mf.met);
+[Mp.nu, Mp.prod] = sub_nu(param,Mp.I,Mp.bio,Mp.met);
+[Md.nu, Md.prod] = sub_nu(param,Md.I,Md.bio,Md.met);
+[Lp.nu, Lp.prod] = sub_nu(param,Lp.I,Lp.bio,Lp.met);
+[Ld.nu, Ld.prod] = sub_nu(param,Ld.I,Ld.bio,Ld.met);
+
+%% Maturation (note subscript on Kappa is larvae, juv, adult)
+Sf.gamma = sub_gamma(param.K_l,param.Z_s,Sf.nu,Sf.die,Sf.bio,Sf.nmort,param.dfrate,0);
+Sp.gamma = sub_gamma(param.K_l,param.Z_s,Sp.nu,Sp.die,Sp.bio,Sp.nmort,param.dfrate,0);
+Sd.gamma = sub_gamma(param.K_l,param.Z_s,Sd.nu,Sd.die,Sd.bio,Sd.nmort,param.dfrate,0);
+Mf.gamma = sub_gamma(param.K_a,param.Z_m,Mf.nu,Mf.die,Mf.bio,Mf.nmort,param.dfrate,param.MFsel);
+Mp.gamma = sub_gamma(param.K_j,param.Z_m,Mp.nu,Mp.die,Mp.bio,Mp.nmort,param.dfrate,param.MPsel);
+Md.gamma = sub_gamma(param.K_j,param.Z_m,Md.nu,Md.die,Md.bio,Md.nmort,param.dfrate,param.MDsel);
+Lp.gamma = sub_gamma(param.K_a,param.Z_l,Lp.nu,Lp.die,Lp.bio,Lp.nmort,param.dfrate,param.LPsel);
+Ld.gamma = sub_gamma(param.K_a,param.Z_l,Ld.nu,Ld.die,Ld.bio,Ld.nmort,param.dfrate,param.LDsel);
+
+%% Reproduction (by adults only)
+[Mf.gamma,Mf.nu,Mf.rep] = sub_rep(param.NX,Mf.gamma,Mf.nu,param.K_a);
+[Lp.gamma,Lp.nu,Lp.rep] = sub_rep(param.NX,Lp.gamma,Lp.nu,param.K_a);
+[Ld.gamma,Ld.nu,Ld.rep] = sub_rep(param.NX,Ld.gamma,Ld.nu,param.K_a);
+
+%% Recruitment (from smaller size class)
+Sf.rec = sub_rec_larv(Mf.rep,Mf.bio,param.rfrac);
+Sp.rec = sub_rec_larv(Lp.rep,Lp.bio,param.rfrac);
+Sd.rec = sub_rec_larv(Ld.rep,Ld.bio,param.rfrac);
+Mf.rec = sub_rec(Sf.gamma,Sf.bio);
+Mp.rec = sub_rec(Sp.gamma,Sp.bio);
+Md.rec = sub_rec(Sd.gamma,Sd.bio);
+Lp.rec = sub_rec(Mp.gamma,Mp.bio);
+Ld.rec = sub_rec(Md.gamma,Md.bio);
+
+%%
+Sf.bio_init=Sf.bio;
+Sp.bio_init=Sp.bio;
+Sd.bio_init=Sd.bio;
+Mf.bio_init=Mf.bio;
+Mp.bio_init=Mp.bio;
+Md.bio_init=Md.bio;
+Lp.bio_init=Lp.bio;
+Ld.bio_init=Ld.bio;
+
+%% Mass balance
+Sf.bio = sub_update_fi(Sf.bio,Sf.rec,Sf.nu,Sf.rep,Sf.gamma,Sf.die,Sf.nmort);
+Sp.bio = sub_update_fi(Sp.bio,Sp.rec,Sp.nu,Sp.rep,Sp.gamma,Sp.die,Sp.nmort);
+Sd.bio = sub_update_fi(Sd.bio,Sd.rec,Sd.nu,Sd.rep,Sd.gamma,Sd.die,Sd.nmort);
+
+Mf.bio = sub_update_fi(Mf.bio,Mf.rec,Mf.nu,Mf.rep,Mf.gamma,Mf.die,Mf.nmort);
+Mp.bio = sub_update_fi(Mp.bio,Mp.rec,Mp.nu,Mp.rep,Mp.gamma,Mp.die,Mp.nmort);
+Md.bio = sub_update_fi(Md.bio,Md.rec,Md.nu,Md.rep,Md.gamma,Md.die,Md.nmort);
+
+Lp.bio = sub_update_fi(Lp.bio,Lp.rec,Lp.nu,Lp.rep,Lp.gamma,Lp.die,Lp.nmort);
+Ld.bio = sub_update_fi(Ld.bio,Ld.rec,Ld.nu,Ld.rep,Ld.gamma,Ld.die,Ld.nmort);
+
+%% Fishing by rate
+[Mf.bio, Mf.caught, Mf.fmort] = sub_fishing_rate(Mf.bio,param.dfrate,param.MFsel);
+[Mp.bio, Mp.caught, Mp.fmort] = sub_fishing_rate(Mp.bio,param.dfrate,param.MPsel);
+[Md.bio, Md.caught, Md.fmort] = sub_fishing_rate(Md.bio,param.dfrate,param.MDsel);
+[Lp.bio, Lp.caught, Lp.fmort] = sub_fishing_rate(Lp.bio,param.dfrate,param.LPsel);
+[Ld.bio, Ld.caught, Ld.fmort] = sub_fishing_rate(Ld.bio,param.dfrate,param.LDsel);
+
+%%
+
 %% save
 Fstat = array2table(fish_stat,'VariableNames',{'r','p','RMSE','Bias'},...
     'RowNames',{'SAU All Fish','SAU F','SAU P','SAU D','SAU Frac Pelagic',...
     'vanD Frac Pelagic','Stock All Fish'});
-writetable(Fstat,[fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.csv'],'Delimiter',',',...
-    'WriteRowNames',true)
-save([fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.mat'],'fish_stat')
+% writetable(Fstat,[fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.csv'],'Delimiter',',',...
+%     'WriteRowNames',true)
+% save([fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.mat'],'fish_stat')
