@@ -1,9 +1,9 @@
 %%%%!! RUN HISTORIC FOR ALL LOCATIONS
-function Spinup_cesm()
+function Spinup_cesm_t2()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Make core parameters/constants 
-param = make_parameters_1meso();
+param = make_parameters_1meso_t2();
 
 %! Grid
 load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6.mat','GRD');
@@ -152,7 +152,7 @@ for YR = 1:YEARS % years
         DY = int64(ceil(DAY));
 %         [num2str(YR),' , ', num2str(mod(DY,365))]
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
-            sub_futbio_1meso_mzpref(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
+            sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
             Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
         
         %! Store
