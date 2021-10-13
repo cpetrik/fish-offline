@@ -3,10 +3,11 @@
 clear all
 close all
 
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+%cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ100_mMZ100_nmort1_BE08_noCC_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-harv = 'v13_sMZ090_mMZ045_All_fish03_';
+harv = 'v13_All_fish03_';
 
 %% SP
 ncid = netcdf.open([fpath 'FOSI_' harv 'sml_p.nc'],'NC_NOWRITE');
@@ -284,4 +285,4 @@ plot(mo,log10(ld_tmean),'k'); hold on;
 
 [nid,nt] = size(MZ.frac);
 figure
-plot(mo,mz_ttf/nid,'b'); hold on; %~20.5%
+plot(mo,mz_ttf/nid,'b'); hold on; %~7.5%

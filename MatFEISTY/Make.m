@@ -4,17 +4,14 @@ clear all
 close all
 
 %%%%!! EXPERIMENTS
-spinup_cesm = true;
-fosi_cesm = false;
+spinup_cesm = false;
+fosi_cesm = true;
 
 tic
 
 if spinup_cesm
-%    Locs_CESM_4p4z_spinup()
-%      Spinup_cesm()
-     Spinup_cesm_t1()
-     Spinup_cesm_t2()
-     Spinup_cesm_t3()
+%    Locs_CESM_4p4z_spinup() 
+    Spinup_cesm()
 %     Spinup_4p4z()
 %     Spinup_4p4z_comb()
 end
