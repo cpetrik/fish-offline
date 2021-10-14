@@ -16,7 +16,7 @@ simnameI = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_n
 init_sim = [experI simnameI];
 
 %% Loop over A parameter
-mz = (0.55:0.5:0.7);
+mz = (0.55:0.05:0.7);
 for n=1:length(mz)
     %! Make core parameters/constants with new permutation
     param = make_parameters_1meso();
@@ -87,13 +87,9 @@ for n=1:length(mz)
             
             %%%! Future time step
             DY = int64(ceil(DAY));
-            %         [num2str(YR),' , ', num2str(mod(DY,365))]
             [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
-                sub_futbio_1meso_mzpref(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
+                sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
                 Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
-%             [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
-%                 sub_futbio_1meso_mzprefM(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
-%                 Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
             
             %! Store
             S_Bent_bio(:,DY) = BENT.mass;

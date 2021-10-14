@@ -7,7 +7,7 @@ close all
 
 %% Fish data
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ090_mMZ045_nmort1_BE08_noCC_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A063_sMZ100_mMZ050_nmort1_BE08_noCC_RE00100';
 mod = 'v13_All_fish03';
 %mod = 'All_fish03';
 

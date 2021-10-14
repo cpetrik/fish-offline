@@ -17,9 +17,9 @@ if spinup_cesm
 end
 if fosi_cesm
 %     Locs_CESM_4p4z()
-%    FOSI_cesm()
-%    FOSI_cesm_catch()
-   FOSI_cesm_search()
+   FOSI_cesm()
+   FOSI_cesm_catch()
+%    FOSI_cesm_search()
 %     CESM_4p4z()
 %     CESM_4p4z_comb()
 end

@@ -71,6 +71,22 @@ fx_all = [fx_all 'A75_BS0.9_M0.45'];
 
 clear r rmse ss mis
 
+%% extra results with A=0.625
+% sMZ=1, mMZ=0.5
+mod = 'v13_All_fish03_';
+cfile1 = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A063_sMZ100_mMZ050_nmort1_BE08_noCC_RE00100';
+dpath1=['/Volumes/MIP/NC/CESM_MAPP/' cfile1 '/'];
+
+load([dpath1 'LME_fosi_fished_',mod,cfile1 '.mat'],'lme_mcatch','lme_area');
+
+[r,rmse,ss,mis] = lme_saup_corr_stock_ensem(lme_mcatch,lme_area);
+rmse_all0 = [rmse_all0 rmse'];
+mis_all0(114,:,:) = mis;
+r_all0 = [r_all0 r'];
+fx_all = [fx_all 'A63_BS1_M0.5'];
+
+clear r rmse ss mis
+
 %% SAU comparison
 % SAUP data
 load('/Users/cpetrik/Dropbox/Princeton/POEM_other/SAUP/SAUP_Stock_top10.mat');
@@ -134,5 +150,5 @@ pT = array2table(pset,'VariableNames',{'MZpref','ParamSet','AIC','dAIC',...
 % pT(:,1) = test2;
 pT(:,16) = fx_all(idc)';
 
-writetable(pT,[dpath 'bestAIC_FOSI_v12_v13_ensemble_mzpref_A75.csv'])
+%writetable(pT,[dpath 'bestAIC_FOSI_v12_v13_ensemble_mzpref_A75.csv'])
 
