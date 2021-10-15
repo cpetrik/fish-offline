@@ -2,6 +2,7 @@
 % Total mort 
 % Lg zoo calc from frac diat biomass out of all 3 pythos
 % Add last mon y-1 and 1st mo y+1 to interp
+% Remove grid cells of inland seas
 
 clear all
 close all
@@ -15,7 +16,7 @@ load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.FIESTY-forcing.mat'],...
     'TLAT','TLONG','TAREA','time','yr');
 load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo_totloss_allphytoC.mat'],...
     'LzooC_150m','Lzoo_loss_150m');
-load([fpath 'gridspec_POP_gx1v6.mat'],'mask');
+load([fpath 'gridspec_POP_gx1v6_noSeas.mat'],'mask');
 
 %% nans & zeros
 TEMP_150m = double(TEMP_150m);
