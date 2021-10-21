@@ -4,12 +4,13 @@ function FOSI_cesm_varFood()
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Model experiment
 exper = 'v13_varFood_';
+mod = 'v13_';
 
 %! Make core parameters/constants 
 param = make_parameters_1meso(); 
 
 %! Grid
-load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6.mat','GRD');
+load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
 param.NX = GRD.N;
 param.ID = 1:param.NX;
 NX = param.NX;
@@ -46,8 +47,8 @@ P_Lrg_p = zeros(NX,DAYS);
 P_Lrg_d = zeros(NX,DAYS);
 
 %! Initialize
-init_sim = simname;
-load(['/Volumes/MIP/NC/CESM_MAPP/',init_sim '/Last_mo_spin_' init_sim '.mat']);
+init_sim = [mod simname];
+load(['/Volumes/MIP/NC/CESM_MAPP/',simname '/Last_mo_spin_' init_sim '.mat']);
 BENT.mass = BENT.bio;
 [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish(ID,Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT);
 

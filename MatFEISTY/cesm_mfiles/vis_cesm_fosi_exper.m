@@ -5,36 +5,41 @@
 clear all
 close all
 
-%% Fish data
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'All_fish03';
-exper = 'climatol_'; %varFood, varTemp, climatol
+%% Map data
+cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
+load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
+[ni,nj]=size(TLONG); 
+
+plotminlat=-90; %Set these bounds for your data
+plotmaxlat=90;
+plotminlon=-280;
+plotmaxlon=80;
+latlim=[plotminlat plotmaxlat];
+lonlim=[plotminlon plotmaxlon];
+
+load coastlines; 
+
+%% Fish data
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_noCC_RE00100';
+mod = 'All_fish03';
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
+
+sims = {'v13_climatol_';'v13_varFood_';'v13_varTemp_'};
+    
+for n=1:length(sims)
+    close all
+    exper = sims{n};
+
 load([fpath 'Time_Means_FOSI_' exper cfile '.mat']);
 load([fpath 'Space_Means_FOSI_' exper cfile '.mat']);
-load([fpath 'Annual_Means_FOSI_' exper cfile '.mat'],'mz_mtf');
-
-% Map data
-cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI//';
-load([cpath 'gridspec_POP_gx1v6.mat']);
-load([cpath 'Data_grid_POP_gx1v6.mat']);
-
-[ni,nj]=size(TLONG);
-
-plotminlat=-90; %Set these bounds for your data
-plotmaxlat=90;
-plotminlon=-180;
-plotmaxlon=180;
-latlim=[plotminlat plotmaxlat];
-lonlim=[plotminlon plotmaxlon];
-
-load coastlines;     
+load([fpath 'Annual_Means_FOSI_' exper cfile '.mat'],'mz_mtf');   
 
 %% colors
 cm10=[0.5 0.5 0;... %tan/army
@@ -306,3 +311,4 @@ text(0,1.6,'Mean times MZ overconsumed','HorizontalAlignment','center')
 stamp(exper)
 print('-dpng',[ppath 'FOSI_',exper mod '_global_zoop_overcon.png'])
 
+end

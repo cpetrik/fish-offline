@@ -6,12 +6,12 @@ close all
 
 %% Map data
 cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI//';
-load([cpath 'gridspec_POP_gx1v6.mat']);
-load([cpath 'Data_grid_POP_gx1v6.mat']);
+load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
+load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
 %% Fish data
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'All_fish03';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_noCC_RE00100';
+mod = 'v13_All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -21,7 +21,7 @@ if (~isfolder(ppath))
 end
 
 %% Full
-load([fpath 'Plot_Means_FOSI_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_v13_All_fish03_' cfile '.mat']);
 
 FulltF = F;
 FulltP = P;
@@ -41,7 +41,7 @@ clear F P D B AllF AllP AllD AllS AllM AllL
 
 %%
 %exper = varFood, varTemp, climatol
-load([fpath 'Plot_Means_FOSI_climatol_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_v13_climatol_' cfile '.mat']);
 
 ClimtF = F;
 ClimtP = P;
@@ -60,7 +60,7 @@ ClimsA = AllF+AllP+AllD;
 clear F P D B AllF AllP AllD AllS AllM AllL
 
 %%
-load([fpath 'Plot_Means_FOSI_varTemp_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_v13_varTemp_' cfile '.mat']);
 
 TemptF = F;
 TemptP = P;
@@ -79,7 +79,7 @@ TempsA = AllF+AllP+AllD;
 clear F P D B AllF AllP AllD AllS AllM AllL
 
 %%
-load([fpath 'Plot_Means_FOSI_varFood_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_v13_varFood_' cfile '.mat']);
 
 FoodtF = F;
 FoodtP = P;
@@ -142,8 +142,8 @@ dFullsA = FullsA - ClimsA;
 
 plotminlat=-90; %Set these bounds for your data
 plotmaxlat=90;
-plotminlon=-180;
-plotmaxlon=180;
+plotminlon=-280;
+plotmaxlon=80;
 latlim=[plotminlat plotmaxlat];
 lonlim=[plotminlon plotmaxlon];
 
@@ -348,7 +348,7 @@ stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_comp_exper_ts_All_subplot.png'])
 
 %% 4 subplots
-figure(7)
+figure(8)
 subplot(2,2,1)
 %plot(y,(ClimtF),'color',[0.5 0.5 0.5],'Linewidth',1); hold on;
 plot(y,(dTemptF),'r','Linewidth',1); hold on;
@@ -399,7 +399,7 @@ print('-dpng',[ppath 'FOSI_',mod,'_comp_exper_ts_diff_subplot.png'])
 %% Plots in space
 
 % Forage 4 on subplots
-figure(7)
+figure(9)
 % all F
 subplot('Position',[0 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
@@ -451,7 +451,7 @@ stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_global_exper_diffF_subplot.png'])
 
 %% LgPel 4 on subplots
-figure(8)
+figure(10)
 % all F
 subplot('Position',[0 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
@@ -503,7 +503,7 @@ stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_global_exper_diffP_subplot.png'])
 
 %% Dem 4 on subplots
-figure(9)
+figure(11)
 % all F
 subplot('Position',[0 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
@@ -555,7 +555,7 @@ stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_global_exper_diffD_subplot.png'])
 
 %% All 4 on subplots
-figure(10)
+figure(12)
 % all F
 subplot('Position',[0 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
@@ -607,54 +607,54 @@ stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_global_exper_diffAll_subplot.png'])
 
 %% Bent 4 on subplots
-figure(11)
-% all F
-subplot('Position',[0 0.51 0.5 0.5])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(ClimsB))
-colormap(cmBP50)
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-2 2]);
-cb = colorbar('Position',[0.05 0.5 0.4 0.025],'orientation','horizontal');%,'AxisLocation','in');
-title(cb,'log10 g m^-^2')
-set(gcf,'renderer','painters')
-title('B Climatol')
-
-% all D
-subplot('Position',[0 0 0.5 0.5])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,(dTempsB))
-cmocean('balance')   
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-2 2]);
-cb2 = colorbar('Position',[0.55 0.5 0.4 0.025],'orientation','horizontal','AxisLocation','in');
-title(cb2,'g m^-^2')
-set(gcf,'renderer','painters')
-title('diff B var Temp')
-
-% All P
-subplot('Position',[0.5 0.51 0.5 0.5])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,(dFullsB))
-cmocean('balance')   
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-2 2]);
-set(gcf,'renderer','painters')
-title('diff B Full')
-
-% All
-subplot('Position',[0.5 0 0.5 0.5])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,(dFoodsB))
-cmocean('balance')               
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-2 2]);
-set(gcf,'renderer','painters')
-title('diff B var Prey')
-stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_global_exper_diffB_subplot.png'])
+% figure(13)
+% % all F
+% subplot('Position',[0 0.51 0.5 0.5])
+% axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+%     'Grid','off','FLineWidth',1)
+% surfm(TLAT,TLONG,log10(ClimsB))
+% colormap(cmBP50)
+% h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+% caxis([-2 2]);
+% cb = colorbar('Position',[0.05 0.5 0.4 0.025],'orientation','horizontal');%,'AxisLocation','in');
+% title(cb,'log10 g m^-^2')
+% set(gcf,'renderer','painters')
+% title('B Climatol')
+% 
+% % all D
+% subplot('Position',[0 0 0.5 0.5])
+% axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+%     'Grid','off','FLineWidth',1)
+% surfm(TLAT,TLONG,(dTempsB))
+% cmocean('balance')   
+% h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+% caxis([-2 2]);
+% cb2 = colorbar('Position',[0.55 0.5 0.4 0.025],'orientation','horizontal','AxisLocation','in');
+% title(cb2,'g m^-^2')
+% set(gcf,'renderer','painters')
+% title('diff B var Temp')
+% 
+% % All P
+% subplot('Position',[0.5 0.51 0.5 0.5])
+% axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+%     'Grid','off','FLineWidth',1)
+% surfm(TLAT,TLONG,(dFullsB))
+% cmocean('balance')   
+% h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+% caxis([-2 2]);
+% set(gcf,'renderer','painters')
+% title('diff B Full')
+% 
+% % All
+% subplot('Position',[0.5 0 0.5 0.5])
+% axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+%     'Grid','off','FLineWidth',1)
+% surfm(TLAT,TLONG,(dFoodsB))
+% cmocean('balance')               
+% h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+% caxis([-2 2]);
+% set(gcf,'renderer','painters')
+% title('diff B var Prey')
+% stamp('')
+% print('-dpng',[ppath 'FOSI_',mod,'_global_exper_diffB_subplot.png'])
 

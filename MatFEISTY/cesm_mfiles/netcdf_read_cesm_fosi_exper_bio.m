@@ -3,11 +3,15 @@
 clear all
 close all
 
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_noCC_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 harv = 'All_fish03';
-exper = 'climatol_'; %varFood, varTemp, climatol
+sims = {'v13_climatol_';'v13_varFood_';'v13_varTemp_'};
+    
+for n=1:length(sims)
+    close all
+    exper = sims{n};
 
 %% SP
 ncid = netcdf.open([fpath 'FOSI_' exper harv '_sml_p.nc'],'NC_NOWRITE');
@@ -270,3 +274,4 @@ plot(mo,log10(lp_tmean),'b'); hold on;
 plot(mo,log10(mf_tmean),'r'); hold on;
 plot(mo,log10(ld_tmean),'k'); hold on;
 
+end
