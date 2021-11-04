@@ -8,7 +8,7 @@ close all
 %% Fish data
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_noCC_RE00100';
-mod = 'v13';
+mod = 'v13_varFood';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -285,10 +285,10 @@ stamp('')
 print('-dpng',[ppath 'Spinup_',mod,'_global_ratios_subplot.png'])
 
 %% Find & save locations of very low values
-fid = find(AllF < 1e-50);
-pid = find(AllP < 1e-50);
-
-save([fpath 'Means_Spinup_',mod,'_lowbiom.mat'],'fid','pid');
+% fid = find(AllF < 1e-50);
+% pid = find(AllP < 1e-50);
+% 
+% save([fpath 'Means_Spinup_',mod,'_lowbiom.mat'],'fid','pid');
 
 
 
