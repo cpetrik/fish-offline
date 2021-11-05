@@ -125,16 +125,6 @@ clear lme_mlpb lme_mldb lme_mbb
 clear lme_ssfb lme_sspb lme_ssdb lme_smfb lme_smpb lme_smdb
 clear lme_slpb lme_sldb lme_sbb
 
-%% Sum of food and temp exper
-AddmF = FoodmF + TempmF;
-AddmP = FoodmP + TempmP;
-AddmD = FoodmD + TempmD;
-AddmB = FoodmB + TempmB;
-AddmS = FoodmS + TempmS;
-AddmM = FoodmM + TempmM;
-AddmL = FoodmL + TempmL;
-AddmA = FoodmA + TempmA;
-
 %% Diffs from climatol
 dFoodtF = FoodtF - ClimtF;
 dFoodtP = FoodtP - ClimtP;
@@ -190,14 +180,15 @@ dFullmM = FullmM - ClimmM;
 dFullmL = FullmL - ClimmL;
 dFullmA = FullmA - ClimmA;
 
-dAddmF = AddmF - ClimmF;
-dAddmP = AddmP - ClimmP;
-dAddmD = AddmD - ClimmD;
-dAddmB = AddmB - ClimmB;
-dAddmS = AddmS - ClimmS;
-dAddmM = AddmM - ClimmM;
-dAddmL = AddmL - ClimmL;
-dAddmA = AddmA - ClimmA;
+%% Sum of food and temp exper
+dAddmF = dFoodmF + dTempmF;
+dAddmP = dFoodmP + dTempmP;
+dAddmD = dFoodmD + dTempmD;
+dAddmB = dFoodmB + dTempmB;
+dAddmS = dFoodmS + dTempmS;
+dAddmM = dFoodmM + dTempmM;
+dAddmL = dFoodmL + dTempmL;
+dAddmA = dFoodmA + dTempmA;
 
 %% colors
 cm10=[0.5 0.5 0;... %tan/army
@@ -226,17 +217,17 @@ figure(1)
 for z = 1:length(lid)
     lme = lid(z);
     subplot(3,3,z)
-    plot(y,log10(1e-6*FullmB(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmB(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmB(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmB(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmB(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmB(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmB(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmB(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     %ylim([-5 2])
     if z==8
         xlabel('Time (y)')
     end
     if z==4
-        ylabel('Mean biomass (log_1_0 MT)')
+        ylabel('\Delta mean biomass (MT)')
     end
     if z==2
         title(['Benthos ' lname(z)])
@@ -244,27 +235,27 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','clim','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'}); 
 lg.Position(1:2) = [.69 .21];
 stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_USLME_exper_ts_B.png'])
+print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_B.png'])
 
 %% Forage
 figure(2)
 for z = 1:length(lid)
     lme = lid(z);
     subplot(3,3,z)
-    plot(y,log10(1e-6*FullmF(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmF(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmF(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmF(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmF(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmF(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmF(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmF(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     %ylim([-5 2])
     if z==8
         xlabel('Time (y)')
     end
     if z==4
-        ylabel('Mean biomass (log_1_0 MT)')
+        ylabel('\Delta mean biomass (MT)')
     end
     if z==2
         title(['Forage ' lname(z)])
@@ -272,27 +263,27 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','clim','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'}); 
 lg.Position(1:2) = [.69 .21];
 stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_USLME_exper_ts_F.png'])
+print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_F.png'])
 
 %% Lg Pel
 figure(3)
 for z = 1:length(lid)
     lme = lid(z);
     subplot(3,3,z)
-    plot(y,log10(1e-6*FullmP(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmP(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmP(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmP(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmP(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmP(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmP(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmP(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     %ylim([-5 2])
     if z==8
         xlabel('Time (y)')
     end
     if z==4
-        ylabel('Mean biomass (log_1_0 MT)')
+        ylabel('\Delta mean biomass (MT)')
     end
     if z==2
         title(['Lg Pelagic ' lname(z)])
@@ -300,27 +291,27 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','clim','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'}); 
 lg.Position(1:2) = [.69 .21];
 stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_USLME_exper_ts_P.png'])
+print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_P.png'])
 
 %% Dem
 figure(4)
 for z = 1:length(lid)
     lme = lid(z);
     subplot(3,3,z)
-    plot(y,log10(1e-6*FullmD(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmD(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmD(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmD(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmD(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmD(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmD(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmD(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     %ylim([-5 2])
     if z==8
         xlabel('Time (y)')
     end
     if z==4
-        ylabel('Mean biomass (log_1_0 MT)')
+        ylabel('\Delta mean biomass (MT)')
     end
     if z==2
         title(['Demersal ' lname(z)])
@@ -328,27 +319,27 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','clim','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'}); 
 lg.Position(1:2) = [.69 .21];
 stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_USLME_exper_ts_D.png'])
+print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_D.png'])
 
 %% All
 figure(5)
 for z = 1:length(lid)
     lme = lid(z);
     subplot(3,3,z)
-    plot(y,log10(1e-6*FullmA(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmA(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmA(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmA(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmA(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmA(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmA(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmA(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     %ylim([-5 2])
     if z==8
         xlabel('Time (y)')
     end
     if z==4
-        ylabel('Mean biomass (log_1_0 MT)')
+        ylabel('\Delta mean biomass (MT)')
     end
     if z==2
         title(['All ' lname(z)])
@@ -356,27 +347,27 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','clim','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'}); 
 lg.Position(1:2) = [.69 .21];
 stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_USLME_exper_ts_All.png'])
+print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_All.png'])
 
 %% Small
 figure(6)
 for z = 1:length(lid)
     lme = lid(z);
     subplot(3,3,z)
-    plot(y,log10(1e-6*FullmS(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmS(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmS(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmS(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmS(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmS(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmS(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmS(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     %ylim([-5 2])
     if z==8
         xlabel('Time (y)')
     end
     if z==4
-        ylabel('Mean biomass (log_1_0 MT)')
+        ylabel('\Delta mean biomass (MT)')
     end
     if z==2
         title(['Small ' lname(z)])
@@ -384,27 +375,27 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','clim','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'}); 
 lg.Position(1:2) = [.69 .21];
 stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_USLME_exper_ts_S.png'])
+print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_S.png'])
 
 %% Med
 figure(7)
 for z = 1:length(lid)
     lme = lid(z);
     subplot(3,3,z)
-    plot(y,log10(1e-6*FullmM(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmM(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmM(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmM(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmM(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmM(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmM(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmM(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     %ylim([-5 2])
     if z==8
         xlabel('Time (y)')
     end
     if z==4
-        ylabel('Mean biomass (log_1_0 MT)')
+        ylabel('\Delta mean biomass (MT)')
     end
     if z==2
         title(['Medium ' lname(z)])
@@ -412,27 +403,27 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','clim','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'}); 
 lg.Position(1:2) = [.69 .21];
 stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_USLME_exper_ts_M.png'])
+print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_M.png'])
 
 %% Lrg
 figure(8)
 for z = 1:length(lid)
     lme = lid(z);
     subplot(3,3,z)
-    plot(y,log10(1e-6*FullmL(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmL(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmL(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmL(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmL(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmL(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmL(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmL(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     %ylim([-5 2])
     if z==8
         xlabel('Time (y)')
     end
     if z==4
-        ylabel('Mean biomass (log_1_0 MT)')
+        ylabel('\Delta mean biomass (MT)')
     end
     if z==2
         title(['Large ' lname(z)])
@@ -440,10 +431,10 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','clim','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'}); 
 lg.Position(1:2) = [.69 .21];
 stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_USLME_exper_ts_L.png'])
+print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_L.png'])
 
 %% Subplots of each fn type per LME
 for z = 1:length(lid)
@@ -451,74 +442,74 @@ for z = 1:length(lid)
     f9 = figure(9);
     clf
     subplot(3,3,1)
-    plot(y,log10(1e-6*FullmS(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmS(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmS(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmS(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmS(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmS(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmS(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmS(lme,:)),'-.b','Linewidth',1.5); hold on;
     title('Small')
     
     subplot(3,3,2)
-    plot(y,log10(1e-6*FullmM(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmM(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmM(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmM(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmM(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmM(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmM(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmM(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     title([lname(z) ' Medium'])
     
     subplot(3,3,3)
-    plot(y,log10(1e-6*FullmL(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmL(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmL(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmL(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmL(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmL(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmL(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmL(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     %ylim([-5 2])
     title('Large')
     
     subplot(3,3,4)
-    plot(y,log10(1e-6*FullmF(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmF(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmF(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmF(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmF(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmF(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmF(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmF(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
-    ylabel('Mean biomass (log_1_0 MT)')
+    ylabel('\Delta mean biomass (MT)')
     title('Forage')
     
     subplot(3,3,5)
-    plot(y,log10(1e-6*FullmP(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmP(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmP(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmP(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmP(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmP(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmP(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmP(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     title('Lg Pelagic')
     
     subplot(3,3,6)
-    plot(y,log10(1e-6*FullmD(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmD(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmD(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmD(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmD(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmD(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmD(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmD(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     title('Demersal')
     
     subplot(3,3,7)
-    plot(y,log10(1e-6*FullmA(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmA(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmA(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmA(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmA(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmA(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmA(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmA(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     xlabel('Time (y)')
     title('All Fish')
     
     subplot(3,3,9)
-    plot(y,log10(1e-6*FullmB(lme,:)),'k','Linewidth',2); hold on;
-    plot(y,log10(1e-6*ClimmB(lme,:)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
-    plot(y,log10(1e-6*TempmB(lme,:)),'-.r','Linewidth',2); hold on;
-    plot(y,log10(1e-6*FoodmB(lme,:)),'-.b','Linewidth',2); hold on;
+    plot(y,(1e-6*dFullmB(lme,:)),'k','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dAddmB(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
+    plot(y,(1e-6*dTempmB(lme,:)),'-.r','Linewidth',1.5); hold on;
+    plot(y,(1e-6*dFoodmB(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     title('Benthos')
-    lg  = legend({'full','clim','temp','prey'});
+    lg  = legend({'full','temp+prey','temp','prey'});
     lg.Position(1:2) = [.45 .21];
     stamp('')
-    print(f9,'-dpng',[ppath 'FOSI_',mod,'_USLME_exper_ts_',lname{z},'.png'])
+    print(f9,'-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_',lname{z},'.png'])
 end
 
 

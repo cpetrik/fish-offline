@@ -4,6 +4,24 @@
 clear all
 close all
 
+%% Map data
+cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
+load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
+load([cpath 'LME-mask-POP_gx1v6.mat']);
+
+[ni,nj]=size(TLONG);
+ID = GRD.ID;
+
+plotminlat=-90; %Set these bounds for your data
+plotmaxlat=90;
+plotminlon=-280;
+plotmaxlon=80;
+latlim=[plotminlat plotmaxlat];
+lonlim=[plotminlon plotmaxlon];
+
+load coastlines;
+
 %% Fish data
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_noCC_RE00100';
@@ -26,24 +44,6 @@ load([dpath 'Annual_Means_FOSI_' mod cfile '.mat'],'sf_abio','sp_abio','sd_abio'
     'lp_abio','ld_abio','b_abio');
 
 [nid,nt] = size(ld_abio);
-
-%% Map data
-cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
-load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
-load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
-load([cpath 'LME-mask-POP_gx1v6.mat']);
-
-[ni,nj]=size(TLONG);
-ID = GRD.ID;
-
-plotminlat=-90; %Set these bounds for your data
-plotmaxlat=90;
-plotminlon=-280;
-plotmaxlon=80;
-latlim=[plotminlat plotmaxlat];
-lonlim=[plotminlon plotmaxlon];
-
-load coastlines;
 
 %% g/m2 --> total g
 AREA = TAREA(ID) * 1e-4;
