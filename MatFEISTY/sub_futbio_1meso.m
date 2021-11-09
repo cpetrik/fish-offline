@@ -181,24 +181,28 @@ Md.rec = sub_rec(Sd.gamma,Sd.bio);
 Lp.rec = sub_rec(Mp.gamma,Mp.bio);
 Ld.rec = sub_rec(Md.gamma,Md.bio);
 
-% Mass balance
-Sf.bio = sub_update_fi(Sf.bio,Sf.rec,Sf.nu,Sf.rep,Sf.gamma,Sf.die,Sf.nmort);
-Sp.bio = sub_update_fi(Sp.bio,Sp.rec,Sp.nu,Sp.rep,Sp.gamma,Sp.die,Sp.nmort);
-Sd.bio = sub_update_fi(Sd.bio,Sd.rec,Sd.nu,Sd.rep,Sd.gamma,Sd.die,Sd.nmort);
-
-Mf.bio = sub_update_fi(Mf.bio,Mf.rec,Mf.nu,Mf.rep,Mf.gamma,Mf.die,Mf.nmort);
-Mp.bio = sub_update_fi(Mp.bio,Mp.rec,Mp.nu,Mp.rep,Mp.gamma,Mp.die,Mp.nmort);
-Md.bio = sub_update_fi(Md.bio,Md.rec,Md.nu,Md.rep,Md.gamma,Md.die,Md.nmort);
-
-Lp.bio = sub_update_fi(Lp.bio,Lp.rec,Lp.nu,Lp.rep,Lp.gamma,Lp.die,Lp.nmort);
-Ld.bio = sub_update_fi(Ld.bio,Ld.rec,Ld.nu,Ld.rep,Ld.gamma,Ld.die,Ld.nmort);
-
 % Fishing by rate
+[Sf.bio, Sf.caught, Sf.fmort] = sub_fishing_rate(Sf.bio,param.dfrate,0);
+[Sp.bio, Sp.caught, Sp.fmort] = sub_fishing_rate(Sp.bio,param.dfrate,0);
+[Sd.bio, Sd.caught, Sd.fmort] = sub_fishing_rate(Sd.bio,param.dfrate,0);
 [Mf.bio, Mf.caught, Mf.fmort] = sub_fishing_rate(Mf.bio,param.dfrate,param.MFsel);
 [Mp.bio, Mp.caught, Mp.fmort] = sub_fishing_rate(Mp.bio,param.dfrate,param.MPsel);
 [Md.bio, Md.caught, Md.fmort] = sub_fishing_rate(Md.bio,param.dfrate,param.MDsel);
 [Lp.bio, Lp.caught, Lp.fmort] = sub_fishing_rate(Lp.bio,param.dfrate,param.LPsel);
 [Ld.bio, Ld.caught, Ld.fmort] = sub_fishing_rate(Ld.bio,param.dfrate,param.LDsel);
+
+% Mass balance
+Sf.bio = sub_update_fi(Sf.bio,Sf.rec,Sf.nu,Sf.rep,Sf.gamma,Sf.die,Sf.nmort,Sf.fmort);
+Sp.bio = sub_update_fi(Sp.bio,Sp.rec,Sp.nu,Sp.rep,Sp.gamma,Sp.die,Sp.nmort,Sp.fmort);
+Sd.bio = sub_update_fi(Sd.bio,Sd.rec,Sd.nu,Sd.rep,Sd.gamma,Sd.die,Sd.nmort,Sd.fmort);
+
+Mf.bio = sub_update_fi(Mf.bio,Mf.rec,Mf.nu,Mf.rep,Mf.gamma,Mf.die,Mf.nmort,Mf.fmort);
+Mp.bio = sub_update_fi(Mp.bio,Mp.rec,Mp.nu,Mp.rep,Mp.gamma,Mp.die,Mp.nmort,Mp.fmort);
+Md.bio = sub_update_fi(Md.bio,Md.rec,Md.nu,Md.rep,Md.gamma,Md.die,Md.nmort,Md.fmort);
+
+Lp.bio = sub_update_fi(Lp.bio,Lp.rec,Lp.nu,Lp.rep,Lp.gamma,Lp.die,Lp.nmort,Lp.fmort);
+Ld.bio = sub_update_fi(Ld.bio,Ld.rec,Ld.nu,Ld.rep,Ld.gamma,Ld.die,Ld.nmort,Ld.fmort);
+
 
 % Forward Euler checks for demographics and movement
 Sf.bio=sub_check(Sf.bio);

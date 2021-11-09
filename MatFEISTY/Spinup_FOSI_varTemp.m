@@ -3,8 +3,8 @@ function Spinup_FOSI_varTemp()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Model experiment
-exper = 'v13_varTemp_';
-mod = 'v13_';
+exper = 'v14_varTemp_';
+mod = 'v14_';
 
 %! Make core parameters/constants
 param = make_parameters_1meso();

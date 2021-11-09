@@ -3,8 +3,8 @@ function FOSI_cesm_varFood()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Model experiment
-exper = 'v13_varFood_';
-mod = 'v13_';
+exper = 'v14_varFood_';
+mod = 'v14_';
 
 %! Make core parameters/constants 
 param = make_parameters_1meso(); 
