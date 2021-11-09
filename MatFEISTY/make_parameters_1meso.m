@@ -59,7 +59,7 @@ function param = make_parameters_1meso()
 
     %%%! Transfer efficiency of detritus to benthic prey
     param.bent_eff = 0.075;
-    param.CC = 0; % 80
+    param.CC = 80; % 80
 
     %%%! Reproductive efficiency
     param.rfrac = 0.01;

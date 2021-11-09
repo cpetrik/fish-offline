@@ -4,7 +4,7 @@ clear all
 close all
 
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_nmort1_BE08_noCC_RE00100';
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_noCC_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 harv = 'v13_All_fish03';
