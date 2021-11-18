@@ -255,56 +255,50 @@ stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_CCE_PDO_ts_corr.png'])
 
 %% Cross corr
-[cS,lags] = xcorr(mPDO,lme_mSb(lme,:),20);
-[cM,lags] = xcorr(mPDO,lme_mMb(lme,:),20);
-[cL,lags] = xcorr(mPDO,lme_mLb(lme,:),20);
 [cF,lags] = xcorr(mPDO,lme_mFb(lme,:),20);
-[cP,lags] = xcorr(mPDO,lme_mPb(lme,:),20);
-[cD,lags] = xcorr(mPDO,lme_mDb(lme,:),20);
-[cA,lags] = xcorr(mPDO,lme_mAb(lme,:),20);
-[cB,lags] = xcorr(mPDO,lme_mbb(lme,:),20);
-
 stem(lags,c,'k')
 
 figure(2)
 subplot(3,3,1)
-stem(lags,cS,'k')
-xlim([0 20])
+plot(yPDO,mPDO);
+xlim([fyr(1) fyr(end)])
 title('Small')
 
 subplot(3,3,2)
-stem(lags,cM,'k')
-xlim([0 20])
+plot(fyr,lme_mMa(3,:));
+xlim([fyr(1) fyr(end)])
 title(['PDO CCE'; ' Medium'])
 
 subplot(3,3,3)
-stem(lags,cL,'k')
-xlim([0 20])
+plot(fyr,lme_mLa(3,:));
+xlim([fyr(1) fyr(end)])
 title('Large')
 
 subplot(3,3,4)
-stem(lags,cF,'k')
-xlim([0 20])
+plot(fyr,lme_mFa(3,:));
+xlim([fyr(1) fyr(end)])
 title('Forage')
 
 subplot(3,3,5)
-stem(lags,cP,'k')
-xlim([0 20])
+plot(fyr,lme_mPa(3,:));
+xlim([fyr(1) fyr(end)])
 title('Lg Pelagic')
 
 subplot(3,3,6)
-stem(lags,cD,'k')
-xlim([0 20])
+plot(fyr,lme_mDa(3,:));
+xlim([fyr(1) fyr(end)])
 title('Demersal')
+ylabel('Mean biomass (log_1_0 MT)')
 
 subplot(3,3,7)
-stem(lags,cA,'k')
-xlim([0 20])
+plot(fyr,lme_mAa(3,:));
+xlim([fyr(1) fyr(end)])
+xlabel('Time (y)')
 title('All Fish')
 
 subplot(3,3,9)
-stem(lags,cB,'k')
-xlim([0 20])
+plot(fyr,lme_mba(3,:));
+xlim([fyr(1) fyr(end)])
 title('Benthos')
 stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_CCE_PDO_ts_crosscorr.png'])
