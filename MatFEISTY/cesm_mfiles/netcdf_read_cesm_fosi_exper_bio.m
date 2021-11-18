@@ -3,11 +3,11 @@
 clear all
 close all
 
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_noCC_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 harv = 'All_fish03';
-sims = {'v13_climatol_';'v13_varFood_';'v13_varTemp_'};
+sims = {'v14_climatol_';'v14_varFood_';'v14_varTemp_'};
     
 for n=1:length(sims)
     close all

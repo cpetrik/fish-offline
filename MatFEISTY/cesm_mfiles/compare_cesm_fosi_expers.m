@@ -10,8 +10,8 @@ load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
 %% Fish data
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_noCC_RE00100';
-mod = 'v13_All_fish03';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+mod = 'v14_All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -21,7 +21,7 @@ if (~isfolder(ppath))
 end
 
 %% Full
-load([fpath 'Plot_Means_FOSI_v13_All_fish03_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_v14_All_fish03_' cfile '.mat']);
 
 FulltF = F;
 FulltP = P;
@@ -41,7 +41,7 @@ clear F P D B AllF AllP AllD AllS AllM AllL
 
 %%
 %exper = varFood, varTemp, climatol
-load([fpath 'Plot_Means_FOSI_v13_climatol_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_v14_climatol_' cfile '.mat']);
 
 ClimtF = F;
 ClimtP = P;
@@ -60,7 +60,7 @@ ClimsA = AllF+AllP+AllD;
 clear F P D B AllF AllP AllD AllS AllM AllL
 
 %%
-load([fpath 'Plot_Means_FOSI_v13_varTemp_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_v14_varTemp_' cfile '.mat']);
 
 TemptF = F;
 TemptP = P;
@@ -79,7 +79,7 @@ TempsA = AllF+AllP+AllD;
 clear F P D B AllF AllP AllD AllS AllM AllL
 
 %%
-load([fpath 'Plot_Means_FOSI_v13_varFood_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_v14_varFood_' cfile '.mat']);
 
 FoodtF = F;
 FoodtP = P;

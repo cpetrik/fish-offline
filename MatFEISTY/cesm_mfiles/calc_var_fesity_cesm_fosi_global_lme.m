@@ -5,8 +5,8 @@ clear all
 close all
 
 %% Fish data
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_noCC_RE00100';
-mod = 'v13_All_fish03_';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+mod = 'v14_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -403,7 +403,7 @@ caxis([0 1])
 set(gcf,'renderer','painters')
 text(0,1.75,'LD','HorizontalAlignment','center')
 
-print('-dpng',[pp 'Map_FEISTY_FOSI_',mod,'interann_coeffvar_stages.png'])
+print('-dpng',[ppath 'Map_FEISTY_FOSI_',mod,'interann_coeffvar_stages.png'])
 
 %% 8plot by type 
 f2 = figure('Units','inches','Position',[1 3 6.5 8]);
@@ -506,7 +506,7 @@ caxis([0 1])
 set(gcf,'renderer','painters')
 text(0,1.75,'All','HorizontalAlignment','center')
 
-print('-dpng',[pp 'Map_FEISTY_FOSI_',mod,'interann_coeffvar_types.png'])
+print('-dpng',[ppath 'Map_FEISTY_FOSI_',mod,'interann_coeffvar_types.png'])
 
 %% save
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];

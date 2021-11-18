@@ -10,8 +10,8 @@ load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
 %% Fish data
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_noCC_RE00100';
-mod = 'v13_All_fish03';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+mod = 'v14_All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -21,7 +21,7 @@ if (~isfolder(ppath))
 end
 
 %% Full
-load([fpath 'LME_fosi_fished_v13_All_fish03_',cfile '.mat']);
+load([fpath 'LME_fosi_fished_v14_All_fish03_',cfile '.mat']);
 
 FullmF = lme_msfb + lme_mmfb;
 FullmP = lme_mspb + lme_mmpb + lme_mlpb;
@@ -48,7 +48,7 @@ clear lme_slpb lme_sldb lme_sbb
 
 %%
 %exper = varFood, varTemp, climatol
-load([fpath 'LME_fosi_fished_v13_climatol_',cfile '.mat']);
+load([fpath 'LME_fosi_fished_v14_climatol_',cfile '.mat']);
 
 ClimmF = lme_msfb + lme_mmfb;
 ClimmP = lme_mspb + lme_mmpb + lme_mlpb;
@@ -74,7 +74,7 @@ clear lme_ssfb lme_sspb lme_ssdb lme_smfb lme_smpb lme_smdb
 clear lme_slpb lme_sldb lme_sbb
 
 %%
-load([fpath 'LME_fosi_fished_v13_varTemp_',cfile '.mat']);
+load([fpath 'LME_fosi_fished_v14_varTemp_',cfile '.mat']);
 
 TempmF = lme_msfb + lme_mmfb;
 TempmP = lme_mspb + lme_mmpb + lme_mlpb;
@@ -100,7 +100,7 @@ clear lme_ssfb lme_sspb lme_ssdb lme_smfb lme_smpb lme_smdb
 clear lme_slpb lme_sldb lme_sbb
 
 %%
-load([fpath 'LME_fosi_fished_v13_varFood_',cfile '.mat']);
+load([fpath 'LME_fosi_fished_v14_varFood_',cfile '.mat']);
 
 FoodmF = lme_msfb + lme_mmfb;
 FoodmP = lme_mspb + lme_mmpb + lme_mlpb;

@@ -7,7 +7,7 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 harv = 'All_fish03';
-sims = {'v13_climatol_';'v13_varFood_';'v13_varTemp_'};
+sims = {'v14_climatol_';'v14_varFood_';'v14_varTemp_'};
 
 %%
 for n=1:length(sims)

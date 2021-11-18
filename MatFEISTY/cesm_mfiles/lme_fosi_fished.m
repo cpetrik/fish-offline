@@ -6,8 +6,8 @@ close all
 
 %% Fish data
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A063_sMZ100_mMZ050_nmort1_BE08_noCC_RE00100';
-mod = 'v13_All_fish03_';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+mod = 'v14_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -23,8 +23,8 @@ load([dpath 'Space_Means_FOSI_' mod cfile '.mat'],'units_yield','units_catch',..
 
 %% Map data
 cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
-load([cpath 'gridspec_POP_gx1v6.mat']);
-load([cpath 'Data_grid_POP_gx1v6.mat']);
+load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
+load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
 
 [ni,nj]=size(TLONG);
