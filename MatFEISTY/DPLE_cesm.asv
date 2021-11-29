@@ -18,9 +18,9 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 StartYr = 1954; %will loop over
 %for Member=1:40 %will loop over
-submem = [2:9,21:33];
+submem = [1,10:20];
 for mem=1:length(submem) %will loop over
-    Member = submem(mem);
+    
     
     %! Create a directory for output
     exper = ['v14_Y' num2str(StartYr) '_M' num2str(Member) '_' ];

@@ -142,6 +142,9 @@ Lrg_p.bio = nanmean(LP.bio(:,nt-11:nt),2);
 Lrg_d.bio = nanmean(LD.bio(:,nt-11:nt),2);
 BENT.bio  = nanmean(Bent.bio(:,nt-11:nt),2);
 
+save([fpath 'Last_mo_spin_' mod '_' cfile '.mat'],'Sml_f','Sml_p','Sml_d',... 
+    'Med_f','Med_p','Med_d','Lrg_p','Lrg_d','BENT')
+
 %% Take means for my own visualization
 
 %Time
@@ -169,9 +172,6 @@ ld_mean=nanmean(LD.bio(:,yrP),2);
 b_mean =nanmean(Bent.bio(:,yrP),2);
 
 %%
-save([fpath 'Last_mo_spin_' mod '_' cfile '.mat'],'Sml_f','Sml_p','Sml_d',... 
-    'Med_f','Med_p','Med_d','Lrg_p','Lrg_d','BENT')
-
 save([fpath 'Means_Spinup_' mod '_' cfile '.mat'],'time','yrP',...
     'sf_tmean','sp_tmean','sd_tmean',...
     'mf_tmean','mp_tmean','md_tmean',...
