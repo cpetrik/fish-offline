@@ -18,7 +18,7 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 StartYr = 1954; %will loop over
 %for Member=1:40 %will loop over
-submem = [2:9,21:33];
+submem = 1:32;
 for mem=1:length(submem) %will loop over
     Member = submem(mem);
     
@@ -163,8 +163,10 @@ for mem=1:length(submem) %will loop over
     %! Run model with no fishing
     for YR = 1:YEARS % years
         %! Load a year's ESM data
-        ti = num2str(YR)
-        load(['/Volumes/MIP/GCM_DATA/CESM/DPLE/Data_cesm_dple_daily_Y1954_M1_',ti,'.mat'],'ESM');
+        ti = num2str(YR);
+        ['Y',num2str(YR),' M',num2str(Member)]
+        load(['/Volumes/MIP/GCM_DATA/CESM/DPLE/Data_cesm_dple_daily_Y',num2str(StartYr),...
+            '_M',num2str(Member),'_',ti,'.mat'],'ESM');
         
         for DAY = 1:param.DT:DAYS % days
             
