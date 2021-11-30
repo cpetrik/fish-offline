@@ -33,7 +33,7 @@ end
 %pick year
 StartYr = 1954;
 %loop over members
-submem = [1,10:20];
+submem = [1:2,10:32];
 
 tF = nan*ones(length(submem),120);
 tP = tF;
@@ -45,13 +45,49 @@ sD = sF;
 sS = sF;
 sM = sF;
 sL = sF;
+sB = sF;
 
 for mem=1:length(submem) %will loop over
     Member = submem(mem);
     exper = ['v14_Y' num2str(StartYr) '_M' num2str(Member) '_All_fish03_' ];
     
-    load([fpath 'Plot_Means_DPLE_' exper cfile '.mat'],'F','P','D','B',...
-        'AllF','AllP','AllD','AllS','AllM','AllL');
+    load([fpath 'Time_Means_DPLE_' exper cfile '.mat']);
+    load([fpath 'Space_Means_DPLE_' exper cfile '.mat']);
+%     load([fpath 'Plot_Means_DPLE_' exper cfile '.mat'],'F','P','D','B',...
+%         'AllF','AllP','AllD','AllS','AllM','AllL');
+
+    F = sf_tmean+mf_tmean;
+    P = sp_tmean+mp_tmean+lp_tmean;
+    D = sd_tmean+md_tmean+ld_tmean;
+    B = b_tmean;
+    
+    Zsf=NaN*ones(ni,nj);
+    Zsp=NaN*ones(ni,nj);
+    Zsd=NaN*ones(ni,nj);
+    Zmf=NaN*ones(ni,nj);
+    Zmp=NaN*ones(ni,nj);
+    Zmd=NaN*ones(ni,nj);
+    Zlp=NaN*ones(ni,nj);
+    Zld=NaN*ones(ni,nj);
+    Zb=NaN*ones(ni,nj);
+    
+    Zsf(GRD.ID)=sf_sbio;
+    Zsp(GRD.ID)=sp_sbio;
+    Zsd(GRD.ID)=sd_sbio;
+    Zmf(GRD.ID)=mf_sbio;
+    Zmp(GRD.ID)=mp_sbio;
+    Zmd(GRD.ID)=md_sbio;
+    Zlp(GRD.ID)=lp_sbio;
+    Zld(GRD.ID)=ld_sbio;
+    Zb(GRD.ID)=b_sbio;
+    
+    AllF = Zsf+Zmf;
+    AllP = Zsp+Zmp+Zlp;
+    AllD = Zsd+Zmd+Zld;
+    AllS = Zsp+Zsf+Zsd;
+    AllM = Zmp+Zmf+Zmd;
+    AllL = Zlp+Zld;
+    AllB = Zb;
     
     tF(mem,:) = F;
     tP(mem,:) = P;
@@ -63,11 +99,15 @@ for mem=1:length(submem) %will loop over
     sS(:,:,mem) = AllS;
     sM(:,:,mem) = AllM;
     sL(:,:,mem) = AllL;
+    sB(:,:,mem) = AllB;
+    
+    save([fpath 'Plot_Means_DPLE_' exper cfile '.mat'],'F','P','D','B',...
+        'AllF','AllP','AllD','AllS','AllM','AllL','AllB');
     
 end
 exper2 = ['v14_Y' num2str(StartYr) '_allM_All_fish03_' ];
 save([fpath 'Plot_Means_DPLE_' exper2 cfile '.mat'],'tF','tP','tD','tB',...
-        'sF','sP','sD','sS','sM','sL')
+        'sF','sP','sD','sS','sM','sL','sB')
     
 %% colors
 cm10=[0.5 0.5 0;... %tan/army
@@ -92,31 +132,34 @@ y = t/12;
 % All types
 figure(1)
 subplot(2,2,1)
-plot(y,log10(tF),'r','Linewidth',2); hold on;
+plot(y,log10(tF),'r','Linewidth',1); hold on;
 xlim([y(1) y(end)])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
 title('F')
 
 subplot(2,2,2)
-plot(y,log10(tP),'b','Linewidth',2); hold on;
+plot(y,log10(tP),'b','Linewidth',1); hold on;
 xlim([y(1) y(end)])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
 title('P')
 
 subplot(2,2,3)
-plot(y,log10(tD),'k','Linewidth',2); hold on;
+plot(y,log10(tD),'k','Linewidth',1); hold on;
 xlim([y(1) y(end)])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
 title('D')
 
 subplot(2,2,4)
-plot(y,log10(tB),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
+plot(y,log10(tB),'color',[0.5 0.5 0.5],'Linewidth',1); hold on;
 xlim([y(1) y(end)])
 xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
 title('B')
 stamp(exper)
 %     print('-dpng',[ppath 'DPLE_',exper,'all_types.png'])
+
+
+

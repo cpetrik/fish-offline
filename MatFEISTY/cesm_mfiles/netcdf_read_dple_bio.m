@@ -11,7 +11,7 @@ fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 %pick year
 StartYr = 1954;
 %loop over members
-submem = [1,10:20];
+submem = [1:2,10:32];
 for mem=1:length(submem) %will loop over
     Member = submem(mem);
     harv = ['v14_Y' num2str(StartYr) '_M' num2str(Member) '_All_fish03_' ];

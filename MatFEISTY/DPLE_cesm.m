@@ -18,7 +18,7 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 StartYr = 1954; %will loop over
 %for Member=1:40 %will loop over
-submem = 1:32;
+submem = 10:32;
 for mem=1:length(submem) %will loop over
     Member = submem(mem);
     
