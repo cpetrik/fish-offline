@@ -31,9 +31,9 @@ if (~isfolder(ppath))
 end
 
 %pick year
-StartYr = 1954;
+StartYr = 2015;
 %loop over members
-submem = [1:2,10:32];
+submem = 1:40;
 
 tF = nan*ones(length(submem),120);
 tP = tF;
@@ -159,7 +159,7 @@ xlabel('Time (y)')
 ylabel('log_1_0 Biomass (g m^-^2)')
 title('B')
 stamp(exper)
-%     print('-dpng',[ppath 'DPLE_',exper,'all_types.png'])
+print('-dpng',[ppath 'DPLE_',exper,'all_types.png'])
 
 
 
