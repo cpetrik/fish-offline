@@ -141,12 +141,12 @@ for mem=1%:length(submem) %will loop over
     netcdf.putAtt(ncidFB,vidlon,'standard_name','longitude');
     netcdf.putAtt(ncidFB,vidlon,'axis','X');
     
-    vidlat = netcdf.defVar(ncidFB,'lat','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlat = netcdf.defVar(ncidFB,'lat','NC_DOUBLE',lat_dim);
     netcdf.putAtt(ncidFB,vidlat,'long_name','latitude');
     netcdf.putAtt(ncidFB,vidlat,'standard_name','latitude');
     netcdf.putAtt(ncidFB,vidlat,'axis','Y');
     
-    vidbioFB = netcdf.defVar(ncidFB,'tfb','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
+    vidbioFB = netcdf.defVar(ncidFB,'tcb','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
     netcdf.defVarChunking(ncidFB,vidbioFB,'CHUNKED',[10, 10, 1]);
     netcdf.putAtt(ncidFB,vidbioFB,'long_name','Biomass of Forage Fish');
     netcdf.putAtt(ncidFB,vidbioFB,'units','g m-2' );
@@ -187,12 +187,12 @@ for mem=1%:length(submem) %will loop over
     netcdf.putAtt(ncidPB,vidtPB,'calendar','365_day');
     netcdf.putAtt(ncidPB,vidtPB,'axis','T');
     
-    vidlon = netcdf.defVar(ncidPB,'lon','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlon = netcdf.defVar(ncidPB,'lon','NC_DOUBLE',lon_dim);
     netcdf.putAtt(ncidPB,vidlon,'long_name','longitude');
     netcdf.putAtt(ncidPB,vidlon,'standard_name','longitude');
     netcdf.putAtt(ncidPB,vidlon,'axis','X');
     
-    vidlat = netcdf.defVar(ncidPB,'lat','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlat = netcdf.defVar(ncidPB,'lat','NC_DOUBLE',lat_dim);
     netcdf.putAtt(ncidPB,vidlat,'long_name','latitude');
     netcdf.putAtt(ncidPB,vidlat,'standard_name','latitude');
     netcdf.putAtt(ncidPB,vidlat,'axis','Y');
@@ -235,12 +235,12 @@ for mem=1%:length(submem) %will loop over
     netcdf.putAtt(ncidDB,vidtDB,'axis','T');
     netcdf.putAtt(ncidDB,vidtDB,'units','year' );
     
-    vidlon = netcdf.defVar(ncidDB,'lon','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlon = netcdf.defVar(ncidDB,'lon','NC_DOUBLE',lon_dim);
     netcdf.putAtt(ncidDB,vidlon,'long_name','longitude');
     netcdf.putAtt(ncidDB,vidlon,'standard_name','longitude');
     netcdf.putAtt(ncidDB,vidlon,'axis','X');
     
-    vidlat = netcdf.defVar(ncidDB,'lat','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlat = netcdf.defVar(ncidDB,'lat','NC_DOUBLE',lat_dim);
     netcdf.putAtt(ncidDB,vidlat,'long_name','latitude');
     netcdf.putAtt(ncidDB,vidlat,'standard_name','latitude');
     netcdf.putAtt(ncidDB,vidlat,'axis','Y');
@@ -283,17 +283,17 @@ for mem=1%:length(submem) %will loop over
     netcdf.putAtt(ncidBB,vidtBB,'axis','T');
     netcdf.putAtt(ncidBB,vidtBB,'units','year' );
     
-    vidlon = netcdf.defVar(ncidBB,'lon','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlon = netcdf.defVar(ncidBB,'lon','NC_DOUBLE',lon_dim);
     netcdf.putAtt(ncidBB,vidlon,'long_name','longitude');
     netcdf.putAtt(ncidBB,vidlon,'standard_name','longitude');
     netcdf.putAtt(ncidBB,vidlon,'axis','X');
     
-    vidlat = netcdf.defVar(ncidBB,'lat','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlat = netcdf.defVar(ncidBB,'lat','NC_DOUBLE',lat_dim);
     netcdf.putAtt(ncidBB,vidlat,'long_name','latitude');
     netcdf.putAtt(ncidBB,vidlat,'standard_name','latitude');
     netcdf.putAtt(ncidBB,vidlat,'axis','Y');
     
-    vidbioBB = netcdf.defVar(ncidBB,'tbb','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
+    vidbioBB = netcdf.defVar(ncidBB,'bpBBcm','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
     netcdf.defVarChunking(ncidBB,vidbioBB,'CHUNKED',[10, 10, 1]);
     netcdf.putAtt(ncidBB,vidbioBB,'long_name','Biomass of Benthic Invertebrates');
     netcdf.putAtt(ncidBB,vidbioBB,'units','g  m-2' );
@@ -331,17 +331,17 @@ for mem=1%:length(submem) %will loop over
     netcdf.putAtt(ncidSB,vidtSB,'axis','T');
     netcdf.putAtt(ncidSB,vidtSB,'units','year' );
     
-    vidlon = netcdf.defVar(ncidSB,'lon','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlon = netcdf.defVar(ncidSB,'lon','NC_DOUBLE',lon_dim);
     netcdf.putAtt(ncidSB,vidlon,'long_name','longitude');
     netcdf.putAtt(ncidSB,vidlon,'standard_name','longitude');
     netcdf.putAtt(ncidSB,vidlon,'axis','X');
     
-    vidlat = netcdf.defVar(ncidSB,'lat','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlat = netcdf.defVar(ncidSB,'lat','NC_DOUBLE',lat_dim);
     netcdf.putAtt(ncidSB,vidlat,'long_name','latitude');
     netcdf.putAtt(ncidSB,vidlat,'standard_name','latitude');
     netcdf.putAtt(ncidSB,vidlat,'axis','Y');
     
-    vidbioSB = netcdf.defVar(ncidSB,'tsb','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
+    vidbioSB = netcdf.defVar(ncidSB,'tcb','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
     netcdf.defVarChunking(ncidSB,vidbioSB,'CHUNKED',[10, 10, 1]);
     netcdf.putAtt(ncidSB,vidbioSB,'long_name','Biomass of Small Fish');
     netcdf.putAtt(ncidSB,vidbioSB,'units','g m-2' );
@@ -379,17 +379,17 @@ for mem=1%:length(submem) %will loop over
     netcdf.putAtt(ncidMB,vidtMB,'calendar','365_day');
     netcdf.putAtt(ncidMB,vidtMB,'axis','T');
     
-    vidlon = netcdf.defVar(ncidMB,'lon','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlon = netcdf.defVar(ncidMB,'lon','NC_DOUBLE',lon_dim);
     netcdf.putAtt(ncidMB,vidlon,'long_name','longitude');
     netcdf.putAtt(ncidMB,vidlon,'standard_name','longitude');
     netcdf.putAtt(ncidMB,vidlon,'axis','X');
     
-    vidlat = netcdf.defVar(ncidMB,'lat','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlat = netcdf.defVar(ncidMB,'lat','NC_DOUBLE',lat_dim);
     netcdf.putAtt(ncidMB,vidlat,'long_name','latitude');
     netcdf.putAtt(ncidMB,vidlat,'standard_name','latitude');
     netcdf.putAtt(ncidMB,vidlat,'axis','Y');
     
-    vidbioMB = netcdf.defVar(ncidMB,'tmb','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
+    vidbioMB = netcdf.defVar(ncidMB,'tpb','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
     netcdf.defVarChunking(ncidMB,vidbioMB,'CHUNKED',[10, 10, 1]);
     netcdf.putAtt(ncidMB,vidbioMB,'long_name','Biomass of Medium Fish');
     netcdf.putAtt(ncidMB,vidbioMB,'units','g m-2' );
@@ -427,17 +427,17 @@ for mem=1%:length(submem) %will loop over
     netcdf.putAtt(ncidLB,vidtLB,'axis','T');
     netcdf.putAtt(ncidLB,vidtLB,'units','year' );
     
-    vidlon = netcdf.defVar(ncidLB,'lon','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlon = netcdf.defVar(ncidLB,'lon','NC_DOUBLE',lon_dim);
     netcdf.putAtt(ncidLB,vidlon,'long_name','longitude');
     netcdf.putAtt(ncidLB,vidlon,'standard_name','longitude');
     netcdf.putAtt(ncidLB,vidlon,'axis','X');
     
-    vidlat = netcdf.defVar(ncidLB,'lat','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlat = netcdf.defVar(ncidLB,'lat','NC_DOUBLE',lat_dim);
     netcdf.putAtt(ncidLB,vidlat,'long_name','latitude');
     netcdf.putAtt(ncidLB,vidlat,'standard_name','latitude');
     netcdf.putAtt(ncidLB,vidlat,'axis','Y');
     
-    vidbioLB = netcdf.defVar(ncidLB,'tlb','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
+    vidbioLB = netcdf.defVar(ncidLB,'tdb','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
     netcdf.defVarChunking(ncidLB,vidbioLB,'CHUNKED',[10, 10, 1]);
     netcdf.putAtt(ncidLB,vidbioLB,'long_name','Biomass of Large Fish');
     netcdf.putAtt(ncidLB,vidbioLB,'units','g m-2' );
@@ -475,19 +475,19 @@ for mem=1%:length(submem) %will loop over
     netcdf.putAtt(ncidVB,vidtVB,'axis','T');
     netcdf.putAtt(ncidVB,vidtVB,'units','year' );
     
-    vidlon = netcdf.defVar(ncidVB,'lon','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlon = netcdf.defVar(ncidVB,'lon','NC_DOUBLE',lon_dim);
     netcdf.putAtt(ncidVB,vidlon,'long_name','longitude');
     netcdf.putAtt(ncidVB,vidlon,'standard_name','longitude');
     netcdf.putAtt(ncidVB,vidlon,'units','degrees_east' );
     netcdf.putAtt(ncidVB,vidlon,'axis','X');
     
-    vidlat = netcdf.defVar(ncidVB,'lat','NC_DOUBLE',[lon_dim,lat_dim]);
+    vidlat = netcdf.defVar(ncidVB,'lat','NC_DOUBLE',lat_dim);
     netcdf.putAtt(ncidVB,vidlat,'long_name','latitude');
     netcdf.putAtt(ncidVB,vidlat,'standard_name','latitude');
     netcdf.putAtt(ncidVB,vidlat,'units','degrees_north');
     netcdf.putAtt(ncidVB,vidlat,'axis','Y');
     
-    vidbioVB = netcdf.defVar(ncidVB,'tvb','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
+    vidbioVB = netcdf.defVar(ncidVB,'bpVBcm','NC_FLOAT',[lon_dim,lat_dim,time_dim]);
     netcdf.defVarChunking(ncidVB,vidbioVB,'CHUNKED',[10, 10, 1]);
     netcdf.putAtt(ncidVB,vidbioVB,'long_name','Biomass of All Fish');
     netcdf.putAtt(ncidVB,vidbioVB,'units','g  m-2' );
