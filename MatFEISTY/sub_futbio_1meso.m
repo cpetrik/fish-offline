@@ -31,6 +31,16 @@ else
     Ld.td = ones(param.NX,1);
 end
 
+% Average habitat temperature
+Sf.thab = sub_thab(ENVR.Tp,ENVR.Tb,Sf.td);
+Sp.thab = sub_thab(ENVR.Tp,ENVR.Tb,Sp.td);
+Sd.thab = sub_thab(ENVR.Tp,ENVR.Tb,Sd.td);
+Mf.thab = sub_thab(ENVR.Tp,ENVR.Tb,Mf.td);
+Mp.thab = sub_thab(ENVR.Tp,ENVR.Tb,Mp.td);
+Md.thab = sub_thab(ENVR.Tp,ENVR.Tb,Md.td);
+Lp.thab = sub_thab(ENVR.Tp,ENVR.Tb,Lp.td);
+Ld.thab = sub_thab(ENVR.Tp,ENVR.Tb,Ld.td);
+
 % Metabolism
 Sf.met = sub_met(ENVR.Tp,ENVR.Tb,Sf.td,param.M_s,param);
 Sp.met = sub_met(ENVR.Tp,ENVR.Tb,Sp.td,param.M_s,param);
