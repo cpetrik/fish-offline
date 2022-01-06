@@ -6,7 +6,7 @@ function test_case()
 param = make_params_testcase();
 
 %! Idealized bathymetry
-load('/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/Grid_test_forcing.mat',...
+load('/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/fish-offline/MatFEISTY/input_files/Grid_test_forcing.mat',...
     'GRD');
 param.NX = length(GRD.Z);
 param.ID = 1:param.NX;
@@ -14,7 +14,7 @@ NX = param.NX;
 ID = 1:param.NX;
 
 %! Idealized forcing
-load('/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/Data_cyclic_test_forcing.mat',...
+load('/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/fish-offline/MatFEISTY/input_files/Data_cyclic_test_forcing.mat',...
     'ESM');
 
 %! How long to run the model
