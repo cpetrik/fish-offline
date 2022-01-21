@@ -19,11 +19,11 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-exper = 'locs3_';
+exper = 'v2_Bupdates_locs3_';
 [fname,simname] = sub_fname_testcase_exper(param,exper);
 
 %! Initialize
-[Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish_spin(ID,DAYS);
+[Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish_testcase(ID,DAYS);
 
 %! Storage variables
 biom      = NaN*ones(DAYS,NX,9);
