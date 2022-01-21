@@ -10,10 +10,6 @@ ENVR.det = sub_neg(ENVR.det);
 ENVR.Zm  = sub_neg(ENVR.Zm);
 ENVR.dZm  = sub_neg(ENVR.dZm);
 
-% Update benthic biomass with new detritus avail at that time step
-[BENT.mass,BENT.pred] = sub_update_be(BENT.mass,param,ENVR.det,[Md.con_be,Ld.con_be],[Md.bio,Ld.bio]);
-BENT.mass = sub_check(BENT.mass);
-
 % Pelagic-demersal coupling
 %Lp: fraction of time large piscivores spends in pelagic
 %Ld: fraction of time large demersals spends in pelagic
@@ -213,6 +209,7 @@ Md.bio = sub_update_fi(Md.bio,Md.rec,Md.nu,Md.rep,Md.gamma,Md.die,Md.nmort,Md.fm
 Lp.bio = sub_update_fi(Lp.bio,Lp.rec,Lp.nu,Lp.rep,Lp.gamma,Lp.die,Lp.nmort,Lp.fmort);
 Ld.bio = sub_update_fi(Ld.bio,Ld.rec,Ld.nu,Ld.rep,Ld.gamma,Ld.die,Ld.nmort,Ld.fmort);
 
+[BENT.mass,BENT.pred] = sub_update_be(BENT.mass,param,ENVR.det,[Md.con_be,Ld.con_be],[Md.bio,Ld.bio]);
 
 % Forward Euler checks for demographics and movement
 Sf.bio=sub_check(Sf.bio);
@@ -223,5 +220,6 @@ Mp.bio=sub_check(Mp.bio);
 Md.bio=sub_check(Md.bio);
 Lp.bio=sub_check(Lp.bio);
 Ld.bio=sub_check(Ld.bio);
+BENT.mass = sub_check(BENT.mass);
 
 end

@@ -12,8 +12,8 @@ dple_cesm = false;
 tic
 
 if testc
-    %test_case()
-    test_locs3()
+    test_case()
+    %test_locs3()
 end
 if spinup_cesm
 %     Locs_CESM_4p4z_spinup()
