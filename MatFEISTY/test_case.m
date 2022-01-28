@@ -25,11 +25,11 @@ DAYS = 365;
 % DAYS = 2;
 
 %! Create a directory for output
-exper = 'v1_';
+exper = 'v3_move_updateB_';
 [fname,simname] = sub_fname_testcase_exper(param,exper);
 
 %! Initialize
-[Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish_spin(ID,DAYS);
+[Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish_testcase(ID,DAYS);
 
 %! Storage variables
 biomass             = NaN*ones(DAYS,NX,9);

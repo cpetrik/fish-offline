@@ -10,5 +10,5 @@ function ENVR = get_ESM_1meso(ESM,GRD,param,DY)
     ENVR.fZm(:,1) = zeros(param.NX,1);
     ENVR.fB(:,1)  = zeros(param.NX,1);
     ENVR.H(:,1)   = GRD.Z(param.ID);
-    ENVR.A(:,1)   = GRD.area(param.ID);
+    %ENVR.A(:,1)   = GRD.area(param.ID);
 end

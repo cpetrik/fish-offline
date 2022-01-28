@@ -8,7 +8,7 @@ datap = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/';
 figp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/testcase/';
 
 dp = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ100_mMZ045_nmort1_BE08_noCC_RE00100';
-sname = 'testcase_v1_All_fish03';
+sname = 'testcase_v2_Bupdates_locs3_All_fish03';
 harv = 'All_fish03';
 dpath = [datap char(dp) '/'];
 fpath = [figp char(dp) '/'];
@@ -18,9 +18,10 @@ end
 cfile = char(dp);
 
 %%
-load([dpath sname '_test_case.mat'])
+load([dpath sname '.mat'])
 [nt,nx,nid] = size(biomass);
 stages = {'SF','SP','SD','MF','MP','MD','LP','LD','B'};
+locs = {'EBS', 'HOT', 'PUP'}';
 
 %%
 load('cmap_ppt_angles.mat')
@@ -71,18 +72,13 @@ tot1 = mortality_rate + predation_rate;
 % Total mortality w/ fishing (all rates per biomass) = pred + nat + frate
 tot2 = mortality_rate + predation_rate + fish_catch_rate;
     
-% Fraction zoop losses consumed
-z(:,1) = squeeze(nanmean(CO(lyr,3,:)));
-z(:,2) = squeeze(nanmean(CO(lyr,4,:)));
-z(:,3) = squeeze(nanmean(CO(lyr,5,:)));
-
 %% Loop over locations
 
-for s=1%:nx
+for s=1:nx
     
     %% TIME SERIES ----------------------------------------------------
-    loc = num2str(s);
-    lname = ['loc' loc];
+    loc = locs{s};
+    lname = [loc];
     y=t;
     
     %% Biomass
@@ -92,7 +88,7 @@ for s=1%:nx
     legend(stages)
     legend('location','eastoutside')
     xlim([y(1) y(end)])
-    ylim([-5.5 0.5])
+    ylim([-5.5 2])
     xlabel('Day')
     ylabel('log10 Biomass (g m^-^2)')
     title(['testcase v1 ' lname])
@@ -242,7 +238,7 @@ for s=1%:nx
     legend(stages(2:3))
     legend('location','west')
     xlim([y(1) y(end)])
-    ylim([-0.2e-9 1.2e-9])
+    %ylim([-0.2e-9 1.2e-9])
     ylabel('recruitment flux (g m^-^2)')
     
     subplot(3,1,3)
@@ -349,7 +345,7 @@ for s=1%:nx
     legend(stages(1:5))
     legend('location','east')
     xlim([y(1) y(end)])
-    %ylim([-5.5 0.5])
+    ylim([-0.2 1])
     ylabel('gross growth effic')
     title(['testcase v1 ' lname])
     
@@ -359,7 +355,7 @@ for s=1%:nx
     legend([stages(6) stages(8)])
     legend('location','east')
     xlim([y(1) y(end)])
-    ylim([-30 5])
+    ylim([-0.2 1])
     ylabel('gross growth effic')
     
     subplot(3,1,3)
@@ -367,7 +363,7 @@ for s=1%:nx
     legend(stages(7))
     legend('location','east')
     xlim([y(1) y(end)])
-    %ylim([-5.5 0.5])
+    ylim([-0.2 1])
     xlabel('Day')
     ylabel('gross growth effic')
     stamp(sname)
@@ -380,8 +376,8 @@ end
 for s=1:nid
     
     %% TIME SERIES ----------------------------------------------------
-    loc = stages(s);
-    lname = stages(s);
+    loc = stages{s};
+    lname = stages{s};
     y=t;
     
     %% Biomass
@@ -394,6 +390,12 @@ for s=1:nid
     xlabel('Day')
     ylabel('log10 Biomass (g m^-^2)')
     title(['testcase v1 ' lname])
+    
+    subplot(3,3,2)
+    plot(y,log10(squeeze(biomass(:,:,s))),'Linewidth',1); hold on;
+    xlim([y(1) y(end)])
+    ylim([1 3])
+    legend(locs)
     
 %     subplot(3,3,2)
 %     plot(y,log10(B(:,:,s)),'color',[0.5 0.5 0.5],'Linewidth',2); hold on;
@@ -446,34 +448,26 @@ for s=1:nid
     %% Metabolism
     subplot(3,3,7)
     plot(y,(squeeze(metabolism_rate(:,:,s))),'Linewidth',1); hold on;
-    legend(stages(1:8))
-    legend('location','eastoutside')
+    legend(locs)
+    %legend('location','eastoutside')
     xlim([y(1) y(end)])
     %ylim([-5.5 0.5])
     xlabel('Day')
     ylabel('metabolism rate (g g^-^1 m^-^2)')
     title(['testcase v1 ' lname])
-    stamp(sname)
-    print('-dpng',[fpath sname '_ts_metab_' lname '.png'])
     
     %% Ingestion
     subplot(3,3,8)
     plot(y,(squeeze(ingestion_rate(:,:,s))),'Linewidth',1); hold on;
-    legend(stages(1:8))
-    legend('location','eastoutside')
     xlim([y(1) y(end)])
     ylim([-0.05 0.25])
     xlabel('Day')
     ylabel('ingestion rate (g g^-^1 m^-^2)')
     title(['testcase v1 ' lname])
-    stamp(sname)
-    print('-dpng',[fpath sname '_ts_ingest_' lname '.png'])
     
     %% Growth = gamma
     subplot(3,3,9)
     plot(y,(squeeze(growth_rate(:,:,s))),'Linewidth',1); hold on;
-    legend(stages(1:8))
-    legend('location','eastoutside')
     xlim([y(1) y(end)])
     ylim([-0.01 0.15])
     xlabel('Day')
@@ -486,18 +480,13 @@ for s=1:nid
     figure(10)
     clf
     subplot(3,3,1)
-    plot(y,(squeeze(recruitment_flux(:,s,1))),'Linewidth',1,'color',cm10(1,:)); hold on;
-    legend(stages(1))
-    legend('location','west')
+    plot(y,(squeeze(recruitment_flux(:,:,s))),'Linewidth',1,'color',cm10(1,:)); hold on;
     xlim([y(1) y(end)])
     %ylim([-5.5 0.5])
     ylabel('recruitment flux (g m^-^2)')
-    title(['testcase v1 ' lname])
     
     subplot(3,3,2)
     plot(y,(squeeze(predation_flux(:,:,s))),'Linewidth',1); hold on;
-    legend(stages(1:8))
-    legend('location','eastoutside')
     xlim([y(1) y(end)])
     %ylim([-5.5 0.5])
     xlabel('Day')
@@ -506,48 +495,37 @@ for s=1:nid
     
     subplot(3,3,3)
     plot(y,(squeeze(predation_rate(:,:,s))),'Linewidth',1); hold on;
-    legend(stages(1:8))
-    legend('location','eastoutside')
     xlim([y(1) y(end)])
     %ylim([-5.5 0.5])
     xlabel('Day')
     ylabel('predation rate (g g^-^1 m^-^2)')
-    title(['testcase v1 ' lname])
     
     %% Nat mort
     subplot(3,3,4)
     plot(y,(squeeze(mortality_rate(:,:,s))),'Linewidth',1); hold on;
-    legend(stages(1:8))
-    legend('location','eastoutside')
+    legend(locs)
     xlim([y(1) y(end)])
     ylim([2.7e-04 2.8e-04])
     xlabel('Day')
     ylabel('natural mortality rate (g g^-^1 m^-^2)')
-    title(['testcase v1 ' lname])
     
     %% Fish catch
     subplot(3,3,5)
     plot(y,(squeeze(fish_catch_rate(:,:,s))),'Linewidth',1); hold on;
-    legend(stages(1:8))
-    legend('location','eastoutside')
     xlim([y(1) y(end)])
     %ylim([-5.5 0.5])
     xlabel('Day')
     ylabel('fishing rate (g g^-^1 m^-^2)')
-    title(['testcase v1 ' lname])
     
     %% Total mortality w/o fishing
     tot1 = mortality_rate + predation_rate;
     
     subplot(3,3,6)
     plot(y,(squeeze(tot1(:,:,s))),'Linewidth',1); hold on;
-    legend(stages(1:8))
-    legend('location','eastoutside')
     xlim([y(1) y(end)])
     %ylim([-5.5 0.5])
     xlabel('Day')
     ylabel('total non-fishing mortality rate (g g^-^1 m^-^2)')
-    title(['testcase v1 ' lname])
     
     %% Total mortality w/ fishing
     
@@ -557,7 +535,6 @@ for s=1:nid
     %ylim([-5.5 0.5])
     xlabel('Day')
     ylabel('total mortality rate (g g^-^1 m^-^2)')
-    title(['testcase v1 ' lname])
     
     %% Gross growth efficiency (= nu/consump)
     subplot(3,3,8)
@@ -565,7 +542,6 @@ for s=1:nid
     xlim([y(1) y(end)])
     %ylim([-5.5 0.5])
     ylabel('gross growth effic')
-    title(['testcase v1 ' lname])
     stamp(sname)
     print('-dpng',[fpath sname '_ts_gge_' lname '.png'])
     
