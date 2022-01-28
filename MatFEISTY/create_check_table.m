@@ -315,7 +315,7 @@ tLP = array2table(LPmat','VariableNames',{'Coastal','Deep'},'RowNames',varnames)
 tLD = array2table(LDmat','VariableNames',{'Coastal','Deep'},'RowNames',varnames);
 tBE = array2table(BEmat','VariableNames',{'Coastal','Deep'},'RowNames',bnames);
 
-fpath = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/fish-offline/docs/';
+fpath = '../docs/';
 writetable(tSF,[fpath 'SF_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);
 writetable(tSP,[fpath 'SP_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);
 writetable(tSD,[fpath 'SD_FEISTY_check_values.csv'],'Delimiter',',','WriteRowNames',true);

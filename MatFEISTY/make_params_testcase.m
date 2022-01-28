@@ -89,9 +89,9 @@ function param = make_params_testcase(param)
     %large piscivore eats medium forage fish, medium piscivore, medium detritivore
     %large detritivore eats detritus, medium forage fish, medium piscivore, medium detrivore
     
-    param.D  = 1.0; %0.75;   %Demersal feeding in pelagic reduction
-    param.A  = 1.0; %0.5;    %Adult predation reduction %*****
-    param.MZ = 1.0;   %Preference on one mesozooplankton group
+    param.MZ = 1;  %Feeding 2 sizes down, 0.25
+    param.D = 0.75;   %Demersal feeding in pelagic reduction
+    param.A = 0.5;    %Adult predation reduction %*****
 
     param.MF_phi_MZ = 0.45 * param.MZ;
     param.MF_phi_LZ = 1.0;

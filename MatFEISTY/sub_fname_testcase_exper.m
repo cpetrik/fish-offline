@@ -62,19 +62,19 @@ else
     simname = [coup,'_Lam',tlam(2:end),'_enc',tefn,'-b',tbenc(2:end),'_m',tmfn,'-b',tbfn(2:end),'-k',tkfn(2:end),'_c',tcfn,'-b',tbcmx(2:end),'_D',td(2:end),'_A',ta(2:end),'_sMZ',tmzp(2:end),'_mMZ',tmzp2(2:end),'_nmort',tmort,'_BE',tbe(2:end),'_CC',tcc,'_RE',tre(2:end)];    
 end
 
-if (~isfolder(['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/',simname]))
-    mkdir(['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/',simname])
+if (~isfolder(['model_output/',simname]))
+    mkdir(['model_output/',simname])
 end
 
 %! Setup netcdf path to store to
 if (frate==0)
-    fname = ['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/',simname, '/testcase_',exper,'pristine'];
+    fname = ['model_output/',simname, '/testcase_',exper,'pristine'];
 elseif (param.Jsel~=0.1)
-    fname = ['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/',simname, '/testcase_',exper,sel,'_fish',tfish(2:end),'_Juve',tJ(2:end)];
+    fname = ['model_output/',simname, '/testcase_',exper,sel,'_fish',tfish(2:end),'_Juve',tJ(2:end)];
 elseif (param.MFsel~=param.LPsel)
-    fname = ['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/',simname, '/testcase_',exper,'fish_F',tF(2:end),'_P',tP(2:end),'_D',tD(2:end)];
+    fname = ['model_output/',simname, '/testcase_',exper,'fish_F',tF(2:end),'_P',tP(2:end),'_D',tD(2:end)];
 else
-    fname  = ['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/',simname, '/testcase_',exper,sel,'_fish',tfish(2:end)];  
+    fname  = ['model_output/',simname, '/testcase_',exper,sel,'_fish',tfish(2:end)];
 end
 
 

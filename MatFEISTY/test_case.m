@@ -1,4 +1,6 @@
 %%%%!! RUN HISTORIC FOR ALL LOCATIONS
+% $ matlab -nodisplay -nosplash - nodesktop
+% >> run('test_case.m')
 function test_case()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
@@ -6,7 +8,7 @@ function test_case()
 param = make_params_testcase();
 
 %! Idealized bathymetry
-load('/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/fish-offline/MatFEISTY/input_files/Grid_test_forcing.mat',...
+load('./input_files/Grid_test_forcing.mat',...
     'GRD');
 param.NX = length(GRD.Z);
 param.ID = 1:param.NX;
@@ -14,12 +16,13 @@ NX = param.NX;
 ID = 1:param.NX;
 
 %! Idealized forcing
-load('/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/fish-offline/MatFEISTY/input_files/Data_cyclic_test_forcing.mat',...
+load('./input_files/Data_cyclic_test_forcing.mat',...
     'ESM');
 
 %! How long to run the model
 YEARS = 1;
 DAYS = 365;
+% DAYS = 2;
 
 %! Create a directory for output
 exper = 'v1_';
@@ -47,15 +50,15 @@ MNT = 0;
 %! Run model with no fishing
 for YR = 1:YEARS % years
     for DAY = 1:param.DT:DAYS % days
-        
+
         %%%! Future time step
         DY = int64(ceil(DAY));
         [num2str(YR),' , ', num2str(mod(DY,365))]
-        
+
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
             sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
             Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
-        
+
         %! Store
         biomass(DY,:,:) = [Sml_f.bio, Sml_p.bio, Sml_d.bio,...
                           Med_f.bio, Med_p.bio, Med_d.bio,...
@@ -93,9 +96,9 @@ for YR = 1:YEARS % years
         fish_catch_rate(DY,:,1:8) = [Sml_f.fmort, Sml_p.fmort, Sml_d.fmort,...
                                      Med_f.fmort, Med_p.fmort, Med_d.fmort,...
                                      Lrg_p.fmort, Lrg_d.fmort];
-        
+
     end %Days
-    
+
 end %Years
 
 %%% Save
