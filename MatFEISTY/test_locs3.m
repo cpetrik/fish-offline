@@ -6,15 +6,14 @@ function test_locs3()
 param = make_params_testcase();
 
 %! Idealized bathymetry & forcing
-load(['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/fish-offline/MatFEISTY/input_files/',...
-    'feisty_input_climatol_daily_locs3.mat'],'GRD','ESM');
+load(['./input_files/feisty_input_climatol_daily_locs3.mat'],'GRD','ESM');
 param.NX = length(GRD.Z);
 param.ID = 1:param.NX;
 NX = param.NX;
 ID = 1:param.NX;
 
 %! How long to run the model
-YEARS = 200;
+YEARS = 1;
 DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
@@ -58,15 +57,16 @@ MNT = 0;
 for YR = 1:YEARS % years
     num2str(YR)
         for DAY = 1:param.DT:DAYS % days
-        
+
         %%%! Future time step
         DY = int64(ceil(DAY));
         %[num2str(YR),' , ', num2str(mod(DY,365))]
-        
+
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
             sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
-            Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
-        
+            Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param,...
+            DAY==DAYS);
+
         %! Store
         biom(DY,:,:) = [Sml_f.bio, Sml_p.bio, Sml_d.bio,...
                           Med_f.bio, Med_p.bio, Med_d.bio,...
@@ -104,9 +104,9 @@ for YR = 1:YEARS % years
         frate(DY,:,1:8) = [Sml_f.fmort, Sml_p.fmort, Sml_d.fmort,...
                                      Med_f.fmort, Med_p.fmort, Med_d.fmort,...
                                      Lrg_p.fmort, Lrg_d.fmort];
-        
+
     end %Days
-    
+
     %! Calculate monthly means and save
     aa = (cumsum(MNTH)+1);
     a = [1,aa(1:end-1)]; % start of the month
@@ -126,7 +126,7 @@ for YR = 1:YEARS % years
         recruitment_flux(MNT,:,:) = mean(recruit(a(i):b(i),:,:),1);
         fish_catch_rate(MNT,:,:) = mean(frate(a(i):b(i),:,:),1);
     end
-    
+
 end %Years
 
 %%% Save

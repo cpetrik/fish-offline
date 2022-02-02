@@ -22,7 +22,6 @@ load('./input_files/Data_cyclic_test_forcing.mat',...
 %! How long to run the model
 YEARS = 1;
 DAYS = 365;
-% DAYS = 2;
 
 %! Create a directory for output
 exper = 'v3_move_updateB_';
@@ -57,7 +56,8 @@ for YR = 1:YEARS % years
 
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
             sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
-            Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
+            Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param,...
+            DAY==DAYS);
 
         %! Store
         biomass(DY,:,:) = [Sml_f.bio, Sml_p.bio, Sml_d.bio,...
