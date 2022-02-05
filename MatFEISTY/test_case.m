@@ -18,6 +18,7 @@ ID = 1:param.NX;
 %! Idealized forcing
 load('./input_files/Data_cyclic_test_forcing.mat',...
     'ESM');
+save_forcing_nc('./model_output/test_case_forcing.nc', GRD, ESM)
 
 %! How long to run the model
 YEARS = 1;
@@ -32,6 +33,7 @@ exper = 'v3_move_updateB_';
 
 %! Storage variables
 biomass             = NaN*ones(DAYS,NX,9);
+full_biom           = NaN*ones(YEARS*365,NX,9);
 T_habitat           = NaN*ones(DAYS,NX,9);
 ingestion_rate      = NaN*ones(DAYS,NX,9);
 predation_flux      = NaN*ones(DAYS,NX,9);
@@ -56,8 +58,7 @@ for YR = 1:YEARS % years
 
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
             sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
-            Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param,...
-            DAY==DAYS);
+            Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
 
         %! Store
         biomass(DY,:,:) = [Sml_f.bio, Sml_p.bio, Sml_d.bio,...
@@ -99,9 +100,12 @@ for YR = 1:YEARS % years
 
     end %Days
 
+    full_biom((YR-1)*365+(1:DAYS),:,:) = biomass(:,:,:);
+
 end %Years
 
 %%% Save
+save_biomass_nc('./model_output/test_case.nc', full_biom)
 save([fname '_test_case.mat'],...
     'biomass','T_habitat','ingestion_rate','predation_flux','predation_rate',...
     'metabolism_rate','mortality_rate','energy_avail_rate','growth_rate',...

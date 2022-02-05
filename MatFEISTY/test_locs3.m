@@ -7,6 +7,7 @@ param = make_params_testcase();
 
 %! Idealized bathymetry & forcing
 load(['./input_files/feisty_input_climatol_daily_locs3.mat'],'GRD','ESM');
+save_forcing_nc('./model_output/test_locs3_forcing.nc', GRD, ESM)
 param.NX = length(GRD.Z);
 param.ID = 1:param.NX;
 NX = param.NX;
@@ -26,6 +27,7 @@ exper = 'v2_Bupdates_locs3_';
 
 %! Storage variables
 biom      = NaN*ones(DAYS,NX,9);
+full_biom = NaN*ones(YEARS*365,NX,9);
 T_hab     = NaN*ones(DAYS,NX,9);
 ingest    = NaN*ones(DAYS,NX,9);
 pred_flux = NaN*ones(DAYS,NX,9);
@@ -64,8 +66,7 @@ for YR = 1:YEARS % years
 
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
             sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
-            Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param,...
-            DAY==DAYS);
+            Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
 
         %! Store
         biom(DY,:,:) = [Sml_f.bio, Sml_p.bio, Sml_d.bio,...
@@ -107,6 +108,8 @@ for YR = 1:YEARS % years
 
     end %Days
 
+    full_biom((YR-1)*365+(1:DAYS),:,:) = biom(:,:,:);
+
     %! Calculate monthly means and save
     aa = (cumsum(MNTH)+1);
     a = [1,aa(1:end-1)]; % start of the month
@@ -130,6 +133,7 @@ for YR = 1:YEARS % years
 end %Years
 
 %%% Save
+save_biomass_nc('./model_output/test_locs3.nc', full_biom)
 save([fname '.mat'],...
     'biomass','T_habitat','ingestion_rate','predation_flux','predation_rate',...
     'metabolism_rate','mortality_rate','energy_avail_rate','growth_rate',...
