@@ -10,33 +10,38 @@ function save_biomass_nc(fname, biomass)
     group = ['Sf'; 'Sp'; 'Sd'; 'Mf'; 'Mp'; 'Md'; 'Lp'; 'Ld'; 'bp'];
 
     % delete output file if it already exists
-    if isfile(fname)
-        delete(sprintf('%s',fname));
+    if (~isfolder('model_output/'))
+        mkdir('model_output/')
+    end
+
+    full_name = ['./model_output/', fname]
+    if isfile(full_name)
+        delete(sprintf('%s',full_name));
     end
 
     % Create netcdf file / define dimensions / variables
-    nccreate(fname, 'time', 'Dimensions', {'time', nt})
-    nccreate(fname, 'X', 'Dimensions', {'X', nx})
-    nccreate(fname, 'group', 'Dimensions', {'nchar', 2, 'group', ngroup},...
+    nccreate(full_name, 'time', 'Dimensions', {'time', nt})
+    nccreate(full_name, 'X', 'Dimensions', {'X', nx})
+    nccreate(full_name, 'group', 'Dimensions', {'nchar', 2, 'group', ngroup},...
              'Datatype', 'char')
-    nccreate(fname, 'biomass', 'Dimensions', {'group', ngroup, 'X', nx,'time', nt})
+    nccreate(full_name, 'biomass', 'Dimensions', {'group', ngroup, 'X', nx,'time', nt})
 
     % fill coordinate information
-    ncwriteatt(fname, 'time', 'long_name', 'time')
-    ncwriteatt(fname, 'time', 'standard_name', 'time')
-    ncwriteatt(fname, 'time', 'units', 'day')
-    ncwriteatt(fname, 'time', 'calendar', 'noleap')
-    ncwriteatt(fname, 'time', 'axis', 'T')
-    ncwrite(fname, 'time', time)
+    ncwriteatt(full_name, 'time', 'long_name', 'time')
+    ncwriteatt(full_name, 'time', 'standard_name', 'time')
+    ncwriteatt(full_name, 'time', 'units', 'day')
+    ncwriteatt(full_name, 'time', 'calendar', 'noleap')
+    ncwriteatt(full_name, 'time', 'axis', 'T')
+    ncwrite(full_name, 'time', time)
 
-    ncwriteatt(fname, 'X', 'long_name', 'longitude')
-    ncwriteatt(fname, 'X', 'standard_name', 'longitude')
-    ncwriteatt(fname, 'X', 'units', 'degrees_east')
-    ncwriteatt(fname, 'X', 'axis', 'X')
-    ncwrite(fname, 'X', X)
+    ncwriteatt(full_name, 'X', 'long_name', 'longitude')
+    ncwriteatt(full_name, 'X', 'standard_name', 'longitude')
+    ncwriteatt(full_name, 'X', 'units', 'degrees_east')
+    ncwriteatt(full_name, 'X', 'axis', 'X')
+    ncwrite(full_name, 'X', X)
 
-    ncwriteatt(fname, 'group', 'long_name', 'prognostic classes')
-    ncwrite(fname, 'group', transpose(group))
+    ncwriteatt(full_name, 'group', 'long_name', 'prognostic classes')
+    ncwrite(full_name, 'group', transpose(group))
 
-    ncwrite(fname, 'biomass', permute(biomass, [3, 2, 1]))
+    ncwrite(full_name, 'biomass', permute(biomass, [3, 2, 1]))
 end

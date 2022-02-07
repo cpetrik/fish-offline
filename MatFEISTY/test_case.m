@@ -1,6 +1,4 @@
 %%%%!! RUN HISTORIC FOR ALL LOCATIONS
-% $ matlab -nodisplay -nosplash - nodesktop
-% >> run('test_case.m')
 function test_case()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
@@ -18,7 +16,7 @@ ID = 1:param.NX;
 %! Idealized forcing
 load('./input_files/Data_cyclic_test_forcing.mat',...
     'ESM');
-save_forcing_nc('./model_output/test_case_forcing.nc', GRD, ESM)
+save_forcing_nc('test_case_forcing.nc', GRD, ESM)
 
 %! How long to run the model
 YEARS = 1;
@@ -105,7 +103,7 @@ for YR = 1:YEARS % years
 end %Years
 
 %%% Save
-save_biomass_nc('./model_output/test_case.nc', full_biom)
+save_biomass_nc('test_case.nc', full_biom)
 save([fname '_test_case.mat'],...
     'biomass','T_habitat','ingestion_rate','predation_flux','predation_rate',...
     'metabolism_rate','mortality_rate','energy_avail_rate','growth_rate',...
