@@ -7,7 +7,6 @@ param = make_params_testcase();
 
 %! Idealized bathymetry & forcing
 load(['./input_files/feisty_input_climatol_daily_locs3.mat'],'GRD','ESM');
-save_forcing_nc('test_locs3_forcing.nc', GRD, ESM)
 param.NX = length(GRD.Z);
 param.ID = 1:param.NX;
 NX = param.NX;
@@ -17,8 +16,12 @@ ID = 1:param.NX;
 YEARS = 200;
 DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
+time = 1:(YEARS*365);
 
 %! Create a directory for output
+nc_out_name = 'test_locs3.nc';
+group = ['Sf'; 'Sp'; 'Sd'; 'Mf'; 'Mp'; 'Md'; 'Lp'; 'Ld'; 'bp'];
+init_netcdf_output(nc_out_name, length(time), param.NX, length(group), GRD);
 exper = 'v2_Bupdates_locs3_';
 [fname,simname] = sub_fname_testcase_exper(param,exper);
 
@@ -133,7 +136,7 @@ for YR = 1:YEARS % years
 end %Years
 
 %%% Save
-save_biomass_nc('test_locs3.nc', full_biom)
+write_netcdf_output(nc_out_name, full_biom, time, param.ID, group, GRD, ESM)
 save([fname '.mat'],...
     'biomass','T_habitat','ingestion_rate','predation_flux','predation_rate',...
     'metabolism_rate','mortality_rate','energy_avail_rate','growth_rate',...

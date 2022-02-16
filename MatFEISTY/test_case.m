@@ -6,23 +6,24 @@ function test_case()
 param = make_params_testcase();
 
 %! Idealized bathymetry
-load('./input_files/Grid_test_forcing.mat',...
-    'GRD');
+load('./input_files/Grid_test_forcing.mat', 'GRD');
 param.NX = length(GRD.Z);
 param.ID = 1:param.NX;
 NX = param.NX;
 ID = 1:param.NX;
 
 %! Idealized forcing
-load('./input_files/Data_cyclic_test_forcing.mat',...
-    'ESM');
-save_forcing_nc('test_case_forcing.nc', GRD, ESM)
+load('./input_files/Data_cyclic_test_forcing.mat', 'ESM');
 
 %! How long to run the model
 YEARS = 1;
 DAYS = 365;
+time = 1:(YEARS*365);
 
-%! Create a directory for output
+%! Create a directory for output and set up netcdf output
+nc_out_name = 'test_case.nc';
+group = ['Sf'; 'Sp'; 'Sd'; 'Mf'; 'Mp'; 'Md'; 'Lp'; 'Ld'; 'bp'];
+init_netcdf_output(nc_out_name, length(time), param.NX, length(group), GRD);
 exper = 'v3_move_updateB_';
 [fname,simname] = sub_fname_testcase_exper(param,exper);
 
@@ -103,7 +104,7 @@ for YR = 1:YEARS % years
 end %Years
 
 %%% Save
-save_biomass_nc('test_case.nc', full_biom)
+write_netcdf_output(nc_out_name, full_biom, time, param.ID, group, GRD, ESM)
 save([fname '_test_case.mat'],...
     'biomass','T_habitat','ingestion_rate','predation_flux','predation_rate',...
     'metabolism_rate','mortality_rate','energy_avail_rate','growth_rate',...
