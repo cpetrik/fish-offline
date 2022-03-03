@@ -94,6 +94,25 @@ yNOI = NOIyr(NOIyr>=1948 & NOIyr<=2015);
 yPDO = PDOyr(PDOyr>=1948 & PDOyr<=2015);
 ySOI = SOIyr(SOIyr>=1948 & SOIyr<=2015);
 
+%% put in matrix
+manom = nan*ones(11,68);
+manom(1,:) = mAMO;
+manom(2,3:end) = mAO;
+manom(3,32:end) = mMEI;
+manom(4,:) = mNAO;
+manom(5,:) = mNino12;
+manom(6,:) = mNino34;
+manom(7,:) = mNino3;
+manom(8,:) = mNino4;
+manom(9,1:60) = mNOI;
+manom(10,:) = mPDO;
+manom(11,:) = mSOI;
+
+yanom = 1948:2015;
+
+canom = {'AMO','AO','MEI','NAO','Nino12','Nino34','Nino3','Nino4','NOI',...
+    'PDO','SOI'};
+
 %% Group types and sizes
 lme_mFb = lme_msfb + lme_mmfb;
 lme_mPb = lme_mspb + lme_mmpb + lme_mlpb;
@@ -153,161 +172,150 @@ lme_sAa = lme_sAb - nanmean(lme_sAb,2);
 lid = [54,1:2,10,3,5:7];
 lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE'};
 
-lme = 3;
-[c,lags] = xcorr(mPDO,lme_mFb(lme,:),20);
-figure
-stem(lags,c,'k')
-[R,P] = corrcoef(mPDO,lme_mFb(lme,:))
-
-%% Pac
-figure
-plot(yPDO,mPDO,'k'); hold on;
-plot(yNOI,mNOI,'r'); hold on;
-plot(ySOI,mSOI,'b'); hold on;
-plot(yNino12,mNino12,'m'); hold on;
-plot(yNino34,mNino34,'c'); hold on;
-
-%% Atl
-figure
-plot(yAMO,mAMO,'k'); hold on;
-plot(yNAO,mNAO,'b'); hold on;
-
-%%
+%% Loop over all LMEs and all Climate
 close all
 colororder({'k','b'})
 
-figure(1)
-subplot(3,3,1)
-yyaxis left
-plot(yPDO,mPDO);
-xlim([fyr(1) fyr(end)])
-yyaxis right
-plot(fyr,lme_mSa(3,:));
-xlim([fyr(1) fyr(end)])
-title('Small')
-
-subplot(3,3,2)
-yyaxis left
-plot(yPDO,mPDO);
-xlim([fyr(1) fyr(end)])
-yyaxis right
-plot(fyr,lme_mMa(3,:));
-xlim([fyr(1) fyr(end)])
-title(['PDO CCE'; ' Medium'])
-
-subplot(3,3,3)
-yyaxis left
-plot(yPDO,mPDO);
-xlim([fyr(1) fyr(end)])
-yyaxis right
-plot(fyr,lme_mLa(3,:));
-xlim([fyr(1) fyr(end)])
-title('Large')
-
-subplot(3,3,4)
-yyaxis left
-plot(yPDO,mPDO);
-xlim([fyr(1) fyr(end)])
-ylabel('PDO')
-yyaxis right
-plot(fyr,lme_mFa(3,:));
-xlim([fyr(1) fyr(end)])
-title('Forage')
-
-subplot(3,3,5)
-yyaxis left
-plot(yPDO,mPDO);
-xlim([fyr(1) fyr(end)])
-yyaxis right
-plot(fyr,lme_mPa(3,:));
-xlim([fyr(1) fyr(end)])
-title('Lg Pelagic')
-
-subplot(3,3,6)
-yyaxis left
-plot(yPDO,mPDO);
-xlim([fyr(1) fyr(end)])
-yyaxis right
-plot(fyr,lme_mDa(3,:));
-xlim([fyr(1) fyr(end)])
-title('Demersal')
-ylabel('Mean biomass (log_1_0 MT)')
-
-subplot(3,3,7)
-yyaxis left
-plot(yPDO,mPDO);
-xlim([fyr(1) fyr(end)])
-yyaxis right
-plot(fyr,lme_mAa(3,:));
-xlim([fyr(1) fyr(end)])
-xlabel('Time (y)')
-title('All Fish')
-
-subplot(3,3,9)
-yyaxis left
-plot(yPDO,mPDO);
-xlim([fyr(1) fyr(end)])
-yyaxis right
-plot(fyr,lme_mba(3,:));
-xlim([fyr(1) fyr(end)])
-title('Benthos')
-stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_CCE_PDO_ts_corr.png'])
-
-%% Cross corr
-[cS,lags] = xcorr(mPDO,lme_mSb(lme,:),20);
-[cM,lags] = xcorr(mPDO,lme_mMb(lme,:),20);
-[cL,lags] = xcorr(mPDO,lme_mLb(lme,:),20);
-[cF,lags] = xcorr(mPDO,lme_mFb(lme,:),20);
-[cP,lags] = xcorr(mPDO,lme_mPb(lme,:),20);
-[cD,lags] = xcorr(mPDO,lme_mDb(lme,:),20);
-[cA,lags] = xcorr(mPDO,lme_mAb(lme,:),20);
-[cB,lags] = xcorr(mPDO,lme_mbb(lme,:),20);
-
-stem(lags,c,'k')
-
-figure(2)
-subplot(3,3,1)
-stem(lags,cS,'k')
-xlim([0 20])
-title('Small')
-
-subplot(3,3,2)
-stem(lags,cM,'k')
-xlim([0 20])
-title(['PDO CCE'; ' Medium'])
-
-subplot(3,3,3)
-stem(lags,cL,'k')
-xlim([0 20])
-title('Large')
-
-subplot(3,3,4)
-stem(lags,cF,'k')
-xlim([0 20])
-title('Forage')
-
-subplot(3,3,5)
-stem(lags,cP,'k')
-xlim([0 20])
-title('Lg Pelagic')
-
-subplot(3,3,6)
-stem(lags,cD,'k')
-xlim([0 20])
-title('Demersal')
-
-subplot(3,3,7)
-stem(lags,cA,'k')
-xlim([0 20])
-title('All Fish')
-
-subplot(3,3,9)
-stem(lags,cB,'k')
-xlim([0 20])
-title('Benthos')
-stamp('')
-print('-dpng',[ppath 'FOSI_',mod,'_CCE_PDO_ts_crosscorr.png'])
-
-
-
+for i=1%:length(lid)
+    for j=2%1:length(canom)
+        lme = lid(i);
+        ltex = lname{i};
+        ctex = canom{j};
+        
+        %% Cross corr - FIX TO BE SAME DATES
+        [cS,lagsS] = xcorr(lme_mSb(lme,:),manom(j,:),20);
+        [cM,lagsM] = xcorr(lme_mMb(lme,:),manom(j,:),20);
+        [cL,lagsL] = xcorr(lme_mLb(lme,:),manom(j,:),20);
+        [cF,lagsF] = xcorr(lme_mFb(lme,:),manom(j,:),20);
+        [cP,lagsP] = xcorr(lme_mPb(lme,:),manom(j,:),20);
+        [cD,lagsD] = xcorr(lme_mDb(lme,:),manom(j,:),20);
+        [cA,lagsA] = xcorr(lme_mAb(lme,:),manom(j,:),20);
+        [cB,lagsB] = xcorr(lme_mbb(lme,:),manom(j,:),20);
+        
+        %%
+        figure(1)
+        clf
+        subplot(3,3,1)
+        yyaxis left
+        plot(yanom,manom(j,:));
+        xlim([fyr(1) fyr(end)])
+        yyaxis right
+        plot(fyr,lme_mSa(3,:));
+        xlim([fyr(1) fyr(end)])
+        title('Small')
+        
+        subplot(3,3,2)
+        yyaxis left
+        plot(yanom,manom(j,:));
+        xlim([fyr(1) fyr(end)])
+        yyaxis right
+        plot(fyr,lme_mMa(3,:));
+        xlim([fyr(1) fyr(end)])
+        title([ctex,' ', ltex ' Medium'])
+        
+        subplot(3,3,3)
+        yyaxis left
+        plot(yanom,manom(j,:));
+        xlim([fyr(1) fyr(end)])
+        yyaxis right
+        plot(fyr,lme_mLa(3,:));
+        xlim([fyr(1) fyr(end)])
+        title('Large')
+        
+        subplot(3,3,4)
+        yyaxis left
+        plot(yanom,manom(j,:));
+        xlim([fyr(1) fyr(end)])
+        ylabel('PDO')
+        yyaxis right
+        plot(fyr,lme_mFa(3,:));
+        xlim([fyr(1) fyr(end)])
+        title('Forage')
+        
+        subplot(3,3,5)
+        yyaxis left
+        plot(yanom,manom(j,:));
+        xlim([fyr(1) fyr(end)])
+        yyaxis right
+        plot(fyr,lme_mPa(3,:));
+        xlim([fyr(1) fyr(end)])
+        title('Lg Pelagic')
+        
+        subplot(3,3,6)
+        yyaxis left
+        plot(yanom,manom(j,:));
+        xlim([fyr(1) fyr(end)])
+        yyaxis right
+        plot(fyr,lme_mDa(3,:));
+        xlim([fyr(1) fyr(end)])
+        title('Demersal')
+        ylabel('Mean biomass (log_1_0 MT)')
+        
+        subplot(3,3,7)
+        yyaxis left
+        plot(yanom,manom(j,:));
+        xlim([fyr(1) fyr(end)])
+        yyaxis right
+        plot(fyr,lme_mAa(3,:));
+        xlim([fyr(1) fyr(end)])
+        xlabel('Time (y)')
+        title('All Fish')
+        
+        subplot(3,3,9)
+        yyaxis left
+        plot(yanom,manom(j,:));
+        xlim([fyr(1) fyr(end)])
+        yyaxis right
+        plot(fyr,lme_mba(3,:));
+        xlim([fyr(1) fyr(end)])
+        title('Benthos')
+        stamp('')
+        print('-dpng',[ppath 'FOSI_',mod,ctex,'_',ltex,'_ts_corr.png'])
+        
+        %%
+        figure(2)
+        clf
+        subplot(3,3,1)
+        stem(lagsS,cS,'k')
+        xlim([0 15])
+        title('Small')
+        
+        subplot(3,3,2)
+        stem(lagsM,cM,'k')
+        xlim([0 15])
+        title([ctex,' ', ltex ' Medium'])
+        
+        subplot(3,3,3)
+        stem(lagsL,cL,'k')
+        xlim([0 15])
+        title('Large')
+        
+        subplot(3,3,4)
+        stem(lagsF,cF,'k')
+        xlim([0 15])
+        title('Forage')
+        
+        subplot(3,3,5)
+        stem(lagsP,cP,'k')
+        xlim([0 15])
+        title('Lg Pelagic')
+        
+        subplot(3,3,6)
+        stem(lagsD,cD,'k')
+        xlim([0 15])
+        title('Demersal')
+        
+        subplot(3,3,7)
+        stem(lagsA,cA,'k')
+        xlim([0 15])
+        title('All Fish')
+        
+        subplot(3,3,9)
+        stem(lagsB,cB,'k')
+        xlim([0 15])
+        title('Benthos')
+        stamp('')
+        print('-dpng',[ppath 'FOSI_',mod,ctex,'_',ltex,'_ts_crosscorr.png'])
+        
+    end
+end
