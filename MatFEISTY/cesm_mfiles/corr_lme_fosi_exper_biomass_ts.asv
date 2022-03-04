@@ -382,32 +382,32 @@ for i=1:length(lid)
                 sigS{ns,1} = ltex;
                 sigS{ns,2} = ctex;
                 sigS{ns,3} = t;
-                sigS{ns,4} = rs(1,2);
-                sigS{ns,5} = ps(1,2);
+                sigS{ns,4} = rf(1,2);
+                sigS{ns,5} = pf(1,2);
             end
             if (pm(1,2)<=0.05)
                 nm=nm+1;
                 sigM{nm,1} = ltex;
                 sigM{nm,2} = ctex;
                 sigM{nm,3} = t;
-                sigM{nm,4} = rm(1,2);
-                sigM{nm,5} = pm(1,2);
+                sigS{ns,4} = rf(1,2);
+                sigS{ns,5} = pf(1,2);
             end
             if (pl(1,2)<=0.05)
                 nl=nl+1;
                 sigL{nl,1} = ltex;
                 sigL{nl,2} = ctex;
                 sigL{nl,3} = t;
-                sigL{nl,4} = rl(1,2);
-                sigL{nl,5} = pl(1,2);
+                sigS{ns,4} = rf(1,2);
+                sigS{ns,5} = pf(1,2);
             end
             if (pf(1,2)<=0.05)
                 nf=nf+1;
                 sigF{nf,1} = ltex;
                 sigF{nf,2} = ctex;
                 sigF{nf,3} = t;
-                sigF{nf,4} = rf(1,2);
-                sigF{nf,5} = pf(1,2);
+                sigS{ns,4} = rf(1,2);
+                sigS{ns,5} = pf(1,2);
             end
             if (pp(1,2)<=0.05)
                 np=np+1;
@@ -447,14 +447,14 @@ for i=1:length(lid)
 end
 
 %%
-writecell(sigS,[dpath 'LME_fosi_fished_',mod,'sigS.csv']);
-writecell(sigM,[dpath 'LME_fosi_fished_',mod,'sigM.csv']);
-writecell(sigL,[dpath 'LME_fosi_fished_',mod,'sigL.csv']);
-writecell(sigF,[dpath 'LME_fosi_fished_',mod,'sigF.csv']);
-writecell(sigP,[dpath 'LME_fosi_fished_',mod,'sigP.csv']);
-writecell(sigD,[dpath 'LME_fosi_fished_',mod,'sigD.csv']);
-writecell(sigA,[dpath 'LME_fosi_fished_',mod,'sigA.csv']);
-writecell(sigB,[dpath 'LME_fosi_fished_',mod,'sigB.csv']);
+writecell(sigS,[dpath 'LME_fosi_fished_',mod,'sigS.xls']);
+writecell(sigM,[dpath 'LME_fosi_fished_',mod,'sigM.xls']);
+writecell(sigL,[dpath 'LME_fosi_fished_',mod,'sigL.xls']);
+writecell(sigF,[dpath 'LME_fosi_fished_',mod,'sigF.xls']);
+writecell(sigP,[dpath 'LME_fosi_fished_',mod,'sigP.xls']);
+writecell(sigD,[dpath 'LME_fosi_fished_',mod,'sigD.xls']);
+writecell(sigA,[dpath 'LME_fosi_fished_',mod,'sigA.xls']);
+writecell(sigB,[dpath 'LME_fosi_fished_',mod,'sigB.xls']);
 
 
 
