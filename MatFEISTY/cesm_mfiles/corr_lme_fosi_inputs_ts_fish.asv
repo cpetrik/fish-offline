@@ -23,10 +23,11 @@ lonlim=[plotminlon plotmaxlon];
 load coastlines;
 
 %% FOSI input forcing
-load([cpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'])
+%load([cpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'])
+spath='/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/FOSI/';
+load([spath 'LME_fosi_input_anomalies_annual.mat']);
 
 %% Fish data
-%cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
@@ -41,6 +42,9 @@ mod = sims{1};
 
 load([dpath 'LME_fosi_fished_',mod,cfile '.mat']);
 
+fpath=['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/' cfile '/'];
+load([fpath 'LME_fosi_fished_',mod,'anomalies_annual.mat']
+
 %% Calc input anomalies
 %means
 %lme_tp_fosi','lme_tb_fosi','lme_det_fosi','lme_mz_fosi','lme_mzloss_fosi
@@ -51,32 +55,16 @@ lme_mza = lme_mz_fosi - nanmean(lme_mz_fosi,2);
 lme_losa = lme_mzloss_fosi - nanmean(lme_mzloss_fosi,2);
 
 %% put in matrix
-manom = nan*ones(11,68);
-manom(1,:) = mAMO;
-manom(2,3:end) = mAO;
-manom(3,32:end) = mMEI;
-manom(4,:) = mNAO;
-manom(5,:) = mNino12;
-manom(6,:) = mNino34;
-manom(7,:) = mNino3;
-manom(8,:) = mNino4;
-manom(9,1:60) = mNOI;
-manom(10,:) = mPDO;
-manom(11,:) = mSOI;
+manom = nan*ones(5,68);
+manom(1,:) = lme_tpa;
+manom(2,:) = lme_tba;
+manom(3,:) = lme_deta;
+manom(4,:) = lme_mza;
+manom(5,:) = lme_losa;
 
 yanom = 1948:2015;
 
-canom = {'AMO','AO','MEI','NAO','Nino12','Nino34','Nino3','Nino4','NOI',...
-    'PDO','SOI'};
-
-%% id start and end years
-yst = nan*ones(11,1);
-yen = nan*ones(11,1);
-for k=1:length(canom)
-    nn = find(~isnan(manom(k,:)));
-    yst(k) = nn(1);
-    yen(k) = nn(end);
-end
+canom = {'Tp','Tb','Det','LZbiom','LZloss'};
 
 %% Group types and sizes
 lme_mFb = lme_msfb + lme_mmfb;
@@ -132,12 +120,7 @@ lme_sMa = lme_sMb - nanmean(lme_sMb,2);
 lme_sLa = lme_sLb - nanmean(lme_sLb,2);
 lme_sAa = lme_sAb - nanmean(lme_sAb,2);
 
-%% Test PDO in CCE
-% US LMEs only
-lid = [54,1:2,10,3,5:7];
-lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE'};
-
-%% Loop over all LMEs and all Climate
+%% Loop over all LMEs and all inputs
 close all
 colororder({'k','b'})
 
@@ -147,15 +130,15 @@ for i=1%:length(lid)
         ltex = lname{i};
         ctex = canom{j};
         
-        %% Cross corr - FIX TO BE SAME DATES
-        [cS,lagsS] = xcorr(lme_mSb(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cM,lagsM] = xcorr(lme_mMb(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cL,lagsL] = xcorr(lme_mLb(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cF,lagsF] = xcorr(lme_mFb(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cP,lagsP] = xcorr(lme_mPb(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cD,lagsD] = xcorr(lme_mDb(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cA,lagsA] = xcorr(lme_mAb(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cB,lagsB] = xcorr(lme_mbb(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
+        %% Cross corr 
+        [cS,lagsS] = xcorr(lme_mSb(lme,:),manom(j,:),15);
+        [cM,lagsM] = xcorr(lme_mMb(lme,:),manom(j,:),15);
+        [cL,lagsL] = xcorr(lme_mLb(lme,:),manom(j,:),15);
+        [cF,lagsF] = xcorr(lme_mFb(lme,:),manom(j,:),15);
+        [cP,lagsP] = xcorr(lme_mPb(lme,:),manom(j,:),15);
+        [cD,lagsD] = xcorr(lme_mDb(lme,:),manom(j,:),15);
+        [cA,lagsA] = xcorr(lme_mAb(lme,:),manom(j,:),15);
+        [cB,lagsB] = xcorr(lme_mbb(lme,:),manom(j,:),15);
         
         %%
         figure(1)

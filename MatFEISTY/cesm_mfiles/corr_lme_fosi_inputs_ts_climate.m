@@ -5,7 +5,7 @@ clear all
 close all
 
 apath = '/Users/cpetrik/Dropbox/Princeton/MAPP-METF/NCAR3/DPLE_offline/results_dple/climate_indices/';
-load([apath 'climate_anomalies.mat'])
+load([apath 'Climate_anomalies_annual_means.mat']);
 
 %% Map data
 cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
@@ -27,106 +27,34 @@ load coastlines;
 
 %% FOSI input forcing
 load([cpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'])
+%lme_tp_fosi','lme_tb_fosi','lme_det_fosi','lme_mz_fosi','lme_mzloss_fosi
 
 ppath = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 
-%% Remove N/A values
-AMO(abs(AMO)>9) = nan;
-AO(abs(AO)>9) = nan;
-MEI(abs(MEI)>9) = nan;
-NAO(abs(NAO)>9) = nan;
-Nino12(abs(Nino12)>9) = nan;
-Nino34(abs(Nino34)>9) = nan;
-Nino3(abs(Nino3)>9) = nan;
-Nino4(abs(Nino4)>9) = nan;
-NOI(abs(NOI)>9) = nan;
-PDO(abs(PDO)>9) = nan;
-SOI(abs(SOI)>9) = nan;
-
-%% Climate anom annual means
-
-mAMO = nanmean(AMO,2);
-mAO = nanmean(AO,2);
-mMEI = nanmean(MEI,2);
-mNAO = nanmean(NAO,2);
-mNino12 = nanmean(Nino12,2);
-mNino34 = nanmean(Nino34,2);
-mNino3 = nanmean(Nino3,2);
-mNino4 = nanmean(Nino4,2);
-mNOI = nanmean(NOI,2);
-mPDO = nanmean(PDO,2);
-mSOI = nanmean(SOI,2);
-
-%% Isolate years of interest 1948-2015
-fyr = 1948:2015;
-mAMO = mAMO(AMOyr>=1948 & AMOyr<=2015);
-mAO = mAO(AOyr>=1948 & AOyr<=2015);
-mMEI = mMEI(MEIyr>=1948 & MEIyr<=2015);
-mNAO = mNAO(NAOyr>=1948 & NAOyr<=2015);
-mNino12 = mNino12(Nino12yr>=1948 & Nino12yr<=2015);
-mNino34 = mNino34(Nino34yr>=1948 & Nino34yr<=2015);
-mNino3 = mNino3(Nino3yr>=1948 & Nino3yr<=2015);
-mNino4 = mNino4(Nino4yr>=1948 & Nino4yr<=2015);
-mNOI = mNOI(NOIyr>=1948 & NOIyr<=2015);
-mPDO = mPDO(PDOyr>=1948 & PDOyr<=2015);
-mSOI = mSOI(SOIyr>=1948 & SOIyr<=2015);
-
-yAMO = AMOyr(AMOyr>=1948 & AMOyr<=2015);
-yAO = AOyr(AOyr>=1948 & AOyr<=2015);
-yMEI = MEIyr(MEIyr>=1948 & MEIyr<=2015);
-yNAO = NAOyr(NAOyr>=1948 & NAOyr<=2015);
-yNino12 = Nino12yr(Nino12yr>=1948 & Nino12yr<=2015);
-yNino34 = Nino34yr(Nino34yr>=1948 & Nino34yr<=2015);
-yNino3 = Nino3yr(Nino3yr>=1948 & Nino3yr<=2015);
-yNino4 = Nino4yr(Nino4yr>=1948 & Nino4yr<=2015);
-yNOI = NOIyr(NOIyr>=1948 & NOIyr<=2015);
-yPDO = PDOyr(PDOyr>=1948 & PDOyr<=2015);
-ySOI = SOIyr(SOIyr>=1948 & SOIyr<=2015);
-
-%% put in matrix
-manom = nan*ones(11,68);
-manom(1,:) = mAMO;
-manom(2,3:end) = mAO;
-manom(3,32:end) = mMEI;
-manom(4,:) = mNAO;
-manom(5,:) = mNino12;
-manom(6,:) = mNino34;
-manom(7,:) = mNino3;
-manom(8,:) = mNino4;
-manom(9,1:60) = mNOI;
-manom(10,:) = mPDO;
-manom(11,:) = mSOI;
-
-yanom = 1948:2015;
-
-canom = {'AMO','AO','MEI','NAO','Nino12','Nino34','Nino3','Nino4','NOI',...
-    'PDO','SOI'};
-
-%% id start and end years
-yst = nan*ones(11,1);
-yen = nan*ones(11,1);
-for k=1:length(canom)
-    nn = find(~isnan(manom(k,:)));
-    yst(k) = nn(1);
-    yen(k) = nn(end);
-end
-
-
 %% Calc anomalies
 %means
-%lme_tp_fosi','lme_tb_fosi','lme_det_fosi','lme_mz_fosi','lme_mzloss_fosi
 lme_tpa = lme_tp_fosi - nanmean(lme_tp_fosi,2);
 lme_tba = lme_tb_fosi - nanmean(lme_tb_fosi,2);
 lme_deta = lme_det_fosi - nanmean(lme_det_fosi,2);
 lme_mza = lme_mz_fosi - nanmean(lme_mz_fosi,2);
 lme_losa = lme_mzloss_fosi - nanmean(lme_mzloss_fosi,2);
 
+%% SAVE
+spath='/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/FOSI/';
+if (~isfolder(spath))
+    mkdir(spath)
+end
+save([spath 'LME_fosi_input_anomalies_annual.mat'],...
+    'lme_tpa','lme_tba','lme_deta','lme_mza','lme_losa');
+% save([cpath 'LME_fosi_input_anomalies_annual.mat'],...
+%     'lme_tpa','lme_tba','lme_deta','lme_mza','lme_losa');
+
 %% Loop over all LMEs and all Climate
 close all
 colororder({'k','b'})
 
 for i=1%:length(lid)
-    for j=2%1:length(canom)
+    for j=1%:length(canom)
         lme = lid(i);
         ltex = lname{i};
         ctex = canom{j};
@@ -221,3 +149,94 @@ for i=1%:length(lid)
         
     end
 end
+
+%% Try looking at corrs with 0-5 yr lag
+yr = 0:5;
+np=0;
+nb=0;
+nd=0;
+nm=0;
+nl=0;
+for i=1:length(lid)
+    for j=1:length(canom)
+        lme = lid(i);
+        ltex = lname{i};
+        ctex = canom{j};
+        
+        for k=1:6
+            t = yr(k);
+            %% Corr at diff lags
+            [rp,pp] = corrcoef(lme_tpa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rP(i,j,k) = rp(1,2); pP(i,j,k) = pp(1,2);
+            
+            [rb,pb] = corrcoef(lme_tba(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rB(i,j,k) = rb(1,2); pB(i,j,k) = pb(1,2);
+            
+            [rd,pd] = corrcoef(lme_deta(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rD(i,j,k) = rd(1,2); pD(i,j,k) = pd(1,2);
+            
+            [rm,pm] = corrcoef(lme_mza(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rM(i,j,k) = rm(1,2); pM(i,j,k) = pm(1,2);
+            
+            [rl,pl] = corrcoef(lme_losa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rL(i,j,k) = rl(1,2); pL(i,j,k) = pl(1,2);
+            
+            if (pp(1,2)<=0.05)
+                np=np+1;
+                sigP{np,1} = ltex;
+                sigP{np,2} = ctex;
+                sigP{np,3} = t;
+                sigP{np,4} = rp(1,2);
+                sigP{np,5} = pp(1,2);
+            end
+            if (pb(1,2)<=0.05)
+                nb=nb+1;
+                sigB{nb,1} = ltex;
+                sigB{nb,2} = ctex;
+                sigB{nb,3} = t;
+                sigB{nb,4} = rb(1,2);
+                sigB{nb,5} = pb(1,2);
+            end
+            if (pd(1,2)<=0.05)
+                nd=nd+1;
+                sigD{nd,1} = ltex;
+                sigD{nd,2} = ctex;
+                sigD{nd,3} = t;
+                sigD{nd,4} = rd(1,2);
+                sigD{nd,5} = pd(1,2);
+            end
+            if (pm(1,2)<=0.05)
+                nm=nm+1;
+                sigM{nm,1} = ltex;
+                sigM{nm,2} = ctex;
+                sigM{nm,3} = t;
+                sigM{nm,4} = rm(1,2);
+                sigM{nm,5} = pm(1,2);
+            end
+            if (pl(1,2)<=0.05)
+                nl=nl+1;
+                sigL{nl,1} = ltex;
+                sigL{nl,2} = ctex;
+                sigL{nl,3} = t;
+                sigL{nl,4} = rl(1,2);
+                sigL{nl,5} = pl(1,2);
+            end
+            
+        end
+    end
+end
+
+%%
+writecell(sigM,[cpath 'LME_fosi_inputs_sigLzooC.csv']);
+writecell(sigL,[cpath 'LME_fosi_inputs_sigZooLoss.csv']);
+writecell(sigP,[cpath 'LME_fosi_inputs_sigTP.csv']);
+writecell(sigD,[cpath 'LME_fosi_inputs_sigDet.csv']);
+writecell(sigB,[cpath 'LME_fosi_inputs_sigTB.csv']);
+
+
+
+
+
+
+
+

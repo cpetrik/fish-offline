@@ -176,10 +176,32 @@ lme_sMa = lme_sMb - nanmean(lme_sMb,2);
 lme_sLa = lme_sLb - nanmean(lme_sLb,2);
 lme_sAa = lme_sAb - nanmean(lme_sAb,2);
 
-%% Test PDO in CCE
-% US LMEs only
+%% US LMEs only
 lid = [54,1:2,10,3,5:7];
 lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE'};
+
+%% save
+save([apath 'Climate_anomalies_annual_means.mat'],'manom','yanom','canom',...
+    'yst','yen');
+
+spath=['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/' cfile '/'];
+if (~isfolder(spath))
+    mkdir(spath)
+end
+save([spath 'LME_fosi_fished_',mod,'anomalies_annual.mat'],...
+    'lme_msfa','lme_mspa','lme_msda','lme_mmfa','lme_mmpa','lme_mmda',...
+    'lme_mlpa','lme_mlda','lme_mba','lme_mFa','lme_mPa','lme_mDa',...
+    'lme_mSa','lme_mMa','lme_mLa','lme_mAa',...
+    'lme_ssfa','lme_sspa','lme_ssda','lme_smfa','lme_smpa','lme_smda',...
+    'lme_slpa','lme_slda','lme_sba','lme_sFa','lme_sPa','lme_sDa',...
+    'lme_sSa','lme_sMa','lme_sLa','lme_sAa');
+% save([dpath 'LME_fosi_fished_',mod,'anomalies_annual.mat'],...
+%     'lme_msfa','lme_mspa','lme_msda','lme_mmfa','lme_mmpa','lme_mmda',...
+%     'lme_mlpa','lme_mlda','lme_mba','lme_mFa','lme_mPa','lme_mDa',...
+%     'lme_mSa','lme_mMa','lme_mLa','lme_mAa',...
+%     'lme_ssfa','lme_sspa','lme_ssda','lme_smfa','lme_smpa','lme_smda',...
+%     'lme_slpa','lme_slda','lme_sba','lme_sFa','lme_sPa','lme_sDa',...
+%     'lme_sSa','lme_sMa','lme_sLa','lme_sAa');
 
 %% Loop over all LMEs and all Climate - Use anomalies of fish mean biomass
 close all
@@ -290,43 +312,43 @@ for i=1:length(lid)
         clf
         subplot(3,3,1)
         stem(lagsS,cS,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Small')
         
         subplot(3,3,2)
         stem(lagsM,cM,'k')
-        xlim([0 15])
+        xlim([0 9])
         str = {[ctex,' ', ltex], ' Medium'};
         title(str)
         
         subplot(3,3,3)
         stem(lagsL,cL,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Large')
         
         subplot(3,3,4)
         stem(lagsF,cF,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Forage')
         
         subplot(3,3,5)
         stem(lagsP,cP,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Lg Pelagic')
         
         subplot(3,3,6)
         stem(lagsD,cD,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Demersal')
         
         subplot(3,3,7)
         stem(lagsA,cA,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('All Fish')
         
         subplot(3,3,9)
         stem(lagsB,cB,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Benthos')
         stamp('')
         print('-dpng',[ppath 'FOSI_',mod,ctex,'_',ltex,'_ts_crosscorr.png'])

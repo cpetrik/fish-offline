@@ -23,34 +23,11 @@ lonlim=[plotminlon plotmaxlon];
 load coastlines;
 
 %% FOSI input forcing
-load([cpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'])
+%load([cpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'])
+spath='/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/FOSI/';
+load([spath 'LME_fosi_input_anomalies_annual.mat']);
 
-%% Fish data
-%cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-ppath = [pp cfile '/'];
-if (~isfolder(ppath))
-    mkdir(ppath)
-end
-
-sims = {'v14_All_fish03_';'v14_climatol_';'v14_varFood_';'v14_varTemp_'};
-mod = sims{1};
-
-load([dpath 'LME_fosi_fished_',mod,cfile '.mat']);
-
-%% Calc input anomalies
-%means
-%lme_tp_fosi','lme_tb_fosi','lme_det_fosi','lme_mz_fosi','lme_mzloss_fosi
-lme_tpa = lme_tp_fosi - nanmean(lme_tp_fosi,2);
-lme_tba = lme_tb_fosi - nanmean(lme_tb_fosi,2);
-lme_deta = lme_det_fosi - nanmean(lme_det_fosi,2);
-lme_mza = lme_mz_fosi - nanmean(lme_mz_fosi,2);
-lme_losa = lme_mzloss_fosi - nanmean(lme_mzloss_fosi,2);
-
-%% put in matrix
+% put inputs in matrix
 manom = nan*ones(5,68);
 manom(1,:) = lme_tpa;
 manom(2,:) = lme_tba;
@@ -62,66 +39,30 @@ yanom = 1948:2015;
 
 canom = {'Tp','Tb','Det','LZbiom','LZloss'};
 
-%% Group types and sizes
-lme_mFb = lme_msfb + lme_mmfb;
-lme_mPb = lme_mspb + lme_mmpb + lme_mlpb;
-lme_mDb = lme_msdb + lme_mmdb + lme_mldb;
-lme_mSb = lme_msfb + lme_mspb + lme_msdb;
-lme_mMb = lme_mmfb + lme_mmpb + lme_mmdb;
-lme_mLb = lme_mlpb + lme_mldb;
-lme_mAb = lme_mFb + lme_mPb + lme_mDb;
+%% Fish data
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-lme_sFb = lme_ssfb + lme_smfb;
-lme_sPb = lme_sspb + lme_smpb + lme_slpb;
-lme_sDb = lme_ssdb + lme_smdb + lme_sldb;
-lme_sSb = lme_ssfb + lme_sspb + lme_ssdb;
-lme_sMb = lme_smfb + lme_smpb + lme_smdb;
-lme_sLb = lme_slpb + lme_sldb;
-lme_sAb = lme_sFb + lme_sPb + lme_sDb;
+dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+ppath = [pp cfile '/'];
+if (~isfolder(ppath))
+    mkdir(ppath)
+end
 
-%% Calc fish anomalies
-%mean biomass
-lme_msfa = lme_msfb - nanmean(lme_msfb,2);
-lme_mspa = lme_mspb - nanmean(lme_mspb,2);
-lme_msda = lme_msdb - nanmean(lme_msdb,2);
-lme_mmfa = lme_mmfb - nanmean(lme_mmfb,2);
-lme_mmpa = lme_mmpb - nanmean(lme_mmpb,2);
-lme_mmda = lme_mmdb - nanmean(lme_mmdb,2);
-lme_mlpa = lme_mlpb - nanmean(lme_mlpb,2);
-lme_mlda = lme_mldb - nanmean(lme_mldb,2);
-lme_mba = lme_mbb - nanmean(lme_mbb,2);
-lme_mFa = lme_mFb - nanmean(lme_mFb,2);
-lme_mPa = lme_mPb - nanmean(lme_mPb,2);
-lme_mDa = lme_mDb - nanmean(lme_mDb,2);
-lme_mSa = lme_mSb - nanmean(lme_mSb,2);
-lme_mMa = lme_mMb - nanmean(lme_mMb,2);
-lme_mLa = lme_mLb - nanmean(lme_mLb,2);
-lme_mAa = lme_mAb - nanmean(lme_mAb,2);
+sims = {'v14_All_fish03_';'v14_climatol_';'v14_varFood_';'v14_varTemp_'};
+mod = sims{1};
 
-%total biomass
-lme_ssfa = lme_ssfb - nanmean(lme_ssfb,2);
-lme_sspa = lme_sspb - nanmean(lme_sspb,2);
-lme_ssda = lme_ssdb - nanmean(lme_ssdb,2);
-lme_smfa = lme_smfb - nanmean(lme_smfb,2);
-lme_smpa = lme_smpb - nanmean(lme_smpb,2);
-lme_smda = lme_smdb - nanmean(lme_smdb,2);
-lme_slpa = lme_slpb - nanmean(lme_slpb,2);
-lme_slda = lme_sldb - nanmean(lme_sldb,2);
-lme_sba = lme_sbb - nanmean(lme_sbb,2);
-lme_sFa = lme_sFb - nanmean(lme_sFb,2);
-lme_sPa = lme_sPb - nanmean(lme_sPb,2);
-lme_sDa = lme_sDb - nanmean(lme_sDb,2);
-lme_sSa = lme_sSb - nanmean(lme_sSb,2);
-lme_sMa = lme_sMb - nanmean(lme_sMb,2);
-lme_sLa = lme_sLb - nanmean(lme_sLb,2);
-lme_sAa = lme_sAb - nanmean(lme_sAb,2);
+%load([dpath 'LME_fosi_fished_',mod,cfile '.mat']);
+fpath=['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/' cfile '/'];
+load([fpath 'LME_fosi_fished_',mod,'anomalies_annual.mat'])
+
 
 %% Loop over all LMEs and all inputs
 close all
 colororder({'k','b'})
 
 for i=1%:length(lid)
-    for j=2%1:length(canom)
+    for j=1%:length(canom)
         lme = lid(i);
         ltex = lname{i};
         ctex = canom{j};
@@ -263,3 +204,136 @@ for i=1%:length(lid)
         
     end
 end
+
+%% Try looking at corrs with 0-5 yr lag
+yr = 0:5;
+ns=0;
+nm=0;
+nl=0;
+nf=0;
+np=0;
+nd=0;
+na=0;
+nb=0;
+for i=1:length(lid)
+    for j=1:length(canom)
+        lme = lid(i);
+        ltex = lname{i};
+        ctex = canom{j};
+        
+        for k=1:6
+            t = yr(k);
+            %% Corr at diff lags
+            [rs,ps] = corrcoef(lme_mSa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rS(i,j,k) = rs(1,2); pS(i,j,k) = ps(1,2);
+            
+            [rm,pm] = corrcoef(lme_mMa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rM(i,j,k) = rm(1,2); pM(i,j,k) = pm(1,2);
+            
+            [rl,pl] = corrcoef(lme_mLa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rL(i,j,k) = rl(1,2); pL(i,j,k) = pl(1,2);
+            
+            [rf,pf] = corrcoef(lme_mFa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rF(i,j,k) = rf(1,2); pF(i,j,k) = pf(1,2);
+            
+            [rp,pp] = corrcoef(lme_mPa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rP(i,j,k) = rp(1,2); pP(i,j,k) = pp(1,2);
+            
+            [rd,pd] = corrcoef(lme_mDa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rD(i,j,k) = rd(1,2); pD(i,j,k) = pd(1,2);
+            
+            [ra,pa] = corrcoef(lme_mAa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rA(i,j,k) = ra(1,2); pA(i,j,k) = pa(1,2);
+            
+            [rb,pb] = corrcoef(lme_mba(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            rB(i,j,k) = rb(1,2); pB(i,j,k) = pb(1,2);
+            
+            if (ps(1,2)<=0.05)
+                ns=ns+1;
+                sigS{ns,1} = ltex;
+                sigS{ns,2} = ctex;
+                sigS{ns,3} = t;
+                sigS{ns,4} = rs(1,2);
+                sigS{ns,5} = ps(1,2);
+            end
+            if (pm(1,2)<=0.05)
+                nm=nm+1;
+                sigM{nm,1} = ltex;
+                sigM{nm,2} = ctex;
+                sigM{nm,3} = t;
+                sigM{nm,4} = rm(1,2);
+                sigM{nm,5} = pm(1,2);
+            end
+            if (pl(1,2)<=0.05)
+                nl=nl+1;
+                sigL{nl,1} = ltex;
+                sigL{nl,2} = ctex;
+                sigL{nl,3} = t;
+                sigL{nl,4} = rl(1,2);
+                sigL{nl,5} = pl(1,2);
+            end
+            if (pf(1,2)<=0.05)
+                nf=nf+1;
+                sigF{nf,1} = ltex;
+                sigF{nf,2} = ctex;
+                sigF{nf,3} = t;
+                sigF{nf,4} = rf(1,2);
+                sigF{nf,5} = pf(1,2);
+            end
+            if (pp(1,2)<=0.05)
+                np=np+1;
+                sigP{np,1} = ltex;
+                sigP{np,2} = ctex;
+                sigP{np,3} = t;
+                sigP{np,4} = rp(1,2);
+                sigP{np,5} = pp(1,2);
+            end
+            if (pd(1,2)<=0.05)
+                nd=nd+1;
+                sigD{nd,1} = ltex;
+                sigD{nd,2} = ctex;
+                sigD{nd,3} = t;
+                sigD{nd,4} = rd(1,2);
+                sigD{nd,5} = pd(1,2);
+            end
+            if (pa(1,2)<=0.05)
+                na=na+1;
+                sigA{na,1} = ltex;
+                sigA{na,2} = ctex;
+                sigA{na,3} = t;
+                sigA{na,4} = ra(1,2);
+                sigA{na,5} = pa(1,2);
+            end
+            if (pb(1,2)<=0.05)
+                nb=nb+1;
+                sigB{nb,1} = ltex;
+                sigB{nb,2} = ctex;
+                sigB{nb,3} = t;
+                sigB{nb,4} = rb(1,2);
+                sigB{nb,5} = pb(1,2);
+            end
+            
+        end
+    end
+end
+
+%%
+writecell(sigS,[dpath 'LME_fosi_fished_',mod,'sigS_inputs.csv']);
+writecell(sigM,[dpath 'LME_fosi_fished_',mod,'sigM_inputs.csv']);
+writecell(sigL,[dpath 'LME_fosi_fished_',mod,'sigL_inputs.csv']);
+writecell(sigF,[dpath 'LME_fosi_fished_',mod,'sigF_inputs.csv']);
+writecell(sigP,[dpath 'LME_fosi_fished_',mod,'sigP_inputs.csv']);
+writecell(sigD,[dpath 'LME_fosi_fished_',mod,'sigD_inputs.csv']);
+writecell(sigA,[dpath 'LME_fosi_fished_',mod,'sigA_inputs.csv']);
+writecell(sigB,[dpath 'LME_fosi_fished_',mod,'sigB_inputs.csv']);
+
+
+
+
+
+
+
+
+
+
+
