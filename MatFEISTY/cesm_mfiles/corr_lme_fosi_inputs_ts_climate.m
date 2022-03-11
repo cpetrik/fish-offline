@@ -88,7 +88,7 @@ for i=1:length(lid)
         %%
         figure(1)
         clf
-        subplot(2,3,1)
+        subplot(3,3,1)
         yyaxis left
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
@@ -98,7 +98,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         title('Tpelagic')
         
-        subplot(2,3,2)
+        subplot(3,3,2)
         yyaxis left
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
@@ -108,7 +108,7 @@ for i=1:length(lid)
         str = {[ctex,' ', ltex], ' LzooC'};
         title(str)
         
-        subplot(2,3,3)
+        subplot(3,3,3)
         yyaxis left
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
@@ -117,7 +117,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         title('Lzoo loss')
         
-        subplot(2,3,4)
+        subplot(3,3,4)
         yyaxis left
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
@@ -127,7 +127,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         title('Tbottom')
         
-        subplot(2,3,5)
+        subplot(3,3,5)
         yyaxis left
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
@@ -141,28 +141,28 @@ for i=1:length(lid)
         %%
         figure(2)
         clf
-        subplot(2,3,1)
+        subplot(3,3,1)
         stem(lagsP,cP,'k')
         xlim([0 9])
         title('Tpelagic')
         
-        subplot(2,3,2)
+        subplot(3,3,2)
         stem(lagsM,cM,'k')
         xlim([0 9])
         str = {[ctex,' ', ltex], ' LzooC'};
         title(str)
         
-        subplot(2,3,3)
+        subplot(3,3,3)
         stem(lagsL,cL,'k')
         xlim([0 9])
         title('Lzoo loss')
         
-        subplot(2,3,4)
+        subplot(3,3,4)
         stem(lagsB,cB,'k')
         xlim([0 9])
         title('Tbottom')
         
-        subplot(2,3,5)
+        subplot(3,3,5)
         stem(lagsD,cD,'k')
         xlim([0 9])
         title('Detritus')
