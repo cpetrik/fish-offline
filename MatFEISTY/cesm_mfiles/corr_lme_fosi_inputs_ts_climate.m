@@ -26,18 +26,33 @@ lonlim=[plotminlon plotmaxlon];
 load coastlines;
 
 %% FOSI input forcing
-load([cpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'])
-%lme_tp_fosi','lme_tb_fosi','lme_det_fosi','lme_mz_fosi','lme_mzloss_fosi
+load([fpath 'FOSI_lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'])
 
 ppath = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 
+%% Annual means
+[nid,nt] = size(lme_mtp);
+nyr = nt/12;
+st=1:12:nt;
+en=12:12:nt;
+
+for n=1:length(st)
+    % mean 
+    lme_amtp(:,n)=nanmean(lme_mtp(:,st(n):en(n)),2);
+    lme_amtb(:,n)=nanmean(lme_mtb(:,st(n):en(n)),2);
+    lme_amdet(:,n)=nanmean(lme_mdet(:,st(n):en(n)),2);
+    lme_ammz(:,n)=nanmean(lme_mmz(:,st(n):en(n)),2);
+    lme_amloss(:,n)=nanmean(lme_mloss(:,st(n):en(n)),2);
+
+end
+
 %% Calc anomalies
 %means
-lme_tpa = lme_tp_fosi - nanmean(lme_tp_fosi,2);
-lme_tba = lme_tb_fosi - nanmean(lme_tb_fosi,2);
-lme_deta = lme_det_fosi - nanmean(lme_det_fosi,2);
-lme_mza = lme_mz_fosi - nanmean(lme_mz_fosi,2);
-lme_losa = lme_mzloss_fosi - nanmean(lme_mzloss_fosi,2);
+lme_tpa = lme_amtp - nanmean(lme_amtp,2);
+lme_tba = lme_amtb - nanmean(lme_amtb,2);
+lme_deta = lme_amdet - nanmean(lme_amdet,2);
+lme_mza = lme_ammz - nanmean(lme_ammz,2);
+lme_losa = lme_amloss - nanmean(lme_amloss,2);
 
 %% SAVE
 spath='/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/FOSI/';
@@ -46,15 +61,19 @@ if (~isfolder(spath))
 end
 save([spath 'LME_fosi_input_anomalies_annual.mat'],...
     'lme_tpa','lme_tba','lme_deta','lme_mza','lme_losa');
-% save([cpath 'LME_fosi_input_anomalies_annual.mat'],...
-%     'lme_tpa','lme_tba','lme_deta','lme_mza','lme_losa');
+save([cpath 'LME_fosi_input_anomalies_annual.mat'],...
+    'lme_tpa','lme_tba','lme_deta','lme_mza','lme_losa');
 
 %% Loop over all LMEs and all Climate
+lid = [54,1:2,10,3,5:7];
+lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE'};
+fyr = 1948:2015;
+
 close all
 colororder({'k','b'})
 
-for i=1%:length(lid)
-    for j=1%:length(canom)
+for i=1:length(lid)
+    for j=1:length(canom)
         lme = lid(i);
         ltex = lname{i};
         ctex = canom{j};
@@ -73,8 +92,9 @@ for i=1%:length(lid)
         yyaxis left
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
+        ylabel(ctex)
         yyaxis right
-        plot(fyr,lme_mSa(3,:));
+        plot(fyr,lme_tpa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Tpelagic')
         
@@ -82,18 +102,18 @@ for i=1%:length(lid)
         yyaxis left
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
-        ylabel('PDO')
         yyaxis right
-        plot(fyr,lme_mFa(3,:));
+        plot(fyr,lme_losa(lme,:));
         xlim([fyr(1) fyr(end)])
-        title([ctex,' ', ltex ' LzooC'])
+        str = {[ctex,' ', ltex], ' LzooC'};
+        title(str)
         
         subplot(2,3,3)
         yyaxis left
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mPa(3,:));
+        plot(fyr,lme_mza(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Lzoo loss')
         
@@ -101,8 +121,9 @@ for i=1%:length(lid)
         yyaxis left
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
+        ylabel(ctex)
         yyaxis right
-        plot(fyr,lme_mMa(3,:));
+        plot(fyr,lme_tba(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Tbottom')
         
@@ -111,7 +132,7 @@ for i=1%:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mLa(3,:));
+        plot(fyr,lme_deta(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Detritus')
         stamp('')
@@ -122,27 +143,28 @@ for i=1%:length(lid)
         clf
         subplot(2,3,1)
         stem(lagsP,cP,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Tpelagic')
         
         subplot(2,3,2)
         stem(lagsM,cM,'k')
-        xlim([0 15])
-        title([ctex,' ', ltex ' LzooC'])
+        xlim([0 9])
+        str = {[ctex,' ', ltex], ' LzooC'};
+        title(str)
         
         subplot(2,3,3)
         stem(lagsL,cL,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Lzoo loss')
         
         subplot(2,3,4)
         stem(lagsB,cB,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Tbottom')
         
         subplot(2,3,5)
         stem(lagsD,cD,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Detritus')
         stamp('')
         print('-dpng',[ppath 'FOSI_inputs_',ctex,'_',ltex,'_ts_crosscorr.png'])

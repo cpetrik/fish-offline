@@ -28,12 +28,12 @@ spath='/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/FOSI/';
 load([spath 'LME_fosi_input_anomalies_annual.mat']);
 
 % put inputs in matrix
-manom = nan*ones(5,68);
-manom(1,:) = lme_tpa;
-manom(2,:) = lme_tba;
-manom(3,:) = lme_deta;
-manom(4,:) = lme_mza;
-manom(5,:) = lme_losa;
+manom = nan*ones(5,66,68);
+manom(1,:,:) = lme_tpa;
+manom(2,:,:) = lme_tba;
+manom(3,:,:) = lme_deta;
+manom(4,:,:) = lme_mza;
+manom(5,:,:) = lme_losa;
 
 yanom = 1948:2015;
 
@@ -58,100 +58,104 @@ load([fpath 'LME_fosi_fished_',mod,'anomalies_annual.mat'])
 
 
 %% Loop over all LMEs and all inputs
+lid = [54,1:2,10,3,5:7];
+lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE'};
+fyr = 1948:2015;
 close all
 colororder({'k','b'})
 
-for i=1%:length(lid)
-    for j=1%:length(canom)
+for i=1:length(lid)
+    for j=1:length(canom)
         lme = lid(i);
         ltex = lname{i};
         ctex = canom{j};
         
         %% Cross corr 
-        [cS,lagsS] = xcorr(lme_mSb(lme,:),manom(j,:),15);
-        [cM,lagsM] = xcorr(lme_mMb(lme,:),manom(j,:),15);
-        [cL,lagsL] = xcorr(lme_mLb(lme,:),manom(j,:),15);
-        [cF,lagsF] = xcorr(lme_mFb(lme,:),manom(j,:),15);
-        [cP,lagsP] = xcorr(lme_mPb(lme,:),manom(j,:),15);
-        [cD,lagsD] = xcorr(lme_mDb(lme,:),manom(j,:),15);
-        [cA,lagsA] = xcorr(lme_mAb(lme,:),manom(j,:),15);
-        [cB,lagsB] = xcorr(lme_mbb(lme,:),manom(j,:),15);
+        [cS,lagsS] = xcorr(lme_mSa(lme,:),squeeze(manom(j,lme,:)),15);
+        [cM,lagsM] = xcorr(lme_mMa(lme,:),squeeze(manom(j,lme,:)),15);
+        [cL,lagsL] = xcorr(lme_mLa(lme,:),squeeze(manom(j,lme,:)),15);
+        [cF,lagsF] = xcorr(lme_mFa(lme,:),squeeze(manom(j,lme,:)),15);
+        [cP,lagsP] = xcorr(lme_mPa(lme,:),squeeze(manom(j,lme,:)),15);
+        [cD,lagsD] = xcorr(lme_mDa(lme,:),squeeze(manom(j,lme,:)),15);
+        [cA,lagsA] = xcorr(lme_mAa(lme,:),squeeze(manom(j,lme,:)),15);
+        [cB,lagsB] = xcorr(lme_mba(lme,:),squeeze(manom(j,lme,:)),15);
         
         %%
         figure(1)
         clf
         subplot(3,3,1)
         yyaxis left
-        plot(yanom,manom(j,:));
+        plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mSa(3,:));
+        plot(fyr,lme_mSa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Small')
         
         subplot(3,3,2)
         yyaxis left
-        plot(yanom,manom(j,:));
+        plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mMa(3,:));
+        plot(fyr,lme_mMa(lme,:));
         xlim([fyr(1) fyr(end)])
-        title([ctex,' ', ltex ' Medium'])
+        str = {[ctex,' ', ltex], ' Medium'};
+        title(str)
         
         subplot(3,3,3)
         yyaxis left
-        plot(yanom,manom(j,:));
+        plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mLa(3,:));
+        plot(fyr,lme_mLa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Large')
         
         subplot(3,3,4)
         yyaxis left
-        plot(yanom,manom(j,:));
+        plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
-        ylabel('PDO')
+        ylabel(ctex)
         yyaxis right
-        plot(fyr,lme_mFa(3,:));
+        plot(fyr,lme_mFa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Forage')
         
         subplot(3,3,5)
         yyaxis left
-        plot(yanom,manom(j,:));
+        plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mPa(3,:));
+        plot(fyr,lme_mPa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Lg Pelagic')
         
         subplot(3,3,6)
         yyaxis left
-        plot(yanom,manom(j,:));
+        plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mDa(3,:));
+        plot(fyr,lme_mDa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Demersal')
         ylabel('Mean biomass (log_1_0 MT)')
         
         subplot(3,3,7)
         yyaxis left
-        plot(yanom,manom(j,:));
+        plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mAa(3,:));
+        plot(fyr,lme_mAa(lme,:));
         xlim([fyr(1) fyr(end)])
         xlabel('Time (y)')
         title('All Fish')
         
         subplot(3,3,9)
         yyaxis left
-        plot(yanom,manom(j,:));
+        plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mba(3,:));
+        plot(fyr,lme_mba(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Benthos')
         stamp('')
@@ -162,42 +166,43 @@ for i=1%:length(lid)
         clf
         subplot(3,3,1)
         stem(lagsS,cS,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Small')
         
         subplot(3,3,2)
         stem(lagsM,cM,'k')
-        xlim([0 15])
-        title([ctex,' ', ltex ' Medium'])
+        xlim([0 9])
+        str = {[ctex,' ', ltex], ' Medium'};
+        title(str)
         
         subplot(3,3,3)
         stem(lagsL,cL,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Large')
         
         subplot(3,3,4)
         stem(lagsF,cF,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Forage')
         
         subplot(3,3,5)
         stem(lagsP,cP,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Lg Pelagic')
         
         subplot(3,3,6)
         stem(lagsD,cD,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Demersal')
         
         subplot(3,3,7)
         stem(lagsA,cA,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('All Fish')
         
         subplot(3,3,9)
         stem(lagsB,cB,'k')
-        xlim([0 15])
+        xlim([0 9])
         title('Benthos')
         stamp('')
         print('-dpng',[ppath 'FOSI_',mod,ctex,'_',ltex,'_ts_crosscorr.png'])
@@ -215,6 +220,8 @@ np=0;
 nd=0;
 na=0;
 nb=0;
+
+time = 1:length(fyr);
 for i=1:length(lid)
     for j=1:length(canom)
         lme = lid(i);
@@ -224,28 +231,28 @@ for i=1:length(lid)
         for k=1:6
             t = yr(k);
             %% Corr at diff lags
-            [rs,ps] = corrcoef(lme_mSa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rs,ps] = corrcoef(lme_mSa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rS(i,j,k) = rs(1,2); pS(i,j,k) = ps(1,2);
             
-            [rm,pm] = corrcoef(lme_mMa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rm,pm] = corrcoef(lme_mMa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rM(i,j,k) = rm(1,2); pM(i,j,k) = pm(1,2);
             
-            [rl,pl] = corrcoef(lme_mLa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rl,pl] = corrcoef(lme_mLa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rL(i,j,k) = rl(1,2); pL(i,j,k) = pl(1,2);
             
-            [rf,pf] = corrcoef(lme_mFa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rf,pf] = corrcoef(lme_mFa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rF(i,j,k) = rf(1,2); pF(i,j,k) = pf(1,2);
             
-            [rp,pp] = corrcoef(lme_mPa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rp,pp] = corrcoef(lme_mPa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rP(i,j,k) = rp(1,2); pP(i,j,k) = pp(1,2);
             
-            [rd,pd] = corrcoef(lme_mDa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rd,pd] = corrcoef(lme_mDa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rD(i,j,k) = rd(1,2); pD(i,j,k) = pd(1,2);
             
-            [ra,pa] = corrcoef(lme_mAa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [ra,pa] = corrcoef(lme_mAa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rA(i,j,k) = ra(1,2); pA(i,j,k) = pa(1,2);
             
-            [rb,pb] = corrcoef(lme_mba(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rb,pb] = corrcoef(lme_mba(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rB(i,j,k) = rb(1,2); pB(i,j,k) = pb(1,2);
             
             if (ps(1,2)<=0.05)

@@ -9,8 +9,8 @@ close all
 fpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 
-load([fpath 'gridspec_POP_gx1v6.mat']);
-load([fpath 'Data_grid_POP_gx1v6.mat'],'GRD');
+load([fpath 'gridspec_POP_gx1v6_noSeas.mat']);
+load([fpath 'Data_grid_POP_gx1v6_noSeas.mat'],'GRD');
 load([fpath 'LME-mask-POP_gx1v6.mat']);
 
 AREA_OCN = TAREA * 1e-4;
@@ -22,7 +22,7 @@ load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.FIESTY-forcing.mat'],...
     'FillValue','missing_value','TEMP_150m','TEMP_150m_units','TEMP_bottom',...
     'TEMP_bottom_units','POC_FLUX_IN_bottom','POC_FLUX_IN_bottom_units',...
     'time','yr');
-load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo.mat'],...
+load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo_totloss_allphytoC.mat'],...
     'LzooC_150m','Lzoo_loss_150m');
 
 %% nans

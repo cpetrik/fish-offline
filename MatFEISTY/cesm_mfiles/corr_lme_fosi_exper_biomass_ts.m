@@ -195,13 +195,13 @@ save([spath 'LME_fosi_fished_',mod,'anomalies_annual.mat'],...
     'lme_ssfa','lme_sspa','lme_ssda','lme_smfa','lme_smpa','lme_smda',...
     'lme_slpa','lme_slda','lme_sba','lme_sFa','lme_sPa','lme_sDa',...
     'lme_sSa','lme_sMa','lme_sLa','lme_sAa');
-% save([dpath 'LME_fosi_fished_',mod,'anomalies_annual.mat'],...
-%     'lme_msfa','lme_mspa','lme_msda','lme_mmfa','lme_mmpa','lme_mmda',...
-%     'lme_mlpa','lme_mlda','lme_mba','lme_mFa','lme_mPa','lme_mDa',...
-%     'lme_mSa','lme_mMa','lme_mLa','lme_mAa',...
-%     'lme_ssfa','lme_sspa','lme_ssda','lme_smfa','lme_smpa','lme_smda',...
-%     'lme_slpa','lme_slda','lme_sba','lme_sFa','lme_sPa','lme_sDa',...
-%     'lme_sSa','lme_sMa','lme_sLa','lme_sAa');
+save([dpath 'LME_fosi_fished_',mod,'anomalies_annual.mat'],...
+    'lme_msfa','lme_mspa','lme_msda','lme_mmfa','lme_mmpa','lme_mmda',...
+    'lme_mlpa','lme_mlda','lme_mba','lme_mFa','lme_mPa','lme_mDa',...
+    'lme_mSa','lme_mMa','lme_mLa','lme_mAa',...
+    'lme_ssfa','lme_sspa','lme_ssda','lme_smfa','lme_smpa','lme_smda',...
+    'lme_slpa','lme_slda','lme_sba','lme_sFa','lme_sPa','lme_sDa',...
+    'lme_sSa','lme_sMa','lme_sLa','lme_sAa');
 
 %% Loop over all LMEs and all Climate - Use anomalies of fish mean biomass
 close all
@@ -232,7 +232,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         ylabel(ctex)
         yyaxis right
-        plot(fyr,lme_mSa(3,:));
+        plot(fyr,lme_mSa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Small')
         
@@ -241,7 +241,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mMa(3,:));
+        plot(fyr,lme_mMa(lme,:));
         xlim([fyr(1) fyr(end)])
         %title([ctex,' ', ltex ' Medium'])
         str = {[ctex,' ', ltex], ' Medium'};
@@ -252,7 +252,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mLa(3,:));
+        plot(fyr,lme_mLa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Large')
         
@@ -262,7 +262,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         ylabel(ctex)
         yyaxis right
-        plot(fyr,lme_mFa(3,:));
+        plot(fyr,lme_mFa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Forage')
         
@@ -271,7 +271,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mPa(3,:));
+        plot(fyr,lme_mPa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Lg Pelagic')
         
@@ -280,7 +280,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mDa(3,:));
+        plot(fyr,lme_mDa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Demersal')
         ylabel('Mean biomass (log_1_0 MT)')
@@ -291,7 +291,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         ylabel(ctex)
         yyaxis right
-        plot(fyr,lme_mAa(3,:));
+        plot(fyr,lme_mAa(lme,:));
         xlim([fyr(1) fyr(end)])
         xlabel('Time (y)')
         title('All Fish')
@@ -301,7 +301,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mba(3,:));
+        plot(fyr,lme_mba(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Benthos')
         stamp('')
