@@ -43,7 +43,7 @@ function init_netcdf_output(fname, nt, nx, ngroup, GRD)
     %     (d) define metadata
     ncwriteatt(full_name, 'time', 'long_name', 'time')
     ncwriteatt(full_name, 'time', 'standard_name', 'time')
-    ncwriteatt(full_name, 'time', 'units', 'day')
+    ncwriteatt(full_name, 'time', 'units', 'days since 0001-01-01 00:00:00')
     ncwriteatt(full_name, 'time', 'calendar', 'noleap')
     ncwriteatt(full_name, 'time', 'axis', 'T')
 
