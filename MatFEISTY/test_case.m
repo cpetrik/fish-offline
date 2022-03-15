@@ -6,22 +6,24 @@ function test_case()
 param = make_params_testcase();
 
 %! Idealized bathymetry
-load('/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/fish-offline/MatFEISTY/input_files/Grid_test_forcing.mat',...
-    'GRD');
+load('./input_files/Grid_test_forcing.mat', 'GRD');
 param.NX = length(GRD.Z);
 param.ID = 1:param.NX;
 NX = param.NX;
 ID = 1:param.NX;
 
 %! Idealized forcing
-load('/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/fish-offline/MatFEISTY/input_files/Data_cyclic_test_forcing.mat',...
-    'ESM');
+load('./input_files/Data_cyclic_test_forcing.mat', 'ESM');
 
 %! How long to run the model
 YEARS = 1;
 DAYS = 365;
+time = 1:(YEARS*365);
 
-%! Create a directory for output
+%! Create a directory for output and set up netcdf output
+nc_out_name = 'test_case.nc';
+group = ['Sf'; 'Sp'; 'Sd'; 'Mf'; 'Mp'; 'Md'; 'Lp'; 'Ld'; 'bp'];
+init_netcdf_output(nc_out_name, length(time), param.NX, length(group), GRD);
 exper = 'v3_move_updateB_';
 [fname,simname] = sub_fname_testcase_exper(param,exper);
 
@@ -30,6 +32,7 @@ exper = 'v3_move_updateB_';
 
 %! Storage variables
 biomass             = NaN*ones(DAYS,NX,9);
+full_biom           = NaN*ones(YEARS*365,NX,9);
 T_habitat           = NaN*ones(DAYS,NX,9);
 ingestion_rate      = NaN*ones(DAYS,NX,9);
 predation_flux      = NaN*ones(DAYS,NX,9);
@@ -47,15 +50,15 @@ MNT = 0;
 %! Run model with no fishing
 for YR = 1:YEARS % years
     for DAY = 1:param.DT:DAYS % days
-        
+
         %%%! Future time step
         DY = int64(ceil(DAY));
         [num2str(YR),' , ', num2str(mod(DY,365))]
-        
+
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
             sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
             Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
-        
+
         %! Store
         biomass(DY,:,:) = [Sml_f.bio, Sml_p.bio, Sml_d.bio,...
                           Med_f.bio, Med_p.bio, Med_d.bio,...
@@ -93,12 +96,15 @@ for YR = 1:YEARS % years
         fish_catch_rate(DY,:,1:8) = [Sml_f.fmort, Sml_p.fmort, Sml_d.fmort,...
                                      Med_f.fmort, Med_p.fmort, Med_d.fmort,...
                                      Lrg_p.fmort, Lrg_d.fmort];
-        
+
     end %Days
-    
+
+    full_biom((YR-1)*365+(1:DAYS),:,:) = biomass(:,:,:);
+
 end %Years
 
 %%% Save
+write_netcdf_output(nc_out_name, full_biom, time, param.ID, group, GRD, ESM)
 save([fname '_test_case.mat'],...
     'biomass','T_habitat','ingestion_rate','predation_flux','predation_rate',...
     'metabolism_rate','mortality_rate','energy_avail_rate','growth_rate',...

@@ -6,8 +6,7 @@ function test_locs3()
 param = make_params_testcase();
 
 %! Idealized bathymetry & forcing
-load(['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/fish-offline/MatFEISTY/input_files/',...
-    'feisty_input_climatol_daily_locs3.mat'],'GRD','ESM');
+load(['./input_files/feisty_input_climatol_daily_locs3.mat'],'GRD','ESM');
 param.NX = length(GRD.Z);
 param.ID = 1:param.NX;
 NX = param.NX;
@@ -17,8 +16,12 @@ ID = 1:param.NX;
 YEARS = 200;
 DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
+time = 1:(YEARS*365);
 
 %! Create a directory for output
+nc_out_name = 'test_locs3.nc';
+group = ['Sf'; 'Sp'; 'Sd'; 'Mf'; 'Mp'; 'Md'; 'Lp'; 'Ld'; 'bp'];
+init_netcdf_output(nc_out_name, length(time), param.NX, length(group), GRD);
 exper = 'v2_Bupdates_locs3_';
 [fname,simname] = sub_fname_testcase_exper(param,exper);
 
@@ -27,6 +30,7 @@ exper = 'v2_Bupdates_locs3_';
 
 %! Storage variables
 biom      = NaN*ones(DAYS,NX,9);
+full_biom = NaN*ones(YEARS*365,NX,9);
 T_hab     = NaN*ones(DAYS,NX,9);
 ingest    = NaN*ones(DAYS,NX,9);
 pred_flux = NaN*ones(DAYS,NX,9);
@@ -58,15 +62,15 @@ MNT = 0;
 for YR = 1:YEARS % years
     num2str(YR)
         for DAY = 1:param.DT:DAYS % days
-        
+
         %%%! Future time step
         DY = int64(ceil(DAY));
         %[num2str(YR),' , ', num2str(mod(DY,365))]
-        
+
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
             sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
             Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
-        
+
         %! Store
         biom(DY,:,:) = [Sml_f.bio, Sml_p.bio, Sml_d.bio,...
                           Med_f.bio, Med_p.bio, Med_d.bio,...
@@ -104,9 +108,11 @@ for YR = 1:YEARS % years
         frate(DY,:,1:8) = [Sml_f.fmort, Sml_p.fmort, Sml_d.fmort,...
                                      Med_f.fmort, Med_p.fmort, Med_d.fmort,...
                                      Lrg_p.fmort, Lrg_d.fmort];
-        
+
     end %Days
-    
+
+    full_biom((YR-1)*365+(1:DAYS),:,:) = biom(:,:,:);
+
     %! Calculate monthly means and save
     aa = (cumsum(MNTH)+1);
     a = [1,aa(1:end-1)]; % start of the month
@@ -126,10 +132,11 @@ for YR = 1:YEARS % years
         recruitment_flux(MNT,:,:) = mean(recruit(a(i):b(i),:,:),1);
         fish_catch_rate(MNT,:,:) = mean(frate(a(i):b(i),:,:),1);
     end
-    
+
 end %Years
 
 %%% Save
+write_netcdf_output(nc_out_name, full_biom, time, param.ID, group, GRD, ESM)
 save([fname '.mat'],...
     'biomass','T_habitat','ingestion_rate','predation_flux','predation_rate',...
     'metabolism_rate','mortality_rate','energy_avail_rate','growth_rate',...
