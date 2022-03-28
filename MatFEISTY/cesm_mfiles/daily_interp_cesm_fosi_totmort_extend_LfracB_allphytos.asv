@@ -150,8 +150,7 @@ for y = 1:nyrs
         Y = squeeze(dZm(m,n,:));
         yi = interp1(Time, Y, Tdays,'linear','extrap');
         D_dZm(j,:) = yi * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
-        %Y and D_dZm not in same units!
-        %D_dZm(j,:) = max(D_dZm(j,:), min(Y)); 
+        %D_dZm(j,:) = max(D_dZm(j,:), min(Y));
         
         % detrital flux to benthos: nmolC cm-2 s-1 to g(WW) m-2 d-1
         % 1e9 nmol in 1 mol C
