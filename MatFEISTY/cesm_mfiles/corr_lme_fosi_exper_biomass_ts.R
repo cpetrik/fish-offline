@@ -392,9 +392,9 @@ png(paste0(figp,'Heatmaps_CCE_corr_clims_fish.png'),
     res = 300,            # 300 pixels per inch
     pointsize = 8)
 plot_grid( c1,c2,c3,c4,c5,
-           nrow = 2, ncol = 3,
-           rel_widths = c(1,1), rel_heights = c(1,1,1) ,
-           align = 'h' )#, labels = "auto", label_size = 12, hjust = -4)
+           nrow = 2, ncol = 3)#,
+           #rel_widths = c(1,1), rel_heights = c(1,1,1) ,
+           #align = 'h' )#, labels = "auto", label_size = 12, hjust = -4)
 dev.off()
 
 
@@ -466,9 +466,7 @@ png(paste0(figp,'Heatmaps_EBS_corr_clims_fish.png'),
     res = 300,            # 300 pixels per inch
     pointsize = 8)
 plot_grid( e0,e1,e2,e3,e4,e5,
-           nrow = 2, ncol = 3,
-           rel_widths = c(1,1), rel_heights = c(1,1,1) ,
-           align = 'h' )#, labels = "auto", label_size = 12, hjust = -4)
+           nrow = 2, ncol = 3)#, labels = "auto", label_size = 12, hjust = -4)
 dev.off()
 
 
@@ -540,9 +538,7 @@ png(paste0(figp,'Heatmaps_GAK_corr_clims_fish.png'),
     res = 300,            # 300 pixels per inch
     pointsize = 8)
 plot_grid( g0,g1,g2,g3,g4,g5,
-           nrow = 2, ncol = 3,
-           rel_widths = c(1,1), rel_heights = c(1,1,1) ,
-           align = 'h' )#, labels = "auto", label_size = 12, hjust = -4)
+           nrow = 2, ncol = 3)#, labels = "auto", label_size = 12, hjust = -4)
 dev.off()
 
 
@@ -593,9 +589,7 @@ png(paste0(figp,'Heatmaps_HI_corr_clims_fish.png'),
     res = 300,            # 300 pixels per inch
     pointsize = 8)
 plot_grid( h0,h1,h2,h3,
-           nrow = 2, ncol = 2,
-           rel_widths = c(1,1), rel_heights = c(1,1) ,
-           align = 'h' )#, labels = "auto", label_size = 12, hjust = -4)
+           nrow = 2, ncol = 2)#, labels = "auto", label_size = 12, hjust = -4)
 dev.off()
 
 
@@ -636,9 +630,7 @@ png(paste0(figp,'Heatmaps_CHK_corr_clims_fish.png'),
     res = 300,            # 300 pixels per inch
     pointsize = 8)
 plot_grid( k0,k1,k2,
-           nrow = 1, ncol = 3,
-           rel_widths = c(1,1), rel_heights = c(1,1,1) ,
-           align = 'h' )#, labels = "auto", label_size = 12, hjust = -4)
+           nrow = 1, ncol = 3)#, labels = "auto", label_size = 12, hjust = -4)
 dev.off()
 
 
@@ -679,9 +671,7 @@ png(paste0(figp,'Heatmaps_GMX_corr_clims_fish.png'),
     res = 300,            # 300 pixels per inch
     pointsize = 8)
 plot_grid( m1,m2,m3,
-           nrow = 1, ncol = 3,
-           rel_widths = c(1,1), rel_heights = c(1,1,1) ,
-           align = 'h' )#, labels = "auto", label_size = 12, hjust = -4)
+           nrow = 1, ncol = 3)#, labels = "auto", label_size = 12, hjust = -4)
 dev.off()
 
 
@@ -722,9 +712,7 @@ png(paste0(figp,'Heatmaps_SE_corr_clims_fish.png'),
     res = 300,            # 300 pixels per inch
     pointsize = 8)
 plot_grid( s1,s2,s3,
-           nrow = 1, ncol = 3,
-           rel_widths = c(1,1), rel_heights = c(1,1,1) ,
-           align = 'h' )#, labels = "auto", label_size = 12, hjust = -4)
+           nrow = 1, ncol = 3)#, labels = "auto", label_size = 12, hjust = -4)
 dev.off()
 
 
@@ -756,8 +744,6 @@ png(paste0(figp,'Heatmaps_NE_corr_clims_fish.png'),
     res = 300,            # 300 pixels per inch
     pointsize = 8)
 plot_grid( n1,n2,
-           nrow = 1, ncol = 3,
-           rel_widths = c(1,1), rel_heights = c(1,1,1) ,
-           align = 'h' )#, labels = "auto", label_size = 12, hjust = -4)
+           nrow = 1, ncol = 3)#, labels = "auto", label_size = 12, hjust = -4)
 dev.off()
 
