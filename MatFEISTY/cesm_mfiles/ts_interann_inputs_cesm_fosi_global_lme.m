@@ -38,9 +38,9 @@ Lzoo_loss_150m(Lzoo_loss_150m<0) = 0;
 % doubles
 tp = double(TEMP_150m);
 tb = double(TEMP_bottom);
-det_btm = double(POC_FLUX_IN_bottom);
-mz = double(LzooC_150m);
-loss_mz = double(Lzoo_loss_150m);
+det_btm = double(POC_FLUX_IN_bottom) * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
+mz = double(LzooC_150m) * 1e-9 * 1e4 * 12.01 * 9.0;
+loss_mz = double(Lzoo_loss_150m) * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
 
 %% reshape and vectorize to ocean cells
 [ni,nj,nt] = size(tp);
@@ -60,7 +60,7 @@ loss_mz = reshape(loss_mz,ni*nj,nt);
 % mz_mean = mz(ID,:) .* AREA_OCN;
 % loss_mean = loss_mz(ID,:) .* AREA_OCN;
 
-%% 
+%%
 tp_mean = tp(ID,:);
 tb_mean = tb(ID,:);
 det_mean = det_btm(ID,:);

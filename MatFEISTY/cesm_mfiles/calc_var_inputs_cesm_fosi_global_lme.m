@@ -85,7 +85,7 @@ adet = det - nanmean(det,3);
 azoo = zoo - nanmean(zoo,3);
 azlos = zlos - nanmean(zlos,3);
 
-save([fpath 'CESM_FOSI_v13_interann_mean_forcings_anom.mat'],...
+save([fpath 'CESM_FOSI_v15_interann_mean_forcings_anom.mat'],...
     'tp','tb','det','zoo','zlos',...
     'atp','atb','adet','azoo','azlos');
 
@@ -95,7 +95,7 @@ tb_mean = nanmean(tb,3);
 det_mean = nanmean(det,3);
 mz_mean = nanmean(zoo,3);
 mzl_mean = nanmean(zlos,3);
-        
+
 stp = std(tp,0,3,'omitnan');
 stb = std(tb,0,3,'omitnan');
 sdet = std(det,0,3,'omitnan');
@@ -123,25 +123,25 @@ lme_mzl_std1 = NaN*ones(66,1);
 for L=1:66
     lid = find(tlme==L);
     if ~isempty(lid)
-        
+
         ltp = atp2(lid,:);
         ltb = atb2(lid,:);
         ldet = adet2(lid,:);
         lmz = amz(lid,:);
         lmzl = amzl(lid,:);
-        
+
         lme_tp_mean(L,1) = nanmean(ltp(:));
         lme_tb_mean(L,1) = nanmean(ltb(:));
         lme_det_mean(L,1) = nanmean(ldet(:));
         lme_mz_mean(L,1) = nanmean(lmz(:));
         lme_mzl_mean(L,1) = nanmean(lmzl(:));
-        
+
         lme_tp_std1(L,1) = std(ltp(:),'omitnan');
         lme_tb_std1(L,1) = std(ltb(:),'omitnan');
         lme_det_std1(L,1) = std(ldet(:),'omitnan');
         lme_mz_std1(L,1) = std(lmz(:),'omitnan');
         lme_mzl_std1(L,1) = std(lmzl(:),'omitnan');
-        
+
     end
 end
 
@@ -219,14 +219,13 @@ colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
 text(0.2,1.65,'CV Zoo loss','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
-print('-dpng',[pp 'Map_CESM_FOSI_v13_interann_coeffvar_forcings.png'])
+print('-dpng',[pp 'Map_CESM_FOSI_v15_interann_coeffvar_forcings.png'])
 
 %% save
-save([fpath 'CESM_FOSI_v13_interann_var_forcings.mat'],...
+save([fpath 'CESM_FOSI_v15_interann_var_forcings.mat'],...
     'tp_mean','tb_mean','det_mean','mz_mean','mzl_mean',...
     'stp','stb','sdet','szoo','szlos',...
     'cvtp','cvtb','cvdet','cvzoo','cvzlos',...
     'lme_tp_std1','lme_tb_std1','lme_det_std1','lme_mz_std1','lme_mzl_std1',...
     'lme_tp_mean','lme_tb_mean','lme_det_mean','lme_mz_mean','lme_mzl_mean',...
     'lme_tp_cv','lme_tb_cv','lme_det_cv','lme_mz_cv','lme_mzl_cv');
-

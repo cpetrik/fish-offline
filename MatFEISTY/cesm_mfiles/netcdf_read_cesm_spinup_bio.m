@@ -7,8 +7,8 @@ close all
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-harv = 'v14_All_fish03';
-mod  = 'v14';
+harv = 'v15_All_fish03';
+mod  = 'v15';
 
 %% SP
 ncid = netcdf.open([fpath 'Spinup_' harv '_sml_p.nc'],'NC_NOWRITE');
@@ -37,7 +37,7 @@ end
 netcdf.close(ncid);
 
 SF.bio = biomass(:,1:nt);
-clear biomass 
+clear biomass
 
 % SD
 ncid = netcdf.open([fpath 'Spinup_' harv '_sml_d.nc'],'NC_NOWRITE');
@@ -50,7 +50,7 @@ end
 netcdf.close(ncid);
 
 SD.bio = biomass;
-clear biomass 
+clear biomass
 
 % MP
 ncid = netcdf.open([fpath 'Spinup_' harv '_med_p.nc'],'NC_NOWRITE');
@@ -142,7 +142,7 @@ Lrg_p.bio = nanmean(LP.bio(:,nt-11:nt),2);
 Lrg_d.bio = nanmean(LD.bio(:,nt-11:nt),2);
 BENT.bio  = nanmean(Bent.bio(:,nt-11:nt),2);
 
-save([fpath 'Last_mo_spin_' mod '_' cfile '.mat'],'Sml_f','Sml_p','Sml_d',... 
+save([fpath 'Last_mo_spin_' mod '_' cfile '.mat'],'Sml_f','Sml_p','Sml_d',...
     'Med_f','Med_p','Med_d','Lrg_p','Lrg_d','BENT')
 
 %% Take means for my own visualization
@@ -159,7 +159,7 @@ ld_tmean=nanmean(LD.bio,1);
 b_tmean=nanmean(Bent.bio,1);
 
 %% Space
-yrP=[nt-11:nt]; 
+yrP=[nt-11:nt];
 
 sp_mean=nanmean(SP.bio(:,yrP),2);
 sf_mean=nanmean(SF.bio(:,yrP),2);
@@ -186,4 +186,3 @@ figure
 plot(mo,log10(lp_tmean),'b'); hold on;
 plot(mo,log10(mf_tmean),'r'); hold on;
 plot(mo,log10(ld_tmean),'k'); hold on;
-

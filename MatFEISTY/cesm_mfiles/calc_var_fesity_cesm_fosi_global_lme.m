@@ -6,7 +6,7 @@ close all
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-mod = 'v14_All_fish03_';
+mod = 'v15_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -118,7 +118,7 @@ md = nanmean(AllD,2);
 mpf = nanmean(FracPF,2);
 mpd = nanmean(FracPD,2);
 mlm = nanmean(FracLM,2);
-        
+
 ssf = std(Zsf,0,2,'omitnan');
 ssp = std(Zsp,0,2,'omitnan');
 ssd = std(Zsd,0,2,'omitnan');
@@ -187,7 +187,7 @@ lme_lm_std = NaN*ones(66,1);
 
 for L=1:66
     lid = find(tlme==L);
-    
+
     lme_sf_std(L,1) = nanmean(std(asf(lid,:),0,2,'omitnan'));
     lme_sp_std(L,1) = nanmean(std(asp(lid,:),0,2,'omitnan'));
     lme_sd_std(L,1) = nanmean(std(asd(lid,:),0,2,'omitnan'));
@@ -207,7 +207,7 @@ for L=1:66
     lme_pf_std(L,1) = nanmean(std(apf(lid,:),0,2,'omitnan'));
     lme_pd_std(L,1) = nanmean(std(apd(lid,:),0,2,'omitnan'));
     lme_lm_std(L,1) = nanmean(std(alm(lid,:),0,2,'omitnan'));
-    
+
     lme_sf_mean(L,1) = nanmean(nanmean(asf(lid,:),2));
     lme_sp_mean(L,1) = nanmean(nanmean(asp(lid,:),2));
     lme_sd_mean(L,1) = nanmean(nanmean(asd(lid,:),2));
@@ -227,7 +227,7 @@ for L=1:66
     lme_pf_mean(L,1) = nanmean(nanmean(apf(lid,:),2));
     lme_pd_mean(L,1) = nanmean(nanmean(apd(lid,:),2));
     lme_lm_mean(L,1) = nanmean(nanmean(alm(lid,:),2));
-    
+
 end
 
 %% Coefficient of variance
@@ -302,7 +302,7 @@ cvpd = reshape(pd_cv,ni,nj);
 cvlm = reshape(lm_cv,ni,nj);
 
 %% map
-% 8plot by stage 
+% 8plot by stage
 f1 = figure('Units','inches','Position',[1 3 6.5 8]);
 %f1.Units = 'inches';
 
@@ -405,7 +405,7 @@ text(0,1.75,'LD','HorizontalAlignment','center')
 
 print('-dpng',[ppath 'Map_FEISTY_FOSI_',mod,'interann_coeffvar_stages.png'])
 
-%% 8plot by type 
+%% 8plot by type
 f2 = figure('Units','inches','Position',[1 3 6.5 8]);
 %f1.Units = 'inches';
 
@@ -538,4 +538,3 @@ save([fpath 'FEISTY_FOSI_',mod,'interann_var.mat'],...
 save([fpath 'FEISTY_FOSI_',mod,'ann_mean_anoms.mat'],...
     'asf','asp','asd','amf','amp','amd','alp','ald','ab','aa','as','am','al',...
     'af','ap','ad','apf','apd','alm');
-

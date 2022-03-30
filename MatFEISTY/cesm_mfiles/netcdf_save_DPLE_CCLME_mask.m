@@ -18,7 +18,7 @@ tlme = glme(ID);
 %%
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/old_versions/'];
 
 %pick year
 StartYr = 2015;

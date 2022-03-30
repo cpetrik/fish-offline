@@ -8,7 +8,7 @@ close all
 %% Fish data
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-mod = 'v14_varTemp';
+mod = 'v15';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -35,7 +35,7 @@ plotmaxlon=80;
 latlim=[plotminlat plotmaxlat];
 lonlim=[plotminlon plotmaxlon];
 
-load coastlines;     
+load coastlines;
 
 %% colors
 cm10=[0.5 0.5 0;... %tan/army
@@ -99,7 +99,7 @@ ylabel('log_1_0 Biomass (g m^-^2)')
 title('Spinup')
 stamp(mod)
 print('-dpng',[ppath 'Spinup_',mod,'_all_types.png'])
- 
+
 %% Plots in space
 
 Zsf=NaN*ones(ni,nj);
@@ -188,7 +188,7 @@ subplot('Position',[0.5 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,log10(All))
-colormap(cmBP50)               
+colormap(cmBP50)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
@@ -237,7 +237,7 @@ subplot('Position',[0.5 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,log10(All))
-colormap(cmYGB10)               
+colormap(cmYGB10)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-3 2]);
 set(gcf,'renderer','painters')
@@ -287,9 +287,5 @@ print('-dpng',[ppath 'Spinup_',mod,'_global_ratios_subplot.png'])
 %% Find & save locations of very low values
 % fid = find(AllF < 1e-50);
 % pid = find(AllP < 1e-50);
-% 
+%
 % save([fpath 'Means_Spinup_',mod,'_lowbiom.mat'],'fid','pid');
-
-
-
-

@@ -58,8 +58,8 @@ colorbar
 set(gcf,'renderer','painters')
 
 
-figure(2)
-plot(1:122,mts)
+% figure(2)
+% plot(1:122,mts)
 
 %%
 figure(3)

@@ -5,7 +5,8 @@ clear all
 close all
 
 apath = '/Users/cpetrik/Dropbox/Princeton/MAPP-METF/NCAR3/DPLE_offline/results_dple/climate_indices/';
-load([apath 'climate_anomalies.mat'])
+%load([apath 'climate_anomalies.mat'])
+load([apath 'Climate_anomalies_annual_means.mat']);
 
 %% Map data
 cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
@@ -36,91 +37,91 @@ if (~isfolder(ppath))
     mkdir(ppath)
 end
 
-sims = {'v14_All_fish03_';'v14_climatol_';'v14_varFood_';'v14_varTemp_'};
+sims = {'v15_All_fish03_';'v15_climatol_';'v15_varFood_';'v15_varTemp_'};
 mod = sims{1};
 
 load([dpath 'LME_fosi_fished_',mod,cfile '.mat']);
 
 %% Remove N/A values
-AMO(abs(AMO)>9) = nan;
-AO(abs(AO)>9) = nan;
-MEI(abs(MEI)>9) = nan;
-NAO(abs(NAO)>9) = nan;
-Nino12(abs(Nino12)>9) = nan;
-Nino34(abs(Nino34)>9) = nan;
-Nino3(abs(Nino3)>9) = nan;
-Nino4(abs(Nino4)>9) = nan;
-NOI(abs(NOI)>9) = nan;
-PDO(abs(PDO)>9) = nan;
-SOI(abs(SOI)>9) = nan;
-
-%% Climate anom annual means
-
-mAMO = nanmean(AMO,2);
-mAO = nanmean(AO,2);
-mMEI = nanmean(MEI,2);
-mNAO = nanmean(NAO,2);
-mNino12 = nanmean(Nino12,2);
-mNino34 = nanmean(Nino34,2);
-mNino3 = nanmean(Nino3,2);
-mNino4 = nanmean(Nino4,2);
-mNOI = nanmean(NOI,2);
-mPDO = nanmean(PDO,2);
-mSOI = nanmean(SOI,2);
-
-%% Isolate years of interest 1948-2015
-fyr = 1948:2015;
-mAMO = mAMO(AMOyr>=1948 & AMOyr<=2015);
-mAO = mAO(AOyr>=1948 & AOyr<=2015);
-mMEI = mMEI(MEIyr>=1948 & MEIyr<=2015);
-mNAO = mNAO(NAOyr>=1948 & NAOyr<=2015);
-mNino12 = mNino12(Nino12yr>=1948 & Nino12yr<=2015);
-mNino34 = mNino34(Nino34yr>=1948 & Nino34yr<=2015);
-mNino3 = mNino3(Nino3yr>=1948 & Nino3yr<=2015);
-mNino4 = mNino4(Nino4yr>=1948 & Nino4yr<=2015);
-mNOI = mNOI(NOIyr>=1948 & NOIyr<=2015);
-mPDO = mPDO(PDOyr>=1948 & PDOyr<=2015);
-mSOI = mSOI(SOIyr>=1948 & SOIyr<=2015);
-
-yAMO = AMOyr(AMOyr>=1948 & AMOyr<=2015);
-yAO = AOyr(AOyr>=1948 & AOyr<=2015);
-yMEI = MEIyr(MEIyr>=1948 & MEIyr<=2015);
-yNAO = NAOyr(NAOyr>=1948 & NAOyr<=2015);
-yNino12 = Nino12yr(Nino12yr>=1948 & Nino12yr<=2015);
-yNino34 = Nino34yr(Nino34yr>=1948 & Nino34yr<=2015);
-yNino3 = Nino3yr(Nino3yr>=1948 & Nino3yr<=2015);
-yNino4 = Nino4yr(Nino4yr>=1948 & Nino4yr<=2015);
-yNOI = NOIyr(NOIyr>=1948 & NOIyr<=2015);
-yPDO = PDOyr(PDOyr>=1948 & PDOyr<=2015);
-ySOI = SOIyr(SOIyr>=1948 & SOIyr<=2015);
-
-%% put in matrix
-manom = nan*ones(11,68);
-manom(1,:) = mAMO;
-manom(2,3:end) = mAO;
-manom(3,32:end) = mMEI;
-manom(4,:) = mNAO;
-manom(5,:) = mNino12;
-manom(6,:) = mNino34;
-manom(7,:) = mNino3;
-manom(8,:) = mNino4;
-manom(9,1:60) = mNOI;
-manom(10,:) = mPDO;
-manom(11,:) = mSOI;
-
-yanom = 1948:2015;
-
-canom = {'AMO','AO','MEI','NAO','Nino12','Nino34','Nino3','Nino4','NOI',...
-    'PDO','SOI'};
-
-%% id start and end years
-yst = nan*ones(11,1);
-yen = nan*ones(11,1);
-for k=1:length(canom)
-    nn = find(~isnan(manom(k,:)));
-    yst(k) = nn(1);
-    yen(k) = nn(end);
-end
+% AMO(abs(AMO)>9) = nan;
+% AO(abs(AO)>9) = nan;
+% MEI(abs(MEI)>9) = nan;
+% NAO(abs(NAO)>9) = nan;
+% Nino12(abs(Nino12)>9) = nan;
+% Nino34(abs(Nino34)>9) = nan;
+% Nino3(abs(Nino3)>9) = nan;
+% Nino4(abs(Nino4)>9) = nan;
+% NOI(abs(NOI)>9) = nan;
+% PDO(abs(PDO)>9) = nan;
+% SOI(abs(SOI)>9) = nan;
+% 
+% %% Climate anom annual means
+% 
+% mAMO = nanmean(AMO,2);
+% mAO = nanmean(AO,2);
+% mMEI = nanmean(MEI,2);
+% mNAO = nanmean(NAO,2);
+% mNino12 = nanmean(Nino12,2);
+% mNino34 = nanmean(Nino34,2);
+% mNino3 = nanmean(Nino3,2);
+% mNino4 = nanmean(Nino4,2);
+% mNOI = nanmean(NOI,2);
+% mPDO = nanmean(PDO,2);
+% mSOI = nanmean(SOI,2);
+% 
+% %% Isolate years of interest 1948-2015
+ fyr = 1948:2015;
+% mAMO = mAMO(AMOyr>=1948 & AMOyr<=2015);
+% mAO = mAO(AOyr>=1948 & AOyr<=2015);
+% mMEI = mMEI(MEIyr>=1948 & MEIyr<=2015);
+% mNAO = mNAO(NAOyr>=1948 & NAOyr<=2015);
+% mNino12 = mNino12(Nino12yr>=1948 & Nino12yr<=2015);
+% mNino34 = mNino34(Nino34yr>=1948 & Nino34yr<=2015);
+% mNino3 = mNino3(Nino3yr>=1948 & Nino3yr<=2015);
+% mNino4 = mNino4(Nino4yr>=1948 & Nino4yr<=2015);
+% mNOI = mNOI(NOIyr>=1948 & NOIyr<=2015);
+% mPDO = mPDO(PDOyr>=1948 & PDOyr<=2015);
+% mSOI = mSOI(SOIyr>=1948 & SOIyr<=2015);
+% 
+% yAMO = AMOyr(AMOyr>=1948 & AMOyr<=2015);
+% yAO = AOyr(AOyr>=1948 & AOyr<=2015);
+% yMEI = MEIyr(MEIyr>=1948 & MEIyr<=2015);
+% yNAO = NAOyr(NAOyr>=1948 & NAOyr<=2015);
+% yNino12 = Nino12yr(Nino12yr>=1948 & Nino12yr<=2015);
+% yNino34 = Nino34yr(Nino34yr>=1948 & Nino34yr<=2015);
+% yNino3 = Nino3yr(Nino3yr>=1948 & Nino3yr<=2015);
+% yNino4 = Nino4yr(Nino4yr>=1948 & Nino4yr<=2015);
+% yNOI = NOIyr(NOIyr>=1948 & NOIyr<=2015);
+% yPDO = PDOyr(PDOyr>=1948 & PDOyr<=2015);
+% ySOI = SOIyr(SOIyr>=1948 & SOIyr<=2015);
+% 
+% %% put in matrix
+% manom = nan*ones(11,68);
+% manom(1,:) = mAMO;
+% manom(2,3:end) = mAO;
+% manom(3,32:end) = mMEI;
+% manom(4,:) = mNAO;
+% manom(5,:) = mNino12;
+% manom(6,:) = mNino34;
+% manom(7,:) = mNino3;
+% manom(8,:) = mNino4;
+% manom(9,1:60) = mNOI;
+% manom(10,:) = mPDO;
+% manom(11,:) = mSOI;
+% 
+% yanom = 1948:2015;
+% 
+% canom = {'AMO','AO','MEI','NAO','Nino12','Nino34','Nino3','Nino4','NOI',...
+%     'PDO','SOI'};
+% 
+% %% id start and end years
+% yst = nan*ones(11,1);
+% yen = nan*ones(11,1);
+% for k=1:length(canom)
+%     nn = find(~isnan(manom(k,:)));
+%     yst(k) = nn(1);
+%     yen(k) = nn(end);
+% end
 
 %% Group types and sizes
 lme_mFb = lme_msfb + lme_mmfb;
@@ -181,8 +182,8 @@ lid = [54,1:2,10,3,5:7];
 lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE'};
 
 %% save
-save([apath 'Climate_anomalies_annual_means.mat'],'manom','yanom','canom',...
-    'yst','yen');
+% save([apath 'Climate_anomalies_annual_means.mat'],'manom','yanom','canom',...
+%     'yst','yen');
 
 spath=['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/' cfile '/'];
 if (~isfolder(spath))
@@ -212,7 +213,7 @@ for i=1:length(lid)
         lme = lid(i);
         ltex = lname{i};
         ctex = canom{j};
-        
+
         %% Cross corr - FIX TO BE SAME DATES
         [cS,lagsS] = xcorr(lme_mSa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
         [cM,lagsM] = xcorr(lme_mMa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
@@ -222,7 +223,7 @@ for i=1:length(lid)
         [cD,lagsD] = xcorr(lme_mDa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
         [cA,lagsA] = xcorr(lme_mAa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
         [cB,lagsB] = xcorr(lme_mba(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
-        
+
         %%
         figure(1)
         clf
@@ -235,7 +236,7 @@ for i=1:length(lid)
         plot(fyr,lme_mSa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Small')
-        
+
         subplot(3,3,2)
         yyaxis left
         plot(yanom,manom(j,:));
@@ -246,7 +247,7 @@ for i=1:length(lid)
         %title([ctex,' ', ltex ' Medium'])
         str = {[ctex,' ', ltex], ' Medium'};
         title(str)
-        
+
         subplot(3,3,3)
         yyaxis left
         plot(yanom,manom(j,:));
@@ -255,7 +256,7 @@ for i=1:length(lid)
         plot(fyr,lme_mLa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Large')
-        
+
         subplot(3,3,4)
         yyaxis left
         plot(yanom,manom(j,:));
@@ -265,7 +266,7 @@ for i=1:length(lid)
         plot(fyr,lme_mFa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Forage')
-        
+
         subplot(3,3,5)
         yyaxis left
         plot(yanom,manom(j,:));
@@ -274,7 +275,7 @@ for i=1:length(lid)
         plot(fyr,lme_mPa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Lg Pelagic')
-        
+
         subplot(3,3,6)
         yyaxis left
         plot(yanom,manom(j,:));
@@ -284,7 +285,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         title('Demersal')
         ylabel('Mean biomass (log_1_0 MT)')
-        
+
         subplot(3,3,7)
         yyaxis left
         plot(yanom,manom(j,:));
@@ -295,7 +296,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         xlabel('Time (y)')
         title('All Fish')
-        
+
         subplot(3,3,9)
         yyaxis left
         plot(yanom,manom(j,:));
@@ -306,7 +307,7 @@ for i=1:length(lid)
         title('Benthos')
         stamp('')
         print('-dpng',[ppath 'FOSI_',mod,ctex,'_',ltex,'_ts_corr.png'])
-        
+
         %%
         figure(2)
         clf
@@ -314,45 +315,45 @@ for i=1:length(lid)
         stem(lagsS,cS,'k')
         xlim([0 9])
         title('Small')
-        
+
         subplot(3,3,2)
         stem(lagsM,cM,'k')
         xlim([0 9])
         str = {[ctex,' ', ltex], ' Medium'};
         title(str)
-        
+
         subplot(3,3,3)
         stem(lagsL,cL,'k')
         xlim([0 9])
         title('Large')
-        
+
         subplot(3,3,4)
         stem(lagsF,cF,'k')
         xlim([0 9])
         title('Forage')
-        
+
         subplot(3,3,5)
         stem(lagsP,cP,'k')
         xlim([0 9])
         title('Lg Pelagic')
-        
+
         subplot(3,3,6)
         stem(lagsD,cD,'k')
         xlim([0 9])
         title('Demersal')
-        
+
         subplot(3,3,7)
         stem(lagsA,cA,'k')
         xlim([0 9])
         title('All Fish')
-        
+
         subplot(3,3,9)
         stem(lagsB,cB,'k')
         xlim([0 9])
         title('Benthos')
         stamp('')
         print('-dpng',[ppath 'FOSI_',mod,ctex,'_',ltex,'_ts_crosscorr.png'])
-        
+
     end
 end
 
@@ -371,34 +372,34 @@ for i=1:length(lid)
         lme = lid(i);
         ltex = lname{i};
         ctex = canom{j};
-        
+
         for k=1:6
             t = yr(k);
             %% Corr at diff lags
             [rs,ps] = corrcoef(lme_mSa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rS(i,j,k) = rs(1,2); pS(i,j,k) = ps(1,2);
-            
+
             [rm,pm] = corrcoef(lme_mMa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rM(i,j,k) = rm(1,2); pM(i,j,k) = pm(1,2);
-            
+
             [rl,pl] = corrcoef(lme_mLa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rL(i,j,k) = rl(1,2); pL(i,j,k) = pl(1,2);
-            
+
             [rf,pf] = corrcoef(lme_mFa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rF(i,j,k) = rf(1,2); pF(i,j,k) = pf(1,2);
-            
+
             [rp,pp] = corrcoef(lme_mPa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rP(i,j,k) = rp(1,2); pP(i,j,k) = pp(1,2);
-            
+
             [rd,pd] = corrcoef(lme_mDa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rD(i,j,k) = rd(1,2); pD(i,j,k) = pd(1,2);
-            
+
             [ra,pa] = corrcoef(lme_mAa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rA(i,j,k) = ra(1,2); pA(i,j,k) = pa(1,2);
-            
+
             [rb,pb] = corrcoef(lme_mba(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rB(i,j,k) = rb(1,2); pB(i,j,k) = pb(1,2);
-            
+
             if (ps(1,2)<=0.05)
                 ns=ns+1;
                 sigS{ns,1} = ltex;
@@ -463,7 +464,7 @@ for i=1:length(lid)
                 sigB{nb,4} = rb(1,2);
                 sigB{nb,5} = pb(1,2);
             end
-            
+
         end
     end
 end
@@ -477,7 +478,3 @@ writecell(sigP,[dpath 'LME_fosi_fished_',mod,'sigP.csv']);
 writecell(sigD,[dpath 'LME_fosi_fished_',mod,'sigD.csv']);
 writecell(sigA,[dpath 'LME_fosi_fished_',mod,'sigA.csv']);
 writecell(sigB,[dpath 'LME_fosi_fished_',mod,'sigB.csv']);
-
-
-
-

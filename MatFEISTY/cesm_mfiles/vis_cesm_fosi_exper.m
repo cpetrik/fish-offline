@@ -10,7 +10,7 @@ cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
-[ni,nj]=size(TLONG); 
+[ni,nj]=size(TLONG);
 
 plotminlat=-90; %Set these bounds for your data
 plotmaxlat=90;
@@ -19,7 +19,7 @@ plotmaxlon=80;
 latlim=[plotminlat plotmaxlat];
 lonlim=[plotminlon plotmaxlon];
 
-load coastlines; 
+load coastlines;
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
@@ -31,15 +31,15 @@ if (~isfolder(ppath))
     mkdir(ppath)
 end
 
-sims = {'v14_climatol_';'v14_varFood_';'v14_varTemp_'};
-    
+sims = {'v15_climatol_';'v15_varFood_';'v15_varTemp_'};
+
 for n=1:length(sims)
     close all
     exper = sims{n};
 
 load([fpath 'Time_Means_FOSI_' exper cfile '.mat']);
 load([fpath 'Space_Means_FOSI_' exper cfile '.mat']);
-load([fpath 'Annual_Means_FOSI_' exper cfile '.mat'],'mz_mtf');   
+load([fpath 'Annual_Means_FOSI_' exper cfile '.mat'],'mz_mtf');
 
 %% colors
 cm10=[0.5 0.5 0;... %tan/army
@@ -102,7 +102,7 @@ ylabel('log_1_0 Biomass (g m^-^2)')
 title('FOSI')
 stamp(exper)
 print('-dpng',[ppath 'FOSI_',exper mod,'_all_types.png'])
- 
+
 %% Plots in space
 
 Zsf=NaN*ones(ni,nj);
@@ -195,7 +195,7 @@ subplot('Position',[0.5 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,log10(All))
-colormap(cmBP50)               
+colormap(cmBP50)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')

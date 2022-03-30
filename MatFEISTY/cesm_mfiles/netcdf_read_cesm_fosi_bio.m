@@ -7,7 +7,7 @@ close all
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-harv = 'v14_All_fish03_';
+harv = 'v15_All_fish03_';
 
 %% SP
 ncid = netcdf.open([fpath 'FOSI_' harv 'sml_p.nc'],'NC_NOWRITE');
@@ -225,7 +225,7 @@ mz_mtf = nan*ones(ni,nyr);
 for n=1:length(st)
     % total overcon
     mz_mtf(:,n)=nansum(MZ.over(:,st(n):en(n)),2);
-    
+
     % mean biomass
     sp_abio(:,n)=nanmean(SP.bio(:,st(n):en(n)),2);
     sf_abio(:,n)=nanmean(SF.bio(:,st(n):en(n)),2);
@@ -236,7 +236,7 @@ for n=1:length(st)
     lp_abio(:,n)=nanmean(LP.bio(:,st(n):en(n)),2);
     ld_abio(:,n)=nanmean(LD.bio(:,st(n):en(n)),2);
     b_abio(:,n)=nanmean(Bent.bio(:,st(n):en(n)),2);
-   
+
     % mean prod
     sp_aprod(:,n)=nanmean(SP.prod(:,st(n):en(n)),2);
     sf_aprod(:,n)=nanmean(SF.prod(:,st(n):en(n)),2);

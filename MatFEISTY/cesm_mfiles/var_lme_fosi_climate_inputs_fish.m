@@ -1,5 +1,5 @@
 % Calc var of climate indices, inputs, and fish biomass of FEISTY by LME
-% CESM FOSI mod = v14_All_fish03
+% CESM FOSI mod = v15_All_fish03
 
 clear all
 close all
@@ -54,7 +54,7 @@ if (~isfolder(ppath))
     mkdir(ppath)
 end
 
-sims = {'v14_All_fish03_';'v14_climatol_';'v14_varFood_';'v14_varTemp_'};
+sims = {'v15_All_fish03_';'v15_climatol_';'v15_varFood_';'v15_varTemp_'};
 mod = sims{1};
 
 %load([dpath 'LME_fosi_fished_',mod,cfile '.mat']);
@@ -129,7 +129,6 @@ lme_l_cv = lme_l_std ./ lme_l_mean;
 lme_f_cv = lme_f_std ./ lme_f_mean;
 lme_p_cv = lme_p_std ./ lme_p_mean;
 lme_d_cv = lme_d_std ./ lme_d_mean;
-lme_pf_cv = lme_pf_std ./ lme_pf_mean;
-lme_pd_cv = lme_pd_std ./ lme_pd_mean;
-lme_lm_cv = lme_lm_std ./ lme_lm_mean;
-
+% lme_pf_cv = lme_pf_std ./ lme_pf_mean;
+% lme_pd_cv = lme_pd_std ./ lme_pd_mean;
+% lme_lm_cv = lme_lm_std ./ lme_lm_mean;

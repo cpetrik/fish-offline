@@ -11,7 +11,7 @@ load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-mod = 'v14_All_fish03';
+mod = 'v15_All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -21,7 +21,7 @@ if (~isfolder(ppath))
 end
 
 %% Full
-load([fpath 'Plot_Means_FOSI_v14_All_fish03_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_',mod','_' cfile '.mat']);
 
 FulltF = F;
 FulltP = P;
@@ -41,7 +41,7 @@ clear F P D B AllF AllP AllD AllS AllM AllL
 
 %%
 %exper = varFood, varTemp, climatol
-load([fpath 'Plot_Means_FOSI_v14_climatol_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_v15_climatol_' cfile '.mat']);
 
 ClimtF = F;
 ClimtP = P;
@@ -60,7 +60,7 @@ ClimsA = AllF+AllP+AllD;
 clear F P D B AllF AllP AllD AllS AllM AllL
 
 %%
-load([fpath 'Plot_Means_FOSI_v14_varTemp_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_v15_varTemp_' cfile '.mat']);
 
 TemptF = F;
 TemptP = P;
@@ -79,7 +79,7 @@ TempsA = AllF+AllP+AllD;
 clear F P D B AllF AllP AllD AllS AllM AllL
 
 %%
-load([fpath 'Plot_Means_FOSI_v14_varFood_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_v15_varFood_' cfile '.mat']);
 
 FoodtF = F;
 FoodtP = P;
@@ -147,7 +147,7 @@ plotmaxlon=80;
 latlim=[plotminlat plotmaxlat];
 lonlim=[plotminlon plotmaxlon];
 
-load coastlines;     
+load coastlines;
 
 %% colors
 cm10=[0.5 0.5 0;... %tan/army
@@ -395,7 +395,7 @@ ylabel('Biomass (g m^-^2)')
 title('All')
 stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_comp_exper_ts_diff_subplot.png'])
- 
+
 %% Plots in space
 
 % Forage 4 on subplots
@@ -418,7 +418,7 @@ subplot('Position',[0 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dTempsF))
-cmocean('balance')   
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 cb2 = colorbar('Position',[0.55 0.5 0.4 0.025],'orientation','horizontal','AxisLocation','in');
@@ -431,7 +431,7 @@ subplot('Position',[0.5 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dFullsF))
-cmocean('balance')   
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
@@ -442,7 +442,7 @@ subplot('Position',[0.5 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dFoodsF))
-cmocean('balance')               
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
@@ -470,7 +470,7 @@ subplot('Position',[0 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dTempsP))
-cmocean('balance')   
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 cb2 = colorbar('Position',[0.55 0.5 0.4 0.025],'orientation','horizontal','AxisLocation','in');
@@ -483,7 +483,7 @@ subplot('Position',[0.5 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dFullsP))
-cmocean('balance')   
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
@@ -494,7 +494,7 @@ subplot('Position',[0.5 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dFoodsP))
-cmocean('balance')               
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
@@ -522,7 +522,7 @@ subplot('Position',[0 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dTempsD))
-cmocean('balance')   
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 cb2 = colorbar('Position',[0.55 0.5 0.4 0.025],'orientation','horizontal','AxisLocation','in');
@@ -535,7 +535,7 @@ subplot('Position',[0.5 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dFullsD))
-cmocean('balance')   
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
@@ -546,7 +546,7 @@ subplot('Position',[0.5 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dFoodsD))
-cmocean('balance')               
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-2 2]);
 set(gcf,'renderer','painters')
@@ -574,7 +574,7 @@ subplot('Position',[0 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dTempsA))
-cmocean('balance')   
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-3 3]);
 cb2 = colorbar('Position',[0.55 0.5 0.4 0.025],'orientation','horizontal','AxisLocation','in');
@@ -587,7 +587,7 @@ subplot('Position',[0.5 0.51 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dFullsA))
-cmocean('balance')   
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-3 3]);
 set(gcf,'renderer','painters')
@@ -598,7 +598,7 @@ subplot('Position',[0.5 0 0.5 0.5])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLONG,(dFoodsA))
-cmocean('balance')               
+cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-3 3]);
 set(gcf,'renderer','painters')
@@ -620,41 +620,40 @@ print('-dpng',[ppath 'FOSI_',mod,'_global_exper_diffAll_subplot.png'])
 % title(cb,'log10 g m^-^2')
 % set(gcf,'renderer','painters')
 % title('B Climatol')
-% 
+%
 % % all D
 % subplot('Position',[0 0 0.5 0.5])
 % axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 %     'Grid','off','FLineWidth',1)
 % surfm(TLAT,TLONG,(dTempsB))
-% cmocean('balance')   
+% cmocean('balance')
 % h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 % caxis([-2 2]);
 % cb2 = colorbar('Position',[0.55 0.5 0.4 0.025],'orientation','horizontal','AxisLocation','in');
 % title(cb2,'g m^-^2')
 % set(gcf,'renderer','painters')
 % title('diff B var Temp')
-% 
+%
 % % All P
 % subplot('Position',[0.5 0.51 0.5 0.5])
 % axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 %     'Grid','off','FLineWidth',1)
 % surfm(TLAT,TLONG,(dFullsB))
-% cmocean('balance')   
+% cmocean('balance')
 % h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 % caxis([-2 2]);
 % set(gcf,'renderer','painters')
 % title('diff B Full')
-% 
+%
 % % All
 % subplot('Position',[0.5 0 0.5 0.5])
 % axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 %     'Grid','off','FLineWidth',1)
 % surfm(TLAT,TLONG,(dFoodsB))
-% cmocean('balance')               
+% cmocean('balance')
 % h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 % caxis([-2 2]);
 % set(gcf,'renderer','painters')
 % title('diff B var Prey')
 % stamp('')
 % print('-dpng',[ppath 'FOSI_',mod,'_global_exper_diffB_subplot.png'])
-

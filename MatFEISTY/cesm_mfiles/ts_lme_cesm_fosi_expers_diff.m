@@ -11,7 +11,7 @@ load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-mod = 'v14_All_fish03';
+mod = 'v15_All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -21,7 +21,7 @@ if (~isfolder(ppath))
 end
 
 %% Full
-load([fpath 'LME_fosi_fished_v14_All_fish03_',cfile '.mat']);
+load([fpath 'LME_fosi_fished_v15_All_fish03_',cfile '.mat']);
 
 FullmF = lme_msfb + lme_mmfb;
 FullmP = lme_mspb + lme_mmpb + lme_mlpb;
@@ -48,7 +48,7 @@ clear lme_slpb lme_sldb lme_sbb
 
 %%
 %exper = varFood, varTemp, climatol
-load([fpath 'LME_fosi_fished_v14_climatol_',cfile '.mat']);
+load([fpath 'LME_fosi_fished_v15_climatol_',cfile '.mat']);
 
 ClimmF = lme_msfb + lme_mmfb;
 ClimmP = lme_mspb + lme_mmpb + lme_mlpb;
@@ -74,7 +74,7 @@ clear lme_ssfb lme_sspb lme_ssdb lme_smfb lme_smpb lme_smdb
 clear lme_slpb lme_sldb lme_sbb
 
 %%
-load([fpath 'LME_fosi_fished_v14_varTemp_',cfile '.mat']);
+load([fpath 'LME_fosi_fished_v15_varTemp_',cfile '.mat']);
 
 TempmF = lme_msfb + lme_mmfb;
 TempmP = lme_mspb + lme_mmpb + lme_mlpb;
@@ -100,7 +100,7 @@ clear lme_ssfb lme_sspb lme_ssdb lme_smfb lme_smpb lme_smdb
 clear lme_slpb lme_sldb lme_sbb
 
 %%
-load([fpath 'LME_fosi_fished_v14_varFood_',cfile '.mat']);
+load([fpath 'LME_fosi_fished_v15_varFood_',cfile '.mat']);
 
 FoodmF = lme_msfb + lme_mmfb;
 FoodmP = lme_mspb + lme_mmpb + lme_mlpb;
@@ -201,7 +201,7 @@ cm10=[0.5 0.5 0;... %tan/army
     0 0 0.75;...    %b
     0.5 0.5 0.5; ...    %med grey
     0 0 0];...      %black
-    
+
 set(groot,'defaultAxesColorOrder',cm10);
 
 %% US LMEs only
@@ -235,7 +235,7 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','temp+prey','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'});
 lg.Position(1:2) = [.69 .21];
 stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_B.png'])
@@ -263,7 +263,7 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','temp+prey','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'});
 lg.Position(1:2) = [.69 .21];
 stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_F.png'])
@@ -291,7 +291,7 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','temp+prey','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'});
 lg.Position(1:2) = [.69 .21];
 stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_P.png'])
@@ -319,7 +319,7 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','temp+prey','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'});
 lg.Position(1:2) = [.69 .21];
 stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_D.png'])
@@ -347,7 +347,7 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','temp+prey','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'});
 lg.Position(1:2) = [.69 .21];
 stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_All.png'])
@@ -375,7 +375,7 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','temp+prey','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'});
 lg.Position(1:2) = [.69 .21];
 stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_S.png'])
@@ -403,7 +403,7 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','temp+prey','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'});
 lg.Position(1:2) = [.69 .21];
 stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_M.png'])
@@ -431,7 +431,7 @@ for z = 1:length(lid)
         title(lname(z))
     end
 end
-lg  = legend({'full','temp+prey','temp','prey'}); 
+lg  = legend({'full','temp+prey','temp','prey'});
 lg.Position(1:2) = [.69 .21];
 stamp('')
 print('-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_L.png'])
@@ -447,7 +447,7 @@ for z = 1:length(lid)
     plot(y,(1e-6*dTempmS(lme,:)),'-.r','Linewidth',1.5); hold on;
     plot(y,(1e-6*dFoodmS(lme,:)),'-.b','Linewidth',1.5); hold on;
     title('Small')
-    
+
     subplot(3,3,2)
     plot(y,(1e-6*dFullmM(lme,:)),'k','Linewidth',1.5); hold on;
     plot(y,(1e-6*dAddmM(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
@@ -455,7 +455,7 @@ for z = 1:length(lid)
     plot(y,(1e-6*dFoodmM(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     title([lname(z) ' Medium'])
-    
+
     subplot(3,3,3)
     plot(y,(1e-6*dFullmL(lme,:)),'k','Linewidth',1.5); hold on;
     plot(y,(1e-6*dAddmL(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
@@ -464,7 +464,7 @@ for z = 1:length(lid)
     xlim([y(1) y(end)])
     %ylim([-5 2])
     title('Large')
-    
+
     subplot(3,3,4)
     plot(y,(1e-6*dFullmF(lme,:)),'k','Linewidth',1.5); hold on;
     plot(y,(1e-6*dAddmF(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
@@ -473,7 +473,7 @@ for z = 1:length(lid)
     xlim([y(1) y(end)])
     ylabel('\Delta mean biomass (MT)')
     title('Forage')
-    
+
     subplot(3,3,5)
     plot(y,(1e-6*dFullmP(lme,:)),'k','Linewidth',1.5); hold on;
     plot(y,(1e-6*dAddmP(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
@@ -481,7 +481,7 @@ for z = 1:length(lid)
     plot(y,(1e-6*dFoodmP(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     title('Lg Pelagic')
-    
+
     subplot(3,3,6)
     plot(y,(1e-6*dFullmD(lme,:)),'k','Linewidth',1.5); hold on;
     plot(y,(1e-6*dAddmD(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
@@ -489,7 +489,7 @@ for z = 1:length(lid)
     plot(y,(1e-6*dFoodmD(lme,:)),'-.b','Linewidth',1.5); hold on;
     xlim([y(1) y(end)])
     title('Demersal')
-    
+
     subplot(3,3,7)
     plot(y,(1e-6*dFullmA(lme,:)),'k','Linewidth',1.5); hold on;
     plot(y,(1e-6*dAddmA(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
@@ -498,7 +498,7 @@ for z = 1:length(lid)
     xlim([y(1) y(end)])
     xlabel('Time (y)')
     title('All Fish')
-    
+
     subplot(3,3,9)
     plot(y,(1e-6*dFullmB(lme,:)),'k','Linewidth',1.5); hold on;
     plot(y,(1e-6*dAddmB(lme,:)),'color',[0.5 0 0.75],'Linewidth',1.5); hold on;
@@ -511,7 +511,3 @@ for z = 1:length(lid)
     stamp('')
     print(f9,'-dpng',[ppath 'FOSI_',mod,'_USLME_diff_exper_ts_',lname{z},'.png'])
 end
-
-
-
-

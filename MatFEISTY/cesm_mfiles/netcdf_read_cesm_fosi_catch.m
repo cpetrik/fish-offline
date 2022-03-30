@@ -7,7 +7,7 @@ close all
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-harv = 'v14_All_fish03';
+harv = 'v15_All_fish03';
 
 %% MP
 ncid = netcdf.open([fpath 'FOSI_' harv '_catch_med_p.nc'],'NC_NOWRITE');
@@ -22,7 +22,7 @@ netcdf.close(ncid);
 [ni,nt] = size(yield);
 
 MP.yield = yield;
-clear yield 
+clear yield
 
 % MF
 ncid = netcdf.open([fpath 'FOSI_' harv '_catch_med_f.nc'],'NC_NOWRITE');
@@ -35,7 +35,7 @@ end
 netcdf.close(ncid);
 
 MF.yield = yield;
-clear yield 
+clear yield
 
 % MD
 ncid = netcdf.open([fpath 'FOSI_' harv '_catch_med_d.nc'],'NC_NOWRITE');
@@ -48,7 +48,7 @@ end
 netcdf.close(ncid);
 
 MD.yield = yield;
-clear yield 
+clear yield
 
 % LP
 ncid = netcdf.open([fpath 'FOSI_' harv '_catch_lrg_p.nc'],'NC_NOWRITE');
@@ -61,7 +61,7 @@ end
 netcdf.close(ncid);
 
 LP.yield = yield;
-clear yield 
+clear yield
 
 % LD
 ncid = netcdf.open([fpath 'FOSI_' harv '_catch_lrg_d.nc'],'NC_NOWRITE');
@@ -74,7 +74,7 @@ end
 netcdf.close(ncid);
 
 LD.yield = yield;
-clear yield 
+clear yield
 
 %% Take means and totals
 % Totals only in lmes
@@ -175,7 +175,7 @@ md_tac = nan*ones(ni,nyr);
 lp_tac = nan*ones(ni,nyr);
 ld_tac = nan*ones(ni,nyr);
 for n=1:length(st)
-    
+
     mp_tac(:,n)=nansum(MP.catch(:,st(n):en(n)),2);
     mf_tac(:,n)=nansum(MF.catch(:,st(n):en(n)),2);
     md_tac(:,n)=nansum(MD.catch(:,st(n):en(n)),2);
@@ -212,5 +212,3 @@ save([fpath 'Annual_Means_FOSI_' harv '_' cfile '.mat'],...
     'units_yield','units_catch','-append');
 
 %%
-
-

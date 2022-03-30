@@ -18,7 +18,7 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-exper = 'v14_';
+exper = 'v15_';
 [fname,simname] = sub_fname_cesm_fosi_exper(param,exper);
 
 %! Storage variables
@@ -85,7 +85,7 @@ MNT = 0;
 for YR = 1:YEARS % years
     %! Load a year's ESM data
     ti = num2str(YR)
-    load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v6_daily_',ti,'.mat'],'ESM');
+    load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_',ti,'.mat'],'ESM');
     
     for DAY = 1:param.DT:DAYS % days
         

@@ -49,7 +49,7 @@ if (~isfolder(ppath))
     mkdir(ppath)
 end
 
-sims = {'v14_All_fish03_';'v14_climatol_';'v14_varFood_';'v14_varTemp_'};
+sims = {'v15_All_fish03_';'v15_climatol_';'v15_varFood_';'v15_varTemp_'};
 mod = sims{1};
 
 %load([dpath 'LME_fosi_fished_',mod,cfile '.mat']);
@@ -69,8 +69,8 @@ for i=1:length(lid)
         lme = lid(i);
         ltex = lname{i};
         ctex = canom{j};
-        
-        %% Cross corr 
+
+        %% Cross corr
         [cS,lagsS] = xcorr(lme_mSa(lme,:),squeeze(manom(j,lme,:)),15);
         [cM,lagsM] = xcorr(lme_mMa(lme,:),squeeze(manom(j,lme,:)),15);
         [cL,lagsL] = xcorr(lme_mLa(lme,:),squeeze(manom(j,lme,:)),15);
@@ -79,7 +79,7 @@ for i=1:length(lid)
         [cD,lagsD] = xcorr(lme_mDa(lme,:),squeeze(manom(j,lme,:)),15);
         [cA,lagsA] = xcorr(lme_mAa(lme,:),squeeze(manom(j,lme,:)),15);
         [cB,lagsB] = xcorr(lme_mba(lme,:),squeeze(manom(j,lme,:)),15);
-        
+
         %%
         figure(1)
         clf
@@ -91,7 +91,7 @@ for i=1:length(lid)
         plot(fyr,lme_mSa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Small')
-        
+
         subplot(3,3,2)
         yyaxis left
         plot(yanom,squeeze(manom(j,lme,:)));
@@ -101,7 +101,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         str = {[ctex,' ', ltex], ' Medium'};
         title(str)
-        
+
         subplot(3,3,3)
         yyaxis left
         plot(yanom,squeeze(manom(j,lme,:)));
@@ -110,7 +110,7 @@ for i=1:length(lid)
         plot(fyr,lme_mLa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Large')
-        
+
         subplot(3,3,4)
         yyaxis left
         plot(yanom,squeeze(manom(j,lme,:)));
@@ -120,7 +120,7 @@ for i=1:length(lid)
         plot(fyr,lme_mFa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Forage')
-        
+
         subplot(3,3,5)
         yyaxis left
         plot(yanom,squeeze(manom(j,lme,:)));
@@ -129,7 +129,7 @@ for i=1:length(lid)
         plot(fyr,lme_mPa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Lg Pelagic')
-        
+
         subplot(3,3,6)
         yyaxis left
         plot(yanom,squeeze(manom(j,lme,:)));
@@ -139,7 +139,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         title('Demersal')
         ylabel('Mean biomass (log_1_0 MT)')
-        
+
         subplot(3,3,7)
         yyaxis left
         plot(yanom,squeeze(manom(j,lme,:)));
@@ -149,7 +149,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         xlabel('Time (y)')
         title('All Fish')
-        
+
         subplot(3,3,9)
         yyaxis left
         plot(yanom,squeeze(manom(j,lme,:)));
@@ -160,7 +160,7 @@ for i=1:length(lid)
         title('Benthos')
         stamp('')
         print('-dpng',[ppath 'FOSI_',mod,ctex,'_',ltex,'_ts_corr.png'])
-        
+
         %%
         figure(2)
         clf
@@ -168,45 +168,45 @@ for i=1:length(lid)
         stem(lagsS,cS,'k')
         xlim([0 9])
         title('Small')
-        
+
         subplot(3,3,2)
         stem(lagsM,cM,'k')
         xlim([0 9])
         str = {[ctex,' ', ltex], ' Medium'};
         title(str)
-        
+
         subplot(3,3,3)
         stem(lagsL,cL,'k')
         xlim([0 9])
         title('Large')
-        
+
         subplot(3,3,4)
         stem(lagsF,cF,'k')
         xlim([0 9])
         title('Forage')
-        
+
         subplot(3,3,5)
         stem(lagsP,cP,'k')
         xlim([0 9])
         title('Lg Pelagic')
-        
+
         subplot(3,3,6)
         stem(lagsD,cD,'k')
         xlim([0 9])
         title('Demersal')
-        
+
         subplot(3,3,7)
         stem(lagsA,cA,'k')
         xlim([0 9])
         title('All Fish')
-        
+
         subplot(3,3,9)
         stem(lagsB,cB,'k')
         xlim([0 9])
         title('Benthos')
         stamp('')
         print('-dpng',[ppath 'FOSI_',mod,ctex,'_',ltex,'_ts_crosscorr.png'])
-        
+
     end
 end
 
@@ -227,34 +227,34 @@ for i=1:length(lid)
         lme = lid(i);
         ltex = lname{i};
         ctex = canom{j};
-        
+
         for k=1:6
             t = yr(k);
             %% Corr at diff lags
             [rs,ps] = corrcoef(lme_mSa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rS(i,j,k) = rs(1,2); pS(i,j,k) = ps(1,2);
-            
+
             [rm,pm] = corrcoef(lme_mMa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rM(i,j,k) = rm(1,2); pM(i,j,k) = pm(1,2);
-            
+
             [rl,pl] = corrcoef(lme_mLa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rL(i,j,k) = rl(1,2); pL(i,j,k) = pl(1,2);
-            
+
             [rf,pf] = corrcoef(lme_mFa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rF(i,j,k) = rf(1,2); pF(i,j,k) = pf(1,2);
-            
+
             [rp,pp] = corrcoef(lme_mPa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rP(i,j,k) = rp(1,2); pP(i,j,k) = pp(1,2);
-            
+
             [rd,pd] = corrcoef(lme_mDa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rD(i,j,k) = rd(1,2); pD(i,j,k) = pd(1,2);
-            
+
             [ra,pa] = corrcoef(lme_mAa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rA(i,j,k) = ra(1,2); pA(i,j,k) = pa(1,2);
-            
+
             [rb,pb] = corrcoef(lme_mba(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rB(i,j,k) = rb(1,2); pB(i,j,k) = pb(1,2);
-            
+
             if (ps(1,2)<=0.05)
                 ns=ns+1;
                 sigS{ns,1} = ltex;
@@ -319,7 +319,7 @@ for i=1:length(lid)
                 sigB{nb,4} = rb(1,2);
                 sigB{nb,5} = pb(1,2);
             end
-            
+
         end
     end
 end
@@ -333,14 +333,3 @@ writecell(sigP,[dpath 'LME_fosi_fished_',mod,'sigP_inputs.csv']);
 writecell(sigD,[dpath 'LME_fosi_fished_',mod,'sigD_inputs.csv']);
 writecell(sigA,[dpath 'LME_fosi_fished_',mod,'sigA_inputs.csv']);
 writecell(sigB,[dpath 'LME_fosi_fished_',mod,'sigB_inputs.csv']);
-
-
-
-
-
-
-
-
-
-
-

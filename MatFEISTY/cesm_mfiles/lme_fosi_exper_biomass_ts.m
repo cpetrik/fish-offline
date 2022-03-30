@@ -33,19 +33,19 @@ if (~isfolder(ppath))
     mkdir(ppath)
 end
 
-sims = {'v14_All_fish03_';'v14_climatol_';'v14_varFood_';'v14_varTemp_'};
+sims = {'v15_All_fish03_';'v15_climatol_';'v15_varFood_';'v15_varTemp_'};
 %sims = {'v14_climatol_';'v14_varFood_';'v14_varTemp_'};
 
-for n=1:length(sims)
+for n=1%:length(sims)
     close all
     mod = sims{n};
-    
+
     load([dpath 'Annual_Means_FOSI_' mod cfile '.mat'],'sf_abio','sp_abio','sd_abio',...
         'mf_abio','mp_abio','md_abio',...
         'lp_abio','ld_abio','b_abio');
-    
+
     [nid,nt] = size(ld_abio);
-    
+
     %% g/m2 --> total g
     AREA = TAREA(ID) * 1e-4;
     AREA_OCN = repmat(AREA,1,nt);
@@ -58,12 +58,12 @@ for n=1:length(sims)
     Alp_mean = lp_abio .* AREA_OCN;
     Ald_mean = ld_abio .* AREA_OCN;
     Ab_mean  = b_abio  .* AREA_OCN;
-    
+
     %% Calc LMEs
     glme = double(lme_mask);
     glme(glme<0) = nan;
     tlme = glme(ID);
-    
+
     lme_msfb = NaN*ones(66,nt);
     lme_ssfb = NaN*ones(66,nt);
     lme_mspb = lme_msfb;
@@ -82,7 +82,7 @@ for n=1:length(sims)
     lme_sldb = lme_msfb;
     lme_smfb = lme_msfb;
     lme_sbb = lme_msfb;
-    
+
     for L=1:66
         lid = find(tlme==L);
         if (~isempty(lid))
@@ -108,7 +108,7 @@ for n=1:length(sims)
             lme_sbb(L,:) = nansum(Ab_mean(lid,:));
         end
     end
-    
+
     %%
     if n==1
         save([dpath 'LME_fosi_fished_',mod,cfile '.mat'],...
@@ -124,5 +124,3 @@ for n=1:length(sims)
             'lme_slpb','lme_sldb','lme_sbb');
     end
 end
-
-
