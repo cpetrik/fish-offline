@@ -1,12 +1,13 @@
-%%%%!! RUN CESM FOSI yr1 FOR ALL LOCATIONS
-function Spinup_cesm()
+%%%%!! RUN CESM HR yr1 FOR CCE LOCATIONS
+function Spinup_cesm_hr_CCE()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Make core parameters/constants 
 param = make_parameters_1meso();
 
 %! Grid
-load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
+fpath='/Volumes/MIP/GCM_DATA/CESM_HR/';
+load([fpath 'Data_grid_g.e22.G1850ECO_JRA_HR.TL319_t13.004.CAcurr.mat'],'GRD');
 param.NX = GRD.N;
 param.ID = 1:param.NX;
 NX = param.NX;
@@ -18,7 +19,7 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-exper = 'v15_';
+exper = 'hr_cce_';
 [fname,simname] = sub_fname_spin(param,exper);
 
 %! Storage variables
@@ -138,7 +139,7 @@ netcdf.endDef(ncidMZ);
 
 %% %%%%%%%%%%%%%%%%%%%% Run the Model
 %! Loop over first year of FOSI
-load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_1.mat','ESM');
+load([fpath 'Data_cesm_hr_CCS_daily_1958.mat'],'ESM');
 MNT = 0;
 %! Run model 
 for YR = 1:YEARS % years
