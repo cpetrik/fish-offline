@@ -8,6 +8,7 @@ clear all
 close all
 
 fpath='/Volumes/MIP/GCM_DATA/CESM_HR/';
+spath = '/Volumes/petrik-lab/test/';
 
 %% All inputs
 ncdisp([fpath 'g.e22.G1850ECO_JRA_HR.TL319_t13.004.FIESTY-forcing_hiresJRA_CAcurr.nc'])
@@ -74,7 +75,10 @@ yr = time/12 + 1958;
 
 %%
 save([fpath 'g.e22.G1850ECO_JRA_HR.TL319_t13.004.FIESTY-forcing_hiresJRA_CAcurr.mat']);
+save([fpath 'g.e22.G1850ECO_JRA_HR.TL319_t13.004.grid.mat'],'TLAT','TLONG','HT');
 
+save([spath 'g.e22.G1850ECO_JRA_HR.TL319_t13.004.FIESTY-forcing_hiresJRA_CAcurr.mat']);
+save([spath 'g.e22.G1850ECO_JRA_HR.TL319_t13.004.grid.mat'],'TLAT','TLONG','HT');
 
 
 

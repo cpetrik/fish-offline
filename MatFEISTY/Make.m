@@ -6,8 +6,8 @@ close all
 %%%%!! EXPERIMENTS
 testc = false;
 spinup_cesm = false;
-spinup_hr = true;
-hr_cesm = false;
+spinup_hr = false;
+hr_cesm = true;
 fosi_cesm = false;
 dple_cesm = false;
 
@@ -31,6 +31,7 @@ if spinup_hr
 end
 if hr_cesm
     HR_cesm()
+    HR_cesm_catch()
 end
 if fosi_cesm
 %     Locs_CESM_4p4z()

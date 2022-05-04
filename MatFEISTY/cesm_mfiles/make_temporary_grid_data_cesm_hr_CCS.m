@@ -8,13 +8,13 @@ fpath='/Volumes/MIP/GCM_DATA/CESM_HR/';
 
 %% lat, lon
 load([fpath 'g.e22.G1850ECO_JRA_HR.TL319_t13.004.FIESTY-forcing_hiresJRA_CAcurr.mat'],...
-    'TLAT','TLONG','time','yr','KMT')
+    'TLAT','TLONG','time','yr','KMT','HT')
 load([fpath 'g.e22.G1850ECO_JRA_HR.TL319_t13.004.FIESTY-forcing_hiresJRA_CAcurr_meszoo_totloss_allphytoC.mat'],...
     'LzooC_100m');
 
 %% check orientation
 figure
-pcolor(KMT(:,:,1))
+pcolor(HT(:,:,1))
 
 figure
 pcolor(TLAT(:,:,1))
@@ -42,7 +42,7 @@ GRD.ID = ID;
 GRD.N = NID;
 GRD.LON = TLONG(ID);
 GRD.LAT = TLAT(ID);
-% GRD.Z   = HT(ID) * 1e-2;     %from cm to m
+GRD.Z   = HT(ID) * 1e-2;     %from cm to m
 % GRD.area = TAREA(ID) * 1e-4; %from cm2 to m2
 GRD.lmask = mask(ID);
 
