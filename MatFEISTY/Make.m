@@ -5,9 +5,9 @@ close all
 
 %%%%!! EXPERIMENTS
 testc = false;
-spinup_cesm = false;
+spinup_cesm = true;
 spinup_hr = false;
-hr_cesm = true;
+hr_cesm = false;
 fosi_cesm = false;
 dple_cesm = false;
 
@@ -19,8 +19,8 @@ if testc
 end
 if spinup_cesm
 %     Locs_CESM_4p4z_spinup()
-    Spinup_cesm()
-%     Spinup_FOSI_climatol()
+%     Spinup_cesm()
+    Spinup_FOSI_climatol()
 %     Spinup_FOSI_varFood()
 %     Spinup_FOSI_varTemp()
 %     Spinup_4p4z()

@@ -34,7 +34,6 @@ if (~isfolder(ppath))
 end
 
 sims = {'v15_All_fish03_';'v15_climatol_';'v15_varFood_';'v15_varTemp_'};
-%sims = {'v14_climatol_';'v14_varFood_';'v14_varTemp_'};
 
 for n=1%:length(sims)
     close all

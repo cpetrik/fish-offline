@@ -3,14 +3,14 @@ function Spinup_FOSI_climatol()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Model experiment
-exper = 'v14_climatol_';
-mod = 'v14_';
+exper = 'v15_climatol_';
+mod = 'v15_';
 
 %! Make core parameters/constants 
 param = make_parameters_1meso(); 
 
 %! Grid
-load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
+load('/Volumes/petrik-lab/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
 param.NX = GRD.N;
 param.ID = 1:param.NX;
 NX = param.NX;
@@ -141,7 +141,7 @@ netcdf.endDef(ncidMZ);
 
 %% %%%%%%%%%%%%%%%%%%%% Run the Model
 %! Load a year's ESM data (climatology)
-load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v6_daily_climtol_1yr.mat'],'ESM');
+load(['/Volumes/petrik-lab/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_climtol_1yr.mat'],'ESM');
         
 MNT = 0;
 %! Run model with no fishing

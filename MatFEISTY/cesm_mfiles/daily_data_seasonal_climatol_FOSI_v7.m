@@ -4,7 +4,8 @@
 clear all
 close all
 
-fpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+%fpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+fpath='/Volumes/petrik-lab/GCM_Data/CESM/FOSI/';
 
 %% Climatologies
 % non-temp vars are ln-trans
