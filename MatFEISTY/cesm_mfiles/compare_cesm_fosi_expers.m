@@ -21,7 +21,7 @@ if (~isfolder(ppath))
 end
 
 %% Full
-load([fpath 'Plot_Means_FOSI_',mod','_' cfile '.mat']);
+load([fpath 'Plot_Means_FOSI_',mod,'_' cfile '.mat']);
 
 FulltF = F;
 FulltP = P;

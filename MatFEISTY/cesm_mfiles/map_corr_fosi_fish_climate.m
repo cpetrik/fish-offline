@@ -57,6 +57,8 @@ allV = allF + allP + allD;
 
 clear sf_abio sp_abio sd_abio mf_abio mp_abio md_abio lp_abio ld_abio
 
+%% Calc linear trend and remove
+
 %% Calc fish anomalies
 %mean biomass
 mba = b_abio - nanmean(b_abio,2);

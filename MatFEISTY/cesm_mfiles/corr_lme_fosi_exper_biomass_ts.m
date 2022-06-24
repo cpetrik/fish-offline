@@ -140,6 +140,10 @@ lme_sMb = lme_smfb + lme_smpb + lme_smdb;
 lme_sLb = lme_slpb + lme_sldb;
 lme_sAb = lme_sFb + lme_sPb + lme_sDb;
 
+%% Calc linear trend and remove
+%([fpath 'FEISTY_FOSI_',mod,'interann_var.mat'],...
+%([fpath 'FEISTY_FOSI_',mod,'ann_mean_anoms.mat']
+
 %% Calc fish anomalies
 %mean biomass
 lme_msfa = lme_msfb - nanmean(lme_msfb,2);

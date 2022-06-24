@@ -9,8 +9,8 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 mod = 'v15_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-%fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-fpath=['/Volumes/petrik-lab/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+%fpath=['/Volumes/petrik-lab/NC/CESM_MAPP/' cfile '/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
@@ -71,87 +71,6 @@ sf = std(xF,0,2,'omitnan');
 sp = std(xP,0,2,'omitnan');
 sd = std(xD,0,2,'omitnan');
 
-%% mean & std by lme
-%cpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
-load([cpath 'LME-mask-POP_gx1v6.mat']);
-
-tlme = double(lme_mask);
-tlme(tlme<0) = nan;
-olme = tlme(GRD.ID);
-
-lme_sf_mean = NaN*ones(66,1);
-lme_sp_mean = NaN*ones(66,1);
-lme_sd_mean = NaN*ones(66,1);
-lme_mf_mean = NaN*ones(66,1);
-lme_mp_mean = NaN*ones(66,1);
-lme_md_mean = NaN*ones(66,1);
-lme_lp_mean = NaN*ones(66,1);
-lme_ld_mean = NaN*ones(66,1);
-lme_b_mean = NaN*ones(66,1);
-lme_a_mean = NaN*ones(66,1);
-lme_s_mean = NaN*ones(66,1);
-lme_m_mean = NaN*ones(66,1);
-lme_l_mean = NaN*ones(66,1);
-lme_f_mean = NaN*ones(66,1);
-lme_p_mean = NaN*ones(66,1);
-lme_d_mean = NaN*ones(66,1);
-
-lme_sf_std = NaN*ones(66,1);
-lme_sp_std = NaN*ones(66,1);
-lme_sd_std = NaN*ones(66,1);
-lme_mf_std = NaN*ones(66,1);
-lme_mp_std = NaN*ones(66,1);
-lme_md_std = NaN*ones(66,1);
-lme_lp_std = NaN*ones(66,1);
-lme_ld_std = NaN*ones(66,1);
-lme_b_std = NaN*ones(66,1);
-lme_a_std = NaN*ones(66,1);
-lme_s_std = NaN*ones(66,1);
-lme_m_std = NaN*ones(66,1);
-lme_l_std = NaN*ones(66,1);
-lme_f_std = NaN*ones(66,1);
-lme_p_std = NaN*ones(66,1);
-lme_d_std = NaN*ones(66,1);
-
-for L=1:66
-    lid = find(olme==L);
-
-    lme_sf_std(L,1) = nanmean(std(sf_abio(lid,:),0,2,'omitnan'));
-    lme_sp_std(L,1) = nanmean(std(sp_abio(lid,:),0,2,'omitnan'));
-    lme_sd_std(L,1) = nanmean(std(sd_abio(lid,:),0,2,'omitnan'));
-    lme_mf_std(L,1) = nanmean(std(mf_abio(lid,:),0,2,'omitnan'));
-    lme_mp_std(L,1) = nanmean(std(mp_abio(lid,:),0,2,'omitnan'));
-    lme_md_std(L,1) = nanmean(std(md_abio(lid,:),0,2,'omitnan'));
-    lme_lp_std(L,1) = nanmean(std(lp_abio(lid,:),0,2,'omitnan'));
-    lme_ld_std(L,1) = nanmean(std(ld_abio(lid,:),0,2,'omitnan'));
-    lme_b_std(L,1) = nanmean(std(xB(lid,:),0,2,'omitnan'));
-    lme_a_std(L,1) = nanmean(std(xall(lid,:),0,2,'omitnan'));
-    lme_s_std(L,1) = nanmean(std(xS(lid,:),0,2,'omitnan'));
-    lme_m_std(L,1) = nanmean(std(xM(lid,:),0,2,'omitnan'));
-    lme_l_std(L,1) = nanmean(std(xL(lid,:),0,2,'omitnan'));
-    lme_f_std(L,1) = nanmean(std(xF(lid,:),0,2,'omitnan'));
-    lme_p_std(L,1) = nanmean(std(xP(lid,:),0,2,'omitnan'));
-    lme_d_std(L,1) = nanmean(std(xD(lid,:),0,2,'omitnan'));
-
-    lme_sf_mean(L,1) = nanmean(nanmean(sf_abio(lid,:),2));
-    lme_sp_mean(L,1) = nanmean(nanmean(sp_abio(lid,:),2));
-    lme_sd_mean(L,1) = nanmean(nanmean(sd_abio(lid,:),2));
-    lme_mf_mean(L,1) = nanmean(nanmean(mf_abio(lid,:),2));
-    lme_mp_mean(L,1) = nanmean(nanmean(mp_abio(lid,:),2));
-    lme_md_mean(L,1) = nanmean(nanmean(md_abio(lid,:),2));
-    lme_lp_mean(L,1) = nanmean(nanmean(lp_abio(lid,:),2));
-    lme_ld_mean(L,1) = nanmean(nanmean(ld_abio(lid,:),2));
-    lme_b_mean(L,1) = nanmean(nanmean(xB(lid,:),2));
-    lme_a_mean(L,1) = nanmean(nanmean(xall(lid,:),2));
-    lme_s_mean(L,1) = nanmean(nanmean(xS(lid,:),2));
-    lme_m_mean(L,1) = nanmean(nanmean(xM(lid,:),2));
-    lme_l_mean(L,1) = nanmean(nanmean(xL(lid,:),2));
-    lme_f_mean(L,1) = nanmean(nanmean(xF(lid,:),2));
-    lme_p_mean(L,1) = nanmean(nanmean(xP(lid,:),2));
-    lme_d_mean(L,1) = nanmean(nanmean(xD(lid,:),2));
-
-end
-
 %% Coefficient of variance
 sf_cv = ssf ./ msf;
 sp_cv = ssp ./ msp;
@@ -169,23 +88,6 @@ l_cv = sl ./ ml;
 f_cv = sf ./ mf;
 p_cv = sp ./ mp;
 d_cv = sd ./ md;
-
-lme_sf_cv = lme_sf_std ./ lme_sf_mean;
-lme_sp_cv = lme_sp_std ./ lme_sp_mean;
-lme_sd_cv = lme_sd_std ./ lme_sd_mean;
-lme_mf_cv = lme_mf_std ./ lme_mf_mean;
-lme_mp_cv = lme_mp_std ./ lme_mp_mean;
-lme_md_cv = lme_md_std ./ lme_md_mean;
-lme_lp_cv = lme_lp_std ./ lme_lp_mean;
-lme_ld_cv = lme_ld_std ./ lme_ld_mean;
-lme_b_cv = lme_b_std ./ lme_b_mean;
-lme_a_cv = lme_a_std ./ lme_a_mean;
-lme_s_cv = lme_s_std ./ lme_s_mean;
-lme_m_cv = lme_m_std ./ lme_m_mean;
-lme_l_cv = lme_l_std ./ lme_l_mean;
-lme_f_cv = lme_f_std ./ lme_f_mean;
-lme_p_cv = lme_p_std ./ lme_p_mean;
-lme_d_cv = lme_d_std ./ lme_d_mean;
 
 %% ANOMALIES -------------------------------------------------
 
@@ -753,22 +655,7 @@ save([fpath 'FEISTY_FOSI_',mod,'interann_var.mat'],...
     'msf','msp','msd','mmf','mmp','mmd','mlp','mld','mb','ma',...
     'ms','mm','ml','mf','mp','md',...
     'ssf','ssp','ssd','smf','smp','smd','slp','sld','sb','sa',...
-    'ss','sm','sl','sf','sp','sd',...
-    'lme_sf_std','lme_sp_std','lme_sd_std',...
-    'lme_mf_std','lme_mp_std','lme_md_std',...
-    'lme_lp_std','lme_ld_std','lme_b_std','lme_a_std',...
-    'lme_s_std','lme_m_std','lme_l_std',...
-    'lme_f_std','lme_p_std','lme_d_std',...
-    'lme_sf_mean','lme_sp_mean','lme_sd_mean',...
-    'lme_mf_mean','lme_mp_mean','lme_md_mean',...
-    'lme_lp_mean','lme_ld_mean','lme_b_mean','lme_a_mean',...
-    'lme_s_mean','lme_m_mean','lme_l_mean',...
-    'lme_f_mean','lme_p_mean','lme_d_mean',...
-    'lme_sf_cv','lme_sp_cv','lme_sd_cv',...
-    'lme_mf_cv','lme_mp_cv','lme_md_cv',...
-    'lme_lp_cv','lme_ld_cv','lme_b_cv','lme_a_cv',...
-    'lme_s_cv','lme_m_cv','lme_l_cv',...
-    'lme_f_cv','lme_p_cv','lme_d_cv');
+    'ss','sm','sl','sf','sp','sd');
 
 %%
 save([fpath 'FEISTY_FOSI_',mod,'ann_mean_anoms.mat'],...

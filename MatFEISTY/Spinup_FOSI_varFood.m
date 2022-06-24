@@ -10,7 +10,7 @@ mod = 'v15_';
 param = make_parameters_1meso();
 
 %! Grid
-load('/Volumes/petrik-lab/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
+load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
 param.NX = GRD.N;
 param.ID = 1:param.NX;
 NX = param.NX;
@@ -141,7 +141,7 @@ netcdf.endDef(ncidMZ);
 
 %% %%%%%%%%%%%%%%%%%%%% Run the Model
 %! Load a year's ESM data (climatology)
-load(['/Volumes/petrik-lab/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_climtol_temp_1yr.mat'],'CESM');
+load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_climtol_temp_1yr.mat'],'CESM');
 
 MNT = 0;
 %! Run model with no fishing
@@ -151,7 +151,7 @@ for n = 1:yrs % loop over 1st 5 for total of 200 years
         %! Load each year's ESM data
         [num2str(n*YR)]
         ti = num2str(YR);
-        load(['/Volumes/petrik-lab/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_',ti,'.mat'],'ESM');
+        load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_',ti,'.mat'],'ESM');
         % Use climatology of temp forcings
         ESM.Tp = CESM.Tp;
         ESM.Tb = CESM.Tb;

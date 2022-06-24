@@ -27,7 +27,12 @@ load coastlines;
 spath='/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/FOSI/';
 load([spath 'LME_fosi_input_anomalies_annual.mat']);
 
-% put inputs in matrix
+%([fpath 'CESM_FOSI_v15_interann_mean_forcings_anom.mat']);
+%([fpath 'CESM_FOSI_v15_interann_var_forcings.mat'])
+%([fpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat'])
+%([fpath 'CESM_FOSI_v15_lme_interann_var_forcings.mat'])
+
+% put inputs in matrix RECALC WITH TREND REMOVED
 manom = nan*ones(5,66,68);
 manom(1,:,:) = lme_tpa;
 manom(2,:,:) = lme_tba;

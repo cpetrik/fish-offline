@@ -1,12 +1,12 @@
 % CESM FOSI output
-% calc interann variability by grid cell and lme
+% calc interann variability by grid cell 
 
 clear all
 close all
 
 %% Paths
-%fpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
-fpath='/Volumes/petrik-lab/GCM_Data/CESM/FOSI/';
+fpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+%fpath='/Volumes/petrik-lab/GCM_Data/CESM/FOSI/';
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 
 load([fpath 'gridspec_POP_gx1v6_noSeas.mat'],'mask');

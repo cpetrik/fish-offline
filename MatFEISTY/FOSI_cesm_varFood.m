@@ -10,7 +10,7 @@ mod = 'v15_';
 param = make_parameters_1meso(); 
 
 %! Grid
-load('/Volumes/petrik-lab/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
+load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
 param.NX = GRD.N;
 param.ID = 1:param.NX;
 NX = param.NX;
@@ -48,7 +48,7 @@ P_Lrg_d = zeros(NX,DAYS);
 
 %! Initialize
 init_sim = [exper simname];
-load(['/Volumes/petrik-lab/NC/CESM_MAPP/',simname '/Last_mo_spin_' init_sim '.mat']);
+load(['/Volumes/MIP/NC/CESM_MAPP/',simname '/Last_mo_spin_' init_sim '.mat']);
 BENT.mass = BENT.bio;
 [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish(ID,Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT);
 
@@ -144,14 +144,14 @@ netcdf.endDef(ncidMZ);
 
 %% %%%%%%%%%%%%%%%%%%%% Run the Model
 %! Load a year's ESM data (climatology)
-load(['/Volumes/petrik-lab/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_climtol_temp_1yr.mat'],'CESM');
+load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_climtol_temp_1yr.mat'],'CESM');
         
 MNT = 0;
 %! Run model with no fishing
 for YR = 1:YEARS % years
     %! Load each year's ESM data
     ti = num2str(YR)
-    load(['/Volumes/petrik-lab/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_',ti,'.mat'],'ESM');
+    load(['/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_',ti,'.mat'],'ESM');
     % Use climatology of temp forcings 
     ESM.Tp = CESM.Tp;
     ESM.Tb = CESM.Tb;
