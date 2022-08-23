@@ -4,12 +4,12 @@
 clear all
 close all
 
-apath = '/Users/cpetrik/Dropbox/Princeton/MAPP-METF/NCAR3/DPLE_offline/results_dple/climate_indices/';
-%load([apath 'climate_anomalies.mat'])
+apath = '/Users/cpetrik/Dropbox/NCAR/MAPP-METF/NCAR3/DPLE_offline/results_dple/climate_indices/';
 load([apath 'Climate_anomalies_annual_means.mat']);
 
 %% Map data
-cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+%cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
@@ -30,9 +30,11 @@ load coastlines;
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
+%fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
+
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-ppath = [pp cfile '/'];
+ppath = [pp cfile '/corrs/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
@@ -40,175 +42,16 @@ end
 sims = {'v15_All_fish03_';'v15_climatol_';'v15_varFood_';'v15_varTemp_'};
 mod = sims{1};
 
-load([dpath 'LME_fosi_fished_',mod,cfile '.mat']);
+load([fpath 'FEISTY_FOSI_',mod,'lme_ann_mean_anoms.mat']) % Anoms with linear trend removed
 
-%% Remove N/A values
-% AMO(abs(AMO)>9) = nan;
-% AO(abs(AO)>9) = nan;
-% MEI(abs(MEI)>9) = nan;
-% NAO(abs(NAO)>9) = nan;
-% Nino12(abs(Nino12)>9) = nan;
-% Nino34(abs(Nino34)>9) = nan;
-% Nino3(abs(Nino3)>9) = nan;
-% Nino4(abs(Nino4)>9) = nan;
-% NOI(abs(NOI)>9) = nan;
-% PDO(abs(PDO)>9) = nan;
-% SOI(abs(SOI)>9) = nan;
-% 
-% %% Climate anom annual means
-% 
-% mAMO = nanmean(AMO,2);
-% mAO = nanmean(AO,2);
-% mMEI = nanmean(MEI,2);
-% mNAO = nanmean(NAO,2);
-% mNino12 = nanmean(Nino12,2);
-% mNino34 = nanmean(Nino34,2);
-% mNino3 = nanmean(Nino3,2);
-% mNino4 = nanmean(Nino4,2);
-% mNOI = nanmean(NOI,2);
-% mPDO = nanmean(PDO,2);
-% mSOI = nanmean(SOI,2);
-% 
-% %% Isolate years of interest 1948-2015
- fyr = 1948:2015;
-% mAMO = mAMO(AMOyr>=1948 & AMOyr<=2015);
-% mAO = mAO(AOyr>=1948 & AOyr<=2015);
-% mMEI = mMEI(MEIyr>=1948 & MEIyr<=2015);
-% mNAO = mNAO(NAOyr>=1948 & NAOyr<=2015);
-% mNino12 = mNino12(Nino12yr>=1948 & Nino12yr<=2015);
-% mNino34 = mNino34(Nino34yr>=1948 & Nino34yr<=2015);
-% mNino3 = mNino3(Nino3yr>=1948 & Nino3yr<=2015);
-% mNino4 = mNino4(Nino4yr>=1948 & Nino4yr<=2015);
-% mNOI = mNOI(NOIyr>=1948 & NOIyr<=2015);
-% mPDO = mPDO(PDOyr>=1948 & PDOyr<=2015);
-% mSOI = mSOI(SOIyr>=1948 & SOIyr<=2015);
-% 
-% yAMO = AMOyr(AMOyr>=1948 & AMOyr<=2015);
-% yAO = AOyr(AOyr>=1948 & AOyr<=2015);
-% yMEI = MEIyr(MEIyr>=1948 & MEIyr<=2015);
-% yNAO = NAOyr(NAOyr>=1948 & NAOyr<=2015);
-% yNino12 = Nino12yr(Nino12yr>=1948 & Nino12yr<=2015);
-% yNino34 = Nino34yr(Nino34yr>=1948 & Nino34yr<=2015);
-% yNino3 = Nino3yr(Nino3yr>=1948 & Nino3yr<=2015);
-% yNino4 = Nino4yr(Nino4yr>=1948 & Nino4yr<=2015);
-% yNOI = NOIyr(NOIyr>=1948 & NOIyr<=2015);
-% yPDO = PDOyr(PDOyr>=1948 & PDOyr<=2015);
-% ySOI = SOIyr(SOIyr>=1948 & SOIyr<=2015);
-% 
-% %% put in matrix
-% manom = nan*ones(11,68);
-% manom(1,:) = mAMO;
-% manom(2,3:end) = mAO;
-% manom(3,32:end) = mMEI;
-% manom(4,:) = mNAO;
-% manom(5,:) = mNino12;
-% manom(6,:) = mNino34;
-% manom(7,:) = mNino3;
-% manom(8,:) = mNino4;
-% manom(9,1:60) = mNOI;
-% manom(10,:) = mPDO;
-% manom(11,:) = mSOI;
-% 
-% yanom = 1948:2015;
-% 
-% canom = {'AMO','AO','MEI','NAO','Nino12','Nino34','Nino3','Nino4','NOI',...
-%     'PDO','SOI'};
-% 
-% %% id start and end years
-% yst = nan*ones(11,1);
-% yen = nan*ones(11,1);
-% for k=1:length(canom)
-%     nn = find(~isnan(manom(k,:)));
-%     yst(k) = nn(1);
-%     yen(k) = nn(end);
-% end
+% Isolate years of interest 1948-2015
+fyr = 1948:2015;
 
-%% Group types and sizes
-lme_mFb = lme_msfb + lme_mmfb;
-lme_mPb = lme_mspb + lme_mmpb + lme_mlpb;
-lme_mDb = lme_msdb + lme_mmdb + lme_mldb;
-lme_mSb = lme_msfb + lme_mspb + lme_msdb;
-lme_mMb = lme_mmfb + lme_mmpb + lme_mmdb;
-lme_mLb = lme_mlpb + lme_mldb;
-lme_mAb = lme_mFb + lme_mPb + lme_mDb;
-
-lme_sFb = lme_ssfb + lme_smfb;
-lme_sPb = lme_sspb + lme_smpb + lme_slpb;
-lme_sDb = lme_ssdb + lme_smdb + lme_sldb;
-lme_sSb = lme_ssfb + lme_sspb + lme_ssdb;
-lme_sMb = lme_smfb + lme_smpb + lme_smdb;
-lme_sLb = lme_slpb + lme_sldb;
-lme_sAb = lme_sFb + lme_sPb + lme_sDb;
-
-%% Calc linear trend and remove
-%([fpath 'FEISTY_FOSI_',mod,'interann_var.mat'],...
-%([fpath 'FEISTY_FOSI_',mod,'ann_mean_anoms.mat']
-
-%% Calc fish anomalies
-%mean biomass
-lme_msfa = lme_msfb - nanmean(lme_msfb,2);
-lme_mspa = lme_mspb - nanmean(lme_mspb,2);
-lme_msda = lme_msdb - nanmean(lme_msdb,2);
-lme_mmfa = lme_mmfb - nanmean(lme_mmfb,2);
-lme_mmpa = lme_mmpb - nanmean(lme_mmpb,2);
-lme_mmda = lme_mmdb - nanmean(lme_mmdb,2);
-lme_mlpa = lme_mlpb - nanmean(lme_mlpb,2);
-lme_mlda = lme_mldb - nanmean(lme_mldb,2);
-lme_mba = lme_mbb - nanmean(lme_mbb,2);
-lme_mFa = lme_mFb - nanmean(lme_mFb,2);
-lme_mPa = lme_mPb - nanmean(lme_mPb,2);
-lme_mDa = lme_mDb - nanmean(lme_mDb,2);
-lme_mSa = lme_mSb - nanmean(lme_mSb,2);
-lme_mMa = lme_mMb - nanmean(lme_mMb,2);
-lme_mLa = lme_mLb - nanmean(lme_mLb,2);
-lme_mAa = lme_mAb - nanmean(lme_mAb,2);
-
-%total biomass
-lme_ssfa = lme_ssfb - nanmean(lme_ssfb,2);
-lme_sspa = lme_sspb - nanmean(lme_sspb,2);
-lme_ssda = lme_ssdb - nanmean(lme_ssdb,2);
-lme_smfa = lme_smfb - nanmean(lme_smfb,2);
-lme_smpa = lme_smpb - nanmean(lme_smpb,2);
-lme_smda = lme_smdb - nanmean(lme_smdb,2);
-lme_slpa = lme_slpb - nanmean(lme_slpb,2);
-lme_slda = lme_sldb - nanmean(lme_sldb,2);
-lme_sba = lme_sbb - nanmean(lme_sbb,2);
-lme_sFa = lme_sFb - nanmean(lme_sFb,2);
-lme_sPa = lme_sPb - nanmean(lme_sPb,2);
-lme_sDa = lme_sDb - nanmean(lme_sDb,2);
-lme_sSa = lme_sSb - nanmean(lme_sSb,2);
-lme_sMa = lme_sMb - nanmean(lme_sMb,2);
-lme_sLa = lme_sLb - nanmean(lme_sLb,2);
-lme_sAa = lme_sAb - nanmean(lme_sAb,2);
-
-%% US LMEs only
+%% Loop over all LMEs and all Climate - Use anomalies of fish mean biomass
+% US LMEs only
 lid = [54,1:2,10,3,5:7];
 lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE'};
 
-%% save
-% save([apath 'Climate_anomalies_annual_means.mat'],'manom','yanom','canom',...
-%     'yst','yen');
-
-spath=['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/' cfile '/'];
-if (~isfolder(spath))
-    mkdir(spath)
-end
-save([spath 'LME_fosi_fished_',mod,'anomalies_annual.mat'],...
-    'lme_msfa','lme_mspa','lme_msda','lme_mmfa','lme_mmpa','lme_mmda',...
-    'lme_mlpa','lme_mlda','lme_mba','lme_mFa','lme_mPa','lme_mDa',...
-    'lme_mSa','lme_mMa','lme_mLa','lme_mAa',...
-    'lme_ssfa','lme_sspa','lme_ssda','lme_smfa','lme_smpa','lme_smda',...
-    'lme_slpa','lme_slda','lme_sba','lme_sFa','lme_sPa','lme_sDa',...
-    'lme_sSa','lme_sMa','lme_sLa','lme_sAa');
-save([dpath 'LME_fosi_fished_',mod,'anomalies_annual.mat'],...
-    'lme_msfa','lme_mspa','lme_msda','lme_mmfa','lme_mmpa','lme_mmda',...
-    'lme_mlpa','lme_mlda','lme_mba','lme_mFa','lme_mPa','lme_mDa',...
-    'lme_mSa','lme_mMa','lme_mLa','lme_mAa',...
-    'lme_ssfa','lme_sspa','lme_ssda','lme_smfa','lme_smpa','lme_smda',...
-    'lme_slpa','lme_slda','lme_sba','lme_sFa','lme_sPa','lme_sDa',...
-    'lme_sSa','lme_sMa','lme_sLa','lme_sAa');
-
-%% Loop over all LMEs and all Climate - Use anomalies of fish mean biomass
 close all
 colororder({'k','b'})
 
@@ -219,14 +62,14 @@ for i=1:length(lid)
         ctex = canom{j};
 
         %% Cross corr - FIX TO BE SAME DATES
-        [cS,lagsS] = xcorr(lme_mSa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
-        [cM,lagsM] = xcorr(lme_mMa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
-        [cL,lagsL] = xcorr(lme_mLa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
-        [cF,lagsF] = xcorr(lme_mFa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
-        [cP,lagsP] = xcorr(lme_mPa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
-        [cD,lagsD] = xcorr(lme_mDa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
-        [cA,lagsA] = xcorr(lme_mAa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
-        [cB,lagsB] = xcorr(lme_mba(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
+        [cS,lagsS] = xcorr(as(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
+        [cM,lagsM] = xcorr(am(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
+        [cL,lagsL] = xcorr(al(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
+        [cF,lagsF] = xcorr(af(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
+        [cP,lagsP] = xcorr(ap(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
+        [cD,lagsD] = xcorr(ad(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
+        [cA,lagsA] = xcorr(aa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
+        [cB,lagsB] = xcorr(ab(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15,'normalized');
 
         %%
         figure(1)
@@ -237,7 +80,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         ylabel(ctex)
         yyaxis right
-        plot(fyr,lme_mSa(lme,:));
+        plot(fyr,as(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Small')
 
@@ -246,7 +89,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mMa(lme,:));
+        plot(fyr,am(lme,:));
         xlim([fyr(1) fyr(end)])
         %title([ctex,' ', ltex ' Medium'])
         str = {[ctex,' ', ltex], ' Medium'};
@@ -257,7 +100,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mLa(lme,:));
+        plot(fyr,al(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Large')
 
@@ -267,7 +110,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         ylabel(ctex)
         yyaxis right
-        plot(fyr,lme_mFa(lme,:));
+        plot(fyr,af(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Forage')
 
@@ -276,7 +119,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mPa(lme,:));
+        plot(fyr,ap(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Lg Pelagic')
 
@@ -285,7 +128,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mDa(lme,:));
+        plot(fyr,ad(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Demersal')
         ylabel('Mean biomass (log_1_0 MT)')
@@ -296,7 +139,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         ylabel(ctex)
         yyaxis right
-        plot(fyr,lme_mAa(lme,:));
+        plot(fyr,aa(lme,:));
         xlim([fyr(1) fyr(end)])
         xlabel('Time (y)')
         title('All Fish')
@@ -306,7 +149,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mba(lme,:));
+        plot(fyr,ab(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Benthos')
         stamp('')
@@ -380,28 +223,28 @@ for i=1:length(lid)
         for k=1:6
             t = yr(k);
             %% Corr at diff lags
-            [rs,ps] = corrcoef(lme_mSa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rs,ps] = corrcoef(as(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rS(i,j,k) = rs(1,2); pS(i,j,k) = ps(1,2);
 
-            [rm,pm] = corrcoef(lme_mMa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rm,pm] = corrcoef(am(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rM(i,j,k) = rm(1,2); pM(i,j,k) = pm(1,2);
 
-            [rl,pl] = corrcoef(lme_mLa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rl,pl] = corrcoef(al(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rL(i,j,k) = rl(1,2); pL(i,j,k) = pl(1,2);
 
-            [rf,pf] = corrcoef(lme_mFa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rf,pf] = corrcoef(af(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rF(i,j,k) = rf(1,2); pF(i,j,k) = pf(1,2);
 
-            [rp,pp] = corrcoef(lme_mPa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rp,pp] = corrcoef(ap(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rP(i,j,k) = rp(1,2); pP(i,j,k) = pp(1,2);
 
-            [rd,pd] = corrcoef(lme_mDa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rd,pd] = corrcoef(ad(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rD(i,j,k) = rd(1,2); pD(i,j,k) = pd(1,2);
 
-            [ra,pa] = corrcoef(lme_mAa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [ra,pa] = corrcoef(aa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rA(i,j,k) = ra(1,2); pA(i,j,k) = pa(1,2);
 
-            [rb,pb] = corrcoef(lme_mba(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rb,pb] = corrcoef(ab(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rB(i,j,k) = rb(1,2); pB(i,j,k) = pb(1,2);
 
             if (ps(1,2)<=0.05)
@@ -474,11 +317,11 @@ for i=1:length(lid)
 end
 
 %%
-writecell(sigS,[dpath 'LME_fosi_fished_',mod,'sigS.csv']);
-writecell(sigM,[dpath 'LME_fosi_fished_',mod,'sigM.csv']);
-writecell(sigL,[dpath 'LME_fosi_fished_',mod,'sigL.csv']);
-writecell(sigF,[dpath 'LME_fosi_fished_',mod,'sigF.csv']);
-writecell(sigP,[dpath 'LME_fosi_fished_',mod,'sigP.csv']);
-writecell(sigD,[dpath 'LME_fosi_fished_',mod,'sigD.csv']);
-writecell(sigA,[dpath 'LME_fosi_fished_',mod,'sigA.csv']);
-writecell(sigB,[dpath 'LME_fosi_fished_',mod,'sigB.csv']);
+writecell(sigS,[fpath 'LME_fosi_fished_',mod,'sigS_climate.csv']);
+writecell(sigM,[fpath 'LME_fosi_fished_',mod,'sigM_climate.csv']);
+writecell(sigL,[fpath 'LME_fosi_fished_',mod,'sigL_climate.csv']);
+writecell(sigF,[fpath 'LME_fosi_fished_',mod,'sigF_climate.csv']);
+writecell(sigP,[fpath 'LME_fosi_fished_',mod,'sigP_climate.csv']);
+writecell(sigD,[fpath 'LME_fosi_fished_',mod,'sigD_climate.csv']);
+writecell(sigA,[fpath 'LME_fosi_fished_',mod,'sigA_climate.csv']);
+writecell(sigB,[fpath 'LME_fosi_fished_',mod,'sigB_climate.csv']);

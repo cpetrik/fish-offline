@@ -9,8 +9,8 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 mod = 'v15_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-%fpath=['/Volumes/petrik-lab/NC/CESM_MAPP/' cfile '/'];
+%fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
@@ -18,10 +18,11 @@ end
 load([fpath 'Annual_Means_FOSI_' mod cfile '.mat']);
 
 % Map data
-cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
-%cpath='/Volumes/petrik-lab/GCM_Data/CESM/FOSI/';
+%cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+cpath='/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
+load([cpath 'LME-mask-POP_gx1v6.mat']);
 
 [ni,nj]=size(TLONG);
 [nid,nyr]=size(sf_abio);
@@ -37,9 +38,6 @@ xB = b_abio;
 xall = xF + xP + xD;
 
 %% mean & std by lme
-%cpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
-load([cpath 'LME-mask-POP_gx1v6.mat']);
-
 tlme = double(lme_mask);
 tlme(tlme<0) = nan;
 olme = tlme(GRD.ID);
@@ -456,8 +454,8 @@ vp = var(ap,0,2,'omitnan');
 vd = var(ad,0,2,'omitnan');
 
 %% save
-fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-%fpath=['/Volumes/petrik-lab/NC/CESM_MAPP/' cfile '/'];
+%fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
 save([fpath 'FEISTY_FOSI_',mod,'lme_interann_var.mat'],...
     'lme_sf_std','lme_sp_std','lme_sd_std',...
     'lme_mf_std','lme_mp_std','lme_md_std',...

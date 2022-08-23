@@ -38,116 +38,16 @@ lid = [54,1:2,10,3,5:7];
 lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE'};
 fyr = 1948:2015;
 
-close all
-colororder({'k','b'})
+colororder({'k','b'}); close all
 
-for i=1:length(lid)
-    for j=1:length(canom)
-        lme = lid(i);
-        ltex = lname{i};
-        ctex = canom{j};
-        
-        %% Cross corr - FIX TO BE SAME DATES
-        [cP,lagsP] = xcorr(atp(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cB,lagsB] = xcorr(atb(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cD,lagsD] = xcorr(adet(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cM,lagsM] = xcorr(azoo(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cL,lagsL] = xcorr(azlos(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        
-        %%
-        figure(1)
-        clf
-        subplot(3,3,1)
-        yyaxis left
-        plot(yanom,manom(j,:));
-        xlim([fyr(1) fyr(end)])
-        ylabel(ctex)
-        yyaxis right
-        plot(fyr,atp(lme,:));
-        xlim([fyr(1) fyr(end)])
-        title('Tpelagic')
-        
-        subplot(3,3,2)
-        yyaxis left
-        plot(yanom,manom(j,:));
-        xlim([fyr(1) fyr(end)])
-        yyaxis right
-        plot(fyr,azlos(lme,:));
-        xlim([fyr(1) fyr(end)])
-        str = {[ctex,' ', ltex], ' LzooC'};
-        title(str)
-        
-        subplot(3,3,3)
-        yyaxis left
-        plot(yanom,manom(j,:));
-        xlim([fyr(1) fyr(end)])
-        yyaxis right
-        plot(fyr,azoo(lme,:));
-        xlim([fyr(1) fyr(end)])
-        title('Lzoo loss')
-        
-        subplot(3,3,4)
-        yyaxis left
-        plot(yanom,manom(j,:));
-        xlim([fyr(1) fyr(end)])
-        ylabel(ctex)
-        yyaxis right
-        plot(fyr,atb(lme,:));
-        xlim([fyr(1) fyr(end)])
-        title('Tbottom')
-        
-        subplot(3,3,5)
-        yyaxis left
-        plot(yanom,manom(j,:));
-        xlim([fyr(1) fyr(end)])
-        yyaxis right
-        plot(fyr,adet(lme,:));
-        xlim([fyr(1) fyr(end)])
-        title('Detritus')
-        stamp('')
-        print('-dpng',[ppath 'FOSI_inputs_',ctex,'_',ltex,'_ts_corr.png'])
-        
-        %%
-        figure(2)
-        clf
-        subplot(3,3,1)
-        stem(lagsP,cP,'k')
-        xlim([0 9])
-        title('Tpelagic')
-        
-        subplot(3,3,2)
-        stem(lagsM,cM,'k')
-        xlim([0 9])
-        str = {[ctex,' ', ltex], ' LzooC'};
-        title(str)
-        
-        subplot(3,3,3)
-        stem(lagsL,cL,'k')
-        xlim([0 9])
-        title('Lzoo loss')
-        
-        subplot(3,3,4)
-        stem(lagsB,cB,'k')
-        xlim([0 9])
-        title('Tbottom')
-        
-        subplot(3,3,5)
-        stem(lagsD,cD,'k')
-        xlim([0 9])
-        title('Detritus')
-        stamp('')
-        print('-dpng',[ppath 'FOSI_inputs_',ctex,'_',ltex,'_ts_crosscorr.png'])
-        
-    end
-end
-
-%% Try looking at corrs with 0-5 yr lag
+% Try looking at LR with 0-5 yr lag
 yr = 0:5;
 np=0;
 nb=0;
 nd=0;
 nm=0;
 nl=0;
+
 for i=1:length(lid)
     for j=1:length(canom)
         lme = lid(i);
@@ -156,7 +56,10 @@ for i=1:length(lid)
         
         for k=1:6
             t = yr(k);
-            %% Corr at diff lags
+            %% linear regression at diff lags
+
+mdlp = fitlm(manom(j,yst(j):yen(j)-t) , atp(lme,yst(j)+t:yen(j)));
+
             [rp,pp] = corrcoef(atp(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rP(i,j,k) = rp(1,2); pP(i,j,k) = pp(1,2);
             
@@ -218,11 +121,11 @@ for i=1:length(lid)
 end
 
 %%
-writecell(sigM,[cpath 'LME_fosi_inputs_sigLzooC.csv']);
-writecell(sigL,[cpath 'LME_fosi_inputs_sigZooLoss.csv']);
-writecell(sigP,[cpath 'LME_fosi_inputs_sigTP.csv']);
-writecell(sigD,[cpath 'LME_fosi_inputs_sigDet.csv']);
-writecell(sigB,[cpath 'LME_fosi_inputs_sigTB.csv']);
+% writecell(sigM,[cpath 'LME_fosi_inputs_sigLzooC.csv']);
+% writecell(sigL,[cpath 'LME_fosi_inputs_sigZooLoss.csv']);
+% writecell(sigP,[cpath 'LME_fosi_inputs_sigTP.csv']);
+% writecell(sigD,[cpath 'LME_fosi_inputs_sigDet.csv']);
+% writecell(sigB,[cpath 'LME_fosi_inputs_sigTB.csv']);
 
 
 

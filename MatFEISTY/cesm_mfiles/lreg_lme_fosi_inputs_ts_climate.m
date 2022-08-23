@@ -4,14 +4,13 @@
 clear all
 close all
 
-ppath = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/corrs/';
+ppath = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 
 apath = '/Users/cpetrik/Dropbox/NCAR/MAPP-METF/NCAR3/DPLE_offline/results_dple/climate_indices/';
 load([apath 'Climate_anomalies_annual_means.mat']);
 
 %% Map data
-%cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
-cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
+cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
@@ -30,8 +29,8 @@ load coastlines;
 
 %% FOSI input forcing
 % lme means, trend removed, anomaly calc
-load([cpath 'CESM_FOSI_v15_interann_mean_forcings_anom.mat']);
-load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat']);
+fpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+load([fpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat'])
 
 %% Loop over all LMEs and all Climate
 lid = [54,1:2,10,3,5:7];
@@ -49,10 +48,10 @@ for i=1:length(lid)
         
         %% Cross corr - FIX TO BE SAME DATES
         [cP,lagsP] = xcorr(atp(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cB,lagsB] = xcorr(atb(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cD,lagsD] = xcorr(adet(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cM,lagsM] = xcorr(azoo(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
-        [cL,lagsL] = xcorr(azlos(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
+        [cB,lagsB] = xcorr(lme_tba(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
+        [cD,lagsD] = xcorr(lme_deta(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
+        [cM,lagsM] = xcorr(lme_mza(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
+        [cL,lagsL] = xcorr(lme_losa(lme,yst(j):yen(j)),manom(j,yst(j):yen(j)),15);
         
         %%
         figure(1)
@@ -63,7 +62,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         ylabel(ctex)
         yyaxis right
-        plot(fyr,atp(lme,:));
+        plot(fyr,lme_tpa(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Tpelagic')
         
@@ -72,7 +71,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,azlos(lme,:));
+        plot(fyr,lme_losa(lme,:));
         xlim([fyr(1) fyr(end)])
         str = {[ctex,' ', ltex], ' LzooC'};
         title(str)
@@ -82,7 +81,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,azoo(lme,:));
+        plot(fyr,lme_mza(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Lzoo loss')
         
@@ -92,7 +91,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         ylabel(ctex)
         yyaxis right
-        plot(fyr,atb(lme,:));
+        plot(fyr,lme_tba(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Tbottom')
         
@@ -101,7 +100,7 @@ for i=1:length(lid)
         plot(yanom,manom(j,:));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,adet(lme,:));
+        plot(fyr,lme_deta(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Detritus')
         stamp('')
@@ -157,19 +156,19 @@ for i=1:length(lid)
         for k=1:6
             t = yr(k);
             %% Corr at diff lags
-            [rp,pp] = corrcoef(atp(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rp,pp] = corrcoef(lme_tpa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rP(i,j,k) = rp(1,2); pP(i,j,k) = pp(1,2);
             
-            [rb,pb] = corrcoef(atb(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rb,pb] = corrcoef(lme_tba(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rB(i,j,k) = rb(1,2); pB(i,j,k) = pb(1,2);
             
-            [rd,pd] = corrcoef(adet(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rd,pd] = corrcoef(lme_deta(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rD(i,j,k) = rd(1,2); pD(i,j,k) = pd(1,2);
             
-            [rm,pm] = corrcoef(azoo(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rm,pm] = corrcoef(lme_mza(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rM(i,j,k) = rm(1,2); pM(i,j,k) = pm(1,2);
             
-            [rl,pl] = corrcoef(azlos(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
+            [rl,pl] = corrcoef(lme_losa(lme,yst(j)+t:yen(j)),manom(j,yst(j):yen(j)-t));
             rL(i,j,k) = rl(1,2); pL(i,j,k) = pl(1,2);
             
             if (pp(1,2)<=0.05)

@@ -5,7 +5,8 @@ clear all
 close all
 
 %% Map data
-cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+%cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
@@ -24,21 +25,19 @@ load coastlines;
 
 %% FOSI input forcing
 %load([cpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'])
-spath='/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/FOSI/';
-load([spath 'LME_fosi_input_anomalies_annual.mat']);
 
-%([fpath 'CESM_FOSI_v15_interann_mean_forcings_anom.mat']);
-%([fpath 'CESM_FOSI_v15_interann_var_forcings.mat'])
-%([fpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat'])
-%([fpath 'CESM_FOSI_v15_lme_interann_var_forcings.mat'])
+% lme means, trend removed, anomaly calc
+load([cpath 'CESM_FOSI_v15_interann_mean_forcings_anom.mat']);
+load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat']);
+
 
 % put inputs in matrix RECALC WITH TREND REMOVED
 manom = nan*ones(5,66,68);
-manom(1,:,:) = lme_tpa;
-manom(2,:,:) = lme_tba;
-manom(3,:,:) = lme_deta;
-manom(4,:,:) = lme_mza;
-manom(5,:,:) = lme_losa;
+manom(1,:,:) = atp;
+manom(2,:,:) = atb;
+manom(3,:,:) = adet;
+manom(4,:,:) = azoo;
+manom(5,:,:) = azlos;
 
 yanom = 1948:2015;
 
@@ -47,9 +46,11 @@ canom = {'Tp','Tb','Det','LZbiom','LZloss'};
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+%fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
+
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-ppath = [pp cfile '/'];
+ppath = [pp cfile '/corrs/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
@@ -57,9 +58,8 @@ end
 sims = {'v15_All_fish03_';'v15_climatol_';'v15_varFood_';'v15_varTemp_'};
 mod = sims{1};
 
-%load([dpath 'LME_fosi_fished_',mod,cfile '.mat']);
-fpath=['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Data/' cfile '/'];
-load([fpath 'LME_fosi_fished_',mod,'anomalies_annual.mat'])
+%load([fpath 'LME_fosi_fished_',mod,cfile '.mat']);
+load([fpath 'FEISTY_FOSI_',mod,'lme_ann_mean_anoms.mat'])
 
 
 %% Loop over all LMEs and all inputs
@@ -76,14 +76,14 @@ for i=1:length(lid)
         ctex = canom{j};
 
         %% Cross corr
-        [cS,lagsS] = xcorr(lme_mSa(lme,:),squeeze(manom(j,lme,:)),15);
-        [cM,lagsM] = xcorr(lme_mMa(lme,:),squeeze(manom(j,lme,:)),15);
-        [cL,lagsL] = xcorr(lme_mLa(lme,:),squeeze(manom(j,lme,:)),15);
-        [cF,lagsF] = xcorr(lme_mFa(lme,:),squeeze(manom(j,lme,:)),15);
-        [cP,lagsP] = xcorr(lme_mPa(lme,:),squeeze(manom(j,lme,:)),15);
-        [cD,lagsD] = xcorr(lme_mDa(lme,:),squeeze(manom(j,lme,:)),15);
-        [cA,lagsA] = xcorr(lme_mAa(lme,:),squeeze(manom(j,lme,:)),15);
-        [cB,lagsB] = xcorr(lme_mba(lme,:),squeeze(manom(j,lme,:)),15);
+        [cS,lagsS] = xcorr(as(lme,:),squeeze(manom(j,lme,:)),15);
+        [cM,lagsM] = xcorr(am(lme,:),squeeze(manom(j,lme,:)),15);
+        [cL,lagsL] = xcorr(al(lme,:),squeeze(manom(j,lme,:)),15);
+        [cF,lagsF] = xcorr(af(lme,:),squeeze(manom(j,lme,:)),15);
+        [cP,lagsP] = xcorr(ap(lme,:),squeeze(manom(j,lme,:)),15);
+        [cD,lagsD] = xcorr(ad(lme,:),squeeze(manom(j,lme,:)),15);
+        [cA,lagsA] = xcorr(aa(lme,:),squeeze(manom(j,lme,:)),15);
+        [cB,lagsB] = xcorr(ab(lme,:),squeeze(manom(j,lme,:)),15);
 
         %%
         figure(1)
@@ -93,7 +93,7 @@ for i=1:length(lid)
         plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mSa(lme,:));
+        plot(fyr,as(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Small')
 
@@ -102,7 +102,7 @@ for i=1:length(lid)
         plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mMa(lme,:));
+        plot(fyr,am(lme,:));
         xlim([fyr(1) fyr(end)])
         str = {[ctex,' ', ltex], ' Medium'};
         title(str)
@@ -112,7 +112,7 @@ for i=1:length(lid)
         plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mLa(lme,:));
+        plot(fyr,al(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Large')
 
@@ -122,7 +122,7 @@ for i=1:length(lid)
         xlim([fyr(1) fyr(end)])
         ylabel(ctex)
         yyaxis right
-        plot(fyr,lme_mFa(lme,:));
+        plot(fyr,af(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Forage')
 
@@ -131,7 +131,7 @@ for i=1:length(lid)
         plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mPa(lme,:));
+        plot(fyr,ap(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Lg Pelagic')
 
@@ -140,7 +140,7 @@ for i=1:length(lid)
         plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mDa(lme,:));
+        plot(fyr,ad(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Demersal')
         ylabel('Mean biomass (log_1_0 MT)')
@@ -150,7 +150,7 @@ for i=1:length(lid)
         plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mAa(lme,:));
+        plot(fyr,aa(lme,:));
         xlim([fyr(1) fyr(end)])
         xlabel('Time (y)')
         title('All Fish')
@@ -160,7 +160,7 @@ for i=1:length(lid)
         plot(yanom,squeeze(manom(j,lme,:)));
         xlim([fyr(1) fyr(end)])
         yyaxis right
-        plot(fyr,lme_mba(lme,:));
+        plot(fyr,ab(lme,:));
         xlim([fyr(1) fyr(end)])
         title('Benthos')
         stamp('')
@@ -236,28 +236,28 @@ for i=1:length(lid)
         for k=1:6
             t = yr(k);
             %% Corr at diff lags
-            [rs,ps] = corrcoef(lme_mSa(lme,(1+t):end),manom(j,lme,1:(end-t)));
+            [rs,ps] = corrcoef(as(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rS(i,j,k) = rs(1,2); pS(i,j,k) = ps(1,2);
 
-            [rm,pm] = corrcoef(lme_mMa(lme,(1+t):end),manom(j,lme,1:(end-t)));
+            [rm,pm] = corrcoef(am(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rM(i,j,k) = rm(1,2); pM(i,j,k) = pm(1,2);
 
-            [rl,pl] = corrcoef(lme_mLa(lme,(1+t):end),manom(j,lme,1:(end-t)));
+            [rl,pl] = corrcoef(al(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rL(i,j,k) = rl(1,2); pL(i,j,k) = pl(1,2);
 
-            [rf,pf] = corrcoef(lme_mFa(lme,(1+t):end),manom(j,lme,1:(end-t)));
+            [rf,pf] = corrcoef(af(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rF(i,j,k) = rf(1,2); pF(i,j,k) = pf(1,2);
 
-            [rp,pp] = corrcoef(lme_mPa(lme,(1+t):end),manom(j,lme,1:(end-t)));
+            [rp,pp] = corrcoef(ap(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rP(i,j,k) = rp(1,2); pP(i,j,k) = pp(1,2);
 
-            [rd,pd] = corrcoef(lme_mDa(lme,(1+t):end),manom(j,lme,1:(end-t)));
+            [rd,pd] = corrcoef(ad(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rD(i,j,k) = rd(1,2); pD(i,j,k) = pd(1,2);
 
-            [ra,pa] = corrcoef(lme_mAa(lme,(1+t):end),manom(j,lme,1:(end-t)));
+            [ra,pa] = corrcoef(aa(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rA(i,j,k) = ra(1,2); pA(i,j,k) = pa(1,2);
 
-            [rb,pb] = corrcoef(lme_mba(lme,(1+t):end),manom(j,lme,1:(end-t)));
+            [rb,pb] = corrcoef(ab(lme,(1+t):end),manom(j,lme,1:(end-t)));
             rB(i,j,k) = rb(1,2); pB(i,j,k) = pb(1,2);
 
             if (ps(1,2)<=0.05)
@@ -330,11 +330,11 @@ for i=1:length(lid)
 end
 
 %%
-writecell(sigS,[dpath 'LME_fosi_fished_',mod,'sigS_inputs.csv']);
-writecell(sigM,[dpath 'LME_fosi_fished_',mod,'sigM_inputs.csv']);
-writecell(sigL,[dpath 'LME_fosi_fished_',mod,'sigL_inputs.csv']);
-writecell(sigF,[dpath 'LME_fosi_fished_',mod,'sigF_inputs.csv']);
-writecell(sigP,[dpath 'LME_fosi_fished_',mod,'sigP_inputs.csv']);
-writecell(sigD,[dpath 'LME_fosi_fished_',mod,'sigD_inputs.csv']);
-writecell(sigA,[dpath 'LME_fosi_fished_',mod,'sigA_inputs.csv']);
-writecell(sigB,[dpath 'LME_fosi_fished_',mod,'sigB_inputs.csv']);
+writecell(sigS,[fpath 'LME_fosi_fished_',mod,'sigS_inputs.csv']);
+writecell(sigM,[fpath 'LME_fosi_fished_',mod,'sigM_inputs.csv']);
+writecell(sigL,[fpath 'LME_fosi_fished_',mod,'sigL_inputs.csv']);
+writecell(sigF,[fpath 'LME_fosi_fished_',mod,'sigF_inputs.csv']);
+writecell(sigP,[fpath 'LME_fosi_fished_',mod,'sigP_inputs.csv']);
+writecell(sigD,[fpath 'LME_fosi_fished_',mod,'sigD_inputs.csv']);
+writecell(sigA,[fpath 'LME_fosi_fished_',mod,'sigA_inputs.csv']);
+writecell(sigB,[fpath 'LME_fosi_fished_',mod,'sigB_inputs.csv']);

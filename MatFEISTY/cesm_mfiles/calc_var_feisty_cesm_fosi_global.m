@@ -9,8 +9,8 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 mod = 'v15_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-%fpath=['/Volumes/petrik-lab/NC/CESM_MAPP/' cfile '/'];
+%fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
@@ -18,8 +18,8 @@ end
 load([fpath 'Annual_Means_FOSI_' mod cfile '.mat']);
 
 % Map data
-cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
-%cpath='/Volumes/petrik-lab/GCM_Data/CESM/FOSI/';
+%cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+cpath='/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
@@ -647,8 +647,8 @@ text(0,1.75,'All','HorizontalAlignment','center')
 print('-dpng',[ppath 'Map_FEISTY_FOSI_',mod,'interann_coeffvar_types.png'])
 
 %% save
-fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-%fpath=['/Volumes/petrik-lab/NC/CESM_MAPP/' cfile '/'];
+%fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
 save([fpath 'FEISTY_FOSI_',mod,'interann_var.mat'],...
     'cvsf','cvsp','cvsd','cvmf','cvmp','cvmd','cvlp','cvld','cvb','cva',...
     'cvs','cvm','cvl','cvf','cvp','cvd',...

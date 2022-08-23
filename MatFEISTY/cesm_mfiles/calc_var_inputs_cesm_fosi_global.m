@@ -5,8 +5,8 @@ clear all
 close all
 
 %% Paths
-fpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
-%fpath='/Volumes/petrik-lab/GCM_Data/CESM/FOSI/';
+%fpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+fpath='/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 
 load([fpath 'gridspec_POP_gx1v6_noSeas.mat'],'mask');
@@ -14,7 +14,7 @@ load([fpath 'Data_grid_POP_gx1v6_noSeas.mat'],'GRD');
 load([fpath 'LME-mask-POP_gx1v6.mat']);
 
 %% FEISTY Inputs
-fpath='/Volumes/petrik-lab/GCM_Data/CESM/FOSI/';
+%fpath='/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.FIESTY-forcing.mat'],...
     'FillValue','missing_value','TEMP_150m','TEMP_150m_units','TEMP_bottom',...
     'TEMP_bottom_units','POC_FLUX_IN_bottom','POC_FLUX_IN_bottom_units',...
