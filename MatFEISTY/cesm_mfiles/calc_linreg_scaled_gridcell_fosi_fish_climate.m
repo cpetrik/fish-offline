@@ -126,69 +126,71 @@ for j=1:11 %Diff climate indices
 
         for i=1:nid
 
+            sclim = ((canom(i,yst(j):yen(j)-t,j))') ./ (2*std((canom(i,yst(j):yen(j)-t,j))));
+            
             %Fish
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (as(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (as(i,yst(j)+t:yen(j)))');
             rS(i,j,k) = mdl0.Coefficients.Estimate(2);
             pS(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (am(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (am(i,yst(j)+t:yen(j)))');
             rM(i,j,k) = mdl0.Coefficients.Estimate(2);
             pM(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (al(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (al(i,yst(j)+t:yen(j)))');
             rL(i,j,k) = mdl0.Coefficients.Estimate(2);
             pL(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (af(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (af(i,yst(j)+t:yen(j)))');
             rF(i,j,k) = mdl0.Coefficients.Estimate(2);
             pF(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (ap(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (ap(i,yst(j)+t:yen(j)))');
             rP(i,j,k) = mdl0.Coefficients.Estimate(2);
             pP(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (ad(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (ad(i,yst(j)+t:yen(j)))');
             rD(i,j,k) = mdl0.Coefficients.Estimate(2);
             pD(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (aa(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (aa(i,yst(j)+t:yen(j)))');
             rV(i,j,k) = mdl0.Coefficients.Estimate(2);
             pV(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (ab(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (ab(i,yst(j)+t:yen(j)))');
             rB(i,j,k) = mdl0.Coefficients.Estimate(2);
             pB(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
             % Inputs / Forcing
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (atp(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (atp(i,yst(j)+t:yen(j)))');
             rTp(i,j,k) = mdl0.Coefficients.Estimate(2);
             pTp(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (atb(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (atb(i,yst(j)+t:yen(j)))');
             rTb(i,j,k) = mdl0.Coefficients.Estimate(2);
             pTb(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (adet(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (adet(i,yst(j)+t:yen(j)))');
             rDet(i,j,k) = mdl0.Coefficients.Estimate(2);
             pDet(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (azoo(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (azoo(i,yst(j)+t:yen(j)))');
             rZb(i,j,k) = mdl0.Coefficients.Estimate(2);
             pZb(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            mdl0 = fitlm((canom(i,yst(j):yen(j)-t,j))' , (azlos(i,yst(j)+t:yen(j)))');
+            mdl0 = fitlm(sclim , (azlos(i,yst(j)+t:yen(j)))');
             rZl(i,j,k) = mdl0.Coefficients.Estimate(2);
             pZl(i,j,k) = mdl0.Coefficients.pValue(2);
             clear mdl0
@@ -198,7 +200,7 @@ for j=1:11 %Diff climate indices
 end
 toc %73.3647 hrs
 
-save([fpath 'grid_linreg_climate_inputs_fish_FOSI_fished_',mod,'.mat'],...
+save([fpath 'grid_linreg_scaled_climate_inputs_fish_FOSI_fished_',mod,'.mat'],...
     'rS','rM','rL','rF','rP','rD','rV','rB','rTp','rTb','rDet','rZb','rZl',...
     'pS','pM','pL','pF','pP','pD','pV','pB','pTp','pTb','pDet','pZb','pZl',...
     'tanom','yr');
