@@ -247,16 +247,16 @@ for n=1:length(st)
     lp_aprod(:,n)=nanmean(LP.prod(:,st(n):en(n)),2);
     ld_aprod(:,n)=nanmean(LD.prod(:,st(n):en(n)),2);
 
-    % Save last mo of each year for initializing forecast runs
-    Sml_f.bio = nanmean(SF.bio(:,en(n)),2);
-    Sml_p.bio = nanmean(SP.bio(:,en(n)),2);
-    Sml_d.bio = nanmean(SD.bio(:,en(n)),2);
-    Med_f.bio = nanmean(MF.bio(:,en(n)),2);
-    Med_p.bio = nanmean(MP.bio(:,en(n)),2);
-    Med_d.bio = nanmean(MD.bio(:,en(n)),2);
-    Lrg_p.bio = nanmean(LP.bio(:,en(n)),2);
-    Lrg_d.bio = nanmean(LD.bio(:,en(n)),2);
-    BENT.bio  = nanmean(Bent.bio(:,en(n)),2);
+    % Save Oct of each year for initializing forecast runs
+    Sml_f.bio = nanmean(SF.bio(:,en(n)-2),2);
+    Sml_p.bio = nanmean(SP.bio(:,en(n)-2),2);
+    Sml_d.bio = nanmean(SD.bio(:,en(n)-2),2);
+    Med_f.bio = nanmean(MF.bio(:,en(n)-2),2);
+    Med_p.bio = nanmean(MP.bio(:,en(n)-2),2);
+    Med_d.bio = nanmean(MD.bio(:,en(n)-2),2);
+    Lrg_p.bio = nanmean(LP.bio(:,en(n)-2),2);
+    Lrg_d.bio = nanmean(LD.bio(:,en(n)-2),2);
+    BENT.bio  = nanmean(Bent.bio(:,en(n)-2),2);
 
     save([fpath 'Last_mo_FOSI_' num2str(1947+n) '_' harv cfile '.mat'],...
         'Sml_f','Sml_p','Sml_d','Med_f','Med_p','Med_d','Lrg_p','Lrg_d',...

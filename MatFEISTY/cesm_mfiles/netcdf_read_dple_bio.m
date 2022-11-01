@@ -1,20 +1,21 @@
 % FEISTY output at all locations
 
-clear all
+clear 
 close all
 
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
 
 %pick year
-StartYr = 2015;
+StartYr = 1954;
 %loop over members
 submem = 1:40;
-for mem=1:length(submem) %will loop over
+
+for mem=1%:length(submem) %will loop over
     Member = submem(mem);
-    harv = ['v14_Y' num2str(StartYr) '_M' num2str(Member) '_All_fish03_' ];
+    harv = ['v15_Y' num2str(StartYr) '_M' num2str(Member) '_All_fish03_' ];
     
     %% SP
     ncid = netcdf.open([fpath 'DPLE_' harv 'sml_p.nc'],'NC_NOWRITE');
@@ -164,7 +165,7 @@ for mem=1:length(submem) %will loop over
     
     %% Catch
     % Totals only in lmes
-    cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+    cpath = '/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
     load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
     load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
     load([cpath 'LME-mask-POP_gx1v6.mat']);
@@ -370,7 +371,7 @@ for mem=1:length(submem) %will loop over
     ld_tsac = nansum(ld_tac);
     
     %%
-    fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+    fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
     save([fpath 'Time_Means_DPLE_' harv cfile '.mat'],'time',...
         'sf_tmean','sp_tmean','sd_tmean',...
         'mf_tmean','mp_tmean','md_tmean',...
