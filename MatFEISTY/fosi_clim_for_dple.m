@@ -73,12 +73,12 @@ whos clim_POC
 %pcolor(squeeze(clim_zooC(:,:,9))); shading flat; colorbar;
 %caxis([0 2e4])
 
-figure
-pcolor(squeeze(clim_zooC(:,:,17))); shading flat; colorbar;
-caxis([0 2e4])
-figure
-pcolor(squeeze(clim_zooC(:,:,23))); shading flat; colorbar;
-caxis([0 2e4])
+% figure
+% pcolor(squeeze(clim_zooC(:,:,17))); shading flat; colorbar;
+% caxis([0 2e4])
+% figure
+% pcolor(squeeze(clim_zooC(:,:,23))); shading flat; colorbar;
+% caxis([0 2e4])
 
 clear fosi_Tp fosi_Tb fosi_POC fosi_zooC fosi_loss
 

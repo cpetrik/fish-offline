@@ -45,7 +45,7 @@ if fosi_cesm
 %     CESM_4p4z_comb()
 end
 if dple_cesm
-    Interp_run_DPLE_cesm()
+    Interp_run_DPLE_cesm2()
 end
 
 toc

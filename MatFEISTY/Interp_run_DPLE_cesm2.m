@@ -75,7 +75,7 @@ MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %% START LOOP ===============================================================
 % Loop over initialization year
-for yr=15:length(Y) %Y(62)
+for yr=58:length(Y) %Y(62)
 
     % Loop over member
     for mem=1:length(M)
