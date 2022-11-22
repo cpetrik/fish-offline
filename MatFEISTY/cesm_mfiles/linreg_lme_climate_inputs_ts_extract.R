@@ -48,14 +48,20 @@ for (i in 2:6) {
     AKlm4 <- lm(out[1:(nlen-4)] ~ inp[5:nlen],adat)
     AKlm5 <- lm(out[1:(nlen-5)] ~ inp[6:nlen],adat)
     
-    Amodels <- list(
-      "lag0"    = AKlm0,
-      "lag1"    = AKlm1,
-      "lag2"    = AKlm2,
-      "lag3"    = AKlm3,
-      "lag4"    = AKlm4,
-      "lag5"    = AKlm5
-    )
+    Alag0   = summary(AKlm0)
+    Alag1   = summary(AKlm1)
+    Alag2   = summary(AKlm2)
+    Alag3   = summary(AKlm3)
+    Alag4   = summary(AKlm4)
+    Alag5   = summary(AKlm5)
+    
+    Acoef <- Alag0$coefficients[2,1]
+    Ase   <- Alag0$coefficients[2,2]
+    Apval <- Alag0$coefficients[2,4]
+    Ar2   <- Alag0$r.squared
+    
+    # Want a table for an LME and driver, rows are forcing and fish, cols are lag
+    
     driver <- names(AK)[i]
     modelsummary(Amodels, fmt = "%.3e", estimate = "stars", output = paste0(datap,"AK_regress_",fish,"_",driver,"_div2SD.txt"))
     modelsummary(Amodels, fmt = "%.3e", estimate = "stars", output = paste0(datam,"AK_regress_",fish,"_",driver,"_div2SD.txt"))

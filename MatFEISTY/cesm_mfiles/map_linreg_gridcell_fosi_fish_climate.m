@@ -1,7 +1,7 @@
 % Map linear regressions of FEISTY FOSI inputs & fish
 % w/climate indices
 
-clear all
+clear 
 close all
 
 %%
