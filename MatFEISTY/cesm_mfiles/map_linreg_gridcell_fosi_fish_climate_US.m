@@ -21,10 +21,10 @@ load([cpath 'LME-mask-POP_gx1v6.mat']);
 [ni,nj]=size(TLONG);
 ID = GRD.ID;
 
-plotminlat=-90; %Set these bounds for your data
-plotmaxlat=90;
-plotminlon=-280;
-plotmaxlon=80;
+plotminlat=10; %-90
+plotmaxlat=90; %90
+plotminlon=-175; %-280
+plotmaxlon=-40;   %80
 clatlim=[plotminlat plotmaxlat];
 clonlim=[plotminlon plotmaxlon];
 
@@ -52,7 +52,7 @@ load([fpath 'grid_linreg_climate_inputs_fish_FOSI_fished_',mod,'.mat'])
 %% All types together with same lag
 yr = 0:4; %lags
 
-for j=1%:11
+for j=1:11
     for k=1:length(yr) %Linear regression at diff lags
         t = yr(k);
         
@@ -153,9 +153,9 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,Fcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,Fsig,'markersize',3,'density',150)
-        text(0,1.675,'Forage fish','HorizontalAlignment','center')
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),Fsig(200:320,225:end),'markersize',3,'density',150)
+        text(0,1.5,'Forage fish','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         
         %2,1 - all verts
@@ -164,9 +164,9 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,Vcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,Vsig,'markersize',3,'density',150)
-        text(0,1.675,'All fish','HorizontalAlignment','center')
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),Vsig(200:320,225:end),'markersize',3,'density',150)
+        text(0,1.5,'All fish','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         
         %3,1 - small
@@ -175,9 +175,9 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,Scorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,Ssig,'markersize',3,'density',150)
-        text(0,1.675,'Small fish','HorizontalAlignment','center')
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),Ssig(200:320,225:end),'markersize',3,'density',150)
+        text(0,1.5,'Small fish','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         
         %1,2 - lg pel
@@ -186,10 +186,10 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,Pcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,Psig,'markersize',3,'density',150)
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),Psig(200:320,225:end),'markersize',3,'density',150)
         text(0,1.85,[tanom{j} ' lag ',num2str(t) ' yr'],'HorizontalAlignment','center','FontWeight','bold')
-        text(0,1.675,'Large pelagics','HorizontalAlignment','center')
+        text(0,1.5,'Large pelagics','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         
         %2,2 -
@@ -198,7 +198,7 @@ for j=1%:11
         %             'Grid','off','FLineWidth',1)
         %         surfm(lat_s,lon_s,pdiff_nc2)
         %         colormap(cmRB)
-        %         caxis([-0.7 0.7])
+        %         caxis([-0.5 0.5])
         %         text(0,1.675,'CNRM','HorizontalAlignment','center')
         %         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         %
@@ -208,9 +208,9 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,Mcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,Msig,'markersize',3,'density',150)
-        text(0,1.675,'Medium fish','HorizontalAlignment','center')
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),Msig(200:320,225:end),'markersize',3,'density',150)
+        text(0,1.5,'Medium fish','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         
         %1,3 - dems
@@ -219,9 +219,9 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,Dcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,Dsig,'markersize',3,'density',150)
-        text(0,1.675,'Demersals','HorizontalAlignment','center')
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),Dsig(200:320,225:end),'markersize',3,'density',150)
+        text(0,1.5,'Demersals','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         
         %2,3 - benthos
@@ -230,9 +230,9 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,Bcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,Bsig,'markersize',3,'density',150)
-        text(0,1.675,'Benthic inverts','HorizontalAlignment','center')
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),Bsig(200:320,225:end),'markersize',3,'density',150)
+        text(0,1.5,'Benthic inverts','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         
         %3,3 - large
@@ -241,12 +241,12 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,Lcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,Lsig,'markersize',3,'density',150)
-        text(0,1.675,'Large fish','HorizontalAlignment','center')
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),Lsig(200:320,225:end),'markersize',3,'density',150)
+        text(0,1.5,'Large fish','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         colorbar('Position',[0.325 0.035 0.3 0.02],'orientation','horizontal');
-        print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_','lag',num2str(t),'_fishtypes.png'])
+        print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_','lag',num2str(t),'_fishtypes_US.png'])
         
         
         %% INPUTS
@@ -258,9 +258,9 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,TPcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,TPsig,'markersize',3,'density',150)
-        text(0,1.675,'T pelagic','HorizontalAlignment','center')
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),TPsig(200:320,225:end),'markersize',3,'density',150)
+        text(0,1.5,'T pelagic','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         
         %2,1 - TB
@@ -269,9 +269,9 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,TBcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,TBsig,'markersize',3,'density',150)
-        text(0,1.675,'T bottom','HorizontalAlignment','center')
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),TBsig(200:320,225:end),'markersize',3,'density',150)
+        text(0,1.5,'T bottom','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         
         %1,2 - ZB
@@ -280,10 +280,10 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,ZBcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,ZBsig,'markersize',3,'density',150)
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),ZBsig(200:320,225:end),'markersize',3,'density',150)
         text(0,1.85,[tanom{j} ' lag ',num2str(t) ' yr'],'HorizontalAlignment','center','FontWeight','bold')
-        text(0,1.675,'Mesoz biom','HorizontalAlignment','center')
+        text(0,1.5,'Mesoz biom','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         
         %1,3 - ZL
@@ -292,9 +292,9 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,ZLcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,ZLsig,'markersize',3,'density',150)
-        text(0,1.675,'Mesoz loss','HorizontalAlignment','center')
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),ZLsig(200:320,225:end),'markersize',3,'density',150)
+        text(0,1.5,'Mesoz loss','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         
         %2,3 - det
@@ -303,12 +303,12 @@ for j=1%:11
             'Grid','off','FLineWidth',1)
         surfm(lat_s,lon_s,DETcorr2)
         colormap(cmRB)
-        caxis([-0.7 0.7])
-        stipplem(TLAT,TLONG,DETsig,'markersize',3,'density',150)
-        text(0,1.675,'Detritus','HorizontalAlignment','center')
+        caxis([-0.5 0.5])
+        stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),DETsig(200:320,225:end),'markersize',3,'density',150)
+        text(0,1.5,'Detritus','HorizontalAlignment','center')
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         colorbar('Position',[0.325 0.335 0.3 0.02],'orientation','horizontal');
-        print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_','lag',num2str(t),'_inputs.png'])
+        print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_','lag',num2str(t),'_inputs_US.png'])
         
         
     end
@@ -316,7 +316,7 @@ end
 
 
 %% focus on 3 types cols, rows of lags -------------------------------
-for j=1%:11
+for j=1:11
     close all
     
     %% S,M,L
@@ -390,9 +390,9 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.25,'Small fish','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.75,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.6,'Small fish','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -402,8 +402,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.75,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -413,8 +413,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.75,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -424,8 +424,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.75,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -435,8 +435,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.75,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     colorbar('Position',[0.25 0.05 0.5 0.02],'orientation','horizontal');
     
@@ -448,10 +448,10 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.75,tanom{j},'HorizontalAlignment','center','FontWeight','bold')
-    text(0,2.25,'Medium fish','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.95,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.8,tanom{j},'HorizontalAlignment','center','FontWeight','bold')
+    text(0,1.6,'Medium fish','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -461,8 +461,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.95,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -472,8 +472,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.95,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -483,8 +483,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.95,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -494,8 +494,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.95,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     % Large
@@ -506,9 +506,9 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.25,'Large fish','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.95,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.6,'Large fish','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -518,8 +518,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.95,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -529,8 +529,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.95,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -540,8 +540,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.95,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -551,10 +551,10 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.95,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-    print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_fish_sizes.png'])
+    print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_fish_sizes_US.png'])
         
     
     %% F, P, D
@@ -628,9 +628,9 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.25,'Forage','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.75,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.6,'Forage','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -640,8 +640,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.75,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -651,8 +651,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.75,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -662,8 +662,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.75,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -673,8 +673,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.75,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     colorbar('Position',[0.25 0.05 0.5 0.02],'orientation','horizontal');
     
@@ -686,10 +686,10 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.75,tanom{j},'HorizontalAlignment','center','FontWeight','bold')
-    text(0,2.25,'Large pelagics','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.95,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.8,tanom{j},'HorizontalAlignment','center','FontWeight','bold')
+    text(0,1.6,'Large pelagics','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -699,8 +699,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.95,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -710,8 +710,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.95,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -721,8 +721,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.95,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -732,8 +732,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.95,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     % Large
@@ -744,9 +744,9 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.25,'Demersals','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.95,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.6,'Demersals','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -756,8 +756,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.95,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -767,8 +767,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.95,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -778,8 +778,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.95,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -789,10 +789,10 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.95,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-    print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_fish_types.png'])
+    print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_fish_types_US.png'])
        
     
     %% TP, Zb, Zl
@@ -866,9 +866,9 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.25,'T pel','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.75,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.6,'T pel','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -878,8 +878,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.75,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -889,8 +889,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.75,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -900,8 +900,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.75,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -911,8 +911,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.75,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     colorbar('Position',[0.25 0.05 0.5 0.02],'orientation','horizontal');
     
@@ -924,10 +924,10 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.75,tanom{j},'HorizontalAlignment','center','FontWeight','bold')
-    text(0,2.25,'Mesoz biom','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.95,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.8,tanom{j},'HorizontalAlignment','center','FontWeight','bold')
+    text(0,1.6,'Mesoz biom','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -937,8 +937,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.95,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -948,8 +948,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.95,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -959,8 +959,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.95,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -970,8 +970,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.95,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     % Large
@@ -982,9 +982,9 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.25,'Mesoz loss','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.95,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.6,'Mesoz loss','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -994,8 +994,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.95,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -1005,8 +1005,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.95,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -1016,8 +1016,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.95,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -1027,10 +1027,10 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.95,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-    print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_pel.png'])
+    print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_pel_US.png'])
        
     
     %% TB, Det, Bent
@@ -1104,9 +1104,9 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.25,'T bottom','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.75,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.6,'T bottom','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -1116,8 +1116,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.75,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -1127,8 +1127,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.75,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -1138,8 +1138,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.75,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -1149,8 +1149,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Scorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(SsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.75,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(SsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     colorbar('Position',[0.25 0.05 0.5 0.02],'orientation','horizontal');
     
@@ -1162,10 +1162,10 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.75,tanom{j},'HorizontalAlignment','center','FontWeight','bold')
-    text(0,2.25,'Detritus','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.95,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.8,tanom{j},'HorizontalAlignment','center','FontWeight','bold')
+    text(0,1.6,'Detritus','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -1175,8 +1175,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.95,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -1186,8 +1186,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.95,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -1197,8 +1197,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.95,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -1208,8 +1208,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Mcorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(MsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.95,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(MsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     % Large
@@ -1220,9 +1220,9 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr0)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,1)),'markersize',3,'density',75)
-    text(0,2.25,'Benthos','HorizontalAlignment','center','FontWeight','bold')
-    text(-1.95,1.75,'0 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,1)),'markersize',3,'density',75)
+    text(0,1.6,'Benthos','HorizontalAlignment','center','FontWeight','bold')
+    text(-0.7,1.425,'0 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %2 -
@@ -1232,8 +1232,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr1)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,2)),'markersize',3,'density',75)
-    text(-1.95,1.75,'1 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,2)),'markersize',3,'density',75)
+    text(-0.7,1.425,'1 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %3 -
@@ -1243,8 +1243,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr2)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,3)),'markersize',3,'density',75)
-    text(-1.95,1.75,'2 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,3)),'markersize',3,'density',75)
+    text(-0.7,1.425,'2 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %4 -
@@ -1254,8 +1254,8 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr3)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,4)),'markersize',3,'density',75)
-    text(-1.95,1.75,'3 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,4)),'markersize',3,'density',75)
+    text(-0.7,1.425,'3 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     
     %5 -
@@ -1265,10 +1265,10 @@ for j=1%:11
     surfm(lat_s,lon_s,Lcorr4)
     colormap(cmRB)
     caxis([-0.5 0.5])
-    stipplem(TLAT,TLONG,squeeze(LsigK(:,:,5)),'markersize',3,'density',75)
-    text(-1.95,1.75,'4 yr lag','HorizontalAlignment','center')
+    stipplem(TLAT(200:320,225:end),TLONG(200:320,225:end),squeeze(LsigK(200:320,225:end,5)),'markersize',3,'density',75)
+    text(-0.7,1.425,'4 yr lag','HorizontalAlignment','center')
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-    print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_bent.png'])
+    print('-dpng',[ppath 'Map_climate_linereg_FOSI_',mod,'_',tanom{j},'_bent_US.png'])
        
     
 end

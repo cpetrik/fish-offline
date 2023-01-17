@@ -35,7 +35,7 @@ mPDO = nanmean(PDO,2);
 mSOI = nanmean(SOI,2);
 
 %% Isolate years of interest 1948-2015
- fyr = 1948:2015;
+fyr = 1948:2015;
 mAMO = mAMO(AMOyr>=1948 & AMOyr<=2015);
 mAO = mAO(AOyr>=1948 & AOyr<=2015);
 mMEI = mMEI(MEIyr>=1948 & MEIyr<=2015);

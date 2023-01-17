@@ -75,10 +75,10 @@ MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %% START LOOP ===============================================================
 % Loop over initialization year
-for yr=15:length(Y) %Y(62)
+for yr=24 %25:32 %1:length(Y) %Y(62) missing 1975-1985, 1991-2002
 
     % Loop over member
-    for mem=1:length(M)
+    for mem=24:length(M)
 
         im = M(mem);
         iy = yr;
