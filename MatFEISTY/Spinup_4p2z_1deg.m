@@ -3,7 +3,7 @@ function Spinup_4p2z_1deg()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Make core parameters/constants
-param = make_parameters_1meso();
+param = make_parameters_1meso_test();
 
 %! Grid
 load('/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
