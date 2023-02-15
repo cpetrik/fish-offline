@@ -1,212 +1,148 @@
-# Find patterns in forcing-fish correlations
+% Find patterns in forcing-fish correlations
 
-rm(list=ls())
+clear
+close all
 
+ppath = "/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/corrs/";
 
-source(file = "/Users/cpetrik/Dropbox/UCSC/CVC-LCM/CVC_data/outmigration_model/HighstatLibV6.r")
-setwd("/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/fish-offline/MatFEISTY/cesm_mfiles/")
-figp <- "/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/corrs/"
+% LMEs
+lid = [54,1:2,65,10,3,5:7]; %ADD 65 = Aleutian Islands
+lname = {'CHK','EBS','GAK','AI','HI','CCE','GMX','SE','NE'};
 
-### ------------------------------------------------------------
-# load data
-datam <- "/Volumes/MIP/NC/CESM_MAPP/Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100/"
-datap <- "/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100/regressions/"
-CH <- read.csv(paste0(datap,"CHK_fosi_inputs_fish_annual_means_anomalies.csv"),sep=",",header = T,stringsAsFactors = F)
-BS <- read.csv(paste0(datap,"EBS_fosi_inputs_fish_annual_means_anomalies.csv"),sep=",",header = T,stringsAsFactors = F)
-AK <- read.csv(paste0(datap,"GAK_fosi_inputs_fish_annual_means_anomalies.csv"),sep=",",header = T,stringsAsFactors = F)
-HI <- read.csv(paste0(datap,"HI_fosi_inputs_fish_annual_means_anomalies.csv"),sep=",",header = T,stringsAsFactors = F)
-CC <- read.csv(paste0(datap,"CCE_fosi_inputs_fish_annual_means_anomalies.csv"),sep=",",header = T,stringsAsFactors = F)
-MX <- read.csv(paste0(datap,"GMX_fosi_inputs_fish_annual_means_anomalies.csv"),sep=",",header = T,stringsAsFactors = F)
-SE <- read.csv(paste0(datap,"SE_fosi_inputs_fish_annual_means_anomalies.csv"),sep=",",header = T,stringsAsFactors = F)
-NE <- read.csv(paste0(datap,"NE_fosi_inputs_fish_annual_means_anomalies.csv"),sep=",",header = T,stringsAsFactors = F)
+%% FOSI input forcing
 
+%cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 
-### LM of forcing ---------------------------------------------------------
-cnam <- c('Lag','Type','coef', 'se', 'p','r2')
+% lme means, trend removed, anomaly calc
+load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat'],...
+    'adet','atb','atp','azlos','azoo');
 
-#Loop over forcing and climate indices
-#input forcing
-for (j in 2:6) {
-  #fish vars
-  driver <- names(AK)[j]
+load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
+ID = GRD.ID;
 
-  AKtab <- data.frame(matrix(ncol = 6, nrow = 48))
-  colnames(AKtab) <- cnam
-  BStab <- data.frame(matrix(ncol = 6, nrow = 48))
-  colnames(BStab) <- cnam
-  CCtab <- data.frame(matrix(ncol = 6, nrow = 48))
-  colnames(CCtab) <- cnam
-  CHtab <- data.frame(matrix(ncol = 6, nrow = 48))
-  colnames(CHtab) <- cnam
-  HItab <- data.frame(matrix(ncol = 6, nrow = 48))
-  colnames(HItab) <- cnam
-  MXtab <- data.frame(matrix(ncol = 6, nrow = 48))
-  colnames(MXtab) <- cnam
-  NEtab <- data.frame(matrix(ncol = 6, nrow = 48))
-  colnames(NEtab) <- cnam
-  SEtab <- data.frame(matrix(ncol = 6, nrow = 48))
-  colnames(SEtab) <- cnam
+% put into a matrix
+manom(:,:,1) = atp;
+manom(:,:,2) = atb;
+manom(:,:,3) = adet;
+manom(:,:,4) = azoo;
+manom(:,:,5) = azlos;
 
-  n <- 0
-  for (i in 7:14) {
-    fish <- names(AK)[i]
+tanom = {'TP','TB','Det','Zmeso','ZmLoss'};
 
-    ### AK
-    rdat <- as.data.frame(AK[,j])
-    names(rdat) <- "inp"
-    rdat$inp <- rdat$inp/(2*sd(rdat$inp, na.rm = T))
-    adat <- rdat
-    adat$out <- AK[,i]
-    adat <- na.omit(adat)
-    anlen <- dim(adat)[1]
+%% Fish data
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-    ### BS
-    rdat <- as.data.frame(BS[,j])
-    names(rdat) <- "inp"
-    rdat$inp <- rdat$inp/(2*sd(rdat$inp, na.rm = T))
-    bdat <- rdat
-    bdat$out <- BS[,i]
-    bdat <- na.omit(bdat)
-    bnlen <- dim(bdat)[1]
+%fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 
-    ### CCE
-    rdat <- as.data.frame(CC[,j])
-    names(rdat) <- "inp"
-    rdat$inp <- rdat$inp/(2*sd(rdat$inp, na.rm = T))
-    cdat <- rdat
-    cdat$out <- CC[,i]
-    cdat <- na.omit(cdat)
-    cnlen <- dim(cdat)[1]
+sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
+mod = sims{1};
 
-    ##CHK
-    rdat <- as.data.frame(CH[,j])
-    names(rdat) <- "inp"
-    rdat$inp <- rdat$inp/(2*sd(rdat$inp, na.rm = T))
-    kdat <- rdat
-    kdat$out <- CH[,i]
-    kdat <- na.omit(kdat)
-    knlen <- dim(kdat)[1]
+% Anoms with linear trend removed
+load([fpath 'FEISTY_FOSI_',mod,'_lme_ann_mean_anoms.mat'],...
+    'aa','ab','ad','af','ap','as','am','al')
 
-    ### HI
-    rdat <- as.data.frame(HI[,j])
-    names(rdat) <- "inp"
-    rdat$inp <- rdat$inp/(2*sd(rdat$inp, na.rm = T))
-    hdat <- rdat
-    hdat$out <- HI[,i]
-    hdat <- na.omit(hdat)
-    hnlen <- dim(hdat)[1]
+%% % LM of forcing ---------------------------------------------------------
+cnam = {'Type','Lag','coef','p'};
 
-    ### MX
-    rdat <- as.data.frame(MX[,j])
-    names(rdat) <- "inp"
-    rdat$inp <- rdat$inp/(2*sd(rdat$inp, na.rm = T))
-    mdat <- rdat
-    mdat$out <- MX[,i]
-    mdat <- na.omit(mdat)
-    mnlen <- dim(mdat)[1]
+%Loop over drivers and responses
+yr = 0:5;
+yst = 1; 
+yen = 68;
 
-    ### NE
-    rdat <- as.data.frame(NE[,j])
-    names(rdat) <- "inp"
-    rdat$inp <- rdat$inp/(2*sd(rdat$inp, na.rm = T))
-    ndat <- rdat
-    ndat$out <- NE[,i]
-    ndat <- na.omit(ndat)
-    nnlen <- dim(ndat)[1]
+for j = 1:5
+    %fish vars
+    driver = tanom{j};
 
-    ### SE
-    rdat <- as.data.frame(SE[,j])
-    names(rdat) <- "inp"
-    rdat$inp <- rdat$inp/(2*sd(rdat$inp, na.rm = T))
-    sdat <- rdat
-    sdat$out <- SE[,i]
-    sdat <- na.omit(sdat)
-    snlen <- dim(sdat)[1]
+    for L = 1:length(lid)
+        %LME
+        i = lid(L);
+        ilme = lname{L};
+        Ctab = cell(48,4);
 
-    for (k in 0:5) {
-      n <- n+1
+        n = 0;
 
-      AKlm <- lm(out[1:(anlen-k)] ~ inp[(k+1):anlen],adat)
-      Alag   = summary(AKlm)
-      AKtab[n,1] <- k
-      AKtab[n,2] <- fish
-      AKtab[n,3] <- Alag$coefficients[2,1]
-      AKtab[n,4] <- Alag$coefficients[2,2]
-      AKtab[n,5] <- Alag$coefficients[2,4]
-      AKtab[n,6] <- Alag$r.squared
+        for k=1:length(yr) %Linear regression at diff lags
+            t = yr(k);
 
-      BSlm <- lm(out[1:(bnlen-k)] ~ inp[(k+1):bnlen],bdat)
-      Blag   = summary(BSlm)
-      BStab[n,1] <- k
-      BStab[n,2] <- fish
-      BStab[n,3] <- Blag$coefficients[2,1]
-      BStab[n,4] <- Blag$coefficients[2,2]
-      BStab[n,5] <- Blag$coefficients[2,4]
-      BStab[n,6] <- Blag$r.squared
+            %               LME     time      driver                LME     time      driver
+            sclim = ((manom(i,yst:yen-t,j))') ./ (2*std((manom(i,yst:yen-t,j))));
 
-      CClm <- lm(out[1:(cnlen-k)] ~ inp[(k+1):cnlen],cdat)
-      Clag   = summary(CClm)
-      CCtab[n,1] <- k
-      CCtab[n,2] <- fish
-      CCtab[n,3] <- Clag$coefficients[2,1]
-      CCtab[n,4] <- Clag$coefficients[2,2]
-      CCtab[n,5] <- Clag$coefficients[2,4]
-      CCtab[n,6] <- Clag$r.squared
+            %Fish
+            n = n+1;
+            mdl0 = fitlm(sclim , (as(i,yst+t:yen))');
+            Ctab{n,1} = 'S';
+            Ctab{n,2} = t;
+            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
+            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            clear mdl0
 
-      CHlm <- lm(out[1:(knlen-k)] ~ inp[(k+1):knlen],kdat)
-      Klag   = summary(CHlm)
-      CHtab[n,1] <- k
-      CHtab[n,2] <- fish
-      CHtab[n,3] <- Klag$coefficients[2,1]
-      CHtab[n,4] <- Klag$coefficients[2,2]
-      CHtab[n,5] <- Klag$coefficients[2,4]
-      CHtab[n,6] <- Klag$r.squared
+            n = n+1;
+            mdl0 = fitlm(sclim , (am(i,yst+t:yen))');
+            Ctab{n,1} = 'M';
+            Ctab{n,2} = t;
+            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
+            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            clear mdl0
 
-      HIlm <- lm(out[1:(hnlen-k)] ~ inp[(k+1):hnlen],hdat)
-      Hlag   = summary(HIlm)
-      HItab[n,1] <- k
-      HItab[n,2] <- fish
-      HItab[n,3] <- Hlag$coefficients[2,1]
-      HItab[n,4] <- Hlag$coefficients[2,2]
-      HItab[n,5] <- Hlag$coefficients[2,4]
-      HItab[n,6] <- Hlag$r.squared
+            n = n+1;
+            mdl0 = fitlm(sclim , (al(i,yst+t:yen))');
+            Ctab{n,1} = 'L';
+            Ctab{n,2} = t;
+            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
+            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            clear mdl0
 
-      MXlm <- lm(out[1:(mnlen-k)] ~ inp[(k+1):mnlen],mdat)
-      Mlag   = summary(MXlm)
-      MXtab[n,1] <- k
-      MXtab[n,2] <- fish
-      MXtab[n,3] <- Mlag$coefficients[2,1]
-      MXtab[n,4] <- Mlag$coefficients[2,2]
-      MXtab[n,5] <- Mlag$coefficients[2,4]
-      MXtab[n,6] <- Mlag$r.squared
+            n = n+1;
+            mdl0 = fitlm(sclim , (af(i,yst+t:yen))');
+            Ctab{n,1} = 'F';
+            Ctab{n,2} = t;
+            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
+            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            clear mdl0
 
-      NElm <- lm(out[1:(nnlen-k)] ~ inp[(k+1):nnlen],ndat)
-      Nlag   = summary(NElm)
-      NEtab[n,1] <- k
-      NEtab[n,2] <- fish
-      NEtab[n,3] <- Nlag$coefficients[2,1]
-      NEtab[n,4] <- Nlag$coefficients[2,2]
-      NEtab[n,5] <- Nlag$coefficients[2,4]
-      NEtab[n,6] <- Nlag$r.squared
+            n = n+1;
+            mdl0 = fitlm(sclim , (ap(i,yst+t:yen))');
+            Ctab{n,1} = 'P';
+            Ctab{n,2} = t;
+            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
+            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            clear mdl0
 
-      SElm <- lm(out[1:(snlen-k)] ~ inp[(k+1):snlen],sdat)
-      Slag   = summary(SElm)
-      SEtab[n,1] <- k
-      SEtab[n,2] <- fish
-      SEtab[n,3] <- Slag$coefficients[2,1]
-      SEtab[n,4] <- Slag$coefficients[2,2]
-      SEtab[n,5] <- Slag$coefficients[2,4]
-      SEtab[n,6] <- Slag$r.squared
-    }
+            n = n+1;
+            mdl0 = fitlm(sclim , (ad(i,yst+t:yen))');
+            Ctab{n,1} = 'D';
+            Ctab{n,2} = t;
+            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
+            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            clear mdl0
 
-  } # inputs & fish
-  write.table(AKtab,paste0(datap,"GAK_regress_",driver,"_div2SD_melt.csv"),sep=",",row.names=T)
-  write.table(BStab,paste0(datap,"EBS_regress_",driver,"_div2SD_melt.csv"),sep=",",row.names=T)
-  write.table(CCtab,paste0(datap,"CCE_regress_",driver,"_div2SD_melt.csv"),sep=",",row.names=T)
-  write.table(CHtab,paste0(datap,"CHK_regress_",driver,"_div2SD_melt.csv"),sep=",",row.names=T)
-  write.table(HItab,paste0(datap,"HI_regress_",driver,"_div2SD_melt.csv"),sep=",",row.names=T)
-  write.table(MXtab,paste0(datap,"MX_regress_",driver,"_div2SD_melt.csv"),sep=",",row.names=T)
-  write.table(NEtab,paste0(datap,"NE_regress_",driver,"_div2SD_melt.csv"),sep=",",row.names=T)
-  write.table(SEtab,paste0(datap,"SE_regress_",driver,"_div2SD_melt.csv"),sep=",",row.names=T)
+            n = n+1;
+            mdl0 = fitlm(sclim , (aa(i,yst+t:yen))');
+            Ctab{n,1} = 'A';
+            Ctab{n,2} = t;
+            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
+            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            clear mdl0
 
-}
+            n = n+1;
+            mdl0 = fitlm(sclim , (ab(i,yst+t:yen))');
+            Ctab{n,1} = 'B';
+            Ctab{n,2} = t;
+            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
+            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            clear mdl0
+        end % time lag
+
+        %%
+        Atab = array2table(Ctab,"VariableNames",cnam);
+
+        writetable(Atab,[fpath,ilme,'_regress_',driver,...
+            '_div2SD_melt_mat.csv'],'Delimiter',',');
+
+        clear Atab
+
+    end % LME
+
+end %driver

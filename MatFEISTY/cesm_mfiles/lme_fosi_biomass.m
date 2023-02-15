@@ -1,7 +1,7 @@
 % Calc LME biomass of FEISTY
 % CESM FOSI
 
-clear all
+clear 
 close all
 
 %% Fish data

@@ -1,5 +1,6 @@
 % CESM FOSI output
 % Back calc zoo quad mort = loss - linear mort
+% Compare fraction of total that is linear vs. quad
 
 clear 
 close all
@@ -46,53 +47,33 @@ Tfn = exp(-4000 .* ( (1./(TEMP_150m+273.15)) - (1./303.15) ));
 
 %% Zprime
 Zprime = max((LzooC_150m - 0.01),0);
+Lzoo_lin_150m = (Tfn .* 0.1 .* Zprime);
 
 %% Z quad
 Lzoo_quad_150m = Lzoo_loss_150m - (Tfn .* 0.1 .* Zprime);
 Lzoo_quad_150m = max(Lzoo_quad_150m,0);
 
 %%
-% HP loss is an empirical fitted fn of biomass and temp
-dZm = 10 .^ (-2.925 + 1.964.*log10(LzooC_150m+eps) + 1.958e-2.*TEMP_150m);
-dZm = max(dZm,0);
+quad_tot = Lzoo_quad_150m ./ (Lzoo_loss_150m+eps); %mean 0.4058
+quad_lin = Lzoo_quad_150m ./ (Lzoo_lin_150m+eps);  %mean 2.5230e+05
+% times where quad is 1e7 times more than lin
 
-%%
-cTp = mean(TEMP_150m,3);
-cZ = mean(LzooC_150m,3);
-cZl = mean(Lzoo_loss_150m,3);
-cZq = mean(Lzoo_quad_150m,3);
-cHP = mean(dZm,3);
+%% space means
+sZbio = nanmean(LzooC_150m,3);
+sZtot = nanmean(Lzoo_loss_150m,3);
+sZlin = nanmean(Lzoo_lin_150m,3);
+sZquad = nanmean(Lzoo_quad_150m,3);
+sZqt = nanmean(quad_tot,3);
+sZql = nanmean(quad_lin,3);
 
-%% theoretical
-testHP = 10 .^ (-2.925 + 1.964.*log10(nanmean(LzooC_150m(:))) + 1.958e-2.*T);
-testQ = nanmean(Lzoo_loss_150m(:)) - (tfn .* 0.1 .* nanmean(Zprime(:)));
-
-Z = 1:0.5:9;
-zooHP = 10 .^ (-2.925 + 1.964.*log10(Z) + 1.958e-2.*nanmean(TEMP_150m(:)));
-zooQ = nanmean(Lzoo_loss_150m(:)) - (nanmean(TEMP_150m(:)) .* 0.1 .* Z);
-
-%%
-figure(2)
-subplot(1,2,1)
-plot(T,testHP,'b','LineWidth',2); hold on;
-plot(T,testQ,'k','LineWidth',2)
-xlabel('Temp')
-ylabel('Loss')
-
-subplot(1,2,2)
-plot(Z,zooHP,'b','LineWidth',2); hold on;
-plot(Z,zooQ,'k','LineWidth',2)
-xlabel('ZooC')
-ylabel('Loss')
-legend('empirical','total-linear')
-print('-dpng',[pp 'Theoretical_CESM_FOSI_COBALTempHP_zoo_loss_quad.png'])
-
-%%
-figure(3)
-plot(cTp(:),cZq(:),'k.'); hold on;
-plot(cTp(:),cHP(:),'b.'); hold on;
-ylim([0 1])
-legend('total-linear','empirical')
+%% time means
+[ni,nj,nt] = size(Lzoo_loss_150m);
+tZbio = nanmean(reshape(LzooC_150m,ni*nj,nt));
+tZtot = nanmean(reshape(Lzoo_loss_150m,ni*nj,nt));
+tZlin = nanmean(reshape(Lzoo_lin_150m,ni*nj,nt));
+tZquad = nanmean(reshape(Lzoo_quad_150m,ni*nj,nt));
+tZqt = nanmean(reshape(quad_tot,ni*nj,nt));
+tZql = nanmean(reshape(quad_lin,ni*nj,nt));
 
 %%
 clatlim=[-90 90];
@@ -103,43 +84,80 @@ figure(4)
 subplot('Position',[0.01 0.68 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cHP))
+surfm(TLAT,TLONG,log10(sZtot))
 cmocean('tempo')
 caxis([-2 1])
 colorbar%('Position',[0.05 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 empHP Zoo loss','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'log_1_0 Zoo tot loss','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.41 0.68 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cZ))
+surfm(TLAT,TLONG,log10(sZbio))
 cmocean('tempo')
 caxis([0 2])
 colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Zoo','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'log_1_0 Zoo biom','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.01 0.37 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cZl))
+surfm(TLAT,TLONG,log10(sZlin))
 cmocean('tempo')
 caxis([-2 1])
 colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 Zoo tot loss','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'log_1_0 Zoo linear loss','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.41 0.37 0.4 0.3])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
-surfm(TLAT,TLONG,log10(cZq))
+surfm(TLAT,TLONG,log10(sZquad))
 cmocean('tempo')
 caxis([-2 1])
 colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
 text(0.2,1.65,'log_1_0 Zoo quad loss','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
-%subplot('Position',[0.01 0.06 0.4 0.3])
-print('-dpng',[pp 'Map_CESM_FOSI_mean_zoo_loss_quad_empHP.png'])
+subplot('Position',[0.01 0.06 0.4 0.3])
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,(sZql))
+cmocean('dense')
+caxis([0 3])
+colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
+text(0.2,1.65,'Quad / Linear','HorizontalAlignment','center','FontWeight','bold')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+subplot('Position',[0.41 0.06 0.4 0.3])
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+surfm(TLAT,TLONG,(sZqt))
+cmocean('matter')
+caxis([0 1])
+colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
+text(0.2,1.65,'Quad / Total','HorizontalAlignment','center','FontWeight','bold')
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+
+print('-dpng',[pp 'Map_CESM_FOSI_mean_zoo_loss_comp_quad_lin_tot.png'])
+
+%% time series
+figure(5)
+subplot(2,1,1)
+plot(yr,log10(tZtot),'k'); hold on;
+plot(yr,log10(tZlin),'r'); hold on;
+plot(yr,log10(tZquad),'b'); hold on;
+plot(yr,log10(tZbio),'color',[0 0.7 0]); hold on;
+legend('total','linear','quad','biom')
+ylabel('log_1_0')
+
+subplot(2,1,2)
+plot(yr,(tZqt),'k'); hold on;
+plot(yr,(tZql),'r'); hold on;
+legend('quad/total','quad/linear')
+xlabel('Time (yrs)')
+ylim([0 1.5])
+
 

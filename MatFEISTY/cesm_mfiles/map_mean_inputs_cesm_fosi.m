@@ -1,11 +1,11 @@
 % CESM FOSI output
 
-clear all
+clear 
 close all
 
 %% Paths
 
-fpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+fpath='/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 
 load([fpath 'gridspec_POP_gx1v6_noSeas.mat'],'mask');
@@ -68,6 +68,10 @@ cZl = mean(Lzoo_loss_150m,3);
 save([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.FEISTY_forcing_means_correct_units.mat'],...
     'TLAT','TLONG','cTp','cTb','cD','cZ','cZl');
 
+%% load means
+load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.FEISTY_forcing_means_correct_units.mat'],...
+    'TLAT','TLONG','cTp','cTb','cD','cZ','cZl');
+
 %%
 clatlim=[-90 90];
 clonlim=[-280 80];
@@ -82,7 +86,7 @@ surfm(TLAT,TLONG,cTp)
 cmocean('thermal')
 caxis([0 35])
 colorbar%('Position',[0.05 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'Tp','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'TP','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.41 0.68 0.4 0.3])
@@ -92,7 +96,7 @@ surfm(TLAT,TLONG,cTb)
 cmocean('thermal')
 caxis([0 35])
 colorbar%('Position',[0.05 0.05 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'Tb','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'TB','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.01 0.37 0.4 0.3])
@@ -102,7 +106,7 @@ surfm(TLAT,TLONG,log10(cZ))
 cmocean('tempo')
 caxis([0 2])
 colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 MesoZ','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'log_1_0 Zmeso','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 subplot('Position',[0.41 0.37 0.4 0.3])
@@ -122,7 +126,7 @@ surfm(TLAT,TLONG,log10(cZl))
 cmocean('tempo')
 caxis([-1 1])
 colorbar%('Position',[0.55 0.56 0.4 0.03],'orientation','horizontal')
-text(0.2,1.65,'log_1_0 MesoZ loss','HorizontalAlignment','center','FontWeight','bold')
+text(0.2,1.65,'log_1_0 ZmLoss','HorizontalAlignment','center','FontWeight','bold')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 print('-dpng',[pp 'Map_CESM_FOSI_mean_forcings.png'])

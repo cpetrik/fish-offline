@@ -33,6 +33,7 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
 
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
 mod = sims{1};

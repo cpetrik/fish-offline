@@ -1,5 +1,5 @@
 % P:D ratio by LME 
-% CESM FOSI
+% CESM 4P2Z JRA55 forced 1 deg
 % Compare to Daniel's model results &SAUP
 
 clear 
@@ -7,8 +7,8 @@ close all
 
 spath = '/Users/cpetrik/Dropbox/Princeton/FEISTY_other/SAUP/';
 cpath = '/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
-load([cpath 'gridspec_POP_gx1v6.mat']);
-load([cpath 'Data_grid_POP_gx1v6.mat']);
+load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
+load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
 
 %TAREA units 'cm^2'
@@ -19,17 +19,17 @@ tlme(tlme<0) = nan;
 load([cpath 'lme_means_g.e11_LENS.GECOIAF.T62_g16.009.mat'],'lme_tp_fosi')
 
 %% FEISTY 
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-mod = 'v15_All_fish03_';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+mod = '4P2Z_All_fish03_1deg_';
 
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-dpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/4P2Z/';
+dpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/4P2Z/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
 
-load([dpath 'LME_fosi_fished_',mod,cfile '.mat']);
+load([dpath 'LME_',mod,cfile '.mat']);
 
 lme_area_km2 = lme_area * 1e-6;
 
@@ -125,7 +125,7 @@ fish_stat(3,3) = FPD;
 Fstat = array2table(fish_stat,'RowNames',{'r','RMSE','Fmed'},...
     'VariableNames',{'DvDAllLMEs','DvDnoLELC','SAUnoLELC'});
 writetable(Fstat,[dpath 'FOSI_LME_DvD_SAU_stats_' mod cfile '.csv'],'Delimiter',',','WriteRowNames',true)
-save([dpath 'FOSI_LME_DvD_SAU_stats_' mod cfile '.mat'],'fish_stat')
+save([dpath 'LME_DvD_SAU_stats_' mod cfile '.mat'],'fish_stat')
 
 %% Plot info
 geolon_t = double(TLONG);
@@ -138,10 +138,6 @@ latlim=[plotminlat plotmaxlat];
 lonlim=[plotminlon plotmaxlon]; %[-255 -60] = Pac
 % ENTER -100 TO MAP ORIGIN LONG
 load coastlines
-
-cmYOR=cbrewer('seq','YlOrRd',28);
-cmRP=cbrewer('seq','RdPu',28);
-cmPR=cbrewer('seq','PuRd',28);
 
 x=0:0.1:1;
 
@@ -176,8 +172,8 @@ plot(x,x,'--k');hold on;
 %scatter(sFracPD(notLELC),plme_rPDcatch(notLELC),20,'k','filled'); hold on;
 scatter(sFracPD(notLELC),plme_rPDcatch(notLELC),20,lme_tp_fosi(notLELC),'filled'); hold on;
 cmocean('thermal');
-text(0.6,0.95,['r = ' sprintf('%2.2f',rPD)])
-text(0.6,0.9,['RMSE = ' sprintf('%2.2f',rmsePD)])
+text(0.75,0.55,['r = ' sprintf('%2.2f',rPD)])
+text(0.75,0.5,['RMSE = ' sprintf('%2.2f',rmsePD)])
 axis([0 1.05 0 1.05])
 xlabel('SAU')
 ylabel('FEISTY')
@@ -189,12 +185,12 @@ plot(x,x,'--k');hold on;
 %scatter(FracLP(did),plme_rPDcatch(did),20,'k','filled'); hold on;
 scatter(FracLP(did),plme_rPDcatch(did),20,lme_tp_fosi(did,1),'filled'); hold on;
 cmocean('thermal');
-text(0.6,0.95,['r = ' sprintf('%2.2f',rall2)])
-text(0.6,0.9,['RMSE = ' sprintf('%2.2f',rmse)])
+text(0.75,0.55,['r = ' sprintf('%2.2f',rall2)])
+text(0.75,0.5,['RMSE = ' sprintf('%2.2f',rmse)])
 axis([0 1.05 0 1.05])
 xlabel('vanD')
 ylabel('FEISTY')
 %title('Fraction Large Pelagics')
 %stamp(cfile)
-print('-dpng',[ppath 'FOSI_' mod 'LME_fracPD_catch_SAUP_DvD_comp_subplot_temp.png'])
+print('-dpng',[ppath mod 'LME_fracPD_catch_SAUP_DvD_comp_subplot_temp.png'])
 

@@ -1,16 +1,16 @@
 % Visualize FOSI forcing of FEISTY 
 % from monthly netcdfs
 
-clear all
+clear 
 close all
 
 %% Paths
 
-fpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+fpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 
-load([fpath 'gridspec_POP_gx1v6.mat'],'mask');
-load([fpath 'Data_grid_POP_gx1v6.mat'],'GRD');
+load([fpath 'gridspec_POP_gx1v6_noSeas.mat']);
+load([fpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
 cfile = 'FOSI';
 
@@ -20,7 +20,7 @@ load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.FIESTY-forcing.mat'],...
     'TEMP_bottom_units','POC_FLUX_IN_bottom','POC_FLUX_IN_bottom_units',...
     'TLAT','TLONG','TAREA','time','yr');
 load([fpath 'g.e11_LENS.GECOIAF.T62_g16.009.meszoo.mat'],...
-    'LzooC_150m','Lzoo_loss_150m','Lzoo_quad_150m');
+    'LzooC_150m','Lzoo_loss_150m');
 
 %% nans & zeros
 TEMP_150m = double(TEMP_150m);
@@ -47,7 +47,7 @@ Lzoo_quad_150m = reshape(Lzoo_quad_150m,ni*nj,nt);
 y = (1:nt)/12;
 
 %% Locs
-load('/Volumes/MIP/GCM_DATA/CESM/4P4Z/cesm_4p4z_grid_id_locs_area_dep.mat','ids','abbrev');
+load([fpath 'cesm_grid_id_locs_area_dep.mat'],'ids','abbrev');
 spots = abbrev;
 ID = GRD.ID(ids);
 NX = length(ID);
@@ -60,7 +60,7 @@ Lzoo_loss_150m = Lzoo_loss_150m * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
 POC_FLUX_IN_bottom = POC_FLUX_IN_bottom * 1e-9 * 1e4 * 12.01 * 9.0 * 60 * 60 * 24;
 
 %%
-for s=1:length(spots)
+for s=1%:length(spots)
     loc = spots{s};
     lname = [loc '_'];
     lid = ID(s);

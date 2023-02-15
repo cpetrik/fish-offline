@@ -3,17 +3,19 @@
 clear 
 close all
 
+%%
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/DPLE/'];
 
 %pick year
 StartYr = 1954;
 %loop over members
 submem = 1:40;
 
-for mem=1%:length(submem) %will loop over
+%%
+for mem=1:length(submem) %will loop over
     Member = submem(mem);
     harv = ['v15_Y' num2str(StartYr) '_M' num2str(Member) '_All_fish03_' ];
     
@@ -183,8 +185,14 @@ for mem=1%:length(submem) %will loop over
     
     MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
     nyr = nt/12;
-    mos = repmat(MNTH,ni,nyr);
+    
+    % initialized in Nov
+    mos = nan*ones(ni,nt);
+    mos(:,1:2) = repmat(MNTH(11:12),ni,1);
+    mos(:,3:end) = repmat(MNTH,ni,floor(nyr));
+    
     mns = repmat(MNTH,ni,1);
+    
     area_mat = repmat(area_km2,1,nt);
     lme_mat = repmat(lme_grid,1,nt);
     
@@ -317,61 +325,62 @@ for mem=1%:length(submem) %will loop over
     mz_stf=nansum(MZ.over,2);
     
     %% Annual means
-    nyr = nt/12;
-    st=1:12:length(time);
-    en=12:12:length(time);
-    mz_mtf = nan*ones(ni,nyr);
-    mf_tac = nan*ones(ni,nyr);
-    mp_tac = nan*ones(ni,nyr);
-    md_tac = nan*ones(ni,nyr);
-    lp_tac = nan*ones(ni,nyr);
-    ld_tac = nan*ones(ni,nyr);
-    
-    for n=1:length(st)
-        % total overcon
-        mz_mtf(:,n)=nansum(MZ.over(:,st(n):en(n)),2);
-        
-        % mean biomass
-        sp_abio(:,n)=nanmean(SP.bio(:,st(n):en(n)),2);
-        sf_abio(:,n)=nanmean(SF.bio(:,st(n):en(n)),2);
-        sd_abio(:,n)=nanmean(SD.bio(:,st(n):en(n)),2);
-        mp_abio(:,n)=nanmean(MP.bio(:,st(n):en(n)),2);
-        mf_abio(:,n)=nanmean(MF.bio(:,st(n):en(n)),2);
-        md_abio(:,n)=nanmean(MD.bio(:,st(n):en(n)),2);
-        lp_abio(:,n)=nanmean(LP.bio(:,st(n):en(n)),2);
-        ld_abio(:,n)=nanmean(LD.bio(:,st(n):en(n)),2);
-        b_abio(:,n)=nanmean(Bent.bio(:,st(n):en(n)),2);
-        
-        % mean prod
-        sp_aprod(:,n)=nanmean(SP.prod(:,st(n):en(n)),2);
-        sf_aprod(:,n)=nanmean(SF.prod(:,st(n):en(n)),2);
-        sd_aprod(:,n)=nanmean(SD.prod(:,st(n):en(n)),2);
-        mp_aprod(:,n)=nanmean(MP.prod(:,st(n):en(n)),2);
-        mf_aprod(:,n)=nanmean(MF.prod(:,st(n):en(n)),2);
-        md_aprod(:,n)=nanmean(MD.prod(:,st(n):en(n)),2);
-        lp_aprod(:,n)=nanmean(LP.prod(:,st(n):en(n)),2);
-        ld_aprod(:,n)=nanmean(LD.prod(:,st(n):en(n)),2);
-        
-        % catch
-        mp_tac(:,n)=nansum(MP.catch(:,st(n):en(n)),2);
-        mf_tac(:,n)=nansum(MF.catch(:,st(n):en(n)),2);
-        md_tac(:,n)=nansum(MD.catch(:,st(n):en(n)),2);
-        lp_tac(:,n)=nansum(LP.catch(:,st(n):en(n)),2);
-        ld_tac(:,n)=nansum(LD.catch(:,st(n):en(n)),2);
-        
-    end
-    
-    tmn = mf_tac + mp_tac + md_tac + lp_tac + ld_tac;
-    stmn = sum(tmn);
-    
-    mp_tsac = nansum(mp_tac);
-    mf_tsac = nansum(mf_tac);
-    md_tsac = nansum(md_tac);
-    lp_tsac = nansum(lp_tac);
-    ld_tsac = nansum(ld_tac);
+    nyr = floor(nt/12);
+    % initialized in Nov
+    st=3:12:length(time);
+    en=14:12:length(time);
+%     mz_mtf = nan*ones(ni,nyr);
+%     mf_tac = nan*ones(ni,nyr);
+%     mp_tac = nan*ones(ni,nyr);
+%     md_tac = nan*ones(ni,nyr);
+%     lp_tac = nan*ones(ni,nyr);
+%     ld_tac = nan*ones(ni,nyr);
+%     
+%     for n=1:length(st)
+%         % total overcon
+%         mz_mtf(:,n)=nansum(MZ.over(:,st(n):en(n)),2);
+%         
+%         % mean biomass
+%         sp_abio(:,n)=nanmean(SP.bio(:,st(n):en(n)),2);
+%         sf_abio(:,n)=nanmean(SF.bio(:,st(n):en(n)),2);
+%         sd_abio(:,n)=nanmean(SD.bio(:,st(n):en(n)),2);
+%         mp_abio(:,n)=nanmean(MP.bio(:,st(n):en(n)),2);
+%         mf_abio(:,n)=nanmean(MF.bio(:,st(n):en(n)),2);
+%         md_abio(:,n)=nanmean(MD.bio(:,st(n):en(n)),2);
+%         lp_abio(:,n)=nanmean(LP.bio(:,st(n):en(n)),2);
+%         ld_abio(:,n)=nanmean(LD.bio(:,st(n):en(n)),2);
+%         b_abio(:,n)=nanmean(Bent.bio(:,st(n):en(n)),2);
+%         
+%         % mean prod
+%         sp_aprod(:,n)=nanmean(SP.prod(:,st(n):en(n)),2);
+%         sf_aprod(:,n)=nanmean(SF.prod(:,st(n):en(n)),2);
+%         sd_aprod(:,n)=nanmean(SD.prod(:,st(n):en(n)),2);
+%         mp_aprod(:,n)=nanmean(MP.prod(:,st(n):en(n)),2);
+%         mf_aprod(:,n)=nanmean(MF.prod(:,st(n):en(n)),2);
+%         md_aprod(:,n)=nanmean(MD.prod(:,st(n):en(n)),2);
+%         lp_aprod(:,n)=nanmean(LP.prod(:,st(n):en(n)),2);
+%         ld_aprod(:,n)=nanmean(LD.prod(:,st(n):en(n)),2);
+%         
+%         % catch
+%         mp_tac(:,n)=nansum(MP.catch(:,st(n):en(n)),2);
+%         mf_tac(:,n)=nansum(MF.catch(:,st(n):en(n)),2);
+%         md_tac(:,n)=nansum(MD.catch(:,st(n):en(n)),2);
+%         lp_tac(:,n)=nansum(LP.catch(:,st(n):en(n)),2);
+%         ld_tac(:,n)=nansum(LD.catch(:,st(n):en(n)),2);
+%         
+%     end
+%     
+%     tmn = mf_tac + mp_tac + md_tac + lp_tac + ld_tac;
+%     stmn = sum(tmn);
+%     
+%     mp_tsac = nansum(mp_tac);
+%     mf_tsac = nansum(mf_tac);
+%     md_tsac = nansum(md_tac);
+%     lp_tsac = nansum(lp_tac);
+%     ld_tsac = nansum(ld_tac);
     
     %%
-    fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
+    fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/DPLE/'];
     save([fpath 'Time_Means_DPLE_' harv cfile '.mat'],'time',...
         'sf_tmean','sp_tmean','sd_tmean',...
         'mf_tmean','mp_tmean','md_tmean',...
@@ -398,15 +407,15 @@ for mem=1%:length(submem) %will loop over
         'mf_sty','mp_sty','md_sty','lp_sty','ld_sty',...
         'mf_stc','mp_stc','md_stc','lp_stc','ld_stc')
     
-    save([fpath 'Annual_Means_DPLE_' harv cfile '.mat'],'time',...
-        'sf_abio','sp_abio','sd_abio',...
-        'mf_abio','mp_abio','md_abio',...
-        'lp_abio','ld_abio','b_abio',...
-        'sf_aprod','sp_aprod','sd_aprod',...
-        'mf_aprod','mp_aprod','md_aprod',...
-        'lp_aprod','ld_aprod',...
-        'mz_mtf','mf_tac','mp_tac','md_tac','lp_tac','ld_tac',...
-        'mf_tsac','mp_tsac','md_tsac','lp_tsac','ld_tsac',...
-        'units_yield','units_catch')
+%     save([fpath 'Annual_Means_DPLE_' harv cfile '.mat'],'time',...
+%         'sf_abio','sp_abio','sd_abio',...
+%         'mf_abio','mp_abio','md_abio',...
+%         'lp_abio','ld_abio','b_abio',...
+%         'sf_aprod','sp_aprod','sd_aprod',...
+%         'mf_aprod','mp_aprod','md_aprod',...
+%         'lp_aprod','ld_aprod',...
+%         'mz_mtf','mf_tac','mp_tac','md_tac','lp_tac','ld_tac',...
+%         'mf_tsac','mp_tsac','md_tsac','lp_tsac','ld_tsac',...
+%         'units_yield','units_catch')
     
 end

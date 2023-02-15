@@ -2,11 +2,11 @@
 % CESM DPLE
 % Time series plots and maps
 
-clear all
+clear 
 close all
 
 %% Map data
-cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+cpath = '/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
@@ -24,7 +24,7 @@ load coastlines;
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/DPLE/';
-fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/DPLE/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
@@ -34,10 +34,10 @@ end
 StartYr = 1954;
 %loop over members
 submem = [1,10:20];
-for mem=1:length(submem) %will loop over
+for mem=1%:length(submem) %will loop over
     close all
     Member = submem(mem);
-    exper = ['v14_Y' num2str(StartYr) '_M' num2str(Member) '_All_fish03_' ];
+    exper = ['v15_Y' num2str(StartYr) '_M' num2str(Member) '_All_fish03_' ];
     
     load([fpath 'Time_Means_DPLE_' exper cfile '.mat']);
     load([fpath 'Space_Means_DPLE_' exper cfile '.mat']);
@@ -139,8 +139,8 @@ for mem=1:length(submem) %will loop over
     FracLM = AllL ./ (AllL+AllM);
     
     %% save outputs for comparison
-    save([fpath 'Plot_Means_DPLE_' exper cfile '.mat'],'F','P','D','B',...
-        'AllF','AllP','AllD','AllS','AllM','AllL');
+%     save([fpath 'Plot_Means_DPLE_' exper cfile '.mat'],'F','P','D','B',...
+%         'AllF','AllP','AllD','AllS','AllM','AllL');
     
     %% bent
     figure(3)

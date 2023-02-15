@@ -22,7 +22,7 @@ DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
-[fname,simname] = sub_fname_spin(param,exper);
+[fname,simname] = sub_fname_spin_1meso(param,exper);
 
 %! Storage variables
 S_Bent_bio = zeros(NX,DAYS);

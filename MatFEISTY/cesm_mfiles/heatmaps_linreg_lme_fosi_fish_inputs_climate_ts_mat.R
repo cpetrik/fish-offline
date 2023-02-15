@@ -11,7 +11,6 @@ library(ggplot2)
 library(reshape2) #melt
 library(cowplot) #plot_grid
 library(gridExtra)
-library(coefgram)
 library(scatterplot3d)
 # library(rpart)
 # library(tree)

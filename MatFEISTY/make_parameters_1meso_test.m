@@ -85,8 +85,8 @@ function param = make_parameters_1meso_test()
     %large detritivore eats detritus, medium forage fish, medium piscivore, medium detrivore
 
     param.D  = 0.75;  %Demersal feeding in pelagic reduction
-    param.A  = 0.5;   %Adult predation reduction %*****
-    param.MZ = 0.7;   %Preference on one mesozooplankton group %0.9 standard 1 meso CESM
+    param.A  = 0.75;   %Adult predation reduction %*****
+    param.MZ = 0.9;   %Preference on one mesozooplankton group %0.9 standard 1 meso CESM
 
     param.MF_phi_MZ = 0.5 * param.MZ;
     param.MF_phi_S  = 1.0;
