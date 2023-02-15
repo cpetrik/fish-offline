@@ -1,31 +1,31 @@
 % Visualize difference between
 % ESM2M Hindcast 50yr mean and
-% CESM FOSI mean
+% CESM 1 deg JRA55 with 4P-2Z
 
 clear 
 close all
 
 %% COBALT Hindcast grid
-hpath = '/Users/cpetrik/Dropbox/Princeton/POEM_other/grid_cobalt/';
+hpath = '/Users/cpetrik/Dropbox/Princeton/FEISTY_other/grid_cobalt/';
 load([hpath 'hindcast_gridspec.mat'],'geolon_t','geolat_t'); %geolon_t,geolat_t
 grid = csvread([hpath 'grid_csv.csv']); %grid
 [hi,hj]=size(geolon_t);
 
 %% CESM FOSI grid
 cpath = '/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
-load([cpath 'gridspec_POP_gx1v6.mat']);
-load([cpath 'Data_grid_POP_gx1v6.mat']);
+load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
+load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
 [ni,nj]=size(TLONG);
 ID = GRD.ID;
 
 %% FEISTY Output
-cfile2 = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
-mod = 'v13_sMZ090_mMZ045_All_fish03_';
+cfile2 = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+mod = '4P2Z_All_fish03_1deg_';
 harv = 'All_fish03';
 tharv = 'Harvest all fish 0.3 yr^-^1';
 
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/4P2Z/';
 ppath = [pp cfile2 '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
@@ -40,8 +40,8 @@ load([gpath 'Means_Historic_',harv,'_' cfile1 '.mat'],...
     'lp_mean50','ld_mean50','b_mean50');
 
 %CESM
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile2 '/'];
-load([fpath 'Space_Means_FOSI_' mod cfile2 '.mat']);
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile2 '/4P2Z/'];
+load([fpath 'Space_Means_4P2Z_1deg_' cfile2 '.mat']);
 
 %% Put biomass on grid
 Csf=NaN*ones(ni,nj);
@@ -207,8 +207,8 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-1 1]);
 colorbar
 set(gcf,'renderer','painters')
-title('CESM F');
-print('-dpng',[ppath 'CESM_COBALT_' mod 'global_F.png'])
+title('4P2Z F');
+print('-dpng',[ppath '4P2Z_COBALT_' mod 'global_F.png'])
 
 %P
 figure(2)
@@ -232,8 +232,8 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-1 1]);
 colorbar
 set(gcf,'renderer','painters')
-title('CESM P');
-print('-dpng',[ppath 'CESM_COBALT_' mod 'global_P.png'])
+title('4P2Z P');
+print('-dpng',[ppath '4P2Z_COBALT_' mod 'global_P.png'])
 
 % D
 figure(3)
@@ -257,8 +257,8 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-1 1]);
 colorbar
 set(gcf,'renderer','painters')
-title('CESM D');
-print('-dpng',[ppath 'CESM_COBALT_' mod 'global_D.png'])
+title('4P2Z D');
+print('-dpng',[ppath '4P2Z_COBALT_' mod 'global_D.png'])
 
 %4
 figure(4)
@@ -282,8 +282,8 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-1 2]);
 colorbar
 set(gcf,'renderer','painters')
-title('CESM All');
-print('-dpng',[ppath 'CESM_COBALT_' mod 'global_All.png'])
+title('4P2Z All');
+print('-dpng',[ppath '4P2Z_COBALT_' mod 'global_All.png'])
 
 %% B
 figure(5)
@@ -307,8 +307,8 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-1.5 0.5]);
 colorbar
 set(gcf,'renderer','painters')
-title('CESM Benthos');
-print('-dpng',[ppath 'CESM_COBALT_' mod 'global_Bent.png'])
+title('4P2Z Benthos');
+print('-dpng',[ppath '4P2Z_COBALT_' mod 'global_Bent.png'])
 
 %% side by side on one fig
 cmBP50=cbrewer('seq','BuPu',50,'PCHIP');
@@ -347,7 +347,7 @@ caxis([-1 2])
 text(-1.75,1.75,'Lg Pelagic','HorizontalAlignment','center')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
-%4 - CESM D
+%4 - 4P2Z D
 subplot('Position',[0.025 0.33 0.4 0.165])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
@@ -357,7 +357,7 @@ caxis([-1 2])
 text(-1.75,1.75,'Demersal','HorizontalAlignment','center')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
-%5 - CESM B
+%5 - 4P2Z B
 subplot('Position',[0.025 0.165 0.4 0.165])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
@@ -384,7 +384,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(glat,glon,real(log10(cAll)))
 colormap(cmBP50)
 caxis([-1 2])
-text(0,1.75,'CESM-FOSI','HorizontalAlignment','center','FontWeight','bold')
+text(0,1.75,'JRA55-4P2Z','HorizontalAlignment','center','FontWeight','bold')
 text(-1.75,1.75,'All','HorizontalAlignment','center')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
@@ -430,7 +430,7 @@ caxis([-1 2])
 text(-1.75,1.75,'Benthos','HorizontalAlignment','center')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
-print('-dpng',[ppath 'CESM_COBALT_' mod 'global_all_types.png']);
+print('-dpng',[ppath '4P2Z_COBALT_' mod 'global_all_types.png']);
 
 %% diffs
 figure(7)
@@ -444,7 +444,7 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-10 10]);
 colorbar('Position',[0.25 0.5 0.5 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
-title('CESM / COBALT F');
+title('4P2Z / COBALT F');
 
 % All P
 subplot('Position',[0.5 0.51 0.5 0.5])
@@ -455,7 +455,7 @@ cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-10 10]);
 set(gcf,'renderer','painters')
-title('CESM / COBALT P');
+title('4P2Z / COBALT P');
 
 % all D
 subplot('Position',[0 0 0.5 0.5])
@@ -466,7 +466,7 @@ cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-10 10]);
 set(gcf,'renderer','painters')
-title('CESM / COBALT D');
+title('4P2Z / COBALT D');
 
 % All
 subplot('Position',[0.5 0 0.5 0.5])
@@ -477,9 +477,9 @@ cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-10 10]);
 set(gcf,'renderer','painters')
-title('CESM / COBALT All');
+title('4P2Z / COBALT All');
 stamp('')
-print('-dpng',[ppath 'CESM_COBALT_' mod 'global_diff_types.png'])
+print('-dpng',[ppath '4P2Z_COBALT_' mod 'global_diff_types.png'])
 
 %% pdiffs relative to COBALT
 figure(8)
@@ -490,10 +490,10 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(glat,glon,pdiffF)
 cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-1 1]);
+caxis([-2 2]);
 colorbar('Position',[0.25 0.5 0.5 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
-title('CESM - COBALT F');
+title('4P2Z - COBALT F');
 
 % All P
 subplot('Position',[0.5 0.51 0.5 0.5])
@@ -502,9 +502,9 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(glat,glon,pdiffP)
 cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-1 1]);
+caxis([-2 2]);
 set(gcf,'renderer','painters')
-title('CESM - COBALT P');
+title('4P2Z - COBALT P');
 
 % all D
 subplot('Position',[0 0 0.5 0.5])
@@ -513,9 +513,9 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(glat,glon,pdiffD)
 cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-1 1]);
+caxis([-2 2]);
 set(gcf,'renderer','painters')
-title('CESM - COBALT D');
+title('4P2Z - COBALT D');
 
 % All
 subplot('Position',[0.5 0 0.5 0.5])
@@ -524,11 +524,11 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(glat,glon,pdiffAll)
 cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-1 1]);
+caxis([-2 2]);
 set(gcf,'renderer','painters')
-title('CESM - COBALT All');
+title('4P2Z - COBALT All');
 stamp('')
-print('-dpng',[ppath 'CESM_COBALT_' mod 'global_pdiff_types.png'])
+print('-dpng',[ppath '4P2Z_COBALT_' mod 'global_pdiff_types.png'])
 
 %% B
 figure(10)
@@ -541,7 +541,7 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-10 10]);
 colorbar
 set(gcf,'renderer','painters')
-title('CESM / COBALT B');
+title('4P2Z / COBALT B');
 
 subplot(2,1,2)
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
@@ -549,12 +549,12 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(glat,glon,pdiffB)
 cmocean('balance')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([-1 1]);
+caxis([-2 2]);
 colorbar
 set(gcf,'renderer','painters')
-title('CESM - COBALT B');
+title('4P2Z - COBALT B');
 stamp('')
-print('-dpng',[ppath 'CESM_COBALT_' mod 'global_diffs_B.png'])
+print('-dpng',[ppath '4P2Z_COBALT_' mod 'global_diffs_B.png'])
 
 %% Calc differences in total biomass
 

@@ -43,8 +43,30 @@ S_Lrg_d = zeros(NX,DAYS);
 % P_Lrg_p = zeros(NX,DAYS);
 % P_Lrg_d = zeros(NX,DAYS);
 
+% yB  = zeros(NX,YEARS);
+% ySF = zeros(NX,YEARS);
+% ySP = zeros(NX,YEARS);
+% ySD = zeros(NX,YEARS);
+% yMF = zeros(NX,YEARS);
+% yMP = zeros(NX,YEARS);
+% yMD = zeros(NX,YEARS);
+% yLP = zeros(NX,YEARS);
+% yLD = zeros(NX,YEARS);
+
+load([fname,'_end_cycle_32.mat'])
+
 %! Initialize
 [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish_spin(ID,DAYS);
+
+BENT.mass =     yB(:,32);
+Sml_f.bio =    ySF(:,32);
+Sml_p.bio =    ySP(:,32);
+Sml_d.bio =    ySD(:,32);
+Med_f.bio =    yMF(:,32);
+Med_p.bio =    yMP(:,32);
+Med_d.bio =    yMD(:,32);
+Lrg_p.bio =    yLP(:,32);
+Lrg_d.bio =    yLD(:,32);
 
 %%%%%%%%%%%%%%% Setup NetCDF save
 %! Setup netcdf path to store to
@@ -142,7 +164,7 @@ netcdf.endDef(ncidMZ);
 load('/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/4P2Z/Data_cesm_4p2z_daily_1958.mat','ESM')
 MNT = 0;
 %! Run model
-for YR = 1:YEARS % years
+for YR = 33:YEARS % years
     %! Load a year's ESM data
     ti = num2str(YR)
 
@@ -212,6 +234,19 @@ for YR = 1:YEARS % years
 %        
 
     end %Monthly mean
+
+    yB(:,YR)  = mean(S_Bent_bio,2);
+    ySF(:,YR) = mean(S_Sml_f,2);
+    ySP(:,YR) = mean(S_Sml_p,2);
+    ySD(:,YR) = mean(S_Sml_d,2);
+    yMF(:,YR) = mean(S_Med_f,2);
+    yMP(:,YR) = mean(S_Med_p,2);
+    yMD(:,YR) = mean(S_Med_d,2);
+    yLP(:,YR) = mean(S_Lrg_p,2);
+    yLD(:,YR) = mean(S_Lrg_d,2);
+    
+    save([fname,'_end_cycle_',num2str(YR),'.mat'],'yB','ySF','ySP','ySD',...
+        'yMF','yMP','yMD','yLP','yLD')
 
 end %Years
 

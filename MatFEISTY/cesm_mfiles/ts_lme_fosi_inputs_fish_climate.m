@@ -1,7 +1,7 @@
 % Plot ts of LME means of FEISTY inputs & outputs w/ climate anoms
 % CESM FOSI
 
-clear all 
+clear 
 close all
 
 %% Climate indices
@@ -24,7 +24,7 @@ load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat']);
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 ppath = [pp cfile '/corrs/'];
@@ -39,19 +39,21 @@ load([fpath 'FEISTY_FOSI_',mod,'lme_ann_mean_anoms.mat']) % Anoms with linear tr
 
 %% 
 % LMEs
-lid = [54,1:2,10,3,5:7]; %ADD 65 = Aleutian Islands
-lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE'};
+lid = [54,1:2,10,3,5:7,65]; %ADD 65 = Aleutian Islands
+lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE','AI'};
 % forcing inputs
-iname = {'Tp','Tb','Det','LZbiom','LZloss'};
+iname = {'TP','TB','Det','Zmeso','ZmLoss'};
 % FEISTY outputs grouped
 gname = {'S','M','L','F','P','D','A','B'};
 
 %%
 BSanom(:,1) = [1948:2015]';
 AKanom(:,1) = [1948:2015]';
+AIanom(:,1) = [1948:2015]';
 HIanom(:,1) = [1948:2015]';
 CCanom(:,1) = [1948:2015]';
 NEanom(:,1) = [1948:2015]';
+SEanom(:,1) = [1948:2015]';
 
 BSanom(:,2) = atp(lid(2),:);
 BSanom(:,3) = atb(lid(2),:);
@@ -113,6 +115,20 @@ CCanom(:,12) = ad(lid(5),:);
 CCanom(:,13) = aa(lid(5),:);
 CCanom(:,14) = ab(lid(5),:);
 
+SEanom(:,2) = atp(lid(7),:);
+SEanom(:,3) = atb(lid(7),:);
+SEanom(:,4) = adet(lid(7),:);
+SEanom(:,5) = azoo(lid(7),:);
+SEanom(:,6) = azlos(lid(7),:);
+SEanom(:,7)  = as(lid(7),:);
+SEanom(:,8)  = am(lid(7),:);
+SEanom(:,9)  = al(lid(7),:);
+SEanom(:,10) = af(lid(7),:);
+SEanom(:,11) = ap(lid(7),:);
+SEanom(:,12) = ad(lid(7),:);
+SEanom(:,13) = aa(lid(7),:);
+SEanom(:,14) = ab(lid(7),:);
+
 NEanom(:,2) = atp(lid(8),:);
 NEanom(:,3) = atb(lid(8),:);
 NEanom(:,4) = adet(lid(8),:);
@@ -127,7 +143,22 @@ NEanom(:,12) = ad(lid(8),:);
 NEanom(:,13) = aa(lid(8),:);
 NEanom(:,14) = ab(lid(8),:);
 
+AIanom(:,2) = atp(lid(9),:);
+AIanom(:,3) = atb(lid(9),:);
+AIanom(:,4) = adet(lid(9),:);
+AIanom(:,5) = azoo(lid(9),:);
+AIanom(:,6) = azlos(lid(9),:);
+AIanom(:,7)  = as(lid(9),:);
+AIanom(:,8)  = am(lid(9),:);
+AIanom(:,9)  = al(lid(9),:);
+AIanom(:,10) = af(lid(9),:);
+AIanom(:,11) = ap(lid(9),:);
+AIanom(:,12) = ad(lid(9),:);
+AIanom(:,13) = aa(lid(9),:);
+AIanom(:,14) = ab(lid(9),:);
+
 %% plot time series like LeMezo 2016  =================================
+%         PUT CLIMATE ON A DIFF Y-AXIS
 % PDO
 figure(1)
 subplot(4,1,1)

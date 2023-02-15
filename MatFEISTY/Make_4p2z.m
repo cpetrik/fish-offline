@@ -48,6 +48,7 @@ if cesm_4p2z
 %     CESM_4p4z()
 %     CESM_4p4z_comb()
     CESM_4p2z_1deg()
+    CESM_4p2z_1deg_catch()
 end
 if dple_cesm
     Interp_run_DPLE_cesm()

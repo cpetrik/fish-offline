@@ -1,10 +1,10 @@
 % FEISTY output at all locations
 
-clear all
+clear 
 close all
 
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ070_mMZ035_nmort1_BE08_CC80_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 %Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100/4P2Z
 
@@ -235,4 +235,6 @@ plot(mo,log10(ld_tmean),'k'); hold on;
 figure
 plot(mo,mz_ttf/nid,'b'); hold on; 
 
-mean(mz_ttf/nid) %~43% for 4p4z, ~50% for 4p2z, ~45% 2nd attempt, ~41% 3rd
+mean(mz_ttf/nid) %~43% for 4p4z; 
+                    %~50% for 4p2z, MZ=0.9; ~45%, MZ=0.8; ~41%, MZ=0.7
+                    % 31% for 4p2z w/A=0.75

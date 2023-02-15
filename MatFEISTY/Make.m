@@ -5,11 +5,12 @@ close all
 
 %%%%!! EXPERIMENTS
 testc       = false;
+locs_cesm   = true;
 spinup_cesm = false;
 spinup_hr   = false;
 hr_cesm     = false;
 fosi_cesm   = false;
-dple_cesm   = true;
+dple_cesm   = false;
 
 tic
 
@@ -17,8 +18,10 @@ if testc
     %test_case()
     test_locs3()
 end
+if locs_cesm
+    Locs_FOSI_spinup()
+end
 if spinup_cesm
-%     Locs_CESM_4p4z_spinup()
 %     Spinup_cesm()
     Spinup_FOSI_climatol()
     Spinup_FOSI_varFood()

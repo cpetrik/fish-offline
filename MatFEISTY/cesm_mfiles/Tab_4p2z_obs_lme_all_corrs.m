@@ -1,11 +1,13 @@
 % All correlations
+% between COBALT-Hist, SAUP, DvD, Maureaud and CESM-4P2Z
+
 clear 
 close all
 
 %% CESM FOSI grid
 cpath = '/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
-load([cpath 'gridspec_POP_gx1v6.mat']);
-load([cpath 'Data_grid_POP_gx1v6.mat']);
+load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
+load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
 [ni,nj]=size(TLONG);
 ID = GRD.ID;
@@ -24,20 +26,20 @@ clear lme_area
 hlme = lme_mask;
 
 %% FEISTY Output
-cfile2 = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-mod = 'v15_All_fish03_';
+cfile2 = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+mod = '4P2Z_All_fish03_1deg_';
 harv = 'All_fish03';
 tharv = 'Harvest all fish 0.3 yr^-^1';
 
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/4P2Z/';
 ppath = [pp cfile2 '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
 
 % CESM
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile2 '/FOSI/'];
-load([fpath 'LME_fosi_fished_',mod,cfile2 '.mat'],'lme_mcatch',...
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile2 '/4P2Z/'];
+load([fpath 'LME_',mod,cfile2 '.mat'],'lme_mcatch',...
     'lme_mbio');
 
 %%
@@ -132,7 +134,7 @@ FP=10^(median(l10sP(keep)-l10pP(keep)));
 FD=10^(median(l10sD(keep)-l10pD(keep)));
 FPD=10^(median(sFracPD(keep)-pFracPD(keep)));
 
-% Bias (FOSI minus SAUP)
+% Bias (SAUP minus 4P2Z)
 %average error = bias
 %skill(3,c) = nansum(p-o) / n;
 p=l10p(keep);
@@ -227,7 +229,7 @@ biasDvD2 = nansum(o-p) / n;
 load(['/Users/cpetrik/Dropbox/Princeton/FEISTY_other/poem_ms/',...
     'Stock_PNAS_catch_oceanprod_output.mat'])
 
-% FEISTY in gC/m2
+% POEM in gC/m2
 %gWW
 wlme_mcatch = nansum(lme_mcatch,2);
 %gWW/m2
@@ -270,37 +272,37 @@ text(-0.25,1.4,['r = ' sprintf('%2.2f',rPNAS) ' (p = ' sprintf('%2.2f',pPNAS) ')
 text(-0.25,1.3,['RMSE = ' sprintf('%2.2f',rmsePNAS)])
 axis([-0.5 1.5 -0.5 1.5])
 xlabel('Stock PNAS')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('All fishes')
 stamp([harv '_' cfile2])
-print('-dpng',[ppath 'FOSI_StockPNAS_',mod,'comp_temp.png'])
+print('-dpng',[ppath 'StockPNAS_',mod,'comp_temp.png'])
 
 %% Mauread TE eff
-spath = '/Users/cpetrik/Dropbox/Princeton/FEISTY_other/poem_ms/';
-load([spath 'Maureaud_etal_2017_s002_ECI.mat']);
-
-% ECI for clim years (1991-1995?)
-mECI = mean(ECI(:,2:6),2);
-mid = ECI(:,1);
-
-% FEISTY LME TEeffs
-pECI = lme_te(mid,3);
-
-Lma = log10(mECI); %log10(mECI)
-Lpo = log10(pECI);
-
-%r
-[rL,pL]=corr(Lma,Lpo);
-
-%root mean square error
-o=Lma;
-p=Lpo;
-n = length(o);
-num=nansum((p-o).^2);
-rmseL = sqrt(num/n);
-
-%Fmed
-FL=10^(median(Lma-Lpo));
+% spath = '/Users/cpetrik/Dropbox/Princeton/FEISTY_other/poem_ms/';
+% load([spath 'Maureaud_etal_2017_s002_ECI.mat']);
+% 
+% % ECI for clim years (1991-1995?)
+% mECI = mean(ECI(:,2:6),2);
+% mid = ECI(:,1);
+% 
+% % FEISTY LME TEeffs
+% pECI = lme_te(mid,3);
+% 
+% Lma = log10(mECI); %log10(mECI)
+% Lpo = log10(pECI);
+% 
+% %r
+% [rL,pL]=corr(Lma,Lpo);
+% 
+% %root mean square error
+% o=Lma;
+% p=Lpo;
+% n = length(o);
+% num=nansum((p-o).^2);
+% rmseL = sqrt(num/n);
+% 
+% %Fmed
+% FL=10^(median(Lma-Lpo));
 
 %% Table
 fish_stat(1,1) = rall;
@@ -336,8 +338,8 @@ fish_stat(7,4) = biasPNAS;
 Fstat = array2table(fish_stat,'VariableNames',{'r','p','RMSE','Bias'},...
     'RowNames',{'SAU All Fish','SAU F','SAU P','SAU D','SAU Frac Pelagic',...
     'vanD Frac Pelagic','Stock All Fish'});
-writetable(Fstat,[fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.csv'],'Delimiter',',',...
+writetable(Fstat,[fpath mod,'obs_LME_all_ms_stats_' cfile2 '.csv'],'Delimiter',',',...
     'WriteRowNames',true)
-save([fpath 'FOSI_',mod,'obs_LME_all_ms_stats_' cfile2 '.mat'],'fish_stat')
+save([fpath mod,'obs_LME_all_ms_stats_' cfile2 '.mat'],'fish_stat')
 
 

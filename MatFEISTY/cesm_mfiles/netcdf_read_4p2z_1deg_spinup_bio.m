@@ -1,10 +1,10 @@
 % FEISTY output at all locations
 
-clear all
+clear 
 close all
 
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ070_mMZ035_nmort1_BE08_CC80_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 %Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100/4P2Z
 
@@ -13,14 +13,20 @@ fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/4P2Z/'];
 harv = 'All_fish03';
 
 %% SP
+%ncdisp([fpath '4P2Z_Spinup_' harv '_sml_p.nc'])
 ncid = netcdf.open([fpath '4P2Z_Spinup_' harv '_sml_p.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
-for i = 1:nvars
+for i = 1:(nvars)
     varname = netcdf.inqVar(ncid, i-1);
     eval([ varname ' = netcdf.getVar(ncid,i-1);']);
     eval([ varname '(' varname ' == 99999) = NaN;']);
 end
 netcdf.close(ncid);
+
+% for n = nvars
+%     varname = netcdf.inqVar(ncid, n-1);
+%     biomass = netcdf.getVar(ncid,n-1, [0,0],[85813 365]);
+% end
 
 %%
 [ni,nt] = size(biomass);
@@ -134,6 +140,8 @@ clear biomass
 
 
 %% Save last year for initializing forecast runs
+nt=2016;
+
 Sml_f.bio = nanmean(SF.bio(:,nt-11:nt),2);
 Sml_p.bio = nanmean(SP.bio(:,nt-11:nt),2);
 Sml_d.bio = nanmean(SD.bio(:,nt-11:nt),2);

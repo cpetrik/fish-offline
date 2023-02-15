@@ -1,10 +1,10 @@
-% All correlations between COBALT-Hist and CESM-FOSI
+% All correlations between COBALT-Hist and CESM-4P2Z
 
 clear 
 close all
 
 spath = '/Users/cpetrik/Dropbox/Princeton/FEISTY_other/SAUP/';
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/4P2Z/';
 
 load(['/Users/cpetrik/Dropbox/Princeton/FEISTY_other/poem_ms/',...
     'Stock_PNAS_catch_oceanprod_output.mat'],'notLELC')
@@ -34,8 +34,8 @@ hID = grid(:,1);
 
 %% CESM FOSI grid
 cpath = '/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
-load([cpath 'gridspec_POP_gx1v6.mat']);
-load([cpath 'Data_grid_POP_gx1v6.mat']);
+load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
+load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
 [ni,nj]=size(TLONG);
 ID = GRD.ID;
@@ -52,8 +52,8 @@ clear lme_area
 clme = lme_mask;
 
 %% FEISTY Output
-cfile2 = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-mod = 'v15_All_fish03_';
+cfile2 = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+mod = '4P2Z_All_fish03_1deg_';
 harv = 'All_fish03';
 tharv = 'Harvest all fish 0.3 yr^-^1';
 
@@ -106,8 +106,8 @@ l10hB=log10(hlme_Bmbio);
 clear lme_mcatch lme_mbio lme_sbio
 
 %% CESM
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile2 '/FOSI/'];
-load([fpath 'LME_fosi_fished_',mod,cfile2 '.mat'],'lme_mcatch',...
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile2 '/4P2Z/'];
+load([fpath 'LME_',mod,cfile2 '.mat'],'lme_mcatch',...
     'lme_mbio','lme_sbio');
 
 % clme_mcatch = lme_mcatch;
@@ -343,9 +343,9 @@ fish_stat(8,4) = biasLM;
 Fstat = array2table(fish_stat,'VariableNames',{'r','p','RMSE','Bias'},...
     'RowNames',{'All Fish','F','P','D','B','Frac Pel-Dem','Frac Pel-Forage',...
     'Frac Large-Med'});%,'TEeffL','TEeffHTL','TEeffLTL'});
-writetable(Fstat,[fpath 'LME_fosi_hist_stats_' mod cfile2 '.csv'],'Delimiter',',',...
+writetable(Fstat,[fpath 'LME_stats_COBALThist_' mod cfile2 '.csv'],'Delimiter',',',...
     'WriteRowNames',true)
-save([fpath 'LME_fosi_hist_stats_' mod cfile2 '.mat'],'fish_stat')
+save([fpath 'LME_stats_COBALThist_' mod cfile2 '.mat'],'fish_stat')
 
 %% Figures
 x=-8:0.5:8;
@@ -364,11 +364,11 @@ plot(x,x5l,':r'); hold on;
 scatter(l10hF(keep),l10cF(keep),20,clme_ptemp(keep,1),'filled'); hold on;
 cmocean('thermal');
 colorbar('Position',[0.375 0.5 0.3 0.025],'orientation','horizontal')
-% text(-2.75,0.75,['r = ' sprintf('%2.2f',rF) ' (p = ' sprintf('%2.2f',pF) ')'])
-% text(-2.75,0.5,['RMSE = ' sprintf('%2.2f',rmseF)])
+text(-2.75,0.75,['r = ' sprintf('%2.2f',rF) ' (p = ' sprintf('%2.2f',pF) ')'])
+text(-2.75,0.5,['RMSE = ' sprintf('%2.2f',rmseF)])
 axis([-3 1 -3 1])
 xlabel('Hist COBALT')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('Forage Fishes')
 
 subplot(2,2,2)
@@ -379,11 +379,11 @@ plot(x,x5h,':r'); hold on;
 plot(x,x5l,':r'); hold on;
 scatter(l10hP(keep),l10cP(keep),20,clme_ptemp(keep,1),'filled'); hold on;
 cmocean('thermal');
-% text(-5.5,0.5,['r = ' sprintf('%2.2f',rP) ' (p = ' sprintf('%2.2f',pP) ')'])
-% text(-5.5,0.1,['RMSE = ' sprintf('%2.2f',rmseP)])
+text(-5.5,0.5,['r = ' sprintf('%2.2f',rP) ' (p = ' sprintf('%2.2f',pP) ')'])
+text(-5.5,0.1,['RMSE = ' sprintf('%2.2f',rmseP)])
 axis([-6 1 -6 1])
 xlabel('Hist COBALT')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('Large Pelagics')
 
 subplot(2,2,3)
@@ -394,11 +394,11 @@ plot(x,x5h,':r'); hold on;
 plot(x,x5l,':r'); hold on;
 scatter(l10hD(keep),l10cD(keep),20,clme_ptemp(keep,1),'filled'); hold on;
 cmocean('thermal');
-% text(-1.75,0.8,['r = ' sprintf('%2.2f',rD) ' (p = ' sprintf('%2.2f',pD) ')'])
-% text(-1.75,0.5,['RMSE = ' sprintf('%2.2f',rmseD)])
+text(-1.75,0.8,['r = ' sprintf('%2.2f',rD) ' (p = ' sprintf('%2.2f',pD) ')'])
+text(-1.75,0.5,['RMSE = ' sprintf('%2.2f',rmseD)])
 axis([-2 1 -2 1])
 xlabel('Hist COBALT')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('Demersals')
 
 subplot(2,2,4)
@@ -409,63 +409,14 @@ plot(x,x5h,':r'); hold on;
 plot(x,x5l,':r'); hold on;
 scatter(l10h(keep),l10c(keep),20,clme_ptemp(keep,1),'filled'); hold on;
 cmocean('thermal');
-% text(-1.75,1.4,['r = ' sprintf('%2.2f',rall) ' (p = ' sprintf('%2.2f',pall) ')'])
-% text(-1.75,1.1,['RMSE = ' sprintf('%2.2f',rmse)])
+text(-1.75,1.4,['r = ' sprintf('%2.2f',rall) ' (p = ' sprintf('%2.2f',pall) ')'])
+text(-1.75,1.1,['RMSE = ' sprintf('%2.2f',rmse)])
 axis([-2 1.5 -2 1.5])
 xlabel('Hist COBALT')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('All fishes')
 stamp([harv '_' cfile2])
-print('-dpng',[ppath 'FOSI_Hist_',mod,'comp_types_temp.png'])
-
-%%
-figure(10)
-subplot(2,2,1)
-plot(x,x,'--k'); hold on;
-scatter(l10hF(keep),l10cF(keep),20,clme_ptemp(keep,1),'filled'); hold on;
-cmocean('thermal');
-colorbar('Position',[0.375 0.5 0.3 0.025],'orientation','horizontal')
-% text(-2.75,0.75,['r = ' sprintf('%2.2f',rF) ' (p = ' sprintf('%2.2f',pF) ')'])
-% text(-2.75,0.5,['RMSE = ' sprintf('%2.2f',rmseF)])
-axis([-3 1 -300 1])
-xlabel('Hist COBALT')
-ylabel('FOSI CESM')
-title('Forage Fishes')
-
-subplot(2,2,2)
-plot(x,x,'--k'); hold on;
-scatter(l10hP(keep),l10cP(keep),20,clme_ptemp(keep,1),'filled'); hold on;
-cmocean('thermal');
-% text(-5.5,0.5,['r = ' sprintf('%2.2f',rP) ' (p = ' sprintf('%2.2f',pP) ')'])
-% text(-5.5,0.1,['RMSE = ' sprintf('%2.2f',rmseP)])
-axis([-15 1 -300 1])
-xlabel('Hist COBALT')
-ylabel('FOSI CESM')
-title('Large Pelagics')
-
-subplot(2,2,3)
-plot(x,x,'--k'); hold on;
-scatter(l10hD(keep),l10cD(keep),20,clme_ptemp(keep,1),'filled'); hold on;
-cmocean('thermal');
-% text(-1.75,0.8,['r = ' sprintf('%2.2f',rD) ' (p = ' sprintf('%2.2f',pD) ')'])
-% text(-1.75,0.5,['RMSE = ' sprintf('%2.2f',rmseD)])
-axis([-2 1 -300 1])
-xlabel('Hist COBALT')
-ylabel('FOSI CESM')
-title('Demersals')
-
-subplot(2,2,4)
-plot(x,x,'--k'); hold on;
-scatter(l10h(keep),l10c(keep),20,clme_ptemp(keep,1),'filled'); hold on;
-cmocean('thermal');
-% text(-1.75,1.4,['r = ' sprintf('%2.2f',rall) ' (p = ' sprintf('%2.2f',pall) ')'])
-% text(-1.75,1.1,['RMSE = ' sprintf('%2.2f',rmse)])
-axis([-2 1.5 -300 1.5])
-xlabel('Hist COBALT')
-ylabel('FOSI CESM')
-title('All fishes')
-stamp([harv '_' cfile2])
-print('-dpng',[ppath 'FOSI_Hist_',mod,'comp_types_temp_outliers.png'])
+print('-dpng',[ppath 'COBALThist_',mod,'comp_types_temp.png'])
 
 %% Fractions
 figure(2)
@@ -482,7 +433,7 @@ text(-0.1,1.3,['r = ' sprintf('%2.2f',rPF) ' (p = ' sprintf('%2.2f',pPF) ')'])
 text(-0.1,1.2,['RMSE = ' sprintf('%2.2f',rmsePF)])
 axis([-0.2 1.4 -0.2 1.4])
 xlabel('Hist COBALT')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('P / (P+F)')
 
 subplot(2,2,2)
@@ -497,7 +448,7 @@ text(-0.1,1.3,['r = ' sprintf('%2.2f',rPD) ' (p = ' sprintf('%2.2f',pPD) ')'])
 text(-0.1,1.2,['RMSE = ' sprintf('%2.2f',rmsePD)])
 axis([-0.2 1.4 -0.2 1.4])
 xlabel('Hist COBALT')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('P / (P+D)')
 
 subplot(2,2,3)
@@ -512,7 +463,7 @@ text(-0.1,1.3,['r = ' sprintf('%2.2f',rLM) ' (p = ' sprintf('%2.2f',pLM) ')'])
 text(-0.1,1.2,['RMSE = ' sprintf('%2.2f',rmseLM)])
 axis([-0.2 1.4 -0.2 1.4])
 xlabel('Hist COBALT')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('L / (L+M)')
 
 subplot(2,2,4)
@@ -527,10 +478,10 @@ cmocean('thermal');
 % text(-3.75,-0.7,['RMSE = ' sprintf('%2.2f',rmseB)])
 axis([-4 0 -4 0])
 xlabel('Hist COBALT')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('Benthos')
 stamp([harv '_' cfile2])
-print('-dpng',[ppath 'FOSI_Hist_',mod,'comp_fracs_temp.png'])
+print('-dpng',[ppath 'COBALThist_',mod,'comp_fracs_temp.png'])
 
 
 %% TEeffs
@@ -548,7 +499,7 @@ text(-4.75,-1.25,['r = ' sprintf('%2.2f',rATL) ' (p = ' sprintf('%2.2f',pATL) ')
 text(-4.75,-1.5,['RMSE = ' sprintf('%2.2f',rmseATL)])
 axis([-5 -1 -5 -1])
 xlabel('Hist COBALT')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('log_1_0 TEeff ATL')
 
 subplot(2,2,2)
@@ -563,7 +514,7 @@ text(-3.25,-0.75,['r = ' sprintf('%2.2f',rHTL) ' (p = ' sprintf('%2.2f',pHTL) ')
 text(-3.25,-1.0,['RMSE = ' sprintf('%2.2f',rmseHTL)])
 axis([-3.5 -0.5 -3.5 -0.5])
 xlabel('Hist COBALT')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('log_1_0 TEeff HTL')
 
 subplot(2,2,3)
@@ -578,9 +529,9 @@ text(-2.4,-0.65,['r = ' sprintf('%2.2f',rLTL) ' (p = ' sprintf('%2.2f',pLTL) ')'
 text(-2.4,-0.8,['RMSE = ' sprintf('%2.2f',rmseLTL)])
 axis([-2.5 -0.5 -2.5 -0.5])
 xlabel('Hist COBALT')
-ylabel('FOSI CESM')
+ylabel('4P2Z CESM')
 title('log_1_0 TEeff LTL')
 
 stamp([harv '_' cfile])
-print('-dpng',[ppath 'FOSI_Hist_',mod,'comp_TEeffs_temp.png'])
+print('-dpng',[ppath 'COBALThist_',mod,'comp_TEeffs_temp.png'])
 

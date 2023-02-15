@@ -6,7 +6,7 @@ clear
 close all
 
 %% Fish data
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ070_mMZ035_nmort1_BE08_CC80_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 mod = '4P2Z_All_fish03_1deg';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/4P2Z/';
@@ -248,13 +248,13 @@ Cmz_stover5 = mz_stf/nt;
 %%
 %happens whole year
 test2=floor(Cmz_stover5);
-%histogram(test2)        % 4p4z;    4p2z v1;    4p2z v2     4p2z v3
-sum(test2)/length(test2) % = 4.70;              4.84;       4.42
+%histogram(test2)        % 4p4z;    4p2z v1;    4p2z v2     4p2z v3  A=0.75
+sum(test2)/length(test2) % = 4.70;              4.84;       4.42    3.25
 
 %happens >=50% of year
 test4=round(Cmz_stover5);
 %histogram(test4)
-sum(test4)/length(test4) % = 5.15;              5.34        4.90
+sum(test4)/length(test4) % = 5.15;              5.34        4.90    3.73
 
 %% Plot in time
 figure(6)
