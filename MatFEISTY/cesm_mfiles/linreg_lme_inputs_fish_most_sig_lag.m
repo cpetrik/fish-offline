@@ -55,6 +55,7 @@ yen = 68;
 lags = repmat(yr,length(ename),1);
 lags = lags';
 
+%%
 for L = 1:length(lid)
 
     %LME

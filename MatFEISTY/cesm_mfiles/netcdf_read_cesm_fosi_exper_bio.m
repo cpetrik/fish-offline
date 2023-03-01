@@ -1,15 +1,15 @@
 % FEISTY output at all locations
 
-clear all
+clear 
 close all
 
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 harv = 'All_fish03';
 sims = {'v15_climatol_';'v15_varFood_';'v15_varTemp_'};
 
-for n=1:length(sims)
+for n=2 %1:length(sims)
     close all
     exper = sims{n};
 

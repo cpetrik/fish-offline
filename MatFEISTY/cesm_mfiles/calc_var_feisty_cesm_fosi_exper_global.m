@@ -1,17 +1,17 @@
 % CESM FEISTY FOSI runs
 % calc interann variability by grid cell and lme
 
-clear all
+clear 
 close all
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 sims = {'v15_All_fish03_';'v15_climatol_';'v15_varTemp_';'v15_varFood_'};
-mod = sims{2};
+mod = sims{4};
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
@@ -440,216 +440,9 @@ cvf(GRD.ID)=f_cv;
 cvp(GRD.ID)=p_cv;
 cvd(GRD.ID)=d_cv;
 
-%% map
-% 8plot by stage
-f1 = figure('Units','inches','Position',[1 3 6.5 8]);
-%f1.Units = 'inches';
-
-%A - sf
-subplot('Position',[0.025 0.75 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvsf)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'SF','HorizontalAlignment','center')
-
-%B - sp
-subplot('Position',[0.025 0.5 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvsp)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'SP','HorizontalAlignment','center')
-
-%C - mp
-subplot('Position',[0.025 0.25 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvmp)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'MP','HorizontalAlignment','center')
-
-%D - lp
-subplot('Position',[0.025 0.0 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvlp)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'LP','HorizontalAlignment','center')
-
-%E - mf
-subplot('Position',[0.5 0.75 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvmf)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'MF','HorizontalAlignment','center')
-
-%F - sd
-subplot('Position',[0.5 0.5 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvsd)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-%colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
-set(gcf,'renderer','painters')
-text(0,1.75,'SD','HorizontalAlignment','center')
-
-%G - md
-subplot('Position',[0.5 0.25 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvmd)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'MD','HorizontalAlignment','center')
-
-%H - ld
-subplot('Position',[0.5 0.0 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvld)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'LD','HorizontalAlignment','center')
-
-print('-dpng',[ppath 'Map_FEISTY_FOSI_',mod,'interann_coeffvar_stages.png'])
-
-%% 8plot by type
-f2 = figure('Units','inches','Position',[1 3 6.5 8]);
-%f1.Units = 'inches';
-
-%A - s
-subplot('Position',[0.025 0.75 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvs)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'Sm','HorizontalAlignment','center')
-
-%B - m
-subplot('Position',[0.025 0.5 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvm)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'Md','HorizontalAlignment','center')
-
-%C - l
-subplot('Position',[0.025 0.25 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvl)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'Lg','HorizontalAlignment','center')
-
-%D - F
-subplot('Position',[0.025 0.0 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvf)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'F','HorizontalAlignment','center')
-
-%E - P
-subplot('Position',[0.5 0.75 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvp)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'P','HorizontalAlignment','center')
-
-%F - D
-subplot('Position',[0.5 0.5 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvd)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-%colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
-set(gcf,'renderer','painters')
-text(0,1.75,'D','HorizontalAlignment','center')
-
-%G - B
-subplot('Position',[0.5 0.25 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cvb)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'Bent','HorizontalAlignment','center')
-
-%H - all
-subplot('Position',[0.5 0.0 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT,TLONG,cva)
-colormap(cmYR)
-colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'All','HorizontalAlignment','center')
-
-print('-dpng',[ppath 'Map_FEISTY_FOSI_',mod,'interann_coeffvar_types.png'])
-
 %% save
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 save([fpath 'FEISTY_FOSI_',mod,'interann_var.mat'],...
     'cvsf','cvsp','cvsd','cvmf','cvmp','cvmd','cvlp','cvld','cvb','cva',...
     'cvs','cvm','cvl','cvf','cvp','cvd',...
