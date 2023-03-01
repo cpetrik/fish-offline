@@ -34,9 +34,14 @@ end
 %pick year
 StartYr = 1954;
 
-exper2 = ['v15_Y' num2str(StartYr) '_All_fish03_' ];
+exper2 = ['v15_Y' num2str(StartYr) '_All_fish03' ];
 
-load([fpath 'Plot_Means_DPLE_' exper2 cfile '.mat'])
+load([fpath 'Time_Means_DPLE_LME_' exper2 '.mat'])
+
+%%
+Ftmean = lme_mSF + lme_mMF;
+Ptmean = lme_mSP + lme_mMP + lme_mLP;
+Dtmean = lme_mSD + lme_mMD + lme_mLD;
 
 %% Plots in time
 t = 1:122; %time;
@@ -69,8 +74,8 @@ ylabel('Biomass (g m^-^2)')
 title('D')
 
 subplot(2,2,4)
-plot(y,(Btmean),'color',[0.5 0.5 0.5],'Linewidth',0.5); hold on;
-plot(y,(mean(Btmean)),'k','Linewidth',3); hold on;
+plot(y,squeeze(lme_mB(3,:,:)),'color',[0.5 0.5 0.5],'Linewidth',0.5); hold on;
+plot(y,mean(squeeze(lme_mB(3,:,:))),'k','Linewidth',3); hold on;
 xlim([y(1) y(end)])
 xlabel('Time (y)')
 ylabel('Biomass (g m^-^2)')

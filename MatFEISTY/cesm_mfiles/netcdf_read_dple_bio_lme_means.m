@@ -10,13 +10,13 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/DPLE/'];
 
 %pick year
-StartYr = 1954;
+StartYr = 2010;
 %loop over members
 submem = 1:40;
 
 %%
-for mem=1:length(submem) %will loop over
-    Member = submem(mem);
+for mod=1:length(submem) %will loop over
+    Member = submem(mod);
     harv = ['v15_Y' num2str(StartYr) '_M' num2str(Member) '_All_fish03_' ];
 
     %% SP
@@ -177,34 +177,34 @@ for mem=1:length(submem) %will loop over
         lid = find(lme_grid==L);
         if (~isempty(lid))
         %mean biomass
-        lme_mSF(L,:,mem) = nanmean(SF.bio(lid,:));
-        lme_mSP(L,:,mem) = nanmean(SP.bio(lid,:));
-        lme_mSD(L,:,mem) = nanmean(SD.bio(lid,:));
-        lme_mMF(L,:,mem) = nanmean(MF.bio(lid,:));
-        lme_mMP(L,:,mem) = nanmean(MP.bio(lid,:));
-        lme_mMD(L,:,mem) = nanmean(MD.bio(lid,:));
-        lme_mLP(L,:,mem) = nanmean(LP.bio(lid,:));
-        lme_mLD(L,:,mem) = nanmean(LD.bio(lid,:));
-        lme_mB(L,:,mem)  = nanmean(Bent.bio(lid,:));
+        lme_mSF(L,:,mod) = nanmean(SF.bio(lid,:));
+        lme_mSP(L,:,mod) = nanmean(SP.bio(lid,:));
+        lme_mSD(L,:,mod) = nanmean(SD.bio(lid,:));
+        lme_mMF(L,:,mod) = nanmean(MF.bio(lid,:));
+        lme_mMP(L,:,mod) = nanmean(MP.bio(lid,:));
+        lme_mMD(L,:,mod) = nanmean(MD.bio(lid,:));
+        lme_mLP(L,:,mod) = nanmean(LP.bio(lid,:));
+        lme_mLD(L,:,mod) = nanmean(LD.bio(lid,:));
+        lme_mB(L,:,mod)  = nanmean(Bent.bio(lid,:));
         %total biomass
-        lme_tSF(L,:,mem) = nansum(SF.bio(lid,:));
-        lme_tSP(L,:,mem) = nansum(SP.bio(lid,:));
-        lme_tSD(L,:,mem) = nansum(SD.bio(lid,:));
-        lme_tMF(L,:,mem) = nansum(MF.bio(lid,:));
-        lme_tMP(L,:,mem) = nansum(MP.bio(lid,:));
-        lme_tMD(L,:,mem) = nansum(MD.bio(lid,:));
-        lme_tLP(L,:,mem) = nansum(LP.bio(lid,:));
-        lme_tLD(L,:,mem) = nansum(LD.bio(lid,:));
-        lme_tB(L,:,mem)  = nansum(Bent.bio(lid,:));
+        lme_tSF(L,:,mod) = nansum(SF.bio(lid,:));
+        lme_tSP(L,:,mod) = nansum(SP.bio(lid,:));
+        lme_tSD(L,:,mod) = nansum(SD.bio(lid,:));
+        lme_tMF(L,:,mod) = nansum(MF.bio(lid,:));
+        lme_tMP(L,:,mod) = nansum(MP.bio(lid,:));
+        lme_tMD(L,:,mod) = nansum(MD.bio(lid,:));
+        lme_tLP(L,:,mod) = nansum(LP.bio(lid,:));
+        lme_tLD(L,:,mod) = nansum(LD.bio(lid,:));
+        lme_tB(L,:,mod)  = nansum(Bent.bio(lid,:));
         end
     end
 
 end
 %%
-mod = ['v15_Y' num2str(StartYr) '_All_fish03' ];
+vers = ['v15_Y' num2str(StartYr) '_All_fish03' ];
 
 dpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/DPLE/'];
-save([dpath 'Time_Means_DPLE_LME_' mod '.mat'],'time',...
+save([dpath 'Time_Means_DPLE_LME_' vers '_v2.mat'],'time',...
     'lme_mSP','lme_mSF','lme_mSD','lme_mMF','lme_mMP','lme_mMD',...
     'lme_mLP','lme_mLD','lme_mB',...
     'lme_tSP','lme_tSF','lme_tSD','lme_tMF','lme_tMP','lme_tMD',...
