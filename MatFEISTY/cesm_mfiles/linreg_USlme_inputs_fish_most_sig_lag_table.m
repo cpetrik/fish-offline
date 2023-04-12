@@ -5,6 +5,10 @@ close all
 
 ppath = "/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/corrs/";
 
+% LMEs
+lid = [54,1:2,65,10,3,5:7]; %ADD 65 = Aleutian Islands
+lname = {'CHK','EBS','GAK','AI','HI','CCE','GMX','SE','NE'};
+
 %% FOSI input forcing
 
 %cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
@@ -46,9 +50,9 @@ yen = 68;
 
 cnam = {'coef','p','lag','idriver','driver'};
 
-% All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
-AA = aa(:,1);
-lid = find(~isnan(AA));
+% LMEs
+lid = [54,1:2,65,10,3,5:7]; %ADD 65 = Aleutian Islands
+lname = {'CHK','EBS','GAK','AI','HI','CCE','GMX','SE','NE'};
 
 %Lags
 yr = 0:5;
@@ -91,7 +95,7 @@ for L = 1:length(lid)
 
     %LME
     i = lid(L);
-    ilme = num2str(i);
+    ilme = lname{L};
 
     for j = 1:length(tanom)
 
@@ -133,7 +137,7 @@ for L = 1:length(lid)
 
     end % driver
     %%
-    %save([spath,ilme,'_regress_drivers_div2SD_0_5_lag.mat'])
+    save([spath,ilme,'_regress_drivers_div2SD_0_5_lag.mat'])
 
     %%
     maxC = max(abs(FtabC(:)));
@@ -179,7 +183,6 @@ for L = 1:length(lid)
 end %LME
 
 %%
-lname = cellstr(num2str(lid));
 % cnam, lname, tanom2
 Ftab1 = array2table(LFtab,"RowNames",lname);
 Ftab1(:,5) = LFt;
@@ -202,18 +205,14 @@ Btab1(:,5) = LBt;
 Btab1.Properties.VariableNames = cnam;
 
 %%
-writetable(Ftab1,[spath,'LMEs_regress_driver_div2SD_maxcoef_F.csv'],...
+writetable(Ftab1,[spath,'USLMEs_regress_driver_div2SD_maxcoef_F.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[spath,'LMEs_regress_driver_div2SD_maxcoef_P.csv'],...
+writetable(Ptab1,[spath,'USLMEs_regress_driver_div2SD_maxcoef_P.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[spath,'LMEs_regress_driver_div2SD_maxcoef_D.csv'],...
+writetable(Dtab1,[spath,'USLMEs_regress_driver_div2SD_maxcoef_D.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Atab1,[spath,'LMEs_regress_driver_div2SD_maxcoef_A.csv'],...
+writetable(Atab1,[spath,'USLMEs_regress_driver_div2SD_maxcoef_A.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Btab1,[spath,'LMEs_regress_driver_div2SD_maxcoef_B.csv'],...
+writetable(Btab1,[spath,'USLMEs_regress_driver_div2SD_maxcoef_B.csv'],...
     'Delimiter',',','WriteRowNames',true);
-
-save([spath,'LMEs_regress_driver_div2SD_maxcoefs.mat'],...
-    'LFtab','LPtab','LDtab','LAtab','LBtab',...
-    'Ftab1','Ptab1','Dtab1','Atab1','Btab1','lid');
 

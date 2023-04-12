@@ -20,20 +20,56 @@ NOI(abs(NOI)>9) = nan;
 PDO(abs(PDO)>9) = nan;
 SOI(abs(SOI)>9) = nan;
 
-%% Climate anom DJF means
-djf = [1,2,12];
+%% Put previous Dec before Jan & Feb
 
-mAMO = nanmean(AMO(:,djf),2);
-mAO = nanmean(AO(:,djf),2);
-mMEI = nanmean(MEI(:,djf),2);
-mNAO = nanmean(NAO(:,djf),2);
-mNino12 = nanmean(Nino12(:,djf),2);
-mNino34 = nanmean(Nino34(:,djf),2);
-mNino3 = nanmean(Nino3(:,djf),2);
-mNino4 = nanmean(Nino4(:,djf),2);
-mNOI = nanmean(NOI(:,djf),2);
-mPDO = nanmean(PDO(:,djf),2);
-mSOI = nanmean(SOI(:,djf),2);
+wAMO = AMO(1:(end-1),12);
+wAO = AO(1:(end-1),12);
+wMEI = MEI(1:(end-1),12);
+wNAO = NAO(1:(end-1),12);
+wNino12 = Nino12(1:(end-1),12);
+wNino34 = Nino34(1:(end-1),12);
+wNino3 = Nino3(1:(end-1),12);
+wNino4 = Nino4(1:(end-1),12);
+wNOI = NOI(1:(end-1),12);
+wPDO = PDO(1:(end-1),12);
+wSOI = SOI(1:(end-1),12);
+
+wAMO(:,2:3) = AMO(2:end,[1,2]);
+wAO(:,2:3) = AO(2:end,[1,2]);
+wMEI(:,2:3) = MEI(2:end,[1,2]);
+wNAO(:,2:3) = NAO(2:end,[1,2]);
+wNino12(:,2:3) = Nino12(2:end,[1,2]);
+wNino34(:,2:3) = Nino34(2:end,[1,2]);
+wNino3(:,2:3) = Nino3(2:end,[1,2]);
+wNino4(:,2:3) = Nino4(2:end,[1,2]);
+wNOI(:,2:3) = NOI(2:end,[1,2]);
+wPDO(:,2:3) = PDO(2:end,[1,2]);
+wSOI(:,2:3) = SOI(2:end,[1,2]);
+
+AMOyr = AMOyr(2:end);
+AOyr = AOyr(2:end);
+MEIyr = MEIyr(2:end);
+NAOyr = NAOyr(2:end);
+Nino12yr = Nino12yr(2:end);
+Nino34yr = Nino34yr(2:end);
+Nino3yr = Nino3yr(2:end);
+Nino4yr = Nino4yr(2:end);
+NOIyr = NOIyr(2:end);
+PDOyr = PDOyr(2:end);
+SOIyr = SOIyr(2:end);
+
+%% Climate anom DJF means
+mAMO = nanmean(wAMO,2);
+mAO = nanmean(wAO,2);
+mMEI = nanmean(wMEI,2);
+mNAO = nanmean(wNAO,2);
+mNino12 = nanmean(wNino12,2);
+mNino34 = nanmean(wNino34,2);
+mNino3 = nanmean(wNino3,2);
+mNino4 = nanmean(wNino4,2);
+mNOI = nanmean(wNOI,2);
+mPDO = nanmean(wPDO,2);
+mSOI = nanmean(wSOI,2);
 
 %% Isolate years of interest 1948-2015
 fyr = 1948:2015;
@@ -64,14 +100,14 @@ ySOI = SOIyr(SOIyr>=1948 & SOIyr<=2015);
 %% put in matrix
 manom = nan*ones(11,68);
 manom(1,:) = mAMO;
-manom(2,3:end) = mAO;
-manom(3,32:end) = mMEI;
+manom(2,4:end) = mAO;
+manom(3,33:end) = mMEI;
 manom(4,:) = mNAO;
 manom(5,:) = mNino12;
 manom(6,:) = mNino34;
 manom(7,:) = mNino3;
 manom(8,:) = mNino4;
-manom(9,1:60) = mNOI;
+manom(9,2:60) = mNOI;
 manom(10,:) = mPDO;
 manom(11,:) = mSOI;
 
