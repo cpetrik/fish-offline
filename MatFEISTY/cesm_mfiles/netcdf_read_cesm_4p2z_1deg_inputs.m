@@ -1,4 +1,5 @@
 % Read CESM 1 degree companion run for JRA55-forced high res
+% Early cycle
 
 
 clear all

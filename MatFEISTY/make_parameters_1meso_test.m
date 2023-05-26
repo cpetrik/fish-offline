@@ -48,14 +48,14 @@ function param = make_parameters_1meso_test()
 
     %%%! Metabolism constants (activity and basal)
     param.amet = 4;       % coeff on met (4, 4.4)
-    param.h = 20;         % coeff on Cmax %19.72;
+    param.h = 20;         % coeff on Cmax %19.72; 20
     param.gam = 70;       % coeff on search area (70 baseline) 5.9;
     param.kc = 0.063;     % coeff on cmax T-dep fn (orig 0.063)
     param.ke = 0.063;     % coeff on enc T-dep fn (orig 0.063)
     param.kt = 0.0855;    % coeff on met T-dep fn (orig 0.063) %0.0855
-    param.bpow = 0.175;   % power on metab fn (orig 0.25)
-    param.benc = 0.20;    % power on enc fn (orig 0.20)
-    param.bcmx = 0.25;    % power on cmax fn (orig 0.25)
+    param.bpow = 0.185;   % power on metab fn (orig 0.25) 0.175
+    param.benc = 0.20;    % power on enc fn (orig 0.20) 0.20
+    param.bcmx = 0.25;    % power on cmax fn (orig 0.25) 0.25
 
     %%%! Transfer efficiency of detritus to benthic prey
     param.bent_eff = 0.075;
@@ -85,7 +85,7 @@ function param = make_parameters_1meso_test()
     %large detritivore eats detritus, medium forage fish, medium piscivore, medium detrivore
 
     param.D  = 0.75;  %Demersal feeding in pelagic reduction
-    param.A  = 0.75;   %Adult predation reduction %*****
+    param.A  = 0.5;   %Adult predation reduction %*****
     param.MZ = 0.9;   %Preference on one mesozooplankton group %0.9 standard 1 meso CESM
 
     param.MF_phi_MZ = 0.5 * param.MZ;

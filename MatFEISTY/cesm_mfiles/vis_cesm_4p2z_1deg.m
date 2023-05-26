@@ -6,7 +6,8 @@ clear
 close all
 
 %% Fish data
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+%cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b200-k086_c20-b250_D075_A065_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 mod = '4P2Z_All_fish03_1deg';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/4P2Z/';

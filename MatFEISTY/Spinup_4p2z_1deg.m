@@ -19,7 +19,8 @@ MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 %! Create a directory for output
 model = '4P2Z';
-[fname,simname] = sub_fname_spin_1meso(param,model);
+exper = 'Old_cycle';
+[fname,simname] = sub_fname_spin_1meso(param,model,exper);
 
 %! Storage variables
 S_Bent_bio = zeros(NX,DAYS);
@@ -43,30 +44,30 @@ S_Lrg_d = zeros(NX,DAYS);
 % P_Lrg_p = zeros(NX,DAYS);
 % P_Lrg_d = zeros(NX,DAYS);
 
-% yB  = zeros(NX,YEARS);
-% ySF = zeros(NX,YEARS);
-% ySP = zeros(NX,YEARS);
-% ySD = zeros(NX,YEARS);
-% yMF = zeros(NX,YEARS);
-% yMP = zeros(NX,YEARS);
-% yMD = zeros(NX,YEARS);
-% yLP = zeros(NX,YEARS);
-% yLD = zeros(NX,YEARS);
+yB  = zeros(NX,YEARS);
+ySF = zeros(NX,YEARS);
+ySP = zeros(NX,YEARS);
+ySD = zeros(NX,YEARS);
+yMF = zeros(NX,YEARS);
+yMP = zeros(NX,YEARS);
+yMD = zeros(NX,YEARS);
+yLP = zeros(NX,YEARS);
+yLD = zeros(NX,YEARS);
 
-load([fname,'_end_cycle_32.mat'])
+%load([fname,'_end_cycle_32.mat'])
 
 %! Initialize
 [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish_spin(ID,DAYS);
 
-BENT.mass =     yB(:,32);
-Sml_f.bio =    ySF(:,32);
-Sml_p.bio =    ySP(:,32);
-Sml_d.bio =    ySD(:,32);
-Med_f.bio =    yMF(:,32);
-Med_p.bio =    yMP(:,32);
-Med_d.bio =    yMD(:,32);
-Lrg_p.bio =    yLP(:,32);
-Lrg_d.bio =    yLD(:,32);
+% BENT.mass =     yB(:,32);
+% Sml_f.bio =    ySF(:,32);
+% Sml_p.bio =    ySP(:,32);
+% Sml_d.bio =    ySD(:,32);
+% Med_f.bio =    yMF(:,32);
+% Med_p.bio =    yMP(:,32);
+% Med_d.bio =    yMD(:,32);
+% Lrg_p.bio =    yLP(:,32);
+% Lrg_d.bio =    yLD(:,32);
 
 %%%%%%%%%%%%%%% Setup NetCDF save
 %! Setup netcdf path to store to
@@ -164,7 +165,7 @@ netcdf.endDef(ncidMZ);
 load('/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/4P2Z/Data_cesm_4p2z_daily_1958.mat','ESM')
 MNT = 0;
 %! Run model
-for YR = 33:YEARS % years
+for YR = 1:YEARS % years
     %! Load a year's ESM data
     ti = num2str(YR)
 

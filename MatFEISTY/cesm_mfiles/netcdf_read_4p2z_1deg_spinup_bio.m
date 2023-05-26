@@ -4,7 +4,7 @@ clear
 close all
 
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b185-k086_c20-b250_D075_A065_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 %Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100/4P2Z
 
@@ -14,7 +14,7 @@ harv = 'All_fish03';
 
 %% SP
 %ncdisp([fpath '4P2Z_Spinup_' harv '_sml_p.nc'])
-ncid = netcdf.open([fpath '4P2Z_Spinup_' harv '_sml_p.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'Old_cycle_Spinup_' harv '_sml_p.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:(nvars)
     varname = netcdf.inqVar(ncid, i-1);
@@ -29,13 +29,12 @@ netcdf.close(ncid);
 % end
 
 %%
-[ni,nt] = size(biomass);
 
 SP.bio = biomass;
 clear biomass
 
 %% SF
-ncid = netcdf.open([fpath '4P2Z_Spinup_' harv '_sml_f.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'Old_cycle_Spinup_' harv '_sml_f.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -44,11 +43,11 @@ for i = 1:nvars
 end
 netcdf.close(ncid);
 
-SF.bio = biomass(:,1:nt);
+SF.bio = biomass;
 clear biomass 
 
 % SD
-ncid = netcdf.open([fpath '4P2Z_Spinup_' harv '_sml_d.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'Old_cycle_Spinup_' harv '_sml_d.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -61,7 +60,7 @@ SD.bio = biomass;
 clear biomass 
 
 % MP
-ncid = netcdf.open([fpath '4P2Z_Spinup_' harv '_med_p.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'Old_cycle_Spinup_' harv '_med_p.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -74,7 +73,7 @@ MP.bio = biomass;
 clear biomass
 
 % MF
-ncid = netcdf.open([fpath '4P2Z_Spinup_' harv '_med_f.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'Old_cycle_Spinup_' harv '_med_f.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -87,7 +86,7 @@ MF.bio = biomass;
 clear biomass
 
 % MD
-ncid = netcdf.open([fpath '4P2Z_Spinup_' harv '_med_d.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'Old_cycle_Spinup_' harv '_med_d.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -100,7 +99,7 @@ MD.bio = biomass;
 clear biomass
 
 % LP
-ncid = netcdf.open([fpath '4P2Z_Spinup_' harv '_lrg_p.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'Old_cycle_Spinup_' harv '_lrg_p.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -113,7 +112,7 @@ LP.bio = biomass;
 clear biomass
 
 % LD
-ncid = netcdf.open([fpath '4P2Z_Spinup_' harv '_lrg_d.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'Old_cycle_Spinup_' harv '_lrg_d.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -126,7 +125,7 @@ LD.bio = biomass;
 clear biomass
 
 % Benthic material
-ncid = netcdf.open([fpath '4P2Z_Spinup_' harv '_bent.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'Old_cycle_Spinup_' harv '_bent.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -140,7 +139,7 @@ clear biomass
 
 
 %% Save last year for initializing forecast runs
-nt=2016;
+[ni,nt] = size(SF.bio);
 
 Sml_f.bio = nanmean(SF.bio(:,nt-11:nt),2);
 Sml_p.bio = nanmean(SP.bio(:,nt-11:nt),2);
@@ -181,7 +180,7 @@ lp_mean=mean(LP.bio(:,yrP),2);
 ld_mean=mean(LD.bio(:,yrP),2);
 b_mean =mean(Bent.bio(:,yrP),2);
 
-save([fpath 'Means_4P2Z_Spinup_' cfile '.mat'],'time','yrP',...
+save([fpath 'Means_Old_cycle_Spinup_' cfile '.mat'],'time','yrP',...
     'sf_tmean','sp_tmean','sd_tmean',...
     'mf_tmean','mp_tmean','md_tmean',...
     'lp_tmean','ld_tmean','b_tmean',...

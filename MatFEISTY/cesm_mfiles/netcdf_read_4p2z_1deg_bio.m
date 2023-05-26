@@ -4,7 +4,7 @@ clear
 close all
 
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b200-k086_c20-b250_D075_A065_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 %Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100/4P2Z
 
@@ -238,3 +238,4 @@ plot(mo,mz_ttf/nid,'b'); hold on;
 mean(mz_ttf/nid) %~43% for 4p4z; 
                     %~50% for 4p2z, MZ=0.9; ~45%, MZ=0.8; ~41%, MZ=0.7
                     % 31% for 4p2z w/A=0.75
+                    % 15% for 4p2z w/A=0.75 & bmet=0.2125
