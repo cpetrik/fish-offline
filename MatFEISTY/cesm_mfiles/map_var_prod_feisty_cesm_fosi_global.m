@@ -1,5 +1,5 @@
 % CESM FEISTY FOSI runs
-% map interann variability by grid cell 
+% map interann variability in prod by grid cell 
 
 clear 
 close all
@@ -15,12 +15,12 @@ ppath = [pp cfile '/FOSI/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([fpath 'FEISTY_FOSI_',mod,'interann_var.mat'],...
-    'cvsf','cvsp','cvsd','cvmf','cvmp','cvmd','cvlp','cvld','cvb','cva',...
+load([fpath 'FEISTY_FOSI_',mod,'prod_interann_var.mat'],...
+    'cvsf','cvsp','cvsd','cvmf','cvmp','cvmd','cvlp','cvld','cva',...
     'cvs','cvm','cvl','cvf','cvp','cvd');
 
-load([fpath 'Plot_Means_FOSI_' mod cfile '.mat'],...
-    'AllF','AllP','AllD','AllS','AllM','AllL','Zb');
+load([fpath 'Plot_Prod_Means_FOSI_' mod cfile '.mat'],...
+    'Pmf','Plp','Pld','AllS','AllM','AllL','All');
 
 %% Map data
 %cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
@@ -43,21 +43,17 @@ cmYOR=cbrewer('seq','YlOrRd',66,'pchip');
 cmYOB=cbrewer('seq','YlOrBr',66,'pchip');
 cmOR=cbrewer('seq','OrRd',66,'pchip');
 
-%% remove CVs with very low mean biomass
-All = AllF + AllP + AllD;
-
+%% remove CVs with very low mean prod
 cvs(AllS<1e-10) = nan;
 cvm(AllM<1e-10) = nan;
 cvl(AllL<1e-10) = nan;
-cvf(AllF<1e-10) = nan;
-cvp(AllP<1e-10) = nan;
-cvd(AllD<1e-10) = nan;
+cvf(Pmf<1e-10) = nan;
+cvp(Plp<1e-10) = nan;
+cvd(Pld<1e-10) = nan;
 cva(All<1e-10) = nan;
-cvb(Zb<1e-10) = nan;
 
 %% fix seam
-[TLAT2,TLON2,AllB] = cyclic_map_seam_cesm(TLAT,TLONG,cvb);
-[~,~,AllS2] = cyclic_map_seam_cesm(TLAT,TLONG,cvs);
+[TLAT2,TLON2,AllS2] = cyclic_map_seam_cesm(TLAT,TLONG,cvs);
 [~,~,AllM2] = cyclic_map_seam_cesm(TLAT,TLONG,cvm);
 [~,~,AllL2] = cyclic_map_seam_cesm(TLAT,TLONG,cvl);
 [~,~,AllF2] = cyclic_map_seam_cesm(TLAT,TLONG,cvf);
@@ -105,7 +101,7 @@ caxis([0 1])
 set(gcf,'renderer','painters')
 text(0,1.75,'Lg','HorizontalAlignment','center')
 
-%D - F
+%D - All
 subplot('Position',[0.015 0.0 0.44 0.25])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1,'origin',[0 -100 0])
@@ -117,7 +113,7 @@ caxis([0 1])
 set(gcf,'renderer','painters')
 text(0,1.75,'All','HorizontalAlignment','center')
 
-%E - P
+%E - F
 subplot('Position',[0.47 0.75 0.44 0.25])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1,'origin',[0 -100 0])
@@ -129,7 +125,7 @@ caxis([0 1])
 set(gcf,'renderer','painters')
 text(0,1.75,'F','HorizontalAlignment','center')
 
-%F - D
+%F - P
 subplot('Position',[0.47 0.5 0.44 0.25])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1,'origin',[0 -100 0])
@@ -142,7 +138,7 @@ colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation
 set(gcf,'renderer','painters')
 text(0,1.75,'P','HorizontalAlignment','center')
 
-%G - B
+%G - D
 subplot('Position',[0.47 0.25 0.44 0.25])
 axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
     'Grid','off','FLineWidth',1,'origin',[0 -100 0])
@@ -155,18 +151,18 @@ set(gcf,'renderer','painters')
 text(0,1.75,'D','HorizontalAlignment','center')
 
 %H - all
-subplot('Position',[0.47 0.0 0.44 0.25])
-axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-    'Grid','off','FLineWidth',1,'origin',[0 -100 0])
-surfm(TLAT2,TLON2,(AllB))
-colormap(cmYOR)
-%colorbar
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-caxis([0 1])
-set(gcf,'renderer','painters')
-text(0,1.75,'B','HorizontalAlignment','center')
+% subplot('Position',[0.47 0.0 0.44 0.25])
+% axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
+%     'Grid','off','FLineWidth',1,'origin',[0 -100 0])
+% surfm(TLAT2,TLON2,(AllB))
+% colormap(cmYOR)
+% %colorbar
+% h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+% caxis([0 1])
+% set(gcf,'renderer','painters')
+% text(0,1.75,'B','HorizontalAlignment','center')
 
-print('-dpng',[ppath 'Map_FEISTY_FOSI_',mod,'interann_coeffvar_types.png'])
+print('-dpng',[ppath 'Map_FEISTY_FOSI_',mod,'prod_interann_coeffvar_types.png'])
 
 
 %% map
@@ -271,5 +267,5 @@ caxis([0 1])
 set(gcf,'renderer','painters')
 text(0,1.75,'LD','HorizontalAlignment','center')
 
-print('-dpng',[ppath 'Map_FEISTY_FOSI_',mod,'interann_coeffvar_stages.png'])
+print('-dpng',[ppath 'Map_FEISTY_FOSI_',mod,'prod_interann_coeffvar_stages.png'])
 

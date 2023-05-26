@@ -1,4 +1,4 @@
-% Calc LME biomass of FEISTY
+% Calc LME production of FEISTY
 % CESM FOSI
 
 clear 
@@ -11,13 +11,14 @@ mod = 'v15_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 dpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-ppath = [pp cfile '/FOSI/'];
+ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([dpath 'Space_Means_FOSI_' mod cfile '.mat'],'sf_sbio','sp_sbio','sd_sbio',...
-    'mf_sbio','mp_sbio','md_sbio',...
-    'lp_sbio','ld_sbio','b_sbio');
+load([dpath 'Space_Means_FOSI_' mod cfile '.mat'],...
+    'sf_sprod','sp_sprod','sd_sprod',...
+    'mf_sprod','mp_sprod','md_sprod',...
+    'lp_sprod','ld_sprod');
 
 %% Map data
 cpath = '/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
@@ -46,16 +47,15 @@ Cmp=NaN*ones(ni,nj);
 Cmd=NaN*ones(ni,nj);
 Clp=NaN*ones(ni,nj);
 Cld=NaN*ones(ni,nj);
-Cb =NaN*ones(ni,nj);
-Csf(ID)=sf_sbio;
-Csp(ID)=sp_sbio;
-Csd(ID)=sd_sbio;
-Cmf(ID)=mf_sbio;
-Cmp(ID)=mp_sbio;
-Cmd(ID)=md_sbio;
-Clp(ID)=lp_sbio;
-Cld(ID)=ld_sbio;
-Cb(ID) = b_sbio;
+
+Csf(ID)=sf_sprod;
+Csp(ID)=sp_sprod;
+Csd(ID)=sd_sprod;
+Cmf(ID)=mf_sprod;
+Cmp(ID)=mp_sprod;
+Cmd(ID)=md_sprod;
+Clp(ID)=lp_sprod;
+Cld(ID)=ld_sprod;
 
 CF = Csf+Cmf;
 CP = Csp+Cmp+Clp;
@@ -74,48 +74,34 @@ Amp_mean = Cmp .* AREA_OCN;
 Amd_mean = Cmd .* AREA_OCN;
 Alp_mean = Clp .* AREA_OCN;
 Ald_mean = Cld .* AREA_OCN;
-Ab_mean  = Cb  .* AREA_OCN;
 
 %% Calc LMEs
 tlme = double(lme_mask);
 tlme(tlme<0) = nan;
 
-%lme_mbio = NaN*ones(66,9);
-lme_sbio = NaN*ones(66,9);
+lme_sprod = NaN*ones(66,8);
 lme_area = NaN*ones(66,1);
 
 for L=1:66
     lid = find(tlme==L);
-    %mean biomass - Change to area-weighted means
-%     lme_mbio(L,1) = nanmean(Asf_mean(lid));
-%     lme_mbio(L,2) = nanmean(Asp_mean(lid));
-%     lme_mbio(L,3) = nanmean(Asd_mean(lid));
-%     lme_mbio(L,4) = nanmean(Amf_mean(lid));
-%     lme_mbio(L,5) = nanmean(Amp_mean(lid));
-%     lme_mbio(L,6) = nanmean(Amd_mean(lid));
-%     lme_mbio(L,7) = nanmean(Alp_mean(lid));
-%     lme_mbio(L,8) = nanmean(Ald_mean(lid));
-%     lme_mbio(L,9) = nanmean(Ab_mean(lid));
-    
-    %total biomass
-    lme_sbio(L,1) = sum(Asf_mean(lid),'omitnan');
-    lme_sbio(L,2) = sum(Asp_mean(lid),'omitnan');
-    lme_sbio(L,3) = sum(Asd_mean(lid),'omitnan');
-    lme_sbio(L,4) = sum(Amf_mean(lid),'omitnan');
-    lme_sbio(L,5) = sum(Amp_mean(lid),'omitnan');
-    lme_sbio(L,6) = sum(Amd_mean(lid),'omitnan');
-    lme_sbio(L,7) = sum(Alp_mean(lid),'omitnan');
-    lme_sbio(L,8) = sum(Ald_mean(lid),'omitnan');
-    lme_sbio(L,9) = sum(Ab_mean(lid),'omitnan');
+    %total prod for area-weighted mean
+    lme_sprod(L,1) = sum(Asf_mean(lid),'omitnan');
+    lme_sprod(L,2) = sum(Asp_mean(lid),'omitnan');
+    lme_sprod(L,3) = sum(Asd_mean(lid),'omitnan');
+    lme_sprod(L,4) = sum(Amf_mean(lid),'omitnan');
+    lme_sprod(L,5) = sum(Amp_mean(lid),'omitnan');
+    lme_sprod(L,6) = sum(Amd_mean(lid),'omitnan');
+    lme_sprod(L,7) = sum(Alp_mean(lid),'omitnan');
+    lme_sprod(L,8) = sum(Ald_mean(lid),'omitnan');
 
     %LME area
     lme_area(L,1) = sum(AREA_OCN(lid),'omitnan');
 end
 
 %% Change to area-weighted means
-lme_area_mat = repmat(lme_area,1,9);
-lme_mbio = lme_sbio ./ lme_area_mat;
+lme_area_mat = repmat(lme_area,1,8);
+lme_mprod = lme_sprod ./ lme_area_mat;
 
 %%
 save([dpath 'LME_fosi_fished_',mod,cfile '.mat'],...
-    'lme_mbio','lme_sbio','-append');
+    'lme_mprod','lme_area','-append');

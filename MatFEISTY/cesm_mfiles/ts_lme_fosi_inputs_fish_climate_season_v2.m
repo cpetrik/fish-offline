@@ -32,7 +32,8 @@ end
 sims = {'v15_All_fish03_';'v15_climatol_';'v15_varFood_';'v15_varTemp_'};
 mod = sims{1};
 
-load([fpath 'FEISTY_FOSI_',mod,'lme_ann_mean_anoms.mat']) % Anoms with linear trend removed
+load([fpath 'FEISTY_FOSI_',mod,'lme_ann_mean_anoms.mat']) 
+% Anoms of area-weighted means with linear trend removed
 
 %%
 % LMEs

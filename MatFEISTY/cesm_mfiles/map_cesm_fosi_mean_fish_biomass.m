@@ -13,7 +13,7 @@ mod = 'v15_All_fish03';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-ppath = [pp cfile '/'];
+ppath = [pp cfile '/FOSI/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end

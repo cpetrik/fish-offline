@@ -1,7 +1,7 @@
 % Calc LME biomass of FEISTY
 % CESM FOSI
 
-clear all
+clear 
 close all
 
 %% Fish data
@@ -10,8 +10,8 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 mod = 'v15_All_fish03_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-dpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-ppath = [pp cfile '/'];
+dpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+ppath = [pp cfile '/FOSI/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
@@ -22,7 +22,7 @@ load([dpath 'Space_Means_FOSI_' mod cfile '.mat'],'units_yield','units_catch',..
     'mf_stc','mp_stc','md_stc','lp_stc','ld_stc');
 
 %% Map data
-cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+cpath = '/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);

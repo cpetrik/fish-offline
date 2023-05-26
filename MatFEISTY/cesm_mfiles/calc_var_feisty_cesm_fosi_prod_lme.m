@@ -1,12 +1,13 @@
 % CESM FEISTY FOSI runs
-% calc interann variability by lme
+% calc interann variability of prod by lme
 
-clear
+clear 
 close all
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-mod = 'v15_All_fish03_';
+sims = {'v15_All_fish03_';'v15_climatol_';'v15_varTemp_';'v15_varFood_'};
+mod = sims{1};
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -15,7 +16,10 @@ ppath = [pp cfile '/FOSI/'];
 if (~isfolder(ppath))
     mkdir(ppath)
 end
-load([fpath 'Annual_Means_FOSI_' mod cfile '.mat']);
+load([fpath 'Annual_Means_FOSI_' mod cfile '.mat'],...
+    'sf_aprod','sp_aprod','sd_aprod',...
+    'mf_aprod','mp_aprod','md_aprod',...
+    'lp_aprod','ld_aprod');
 
 % Map data
 %cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
@@ -28,16 +32,15 @@ AREA_OCN = TAREA * 1e-4; %grid cell area in m2
 area_vec = AREA_OCN(GRD.ID);
 
 [ni,nj]=size(TLONG);
-[nid,nyr]=size(sf_abio);
+[nid,nyr]=size(sf_aprod);
 
 %% Groups
-xF = sf_abio + mf_abio;
-xP = sp_abio + mp_abio + lp_abio;
-xD = sd_abio + md_abio + ld_abio;
-xS = sf_abio + sp_abio + sd_abio;
-xM = mf_abio + mp_abio + md_abio;
-xL = lp_abio + ld_abio;
-xB = b_abio;
+xF = mf_aprod;
+xP = lp_aprod;
+xD = ld_aprod;
+xS = sf_aprod + sp_aprod + sd_aprod;
+xM = mf_aprod + mp_aprod + md_aprod;
+xL = lp_aprod + ld_aprod;
 xall = xF + xP + xD;
 
 %% mean & std by lme
@@ -45,6 +48,7 @@ tlme = double(lme_mask);
 tlme(tlme<0) = nan;
 olme = tlme(GRD.ID);
 
+% First create area-weighted mean time series for each LME
 lme_sf_mean_ts = NaN*ones(66,nyr);
 lme_sp_mean_ts = NaN*ones(66,nyr);
 lme_sd_mean_ts = NaN*ones(66,nyr);
@@ -53,28 +57,25 @@ lme_mp_mean_ts = NaN*ones(66,nyr);
 lme_md_mean_ts = NaN*ones(66,nyr);
 lme_lp_mean_ts = NaN*ones(66,nyr);
 lme_ld_mean_ts = NaN*ones(66,nyr);
-lme_b_mean_ts  = NaN*ones(66,nyr);
-lme_a_mean_ts  = NaN*ones(66,nyr);
-lme_s_mean_ts  = NaN*ones(66,nyr);
-lme_m_mean_ts  = NaN*ones(66,nyr);
-lme_l_mean_ts  = NaN*ones(66,nyr);
-lme_f_mean_ts  = NaN*ones(66,nyr);
-lme_p_mean_ts  = NaN*ones(66,nyr);
-lme_d_mean_ts  = NaN*ones(66,nyr);
+lme_a_mean_ts = NaN*ones(66,nyr);
+lme_s_mean_ts = NaN*ones(66,nyr);
+lme_m_mean_ts = NaN*ones(66,nyr);
+lme_l_mean_ts = NaN*ones(66,nyr);
+lme_f_mean_ts = NaN*ones(66,nyr);
+lme_p_mean_ts = NaN*ones(66,nyr);
+lme_d_mean_ts = NaN*ones(66,nyr);
 
-% First create area-weighted mean time series for each LME
 for L=1:66
     lid = find(olme==L);
-
-    lme_sf_mean_ts(L,:) = (sum(sf_abio(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
-    lme_sp_mean_ts(L,:) = (sum(sp_abio(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
-    lme_sd_mean_ts(L,:) = (sum(sd_abio(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
-    lme_mf_mean_ts(L,:) = (sum(mf_abio(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
-    lme_mp_mean_ts(L,:) = (sum(mp_abio(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
-    lme_md_mean_ts(L,:) = (sum(md_abio(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
-    lme_lp_mean_ts(L,:) = (sum(lp_abio(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
-    lme_ld_mean_ts(L,:) = (sum(ld_abio(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
-    lme_b_mean_ts(L,:)  = (sum(xB(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
+    
+    lme_sf_mean_ts(L,:) = (sum(sf_aprod(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
+    lme_sp_mean_ts(L,:) = (sum(sp_aprod(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
+    lme_sd_mean_ts(L,:) = (sum(sd_aprod(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
+    lme_mf_mean_ts(L,:) = (sum(mf_aprod(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
+    lme_mp_mean_ts(L,:) = (sum(mp_aprod(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
+    lme_md_mean_ts(L,:) = (sum(md_aprod(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
+    lme_lp_mean_ts(L,:) = (sum(lp_aprod(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
+    lme_ld_mean_ts(L,:) = (sum(ld_aprod(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
     lme_a_mean_ts(L,:)  = (sum(xall(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
     lme_s_mean_ts(L,:)  = (sum(xS(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
     lme_m_mean_ts(L,:)  = (sum(xM(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
@@ -82,6 +83,7 @@ for L=1:66
     lme_f_mean_ts(L,:)  = (sum(xF(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
     lme_p_mean_ts(L,:)  = (sum(xP(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
     lme_d_mean_ts(L,:)  = (sum(xD(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
+
 
 end
 
@@ -95,7 +97,6 @@ lme_mp_mean = mean(lme_mp_mean_ts,2,'omitnan');
 lme_md_mean = mean(lme_md_mean_ts,2,'omitnan');
 lme_lp_mean = mean(lme_lp_mean_ts,2,'omitnan');
 lme_ld_mean = mean(lme_ld_mean_ts,2,'omitnan');
-lme_b_mean  = mean(lme_b_mean_ts,2,'omitnan');
 lme_a_mean  = mean(lme_a_mean_ts,2,'omitnan');
 lme_s_mean  = mean(lme_s_mean_ts,2,'omitnan');
 lme_m_mean  = mean(lme_m_mean_ts,2,'omitnan');
@@ -113,7 +114,6 @@ lme_mp_std = std(lme_mp_mean_ts,0,2,'omitnan');
 lme_md_std = std(lme_md_mean_ts,0,2,'omitnan');
 lme_lp_std = std(lme_lp_mean_ts,0,2,'omitnan');
 lme_ld_std = std(lme_ld_mean_ts,0,2,'omitnan');
-lme_b_std  = std(lme_b_mean_ts,0,2,'omitnan');
 lme_a_std  = std(lme_a_mean_ts,0,2,'omitnan');
 lme_s_std  = std(lme_s_mean_ts,0,2,'omitnan');
 lme_m_std  = std(lme_m_mean_ts,0,2,'omitnan');
@@ -131,7 +131,6 @@ lme_mp_cv = lme_mp_std ./ lme_mp_mean;
 lme_md_cv = lme_md_std ./ lme_md_mean;
 lme_lp_cv = lme_lp_std ./ lme_lp_mean;
 lme_ld_cv = lme_ld_std ./ lme_ld_mean;
-lme_b_cv = lme_b_std ./ lme_b_mean;
 lme_a_cv = lme_a_std ./ lme_a_mean;
 lme_s_cv = lme_s_std ./ lme_s_mean;
 lme_m_cv = lme_m_std ./ lme_m_mean;
@@ -176,7 +175,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         sf(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_sp_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -190,7 +189,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         sp(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_sd_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -204,7 +203,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         sd(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_mf_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -218,7 +217,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         mf(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_mp_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -232,7 +231,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         mp(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_md_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -246,7 +245,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         md(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_lp_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -260,7 +259,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         lp(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_ld_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -274,22 +273,8 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         ld(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     %TYPES
-    xi = lme_b_mean_ts(i,:);
-    inan = ~isnan(xi);
-    if(sum(inan)~=0)
-        R = (xi(inan))';
-        T = length(R);
-        t = (1:T)';
-        data = [t R];
-        [m,b] = TheilSen(data);
-        tH = m*t + b;
-        dR = R - tH;
-        B(i,:) = dR;
-    end
-    clear R T t b m tH dR data
-
     xi = lme_f_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -303,7 +288,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         F(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_p_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -317,7 +302,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         P(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_d_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -331,7 +316,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         D(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_s_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -345,7 +330,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         S(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_m_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -359,7 +344,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         M(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_l_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -373,7 +358,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         L(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
     xi = lme_a_mean_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
@@ -387,7 +372,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         All(i,:) = dR;
     end
     clear R T t b m tH dR data
-
+    
 end
 
 %% anomalies
@@ -406,9 +391,8 @@ al = L - mean(L,2,'omitnan');
 af = F - mean(F,2,'omitnan');
 ap = P - mean(P,2,'omitnan');
 ad = D - mean(D,2,'omitnan');
-ab = B - mean(B,2,'omitnan');
 
-%% var of anomalies by grid cell
+%% var of anomalies by lme
 vsf = var(asf,0,2,'omitnan');
 vsp = var(asp,0,2,'omitnan');
 vsd = var(asd,0,2,'omitnan');
@@ -417,7 +401,6 @@ vmp = var(amp,0,2,'omitnan');
 vmd = var(amd,0,2,'omitnan');
 vlp = var(alp,0,2,'omitnan');
 vld = var(ald,0,2,'omitnan');
-vb = var(ab,0,2,'omitnan');
 va = var(aa,0,2,'omitnan');
 vs = var(as,0,2,'omitnan');
 vm = var(am,0,2,'omitnan');
@@ -429,31 +412,31 @@ vd = var(ad,0,2,'omitnan');
 %% save
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-save([fpath 'FEISTY_FOSI_',mod,'lme_interann_var.mat'],...
+save([fpath 'FEISTY_FOSI_',mod,'lme_prod_interann_var.mat'],...
     'lme_sf_std','lme_sp_std','lme_sd_std',...
     'lme_mf_std','lme_mp_std','lme_md_std',...
-    'lme_lp_std','lme_ld_std','lme_b_std','lme_a_std',...
+    'lme_lp_std','lme_ld_std','lme_a_std',...
     'lme_s_std','lme_m_std','lme_l_std',...
     'lme_f_std','lme_p_std','lme_d_std',...
     'lme_sf_mean','lme_sp_mean','lme_sd_mean',...
     'lme_mf_mean','lme_mp_mean','lme_md_mean',...
-    'lme_lp_mean','lme_ld_mean','lme_b_mean','lme_a_mean',...
+    'lme_lp_mean','lme_ld_mean','lme_a_mean',...
     'lme_s_mean','lme_m_mean','lme_l_mean',...
     'lme_f_mean','lme_p_mean','lme_d_mean',...
     'lme_sf_mean_ts','lme_sp_mean_ts','lme_sd_mean_ts',...
     'lme_mf_mean_ts','lme_mp_mean_ts','lme_md_mean_ts',...
-    'lme_lp_mean_ts','lme_ld_mean_ts','lme_b_mean_ts','lme_a_mean_ts',...
+    'lme_lp_mean_ts','lme_ld_mean_ts','lme_a_mean_ts',...
     'lme_s_mean_ts','lme_m_mean_ts','lme_l_mean_ts',...
     'lme_f_mean_ts','lme_p_mean_ts','lme_d_mean_ts',...
     'lme_sf_cv','lme_sp_cv','lme_sd_cv',...
     'lme_mf_cv','lme_mp_cv','lme_md_cv',...
-    'lme_lp_cv','lme_ld_cv','lme_b_cv','lme_a_cv',...
+    'lme_lp_cv','lme_ld_cv','lme_a_cv',...
     'lme_s_cv','lme_m_cv','lme_l_cv',...
     'lme_f_cv','lme_p_cv','lme_d_cv');
 
 %%
-save([fpath 'FEISTY_FOSI_',mod,'lme_ann_mean_anoms.mat'],...
-    'asf','asp','asd','amf','amp','amd','alp','ald','ab','aa','as','am','al',...
+save([fpath 'FEISTY_FOSI_',mod,'lme_prod_ann_mean_anoms.mat'],...
+    'asf','asp','asd','amf','amp','amd','alp','ald','aa','as','am','al',...
     'af','ap','ad',...
-    'vsf','vsp','vsd','vmf','vmp','vmd','vlp','vld','vb','va','vs','vm','vl',...
+    'vsf','vsp','vsd','vmf','vmp','vmd','vlp','vld','va','vs','vm','vl',...
     'vf','vp','vd');
