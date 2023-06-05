@@ -24,8 +24,7 @@ load('MyColormaps.mat')
 load('cmap_ppt_angles.mat')
 
 %% FEISTY file info
-%cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-cfile = 'Dc_Lam700_enc70-b200_m400-b200-k086_c20-b250_D075_A065_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 mod = '4P2Z_All_fish03_1deg_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/4P2Z/';
@@ -57,7 +56,7 @@ x2l = x-log10(2);
 x5h = x+log10(5);
 x5l = x-log10(5);
 
-%% SAUP
+%% SAUP w/squid as forage
 % use top 10 catch yrs
 load([spath 'forage_with_squids/SAUP_LME_Catch_top10_Stock_newF.mat']);
 sFracPD = Plme_mcatch10 ./ (Plme_mcatch10 + Dlme_mcatch10);

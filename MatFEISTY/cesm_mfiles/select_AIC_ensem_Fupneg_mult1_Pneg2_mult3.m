@@ -94,7 +94,7 @@ mis_all_P = mis_all(:,:,3);
 negP = mis_all_P < (-1*log10(2));
 negP2 = mis_all_P;
 negP3 = double(negP);
-negP3(negP3==1) = 2;
+negP3(negP3==1) = 3;
 negP3(negP3==0) = 1;
 mis_all_P2 = mis_all_P .* negP3;
 
@@ -110,7 +110,7 @@ unid = intersect(kid,nid);
 mis_fn(unid,1) = mis_fn(unid,1) .* 1;
 
 pid = find(mis_fn(:,2) < (-1*log10(2)));
-mis_fn(pid,2) = mis_fn(pid,2) .* 2;
+mis_fn(pid,2) = mis_fn(pid,2) .* 3;
 
 mis_fn = reshape(mis_fn,45*3,1);
 
@@ -137,7 +137,7 @@ caicv(:,2) = caic_srt;
 caicv(:,3) = cdel;
 caicv(:,4) = cw;
 cT = array2table(caicv,'VariableNames',{'ParamSet','AIC','delta','weight'});
-writetable(cT,[dpath 'AIC_Fupneg_mult1_Pneg2_mult2_FOSI_ensemble_mzpref_equal.csv'])
+writetable(cT,[dpath 'AIC_Fupneg_mult1_Pneg2_mult3_FOSI_ensemble_mzpref_equal.csv'])
 
 %% AICs <= AIC(orig) + 2
 pset(:,1) = fx_all(idc);
@@ -147,5 +147,5 @@ pset(:,11:15) = r_all0(:,idc)';
 
 pT = array2table(pset,'VariableNames',{'eqMZpref','ParamSet','AIC','dAIC',...
     'wAIC','rmseAll','rmseF','rmseP','rmseD','rmsePD','rAll','rF','rP','rD','rPD'});
-writetable(pT,[dpath 'bestAIC_Fupneg_mult1_Pneg2_mult2_FOSI_ensemble_mzpref_equal.csv'])
+writetable(pT,[dpath 'bestAIC_Fupneg_mult1_Pneg2_mult3_FOSI_ensemble_mzpref_equal.csv'])
 

@@ -5,12 +5,12 @@ close all
 
 %%%%!! EXPERIMENTS
 testc       = false;
-spinup_cesm = true;
+spinup_cesm = false;
 spinup_hr   = false;
 hr_cesm     = false;
 fosi_cesm   = false;
 dple_cesm   = false;
-cesm_4p2z   = false;
+cesm_4p2z   = true;
 
 tic
 

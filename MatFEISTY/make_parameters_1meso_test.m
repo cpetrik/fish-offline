@@ -53,7 +53,7 @@ function param = make_parameters_1meso_test()
     param.kc = 0.063;     % coeff on cmax T-dep fn (orig 0.063)
     param.ke = 0.063;     % coeff on enc T-dep fn (orig 0.063)
     param.kt = 0.0855;    % coeff on met T-dep fn (orig 0.063) %0.0855
-    param.bpow = 0.185;   % power on metab fn (orig 0.25) 0.175
+    param.bpow = 0.195;   % power on metab fn (orig 0.25) 0.175
     param.benc = 0.20;    % power on enc fn (orig 0.20) 0.20
     param.bcmx = 0.25;    % power on cmax fn (orig 0.25) 0.25
 
