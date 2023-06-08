@@ -17,19 +17,19 @@ cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 
 % lme means, trend removed, anomaly calc
 load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat'],...
-    'adet','atb','atp','azlos','azoo');
+    'adet','adety','atb','atp','azlos','azlosy','azoo');
 
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 ID = GRD.ID;
 
-% put into a matrix
+% put into a matrix & use annual production
 manom(:,:,1) = atp;
 manom(:,:,2) = atb;
-manom(:,:,3) = adet;
-manom(:,:,4) = azoo;
-manom(:,:,5) = azlos;
+manom(:,:,3) = azoo;
+manom(:,:,4) = azlosy;
+manom(:,:,5) = adety;
 
-tanom = {'TP','TB','Det','Zmeso','ZmLoss'};
+tanom = {'TP','TB','Zmeso','ZmLossY','DetY'};
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
@@ -60,7 +60,7 @@ yr = 0:5;
 
 % Drivers
 tanom2=tanom';
-tanom2(:,2)=tanom2(:,1);
+tanom2(:,2)=tanom2(:,1); %rep to match # of lags
 tanom2(:,3)=tanom2(:,1);
 tanom2(:,4)=tanom2(:,1);
 tanom2(:,5)=tanom2(:,1);

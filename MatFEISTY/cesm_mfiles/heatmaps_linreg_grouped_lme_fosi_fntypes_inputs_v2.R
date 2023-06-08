@@ -605,7 +605,7 @@ c5 <- ggplot(data = rcceDet, aes(y=Type, x=Lag, fill=coef)) +
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
-  coord_fixed() + ggtitle("") + 
+  coord_fixed() + ggtitle("Det") + 
   geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
 
 c4 <- ggplot(data = rcceTB, aes(y=Type, x=Lag, fill=coef)) + 
@@ -613,12 +613,12 @@ c4 <- ggplot(data = rcceTB, aes(y=Type, x=Lag, fill=coef)) +
   scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
-  theme_minimal() + labs(x="")+
+  theme_minimal() + labs(x="")+ labs(y="")+
   #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
-  coord_fixed() + ggtitle("") + 
+  coord_fixed() + ggtitle("Tb") + 
   geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
 
 c1 <- ggplot(data = rcceTP, aes(y=Type, x=Lag, fill=coef)) + 
@@ -631,7 +631,7 @@ c1 <- ggplot(data = rcceTP, aes(y=Type, x=Lag, fill=coef)) +
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
-  coord_fixed() + ggtitle("") + 
+  coord_fixed() + ggtitle("CCE Tp") + 
   geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
 
 c2 <- ggplot(data = rcceZmeso, aes(y=Type, x=Lag, fill=coef)) + 
@@ -644,7 +644,7 @@ c2 <- ggplot(data = rcceZmeso, aes(y=Type, x=Lag, fill=coef)) +
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
-  coord_fixed() + ggtitle("CCE") + 
+  coord_fixed() + ggtitle("Zmeso") + 
   geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
 
 
@@ -658,7 +658,7 @@ c3 <- ggplot(data = rcceZmLoss, aes(y=Type, x=Lag, fill=coef)) +
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
-  coord_fixed() + ggtitle("") + 
+  coord_fixed() + ggtitle("ZmLoss") + 
   geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
 
 
@@ -681,7 +681,7 @@ e4 <- ggplot(data = rebsTB, aes(y=Type, x=Lag, fill=coef)) +
   scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
-  theme_minimal() + labs(x="")+
+  theme_minimal() + labs(x="")+ labs(y="")+
   #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
@@ -699,7 +699,7 @@ e1 <- ggplot(data = rebsTP, aes(y=Type, x=Lag, fill=coef)) +
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
-  coord_fixed() + ggtitle("") + 
+  coord_fixed() + ggtitle("EBS") + 
   geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
 
 e2 <- ggplot(data = rebsZmeso, aes(y=Type, x=Lag, fill=coef)) + 
@@ -707,7 +707,7 @@ e2 <- ggplot(data = rebsZmeso, aes(y=Type, x=Lag, fill=coef)) +
   scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Zmeso\nCoef") +
-  theme_minimal() + ggtitle("EBS") + labs(x="")+
+  theme_minimal() + ggtitle("") + labs(x="")+ labs(y="")+
   #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
@@ -735,7 +735,7 @@ k5 <- ggplot(data = rchkDet, aes(y=Type, x=Lag, fill=coef)) +
   scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Det\nCoef") +
-  theme_minimal() + labs(x="Lag (y)")+labs(y="")+
+  theme_minimal() + labs(x="")+labs(y="")+
   #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
@@ -748,7 +748,7 @@ k4 <- ggplot(data = rchkTB, aes(y=Type, x=Lag, fill=coef)) +
   scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
-  theme_minimal() + labs(x="Lag (y)")+
+  theme_minimal() + labs(x="")+labs(y="")+
   #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
@@ -761,7 +761,7 @@ k1 <- ggplot(data = rchkTP, aes(y=Type, x=Lag, fill=coef)) +
   scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1),  name="TP\nCoef") +
-  theme_minimal() + ggtitle("") + labs(x="")+
+  theme_minimal() + ggtitle("CHK") + labs(x="")+
   #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
@@ -779,7 +779,7 @@ k2 <- ggplot(data = rchkZmeso, aes(y=Type, x=Lag, fill=coef)) +
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
-  coord_fixed() + ggtitle("CHK") + 
+  coord_fixed() + ggtitle("") + 
   geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
 
 k3 <- ggplot(data = rchkZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
@@ -787,7 +787,7 @@ k3 <- ggplot(data = rchkZmLoss, aes(y=Type, x=Lag, fill=coef)) +
   scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="ZmLoss\nCoef") +
-  theme_minimal() + labs(x="Lag (y)")+labs(y="")+
+  theme_minimal() + labs(x="")+labs(y="")+
   #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
   guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
@@ -803,7 +803,8 @@ n5 <- ggplot(data = rneDet, aes(y=Type, x=Lag, fill=coef)) +
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Det\nCoef") +
   theme_minimal() + labs(x="Lag (y)")+labs(y="")+
-  theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
+  #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
+  guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
   coord_fixed() + ggtitle("") + 
@@ -814,8 +815,9 @@ n4 <- ggplot(data = rneTB, aes(y=Type, x=Lag, fill=coef)) +
   scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
-  theme_minimal() + labs(x="Lag (y)")+
-  theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
+  theme_minimal() + labs(x="Lag (y)")+labs(y="")+
+  #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
+  guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
   coord_fixed() + ggtitle("") + 
@@ -826,11 +828,12 @@ n1 <- ggplot(data = rneTP, aes(y=Type, x=Lag, fill=coef)) +
   scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TP\nCoef") +
-  theme_minimal() + labs(x="")+
-  theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
+  theme_minimal() + labs(x="Lag (y)")+
+  #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
+  guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
-  coord_fixed() + ggtitle("") + 
+  coord_fixed() + ggtitle("NEUS") + 
   geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
 
 n2 <- ggplot(data = rneZmeso, aes(y=Type, x=Lag, fill=coef)) + 
@@ -838,84 +841,64 @@ n2 <- ggplot(data = rneZmeso, aes(y=Type, x=Lag, fill=coef)) +
   scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Zmeso\nCoef") +
-  theme_minimal() + labs(x="")+labs(y="")+
-  theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
+  theme_minimal() + labs(x="Lag (y)")+labs(y="")+
+  #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
+  guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
-  coord_fixed() + ggtitle("NEUS") + 
+  coord_fixed() + ggtitle("") + 
   geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
 
 n3 <- ggplot(data = rneZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
   scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
-                       labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="ZmLoss\nCoef") +
+                       labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Coef") +
   theme_minimal() + labs(x="Lag (y)")+labs(y="")+
-  theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
+  #theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
+  guides(fill = "none")+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
   coord_fixed() + ggtitle("") + 
   geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
 
-png(paste0(figp,'Heatmaps_CCE_EBS_GAK_NE_coef_inputs_fntypes.png'), 
-    width = 14*300,        # 5 x 300 pixels
-    height = 20*300,
+n33 <- ggplot(data = rneZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
+  geom_tile(color = "white") +
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+                       breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
+                       labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Coef") +
+  theme_minimal() + labs(x="Lag (y)")+labs(y="")+
+  theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
+  #guides(fill = "none")+
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, 
+                                   size = 8, hjust = 1)) +
+  coord_fixed() + ggtitle("") + 
+  geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
+
+png(paste0(figp,'Heatmaps_CCE_EBS_GAK_NE_coef_inputs_fntype_v2.png'), 
+    width = 7.5*300,        # 5 x 300 pixels
+    height = 7*300,
     res = 300,            # 300 pixels per inch
     pointsize = 8)
-plot_grid( c1,c2,c3,
-           c4,c5,'',
-           e1,e2,e3,
-           e4,e5,'',
-           k1,k2,k3,
-           k4,k5,'',
-           n1,n2,n3,
-           n4,n5,'',
-           nrow = 8, ncol = 3,labels = "auto", label_size = 11)
+plot_grid( c1,c2,c3,c4,c5,
+           e1,e2,e3,e4,e5,
+           k1,k2,k3,k4,k5,
+           n1,n2,n3,n4,n5,
+           nrow = 4, ncol = 5,labels = "auto", label_size = 11)
 dev.off()
 
-png(paste0(figp,'Heatmaps_CCE_EBS_GAK_NE_coef_inputs_fntypes_v2.png'), 
-    width = 14*300,        # 5 x 300 pixels
-    height = 20*300,
+
+png(paste0(figp,'Heatmaps_CCE_EBS_GAK_NE_coef_inputs_fntype_v3.png'), 
+    width = 7.5*300,        # 5 x 300 pixels
+    height = 6*300,
     res = 300,            # 300 pixels per inch
     pointsize = 8)
-ggarrange(c1,c2,c3,
-          c4,c5,'',
-          e1,e2,e3,
-          e4,e5,'',
-          k1,k2,k3,
-          k4,k5,'',
-          n1,n2,n3,
-          n4,n5,'',
-          nrow = 8, ncol = 3,
-          labels = c("a","b","c","d","e","","f","g","h","i","j","",
-                     "k","l","m","n","o","","p","q","r","s","t",""),
+ggarrange(c1,c2,c3,c4,c5,
+          e1,e2,e3,e4,e5,
+          k1,k2,k3,k4,k5,
+          n1,n2,n33,n4,n5,
+          nrow = 4, ncol = 5,labels = "auto",
           common.legend = TRUE, legend = "right")
-dev.off()
-
-png(paste0(figp,'Heatmaps_CCE_NE_coef_inputs_fntypes.png'), 
-    width = 7.5*300,        # 5 x 300 pixels
-    height = 7.5*300,
-    res = 300,            # 300 pixels per inch
-    pointsize = 8)
-plot_grid( c1,c2,c3,
-           c4,c5,'',
-           n1,n2,n3,
-           n4,n5,'',
-           nrow = 4, ncol = 3,labels = c("a","b","c","d","e","",
-                                         "f","g","h","i","j",""), label_size = 11)
-dev.off()
-
-png(paste0(figp,'Heatmaps_EBS_GAK_coef_inputs_fntypes.png'), 
-    width = 7.5*300,        # 5 x 300 pixels
-    height = 7.5*300,
-    res = 300,            # 300 pixels per inch
-    pointsize = 8)
-plot_grid( e1,e2,e3,
-           e4,e5,'',
-           k1,k2,k3,
-           k4,k5,'',
-           nrow = 4, ncol = 3,labels = c("a","b","c","d","e","",
-                                         "f","g","h","i","j",""), label_size = 11)
 dev.off()
 
 
@@ -1064,6 +1047,7 @@ h4 <- ggplot(data = rhiTB, aes(y=Type, x=Lag, fill=coef)) +
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Coef") +
   theme_minimal() + labs(x="")+labs(y="")+
+  theme(legend.key.height=unit(0.4,'cm'),legend.key.width=unit(0.15, 'cm'))+
   coord_fixed() + ggtitle("") + 
   geom_text(aes(Lag, Type, label = sym), color = "black", size = 3) 
 
@@ -1243,17 +1227,19 @@ plot_grid( g1,g2,g3,g4,g5,
            nrow = 5, ncol = 5, labels = "auto", label_size = 11)
 dev.off()
 
-
-png(paste0(figp,'Heatmaps_CCE_EBS_GAK_NE_coef_inputs_fntype_v3s.png'), 
-    width = 7*300,        # 5 x 300 pixels
-    height = 10*300,
+png(paste0(figp,'Heatmaps_AI_GAK_HI_GMX_SE_coef_inputs_fntypes_v3.png'), 
+    width = 7.5*300,        # 5 x 300 pixels
+    height = 7.5*300,
     res = 300,            # 300 pixels per inch
     pointsize = 8)
-plot_grid( c1,c2,c3,c4,c5,
-           e1,e2,e3,e4,e5,
-           k1,k2,k3,k4,k5,
-           n1,n2,n3,n4,n5,
-           nrow = 4, ncol = 5,labels = "auto", label_size = 11)
+ggarrange(g1,g2,g3,g4,g5,
+          i1,i2,i3,i4,i5,
+          h1,h2,h3,h4,h5,
+          m1,m2,m3,m4,m5,
+          s1,s2,s3,s4,s5,
+          nrow = 5, ncol = 5,labels = "auto",
+          common.legend = TRUE, legend = "right")
 dev.off()
+
 
 

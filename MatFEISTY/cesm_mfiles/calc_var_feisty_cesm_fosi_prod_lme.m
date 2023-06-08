@@ -1,5 +1,6 @@
 % CESM FEISTY FOSI runs
 % calc interann variability of prod by lme
+% units from per day to per year
 
 clear 
 close all
@@ -33,6 +34,16 @@ area_vec = AREA_OCN(GRD.ID);
 
 [ni,nj]=size(TLONG);
 [nid,nyr]=size(sf_aprod);
+
+%% Per day to per year
+sf_aprod = 365 * sf_aprod;
+sp_aprod = 365 * sp_aprod;
+sd_aprod = 365 * sd_aprod;
+mf_aprod = 365 * mf_aprod;
+mp_aprod = 365 * mp_aprod;
+md_aprod = 365 * md_aprod;
+lp_aprod = 365 * lp_aprod;
+ld_aprod = 365 * ld_aprod;
 
 %% Groups
 xF = mf_aprod;
@@ -410,6 +421,7 @@ vp = var(ap,0,2,'omitnan');
 vd = var(ad,0,2,'omitnan');
 
 %% save
+units = 'per year';
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 save([fpath 'FEISTY_FOSI_',mod,'lme_prod_interann_var.mat'],...
@@ -432,11 +444,11 @@ save([fpath 'FEISTY_FOSI_',mod,'lme_prod_interann_var.mat'],...
     'lme_mf_cv','lme_mp_cv','lme_md_cv',...
     'lme_lp_cv','lme_ld_cv','lme_a_cv',...
     'lme_s_cv','lme_m_cv','lme_l_cv',...
-    'lme_f_cv','lme_p_cv','lme_d_cv');
+    'lme_f_cv','lme_p_cv','lme_d_cv','units');
 
 %%
 save([fpath 'FEISTY_FOSI_',mod,'lme_prod_ann_mean_anoms.mat'],...
     'asf','asp','asd','amf','amp','amd','alp','ald','aa','as','am','al',...
     'af','ap','ad',...
     'vsf','vsp','vsd','vmf','vmp','vmd','vlp','vld','va','vs','vm','vl',...
-    'vf','vp','vd');
+    'vf','vp','vd','units');

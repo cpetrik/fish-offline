@@ -29,115 +29,101 @@ manom(:,:,3) = adety;
 manom(:,:,4) = azoo;
 manom(:,:,5) = azlosy;
 
-tanom = {'TP','TB','Det','Zmeso','ZmLoss'};
-
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-rpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
 
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
 mod = sims{1};
 
-% Anoms with linear trend removed
+% Anoms with linear trend removed (per yr instead of day)
 load([fpath 'FEISTY_FOSI_',mod,'_lme_prod_ann_mean_anoms.mat'],...
     'aa','ad','af','ap','as','am','al')
 
 %% % LM of forcing ---------------------------------------------------------
-cnam = {'Type','Lag','coef','p'};
+% row = Type, col = Lag, dim 3 = driver
+tanom = {'TP','TB','Det','Zmeso','ZmLoss'};
+tfish = {'D','A','L','P','F','M','S'};
+tyr = {'0','1','2','3','4','5'};
 
 %Loop over drivers and responses
 yr = 0:5;
-yst = 1; 
+yst = 1;
 yen = 68;
 
-for j = 1:5
-    %fish vars
-    driver = tanom{j};
+save([fpath,'FOSI_prod_regress_drivers_div2SD.mat'],'tanom','tfish',...
+    'tyr','yr');
 
-    for L = 1:length(lid)
-        %LME
-        i = lid(L);
-        ilme = lname{L};
-        Ctab = cell(48,4);
+%%
+for L = 1:length(lid)
+    %LME
+    i = lid(L);
+    ilme = lname{L};
 
-        n = 0;
+    Cmat = nan*ones(7,length(yr),5);
+    Pmat = nan*ones(7,length(yr),5);
+
+    for j = 1:5 %forcing vars
+        driver = tanom{j};
 
         for k=1:length(yr) %Linear regression at diff lags
             t = yr(k);
 
-            %               LME     time      driver                LME     time      driver
+            %               LME time    driver                LME time     driver
             sclim = ((manom(i,yst:yen-t,j))') ./ (2*std((manom(i,yst:yen-t,j))));
 
             %Fish
-            n = n+1;
+             %Fish
             mdl0 = fitlm(sclim , (as(i,yst+t:yen))');
-            Ctab{n,1} = 'S';
-            Ctab{n,2} = t;
-            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
-            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            Cmat(7,k,j) = mdl0.Coefficients.Estimate(2);
+            Pmat(7,k,j) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            n = n+1;
             mdl0 = fitlm(sclim , (am(i,yst+t:yen))');
-            Ctab{n,1} = 'M';
-            Ctab{n,2} = t;
-            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
-            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            Cmat(6,k,j) = mdl0.Coefficients.Estimate(2);
+            Pmat(6,k,j) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            n = n+1;
             mdl0 = fitlm(sclim , (al(i,yst+t:yen))');
-            Ctab{n,1} = 'L';
-            Ctab{n,2} = t;
-            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
-            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            Cmat(3,k,j) = mdl0.Coefficients.Estimate(2);
+            Pmat(3,k,j) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            n = n+1;
             mdl0 = fitlm(sclim , (af(i,yst+t:yen))');
-            Ctab{n,1} = 'F';
-            Ctab{n,2} = t;
-            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
-            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            Cmat(5,k,j) = mdl0.Coefficients.Estimate(2);
+            Pmat(5,k,j) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            n = n+1;
             mdl0 = fitlm(sclim , (ap(i,yst+t:yen))');
-            Ctab{n,1} = 'P';
-            Ctab{n,2} = t;
-            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
-            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            Cmat(4,k,j) = mdl0.Coefficients.Estimate(2);
+            Pmat(4,k,j) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            n = n+1;
             mdl0 = fitlm(sclim , (ad(i,yst+t:yen))');
-            Ctab{n,1} = 'D';
-            Ctab{n,2} = t;
-            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
-            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            Cmat(1,k,j) = mdl0.Coefficients.Estimate(2);
+            Pmat(1,k,j) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
-            n = n+1;
             mdl0 = fitlm(sclim , (aa(i,yst+t:yen))');
-            Ctab{n,1} = 'A';
-            Ctab{n,2} = t;
-            Ctab{n,3} = mdl0.Coefficients.Estimate(2);
-            Ctab{n,4} = mdl0.Coefficients.pValue(2);
+            Cmat(2,k,j) = mdl0.Coefficients.Estimate(2);
+            Pmat(2,k,j) = mdl0.Coefficients.pValue(2);
             clear mdl0
 
         end % time lag
 
-        %%
-        Atab = array2table(Ctab,"VariableNames",cnam);
+    end %driver
 
-        writetable(Atab,[rpath,ilme,'_regress_',driver,...
-            '_div2SD_melt_mat_prod.csv'],'Delimiter',',');
+    %%
+    eval([ 'Cmat_' ilme '= Cmat;']); 
+    eval([ 'Pmat_' ilme '= Pmat;']); 
 
-        clear Atab
+    eval(['save(''' [fpath 'FOSI_prod_regress_drivers_div2SD.mat'] ''',''' ['Cmat_' ilme] ''',''-append'')']);
+    eval(['save(''' [fpath 'FOSI_prod_regress_drivers_div2SD.mat'] ''',''' ['Pmat_' ilme] ''',''-append'')']);
+    
+end % LME'
 
-    end % LME
 
-end %driver
+
+

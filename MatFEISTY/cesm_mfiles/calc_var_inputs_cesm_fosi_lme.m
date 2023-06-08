@@ -17,7 +17,8 @@ AREA_OCN = TAREA * 1e-4; %grid cell area in m2
 %% FEISTY Inputs
 fpath='/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
 load([fpath 'CESM_FOSI_v15_interann_mean_forcings_anom.mat'],...
-    'tp','tb','det','zoo','zlos') %annual means to be like fish
+    'tp','tb','det','zoo','zlos','dety','zlosy') 
+%also annual means to be like fish
 
 [ni,nj,nyr] = size(det);
 
@@ -31,6 +32,8 @@ lme_tb_mean = NaN*ones(66,nyr);
 lme_det_mean = NaN*ones(66,nyr);
 lme_mz_mean = NaN*ones(66,nyr);
 lme_mzl_mean = NaN*ones(66,nyr);
+lme_dety_mean = NaN*ones(66,nyr);
+lme_mzly_mean = NaN*ones(66,nyr);
 
 %vectorize
 tp2 = reshape(tp,ni*nj,nyr);
@@ -38,6 +41,8 @@ tb2 = reshape(tb,ni*nj,nyr);
 det2 = reshape(det,ni*nj,nyr);
 mz = reshape(zoo,ni*nj,nyr);
 mzl = reshape(zlos,ni*nj,nyr);
+dety = reshape(dety,ni*nj,nyr);
+mzly = reshape(zlosy,ni*nj,nyr);
 area_vec = reshape(AREA_OCN,ni*nj,1);
 area_vec = repmat(area_vec,1,nyr);
 
@@ -50,6 +55,8 @@ for L=1:66
         lme_det_mean(L,:) = (sum(det2(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
         lme_mz_mean(L,:)  = (sum(mz(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
         lme_mzl_mean(L,:) = (sum(mzl(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
+        lme_dety_mean(L,:) = (sum(dety(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
+        lme_mzly_mean(L,:) = (sum(mzly(lid,:).*area_vec(lid,:),1,'omitnan')) ./ sum(area_vec(lid,:),'omitnan');
         
     end
 end
@@ -60,6 +67,8 @@ xtb = NaN*ones(66,nyr);
 xdet = NaN*ones(66,nyr);
 xz = NaN*ones(66,nyr);
 xzl = NaN*ones(66,nyr);
+xdety = NaN*ones(66,nyr);
+xzly = NaN*ones(66,nyr);
 
 for i = 1:66 %in future should remove interior seas 23, 33, 62
     % Drivers
@@ -98,6 +107,18 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
     dR = R - tH;
     xdet(i,:) = dR;
     clear R T t b m tH dR data
+
+    xi = lme_dety_mean(i,:);
+    inan = ~isnan(xi);
+    R = (xi(inan))';
+    T = length(R);
+    t = (1:T)';
+    data = [t R];
+    [m,b] = TheilSen(data);
+    tH = m*t + b;
+    dR = R - tH;
+    xdety(i,:) = dR;
+    clear R T t b m tH dR data
     
     xi = lme_mz_mean(i,:);
     inan = ~isnan(xi);
@@ -126,6 +147,20 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         xzl(i,:) = dR;
     end
     clear R T t b m tH dR data
+
+    xi = lme_mzly_mean(i,:);
+    inan = ~isnan(xi);
+    if(sum(inan)~=0)
+        R = (xi(inan))';
+        T = length(R);
+        t = (1:T)';
+        data = [t R];
+        [m,b] = TheilSen(data);
+        tH = m*t + b;
+        dR = R - tH;
+        xzly(i,:) = dR;
+    end
+    clear R T t b m tH dR data
     
 end
 
@@ -135,6 +170,8 @@ atb = xtb - mean(xtb,2,'omitnan');
 adet = xdet - mean(xdet,2,'omitnan');
 azoo = xz - mean(xz,2,'omitnan');
 azlos = xzl - mean(xzl,2,'omitnan');
+adety = xdety - mean(xdety,2,'omitnan');
+azlosy = xzly - mean(xzly,2,'omitnan');
 
 %% std by lme before putting back on grid
 lme_tp_stda = std(atp,0,2,'omitnan');
@@ -142,10 +179,13 @@ lme_tb_stda = std(atb,0,2,'omitnan');
 lme_det_stda = std(adet,0,2,'omitnan');
 lme_mz_stda = std(azoo,0,2,'omitnan');
 lme_mzl_stda = std(azlos,0,2,'omitnan');
+lme_dety_stda = std(adety,0,2,'omitnan');
+lme_mzly_stda = std(azlosy,0,2,'omitnan');
 
 
 %% save anoms
 save([fpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat'],...
-    'atp','atb','adet','azoo','azlos',...
-    'lme_tp_stda','lme_tb_stda','lme_det_stda','lme_mz_stda','lme_mzl_stda');
+    'atp','atb','adet','azoo','azlos','adety','azlosy',...
+    'lme_tp_stda','lme_tb_stda','lme_det_stda','lme_mz_stda','lme_mzl_stda',...
+    'lme_dety_stda','lme_mzly_stda');
 

@@ -16,17 +16,17 @@ cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 
 % lme means, trend removed, anomaly calc
 load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat'],...
-    'adet','atb','atp','azlos','azoo');
+    'adet','adety','atb','atp','azlos','azlosy','azoo');
 
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 ID = GRD.ID;
 
-% put into a matrix
+% put into a matrix & use annual productivity
 manom(:,:,1) = atp;
 manom(:,:,2) = atb;
-manom(:,:,3) = adet;
+manom(:,:,3) = adety;
 manom(:,:,4) = azoo;
-manom(:,:,5) = azlos;
+manom(:,:,5) = azlosy;
 
 tanom = {'TP','TB','Det','Zmeso','ZmLoss'};
 
@@ -35,6 +35,7 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+rpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
 
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
 mod = sims{1};
@@ -138,7 +139,7 @@ for j = 1:5
         %%
         Atab = array2table(Ctab,"VariableNames",cnam);
 
-        writetable(Atab,[fpath,ilme,'_regress_',driver,...
+        writetable(Atab,[rpath,ilme,'_regress_',driver,...
             '_div2SD_melt_mat.csv'],'Delimiter',',');
 
         clear Atab

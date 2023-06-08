@@ -1,5 +1,6 @@
 % CESM FEISTY FOSI runs
 % calc interann variability by grid cell of prod
+% convert from per day to per year
 
 clear 
 close all
@@ -29,6 +30,16 @@ load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 
 [ni,nj]=size(TLONG);
 [nid,nt]=size(sf_aprod);
+
+%% Per day to per year
+sf_aprod = 365 * sf_aprod;
+sp_aprod = 365 * sp_aprod;
+sd_aprod = 365 * sd_aprod;
+mf_aprod = 365 * mf_aprod;
+mp_aprod = 365 * mp_aprod;
+md_aprod = 365 * md_aprod;
+lp_aprod = 365 * lp_aprod;
+ld_aprod = 365 * ld_aprod;
 
 %% Groups
 xF = mf_aprod;
@@ -367,6 +378,7 @@ cvp(GRD.ID)=p_cv;
 cvd(GRD.ID)=d_cv;
 
 %% save
+units = 'per year';
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 save([fpath 'FEISTY_FOSI_',mod,'prod_interann_var.mat'],...
@@ -375,10 +387,10 @@ save([fpath 'FEISTY_FOSI_',mod,'prod_interann_var.mat'],...
     'msf','msp','msd','mmf','mmp','mmd','mlp','mld','ma',...
     'ms','mm','ml','mf','mp','md',...
     'ssf','ssp','ssd','smf','smp','smd','slp','sld','sa',...
-    'ss','sm','sl','sf','sp','sd');
+    'ss','sm','sl','sf','sp','sd','units');
 
 %%
-save([fpath 'FEISTY_FOSI_',mod,'prod_ann_mean_anoms.mat'],...
+save([fpath 'FEISTY_FOSI_',mod,'prod_ann_mean_anoms.mat'],'units',...
     'asf','asp','asd','amf','amp','amd','alp','ald','aa','as','am','al',...
     'vsf','vsp','vsd','vmf','vmp','vmd','vlp','vld','va','vs','vm','vl',...
     'Zsf','Zsp','Zsd','Zmf','Zmp','Zmd','Zlp','Zld','Za','Zs','Zm','Zl');

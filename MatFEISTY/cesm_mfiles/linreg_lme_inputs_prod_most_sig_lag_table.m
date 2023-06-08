@@ -13,17 +13,17 @@ cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 
 % lme means, trend removed, anomaly calc
 load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat'],...
-    'adet','atb','atp','azlos','azoo');
+    'adety','atb','atp','azlosy','azoo');
 
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 ID = GRD.ID;
 
-% put into a matrix
+% put into a matrix & use annual production
 manom(:,:,1) = atp;
 manom(:,:,2) = atb;
-manom(:,:,3) = adet;
+manom(:,:,3) = adety;
 manom(:,:,4) = azoo;
-manom(:,:,5) = azlos;
+manom(:,:,5) = azlosy;
 
 tanom = {'TP','TB','Det','Zmeso','ZmLoss'};
 

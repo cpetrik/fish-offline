@@ -594,7 +594,7 @@ rseZmLoss$sym[rseZmLoss$p > 0.1] <- NA
 ## CCE
 c5 <- ggplot(data = rcceDet, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Det\nCoef") +
   theme_minimal() + labs(x="")+
@@ -605,7 +605,7 @@ c5 <- ggplot(data = rcceDet, aes(y=Type, x=Lag, fill=coef)) +
 
 c4 <- ggplot(data = rcceTB, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
   theme_minimal() + labs(x="")+
@@ -616,7 +616,7 @@ c4 <- ggplot(data = rcceTB, aes(y=Type, x=Lag, fill=coef)) +
 
 c1 <- ggplot(data = rcceTP, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1),  name="TP\nCoef") +
   theme_minimal() + labs(x="")+
@@ -627,7 +627,7 @@ c1 <- ggplot(data = rcceTP, aes(y=Type, x=Lag, fill=coef)) +
 
 c2 <- ggplot(data = rcceZmeso, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Zmeso\nCoef") +
   theme_minimal() + labs(x="")+
@@ -639,7 +639,7 @@ c2 <- ggplot(data = rcceZmeso, aes(y=Type, x=Lag, fill=coef)) +
 
 c3 <- ggplot(data = rcceZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="ZmLoss\nCoef") +
   theme_minimal() + labs(x="")+
@@ -661,7 +661,7 @@ dev.off()
 ## EBS
 e5 <- ggplot(data = rebsDet, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Det\nCoef") +
   theme_minimal() + labs(x="")+
@@ -672,7 +672,7 @@ e5 <- ggplot(data = rebsDet, aes(y=Type, x=Lag, fill=coef)) +
 
 e4 <- ggplot(data = rebsTB, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
   theme_minimal() + labs(x="")+
@@ -683,7 +683,7 @@ e4 <- ggplot(data = rebsTB, aes(y=Type, x=Lag, fill=coef)) +
 
 e1 <- ggplot(data = rebsTP, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TP\nCoef") +
   theme_minimal() + labs(x="")+
@@ -694,7 +694,7 @@ e1 <- ggplot(data = rebsTP, aes(y=Type, x=Lag, fill=coef)) +
 
 e2 <- ggplot(data = rebsZmeso, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Zmeso\nCoef") +
   theme_minimal() + ggtitle("EBS") + labs(x="")+
@@ -705,7 +705,7 @@ e2 <- ggplot(data = rebsZmeso, aes(y=Type, x=Lag, fill=coef)) +
 
 e3 <- ggplot(data = rebsZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="ZmLoss\nCoef") +
   theme_minimal() + labs(x="")+
@@ -731,7 +731,7 @@ max(abs(aiTB$coef))
 
 i5 <- ggplot(data = raiDet, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Det\nCoef") +
   theme_minimal() + labs(x="")+
@@ -742,7 +742,7 @@ i5 <- ggplot(data = raiDet, aes(y=Type, x=Lag, fill=coef)) +
 
 i4 <- ggplot(data = raiTB, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
   theme_minimal() + labs(x="")+
@@ -753,7 +753,7 @@ i4 <- ggplot(data = raiTB, aes(y=Type, x=Lag, fill=coef)) +
 
 i1 <- ggplot(data = raiTP, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TP\nCoef") +
   theme_minimal() + labs(x="")+
@@ -764,7 +764,7 @@ i1 <- ggplot(data = raiTP, aes(y=Type, x=Lag, fill=coef)) +
 
 i2 <- ggplot(data = raiZmeso, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Zmeso\nCoef") +
   theme_minimal() + labs(x="")+
@@ -775,7 +775,7 @@ i2 <- ggplot(data = raiZmeso, aes(y=Type, x=Lag, fill=coef)) +
 
 i3 <- ggplot(data = raiZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="ZmLoss\nCoef") +
   theme_minimal() + labs(x="")+
@@ -801,7 +801,7 @@ max(abs(gakZmeso$coef))
 
 g5 <- ggplot(data = rgakDet, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Det\nCoef") +
   theme_minimal() + labs(x="")+
@@ -812,7 +812,7 @@ g5 <- ggplot(data = rgakDet, aes(y=Type, x=Lag, fill=coef)) +
 
 g4 <- ggplot(data = rgakTB, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
   theme_minimal() + labs(x="")+
@@ -823,7 +823,7 @@ g4 <- ggplot(data = rgakTB, aes(y=Type, x=Lag, fill=coef)) +
 
 g1 <- ggplot(data = rgakTP, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TP\nCoef") +
   theme_minimal() + labs(x="")+
@@ -834,7 +834,7 @@ g1 <- ggplot(data = rgakTP, aes(y=Type, x=Lag, fill=coef)) +
 
 g2 <- ggplot(data = rgakZmeso, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Zmeso\nCoef") +
   theme_minimal() + labs(x="")+
@@ -845,7 +845,7 @@ g2 <- ggplot(data = rgakZmeso, aes(y=Type, x=Lag, fill=coef)) +
 
 g3 <- ggplot(data = rgakZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1),  name="ZmLoss\nCoef") +
   theme_minimal() + labs(x="")+
@@ -870,7 +870,7 @@ max(abs(hiZmeso$coef))
 
 h5 <- ggplot(data = rhiDet, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Det\nCoef") +
   theme_minimal() + labs(x="")+
@@ -881,7 +881,7 @@ h5 <- ggplot(data = rhiDet, aes(y=Type, x=Lag, fill=coef)) +
 
 h4 <- ggplot(data = rhiTB, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
   theme_minimal() + labs(x="")+
@@ -892,7 +892,7 @@ h4 <- ggplot(data = rhiTB, aes(y=Type, x=Lag, fill=coef)) +
 
 h1 <- ggplot(data = rhiTP, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TP\nCoef") +
   theme_minimal() + labs(x="")+
@@ -904,7 +904,7 @@ h1 <- ggplot(data = rhiTP, aes(y=Type, x=Lag, fill=coef)) +
 
 h2 <- ggplot(data = rhiZmeso, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Zmeso\nCoef") +
   theme_minimal() + labs(x="")+
@@ -916,7 +916,7 @@ h2 <- ggplot(data = rhiZmeso, aes(y=Type, x=Lag, fill=coef)) +
 
 h3 <- ggplot(data = rhiZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="ZmLoss\nCoef") +
   theme_minimal() + labs(x="")+
@@ -943,7 +943,7 @@ max(abs(chkDet$coef))
 
 k5 <- ggplot(data = rchkDet, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Det\nCoef") +
   theme_minimal() + labs(x="")+
@@ -955,7 +955,7 @@ k5 <- ggplot(data = rchkDet, aes(y=Type, x=Lag, fill=coef)) +
 
 k4 <- ggplot(data = rchkTB, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
   theme_minimal() + labs(x="")+
@@ -967,7 +967,7 @@ k4 <- ggplot(data = rchkTB, aes(y=Type, x=Lag, fill=coef)) +
 
 k1 <- ggplot(data = rchkTP, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1),  name="TP\nCoef") +
   theme_minimal() + ggtitle("") + labs(x="")+
@@ -979,7 +979,7 @@ k1 <- ggplot(data = rchkTP, aes(y=Type, x=Lag, fill=coef)) +
 
 k2 <- ggplot(data = rchkZmeso, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Zmeso\nCoef") +
   theme_minimal() + labs(x="")+
@@ -991,7 +991,7 @@ k2 <- ggplot(data = rchkZmeso, aes(y=Type, x=Lag, fill=coef)) +
 
 k3 <- ggplot(data = rchkZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="ZmLoss\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1017,7 +1017,7 @@ max(abs(gmxZmeso$coef))
 
 m5 <- ggplot(data = rgmxDet, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Det\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1029,7 +1029,7 @@ m5 <- ggplot(data = rgmxDet, aes(y=Type, x=Lag, fill=coef)) +
 
 m4 <- ggplot(data = rgmxTB, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1041,7 +1041,7 @@ m4 <- ggplot(data = rgmxTB, aes(y=Type, x=Lag, fill=coef)) +
 
 m1 <- ggplot(data = rgmxTP, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TP\nCoef") +
   theme_minimal() + ggtitle("") + labs(x="")+
@@ -1053,7 +1053,7 @@ m1 <- ggplot(data = rgmxTP, aes(y=Type, x=Lag, fill=coef)) +
 
 m2 <- ggplot(data = rgmxZmeso, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Zmeso\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1065,7 +1065,7 @@ m2 <- ggplot(data = rgmxZmeso, aes(y=Type, x=Lag, fill=coef)) +
 
 m3 <- ggplot(data = rgmxZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="ZmLoss\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1091,7 +1091,7 @@ max(abs(seDet$coef))
 
 s5 <- ggplot(data = rseDet, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Det\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1103,7 +1103,7 @@ s5 <- ggplot(data = rseDet, aes(y=Type, x=Lag, fill=coef)) +
 
 s4 <- ggplot(data = rseTB, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1115,7 +1115,7 @@ s4 <- ggplot(data = rseTB, aes(y=Type, x=Lag, fill=coef)) +
 
 s1 <- ggplot(data = rseTP, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TP\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1127,7 +1127,7 @@ s1 <- ggplot(data = rseTP, aes(y=Type, x=Lag, fill=coef)) +
 
 s2 <- ggplot(data = rseZmeso, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Zmeso\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1139,7 +1139,7 @@ s2 <- ggplot(data = rseZmeso, aes(y=Type, x=Lag, fill=coef)) +
 
 s3 <- ggplot(data = rseZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="ZmLoss\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1165,7 +1165,7 @@ max(abs(neZmeso$coef))
 
 n5 <- ggplot(data = rneDet, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Det\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1177,7 +1177,7 @@ n5 <- ggplot(data = rneDet, aes(y=Type, x=Lag, fill=coef)) +
 
 n4 <- ggplot(data = rneTB, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TB\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1189,7 +1189,7 @@ n4 <- ggplot(data = rneTB, aes(y=Type, x=Lag, fill=coef)) +
 
 n1 <- ggplot(data = rneTP, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="TP\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1201,7 +1201,7 @@ n1 <- ggplot(data = rneTP, aes(y=Type, x=Lag, fill=coef)) +
 
 n2 <- ggplot(data = rneZmeso, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="Zmeso\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1213,7 +1213,7 @@ n2 <- ggplot(data = rneZmeso, aes(y=Type, x=Lag, fill=coef)) +
 
 n3 <- ggplot(data = rneZmLoss, aes(y=Type, x=Lag, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-1.05,1.05),
+  scale_fill_distiller(palette = "RdBu", limit = c(-1.15,1.15),
                        breaks=c(-1,-0.5,-0.2,0,0.2,0.5,1),
                        labels=c(-1,-0.5,-0.2,0,0.2,0.5,1), name="ZmLoss\nCoef") +
   theme_minimal() + labs(x="")+
@@ -1247,7 +1247,7 @@ plot_grid( c1,c2,c3,c4,c5,
            nrow = 4, ncol = 5,labels = "auto", label_size = 11)
 dev.off()
 
-png(paste0(figp,'Heatmaps_AI_GAK_HI_GMX_SE_coef_select_climate_inputs_fntypes.png'), 
+png(paste0(figp,'Heatmaps_AI_GAK_HI_GMX_SE_coef_inputs_fntypes.png'), 
     width = 7.5*300,        # 5 x 300 pixels
     height = 10*300,
     res = 300,            # 300 pixels per inch
