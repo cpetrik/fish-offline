@@ -76,6 +76,11 @@ Alp_mean = Clp .* AREA_OCN;
 Ald_mean = Cld .* AREA_OCN;
 Ab_mean  = Cb  .* AREA_OCN;
 
+AF = Asf_mean + Amf_mean;
+AP = Asp_mean + Amp_mean + Alp_mean;
+AD = Asd_mean + Amd_mean + Ald_mean;
+All = AF + AP + AD;
+
 %% Calc LMEs
 tlme = double(lme_mask);
 tlme(tlme<0) = nan;
@@ -83,6 +88,8 @@ tlme(tlme<0) = nan;
 %lme_mbio = NaN*ones(66,9);
 lme_sbio = NaN*ones(66,9);
 lme_area = NaN*ones(66,1);
+
+lme_type = NaN*ones(66,4);
 
 for L=1:66
     lid = find(tlme==L);
@@ -108,6 +115,11 @@ for L=1:66
     lme_sbio(L,8) = sum(Ald_mean(lid),'omitnan');
     lme_sbio(L,9) = sum(Ab_mean(lid),'omitnan');
 
+    lme_type(L,1) = sum(AF(lid),'omitnan');
+    lme_type(L,2) = sum(AP(lid),'omitnan');
+    lme_type(L,3) = sum(AD(lid),'omitnan');
+    lme_type(L,4) = sum(All(lid),'omitnan');
+
     %LME area
     lme_area(L,1) = sum(AREA_OCN(lid),'omitnan');
 end
@@ -116,6 +128,9 @@ end
 lme_area_mat = repmat(lme_area,1,9);
 lme_mbio = lme_sbio ./ lme_area_mat;
 
+lme_area_mat2 = repmat(lme_area,1,4);
+lme_mtype = lme_type ./ lme_area_mat2;
+
 %%
 save([dpath 'LME_fosi_fished_',mod,cfile '.mat'],...
-    'lme_mbio','lme_sbio','-append');
+    'lme_mbio','lme_sbio','lme_mtype','-append');

@@ -1,4 +1,4 @@
-% Plot max coeffs of driver-fish regressions
+% Plot max corr of driver-fish corrs
 % For all 63 LMEs
 
 clear
@@ -16,7 +16,7 @@ ppath = ['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/'
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
 mod = sims{1};
 
-load([spath,'LMEs_regress_driver_ALLdiv2SD_maxcoefs.mat'])
+load([spath,'LMEs_corr_driver_maxcorrs.mat'])
 
 %%  ---------------------------------------------------------
 cnam = {'coef','p','lag','idriver','driver'};
@@ -82,7 +82,7 @@ set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 xlabel('LME')
 ylabel('Coeff')
 title('All fishes')
-print('-dpng',[ppath 'Bar_LMEs_driver_lrcoef_allfish.png'])
+print('-dpng',[ppath 'Bar_LMEs_driver_maxcorr_allfish.png'])
 
 %%
 f2 = figure('Units','inches','Position',[1 3 7.5 10]);
@@ -226,7 +226,7 @@ set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 xlabel('LME')
 ylabel('Benthos')
 
-print('-dpng',[ppath 'Bar_LMEs_driver_lrcoef_fntypes.png'])
+print('-dpng',[ppath 'Bar_LMEs_driver_maxcorr_fntypes.png'])
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -286,7 +286,7 @@ end
 colormap(mcol)
 colorbar('Ticks',1:5,'TickLabels',ctex)
 title('All fishes')
-print('-dpng',[ppath 'Map_LMEs_driver_lrcoef_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_driver_maxcorr_allfish.png'])
 
 %%
 f1 = figure('Units','inches','Position',[1 3 7.5 5]);
@@ -394,144 +394,7 @@ end
 colormap(mcol)
 colorbar('Position',[0.7 0.2 0.03 0.25],'Ticks',1:5,'TickLabels',ctex)
 title('Benthos')
-print('-dpng',[ppath 'Map_LMEs_driver_lrcoef_fntypes.png'])
-
-%%
-% on grid
-Fcorr  = nan(ni,nj);
-Pcorr  = nan(ni,nj);
-Dcorr  = nan(ni,nj);
-Acorr  = nan(ni,nj);
-Bcorr  = nan(ni,nj);
-
-%% coef = color, text of driver and lag
-figure(4)
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-hold on
-for i=1:length(lid)
-    L=lid(i);
-    id = find(tlme==L);
-    Acorr(id) = LAtab(i,1);
-
-    if (LAtab(i,2) <= 0.05)
-        surfm(TLAT,TLONG,Acorr)
-        hold on
-    end
-    str = {ctex{LAtab(i,4)} , ['lag=' num2str(LAtab(i,3))]};
-    loc = round(length(id)/2);
-    if (abs(LAtab(i,1)) >= 0.2)
-        textm(TLAT(id(loc)),TLONG(id(loc)),str,...
-            'HorizontalAlignment','center')
-    end
-end
-cmocean('balance')
-caxis([-1 1])
-colorbar
-title('All fishes')
-print('-dpng',[ppath 'Map_LMEs_driver_lrcoef_allfish_v2.png'])
-
-%% coef = color, colormap varies by driver
-cmRB=cbrewer('div','RdBu',11,'PCHIP'); %tp
-cmPY=cbrewer('div','PiYG',11,'PCHIP'); %zoo
-cmPG=cbrewer('div','PRGn',11,'PCHIP'); %zlos
-cmBB=cbrewer('div','BrBG',11,'PCHIP'); %det
-cmPO=cbrewer('div','PuOr',11,'PCHIP'); %tb
+print('-dpng',[ppath 'Map_LMEs_driver_maxcorr_fntypes.png'])
 
 
-tpi = find(LAtab(:,4)==1);
-tbi = find(LAtab(:,4)==2);
-dti = find(LAtab(:,4)==3);
-zmi = find(LAtab(:,4)==4);
-zli = find(LAtab(:,4)==5);
 
-Acorr  = nan(ni,nj);
-Dcorr  = nan(ni,nj);
-Zcorr  = nan(ni,nj);
-
-%%
-for i=1:length(lid)
-    L=lid((i));
-    id = find(tlme==L);
-    ALLcorr(id) = LAtab(i,1);
-end
-
-figure(5)
-%TP
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1);
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-hold on
-for i=1:length(tpi)
-    L=lid(tpi(i));
-    id = find(tlme==L);
-    Acorr(id) = LAtab(i,1);
-    if (LAtab(i,2) <= 0.05)
-        h(1) = surfm(TLAT,TLONG,Acorr); hold on;
-    end
-end
-%colormap(ax3,cmRB)
-%Det
-for i=1:length(dti)
-    L=lid(dti(i));
-    id = find(tlme==L);
-    Dcorr(id) = LAtab(i,1);
-    if (LAtab(i,2) <= 0.05)
-        h(2) = surfm(TLAT,TLONG,Dcorr); hold on;
-    end
-end
-%colormap(ax3,cmBB)
-%Zm
-for i=1:length(zmi)
-    L=lid(zmi(i));
-    id = find(tlme==L);
-    Zcorr(id) = LAtab(i,1);
-    if (LAtab(i,2) <= 0.05)
-        h(3) = surfm(TLAT,TLONG,Zcorr); hold on;
-    end
-end
-%colormap(ax3,cmPY)
-cmap = [cmRB;cmBB;cmPY];
-colormap(cmap)
-tl = 1:-0.2:-1;
-tl3=[tl,tl,tl];
-cb = colorbar;
-cb.Ticks = -1:0.062:1;
-cb.TickLabels = tl3;
-%,1:2:33,'TickLabels',tl3(1):2:tl3(end))
-
-%% 3 colorpmarp
-% Project Data to the different planes.
-h(1) = surf(X,Y,ax(5)+0*Z,Z); % X-Y Plane Projection
-h(2) = surf(X,ax(4)+0*Y,Z);   % X-Z Plane Projection
-h(3) = surf(ax(2)+0*X,Y,Z);   % Y-Z Plane Projection
-set(h,'FaceColor','interp','EdgeColor','interp')
-% Build a colormap that consists of three separate
-% colormaps.
-cmapX = bone(32);
-cmapY = cool(32);
-cmapZ = jet(32);
-cmap = [cmapX;cmapY;cmapZ];
-colormap(cmap)
-% Map the CData of each surface plot to a contiguous, 
-% nonoverlapping set of data.  Each CData must have
-% the same range.
-zmin = min(Z(:));
-zmax = max(Z(:));
-% CDX ranges from 1 to 32.
-cdx = min(32,round(31*(Z-zmin)/(zmax-zmin))+1);
-% CDY ranges from 33 to 64.
-cdy = cdx+32;
-% CDZ ranges from 65 to 96.
-cdz = cdy+32;
-% Update the CDatas.
-set(h(1),'CData',cdx)
-set(h(3),'CData',cdy)
-set(h(2),'CData',cdz)
-% Change CLim (Color Limits) so that it spans all the CDatas
-caxis([min(cdx(:)) max(cdz(:))])
-
-
-title('All fishes')
-%print('-dpng',[ppath 'Map_LMEs_driver_lrcoef_allfish_v3.png'])

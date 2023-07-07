@@ -5,11 +5,11 @@ close all
 
 %%%%!! EXPERIMENTS
 testc       = false;
-locs_cesm   = true;
+locs_cesm   = false;
 spinup_cesm = false;
 spinup_hr   = false;
 hr_cesm     = false;
-fosi_cesm   = false;
+fosi_cesm   = true;
 dple_cesm   = false;
 
 tic
@@ -40,9 +40,10 @@ if fosi_cesm
 %     Locs_CESM_4p4z()
 %     FOSI_cesm()
 %     FOSI_cesm_catch()
-    FOSI_cesm_climatol()
-    FOSI_cesm_varFood()
-    FOSI_cesm_varTemp()
+    FOSI_cesm_nu()
+%     FOSI_cesm_climatol()
+%     FOSI_cesm_varFood()
+%     FOSI_cesm_varTemp()
 %     FOSI_cesm_search()
 %     CESM_4p4z()
 %     CESM_4p4z_comb()
