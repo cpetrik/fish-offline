@@ -64,16 +64,14 @@ yen = 68;
 AA = aa(:,1);
 lid = find(~isnan(AA));
 
-%Lags
-yr = 0:5;
+%Lags (max 3 yrs)
+yr = 0:3;
 
 % Drivers
 tanom2=tanom';
 tanom2(:,2)=tanom2(:,1);
 tanom2(:,3)=tanom2(:,1);
 tanom2(:,4)=tanom2(:,1);
-tanom2(:,5)=tanom2(:,1);
-tanom2(:,6)=tanom2(:,1);
 
 LFtab = nan*ones(length(lid),5);
 LPtab = nan*ones(length(lid),5);
@@ -187,18 +185,18 @@ Btab1 = array2table(LBtab,"RowNames",lname);
 Btab1.Properties.VariableNames = tanom;
 
 %%
-writetable(Ftab1,[spath,'LMEs_regress_drivers_ALLdiv2SD_siglag_F.csv'],...
+writetable(Ftab1,[spath,'LMEs_regress_drivers_ALLdiv2SD_siglag3_F.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[spath,'LMEs_regress_drivers_ALLdiv2SD_siglag_P.csv'],...
+writetable(Ptab1,[spath,'LMEs_regress_drivers_ALLdiv2SD_siglag3_P.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[spath,'LMEs_regress_drivers_ALLdiv2SD_siglag_D.csv'],...
+writetable(Dtab1,[spath,'LMEs_regress_drivers_ALLdiv2SD_siglag3_D.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Atab1,[spath,'LMEs_regress_drivers_ALLdiv2SD_siglag_A.csv'],...
+writetable(Atab1,[spath,'LMEs_regress_drivers_ALLdiv2SD_siglag3_A.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Btab1,[spath,'LMEs_regress_drivers_ALLdiv2SD_siglag_B.csv'],...
+writetable(Btab1,[spath,'LMEs_regress_drivers_ALLdiv2SD_siglag3_B.csv'],...
     'Delimiter',',','WriteRowNames',true);
 
-save([spath,'LMEs_regress_drivers_ALLdiv2SD_siglags.mat'],...
+save([spath,'LMEs_regress_drivers_ALLdiv2SD_siglag3.mat'],...
     'LFtab','LPtab','LDtab','LAtab','LBtab',...
     'Ftab1','Ptab1','Dtab1','Atab1','Btab1','lid');
 
