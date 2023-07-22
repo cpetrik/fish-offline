@@ -1,4 +1,7 @@
 # Mult linear regression of forcing on fish biomass
+# Just US LMES
+# Giving different results then when all LMEs done together
+# STOP using
 
 rm(list=ls())
 
@@ -301,9 +304,9 @@ mBcoef$sym <- mBpval$sym
 
 f1 <- ggplot(data = mFcoef, aes(y=LME, x=driver, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-2.6,2.6), 
-                       breaks=c(-1.5,-1.0,-0.5,0,0.5,1.0,1.5),
-                       labels=c(-1.5,-1.0,-0.5,0,0.5,1.0,1.5), name="coeff") +
+  scale_fill_distiller(palette = "RdBu", limit = c(-3.0,3.0), 
+                       breaks=c(-3,-2,-1,0,1,2,3),
+                       labels=c(-3,-2,-1,0,1,2,3), name="coeff") +
   theme_minimal() + labs(x="") + labs(y="LME") +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
@@ -312,9 +315,9 @@ f1 <- ggplot(data = mFcoef, aes(y=LME, x=driver, fill=coef)) +
 
 p1 <- ggplot(data = mPcoef, aes(y=LME, x=driver, fill=coef)) + 
   geom_tile(color = "white") + labs(x="") + labs(y="") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-2.6,2.6), 
-                       breaks=c(-1.5,-1.0,-0.5,0,0.5,1.0,1.5),
-                       labels=c(-1.5,-1.0,-0.5,0,0.5,1.0,1.5), name="coeff") +
+  scale_fill_distiller(palette = "RdBu", limit = c(-3.0,3.0), 
+                       breaks=c(-3,-2,-1,0,1,2,3),
+                       labels=c(-3,-2,-1,0,1,2,3), name="coeff") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
@@ -323,9 +326,9 @@ p1 <- ggplot(data = mPcoef, aes(y=LME, x=driver, fill=coef)) +
 
 d1 <- ggplot(data = mDcoef, aes(y=LME, x=driver, fill=coef)) + 
   geom_tile(color = "white") + labs(x="Driver") + labs(y="LME") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-2.6,2.6), 
-                       breaks=c(-1.5,-1.0,-0.5,0,0.5,1.0,1.5),
-                       labels=c(-1.5,-1.0,-0.5,0,0.5,1.0,1.5), name="coeff") +
+  scale_fill_distiller(palette = "RdBu", limit = c(-3.0,3.0), 
+                       breaks=c(-3,-2,-1,0,1,2,3),
+                       labels=c(-3,-2,-1,0,1,2,3), name="coeff") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
@@ -334,9 +337,9 @@ d1 <- ggplot(data = mDcoef, aes(y=LME, x=driver, fill=coef)) +
 
 a1 <- ggplot(data = mAcoef, aes(y=LME, x=driver, fill=coef)) + 
   geom_tile(color = "white") + labs(x="Driver") + labs(y="") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-2.6,2.6), 
-                       breaks=c(-1.5,-1.0,-0.5,0,0.5,1.0,1.5),
-                       labels=c(-1.5,-1.0,-0.5,0,0.5,1.0,1.5), name="coeff") +
+  scale_fill_distiller(palette = "RdBu", limit = c(-3.0,3.0), 
+                       breaks=c(-3,-2,-1,0,1,2,3),
+                       labels=c(-3,-2,-1,0,1,2,3), name="coeff") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +
@@ -345,9 +348,9 @@ a1 <- ggplot(data = mAcoef, aes(y=LME, x=driver, fill=coef)) +
 
 b1 <- ggplot(data = mBcoef, aes(y=LME, x=driver, fill=coef)) + 
   geom_tile(color = "white") + labs(x="Driver") + labs(y="") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-2.6,2.6), 
-                       breaks=c(-1.5,-1.0,-0.5,0,0.5,1.0,1.5),
-                       labels=c(-1.5,-1.0,-0.5,0,0.5,1.0,1.5), name="coeff") +
+  scale_fill_distiller(palette = "RdBu", limit = c(-3.0,3.0), 
+                       breaks=c(-3,-2,-1,0,1,2,3),
+                       labels=c(-3,-2,-1,0,1,2,3), name="coeff") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 8, hjust = 1)) +

@@ -1,4 +1,7 @@
 # Mult linear regression of forcing on fish nu
+# Just US LMES
+# Giving different results then when all LMEs done together
+# STOP using
 
 rm(list=ls())
 
