@@ -33,7 +33,6 @@ Dlag <- read.csv(paste0(datar,"LMEs_regress_drivers_ALLdiv2SD_siglag_D.csv"),sep
 Alag <- read.csv(paste0(datar,"LMEs_regress_drivers_ALLdiv2SD_siglag_A.csv"),sep=",",header = T,stringsAsFactors = F)
 Blag <- read.csv(paste0(datar,"LMEs_regress_drivers_ALLdiv2SD_siglag_B.csv"),sep=",",header = T,stringsAsFactors = F)
 
-
 ### MLR of drivers ---------------------------------------------------------
 dname <- c('TP','TB','Zmeso','ZmLoss','Det')
 
