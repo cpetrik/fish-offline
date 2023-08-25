@@ -88,7 +88,7 @@ P2$Year <- c(1:68)
 dname <- c('TP','TB','Zmeso','ZmLoss','Det')
 
 #Loop over LMEs  1:nlme
-for (i in 24:34) {
+for (i in 32:34) {
   cn <- cname[i]
   
   ### Drivers
@@ -253,15 +253,15 @@ for (i in 24:34) {
   
 } # LMEs
 
-write.table(fcoef,paste0(datar,"LME2434_F_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
-write.table(pcoef,paste0(datar,"LME2434_P_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
-write.table(dcoef,paste0(datar,"LME2434_D_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
-write.table(acoef,paste0(datar,"LME2434_A_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
-write.table(bcoef,paste0(datar,"LME2434_B_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
+write.table(fcoef,paste0(datar,"LME_F_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
+write.table(pcoef,paste0(datar,"LME_P_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
+write.table(dcoef,paste0(datar,"LME_D_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
+write.table(acoef,paste0(datar,"LME_A_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
+write.table(bcoef,paste0(datar,"LME_B_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
 
-write.table(fpval,paste0(datar,"LME2434_F_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
-write.table(ppval,paste0(datar,"LME2434_P_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
-write.table(dpval,paste0(datar,"LME2434_D_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
-write.table(apval,paste0(datar,"LME2434_A_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
-write.table(bpval,paste0(datar,"LME2434_B_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
+write.table(fpval,paste0(datar,"LME_F_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
+write.table(ppval,paste0(datar,"LME_P_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
+write.table(dpval,paste0(datar,"LME_D_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
+write.table(apval,paste0(datar,"LME_A_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
+write.table(bpval,paste0(datar,"LME_B_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",row.names=F)
 

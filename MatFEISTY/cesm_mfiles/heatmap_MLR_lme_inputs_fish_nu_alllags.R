@@ -1,6 +1,6 @@
-# Heatmaps of Mult linear regression of forcing on fish biomass
+# Heatmaps of Mult linear regression of forcing on fish prod (nu)
 # Includes all lags up to 2yrs
-# From (8/21/2023) output
+# From (8/13/2023) output
 
 rm(list=ls())
 
@@ -27,19 +27,27 @@ figp <- "/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY
 #datar <- "/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100/regressions/"
 datar <- "/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/"
 
-fcoef <- read.csv(paste0(datar,"LME_F_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
-pcoef <- read.csv(paste0(datar,"LME_P_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
-dcoef <- read.csv(paste0(datar,"LME_D_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
-acoef <- read.csv(paste0(datar,"LME_A_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
-bcoef <- read.csv(paste0(datar,"LME_B_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
+fcoef <- read.csv(paste0(datar,"LME_Fnu_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
+pcoef <- read.csv(paste0(datar,"LME_Pnu_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
+dcoef <- read.csv(paste0(datar,"LME_Dnu_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
+acoef <- read.csv(paste0(datar,"LME_Anu_mlr_coeffs_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
 
-fpval <- read.csv(paste0(datar,"LME_F_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
-ppval <- read.csv(paste0(datar,"LME_P_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
-dpval <- read.csv(paste0(datar,"LME_D_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
-apval <- read.csv(paste0(datar,"LME_A_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
-bpval <- read.csv(paste0(datar,"LME_B_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
+fpval <- read.csv(paste0(datar,"LME_Fnu_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
+ppval <- read.csv(paste0(datar,"LME_Pnu_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
+dpval <- read.csv(paste0(datar,"LME_Dnu_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
+apval <- read.csv(paste0(datar,"LME_Anu_mlr_pvals_ALLdiv2SD_alllags.csv"),sep=",",header = T,stringsAsFactors = F)
 
 
+# First row is Year for some reason
+fcoef <- fcoef[2:64,]
+pcoef <- pcoef[2:64,]
+dcoef <- dcoef[2:64,]
+acoef <- acoef[2:64,]
+
+fpval <- fpval[2:64,]
+ppval <- ppval[2:64,]
+dpval <- dpval[2:64,]
+apval <- apval[2:64,]
 
 ### Use heatmap & clustering tree to find patterns
 
@@ -60,7 +68,7 @@ col_breaks = c(-15,-5,-2,-1.1, # for low
                seq(-1,1,length=21), # for blue
                1.1,2,5,15) # for high
 
-png(paste0(figp,"hclust_wardD_heatmap_LME_A_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
+png(paste0(figp,"hclust_wardD_heatmap_LME_Anu_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
     width = 5*300,        # 5 x 300 pixels
     height = 6.5*300,
     res = 300,            # 300 pixels per inch
@@ -97,7 +105,7 @@ fdfish <- color_branches(fdfish) #,k=8
 # reduce the size of the labels:
 fdfish <- set(fdfish, "labels_cex", 0.8)
 
-png(paste0(figp,"hclust_wardD_heatmap_LME_F_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
+png(paste0(figp,"hclust_wardD_heatmap_LME_Fnu_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
     width = 5*300,        # 5 x 300 pixels
     height = 6.5*300,
     res = 300,            # 300 pixels per inch
@@ -131,7 +139,7 @@ pdfish <- color_branches(pdfish) #,k=8
 # reduce the size of the labels:
 pdfish <- set(pdfish, "labels_cex", 0.8)
 
-png(paste0(figp,"hclust_wardD_heatmap_LME_P_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
+png(paste0(figp,"hclust_wardD_heatmap_LME_Pnu_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
     width = 5*300,        # 5 x 300 pixels
     height = 6.5*300,
     res = 300,            # 300 pixels per inch
@@ -165,7 +173,7 @@ ddfish <- color_branches(ddfish) #,k=8
 # reduce the size of the labels:
 ddfish <- set(ddfish, "labels_cex", 0.8)
 
-png(paste0(figp,"hclust_wardD_heatmap_LME_D_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
+png(paste0(figp,"hclust_wardD_heatmap_LME_Dnu_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
     width = 5*300,        # 5 x 300 pixels
     height = 6.5*300,
     res = 300,            # 300 pixels per inch
@@ -187,42 +195,8 @@ gplots::heatmap.2(as.matrix(Dcoef),
 dev.off()
 
 
-## Bent
-Bcoef <- bcoef[,2:25]
-rownames(Bcoef) <- bcoef$LME
-Bcoef[is.na(Bcoef)] <- 0
-bd_fish <- dist(Bcoef) # method="man" # is a bit better
-bhc_fish <- hclust(bd_fish, method = "ward.D")
-bdfish <- as.dendrogram(bhc_fish)
-# Color the branches based on the clusters:
-bdfish <- color_branches(bdfish) #,k=8 
-# reduce the size of the labels:
-bdfish <- set(bdfish, "labels_cex", 0.8)
-
-png(paste0(figp,"hclust_wardD_heatmap_LME_B_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
-    width = 5*300,        # 5 x 300 pixels
-    height = 6.5*300,
-    res = 300,            # 300 pixels per inch
-    pointsize = 8)  
-gplots::heatmap.2(as.matrix(Bcoef), 
-                  main = "Benthos",
-                  srtCol = 45,
-                  dendrogram = "row",
-                  Rowv = bdfish,
-                  Colv = "NA", # this to make sure the columns are not ordered
-                  trace="none",          
-                  margins =c(3,6),      
-                  key.xlab = "Coefficient",
-                  denscol = "grey",
-                  key.title=NA, # no title
-                  density.info = "none",
-                  offsetCol=-0.6,
-                  col = some_col_func)
-dev.off()
-
-
 ### ------------------------- Just US --------------------------------------
-lid <- c('X54','X1','X2','X65','X10','X3','X5','X6','X7')
+lid <- c('LME54','LME1','LME2','LME65','LME10','LME3','LME5','LME6','LME7')
 lall <- as.data.frame(lid)
 lall$lname <- c('CHK','EBS','GAK','AI','HI','CCE','GMX','SE','NE')
 names(lall)[1] <- 'LME'
@@ -286,24 +260,11 @@ mApval$sym[mApval$pval <= 0.05] <- "*"
 mApval$sym[mApval$pval > 0.05] <- NA
 mAcoef$sym <- mApval$sym
 
-Bcoef <- subset(bcoef,bcoef$LME %in% lid)
-Bcoef <- merge(Bcoef,lall,by='LME')
-Bcoef <- Bcoef[,hcol]
-mBcoef <- melt(Bcoef,id="lname")
-names(mBcoef) <- c("LME","driver","coef")
-Bpval <- merge(lall,bpval,by='LME',all=F)
-Bpval <- Bpval[,pcol]
-mBpval <- melt(Bpval,id="lname")
-names(mBpval) <- c("LME","driver","pval")
-mBpval$sym <- mBpval$pval
-mBpval$sym[mBpval$pval <= 0.05] <- "*"
-mBpval$sym[mBpval$pval > 0.05] <- NA
-mBcoef$sym <- mBpval$sym
 
 
 f1 <- ggplot(data = mFcoef, aes(y=LME, x=driver, fill=coef)) + 
   geom_tile(color = "white") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-4.1,4.1), 
+  scale_fill_distiller(palette = "RdBu", limit = c(-2,2), 
                        breaks=c(-3,-2,-1,0,1,2,3),
                        labels=c(-3,-2,-1,0,1,2,3), name="coeff") +
   theme_minimal() + labs(x="") + labs(y="LME") +
@@ -314,7 +275,7 @@ f1 <- ggplot(data = mFcoef, aes(y=LME, x=driver, fill=coef)) +
 
 p1 <- ggplot(data = mPcoef, aes(y=LME, x=driver, fill=coef)) + 
   geom_tile(color = "white") + labs(x="") + labs(y="") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-4.1,4.1), 
+  scale_fill_distiller(palette = "RdBu", limit = c(-2,2), 
                        breaks=c(-3,-2,-1,0,1,2,3),
                        labels=c(-3,-2,-1,0,1,2,3), name="coeff") +
   theme_minimal() +
@@ -325,7 +286,7 @@ p1 <- ggplot(data = mPcoef, aes(y=LME, x=driver, fill=coef)) +
 
 d1 <- ggplot(data = mDcoef, aes(y=LME, x=driver, fill=coef)) + 
   geom_tile(color = "white") + labs(x="Driver") + labs(y="LME") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-4.1,4.1), 
+  scale_fill_distiller(palette = "RdBu", limit = c(-2,2), 
                        breaks=c(-3,-2,-1,0,1,2,3),
                        labels=c(-3,-2,-1,0,1,2,3), name="coeff") +
   theme_minimal() +
@@ -336,7 +297,7 @@ d1 <- ggplot(data = mDcoef, aes(y=LME, x=driver, fill=coef)) +
 
 a1 <- ggplot(data = mAcoef, aes(y=LME, x=driver, fill=coef)) + 
   geom_tile(color = "white") + labs(x="Driver") + labs(y="") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-4.1,4.1), 
+  scale_fill_distiller(palette = "RdBu", limit = c(-2,2), 
                        breaks=c(-3,-2,-1,0,1,2,3),
                        labels=c(-3,-2,-1,0,1,2,3), name="coeff") +
   theme_minimal() +
@@ -345,25 +306,14 @@ a1 <- ggplot(data = mAcoef, aes(y=LME, x=driver, fill=coef)) +
   coord_fixed() + ggtitle("All fish") +
   geom_text(aes(driver, LME, label = sym), color = "black", size = 5) 
 
-b1 <- ggplot(data = mBcoef, aes(y=LME, x=driver, fill=coef)) + 
-  geom_tile(color = "white") + labs(x="Driver") + labs(y="") +
-  scale_fill_distiller(palette = "RdBu", limit = c(-4.1,4.1), 
-                       breaks=c(-3,-2,-1,0,1,2,3),
-                       labels=c(-3,-2,-1,0,1,2,3), name="coeff") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, 
-                                   size = 8, hjust = 1)) +
-  coord_fixed() + ggtitle("Benthos") +
-  geom_text(aes(driver, LME, label = sym), color = "black", size = 5) 
-
-png(paste0(figp,'Heatmaps_USLME_mlr_coeffs_ALLdiv2SD_alllags.png'), 
-    width = 12*300,        # 5 x 300 pixels
+png(paste0(figp,'Heatmaps_USLMEnu_mlr_coeffs_ALLdiv2SD_alllags.png'), 
+    width = 9*300,        # 5 x 300 pixels
     height = 5*300,
     res = 300,            # 300 pixels per inch
     pointsize = 8)
-ggarrange(f1,p1,a1,
-          d1,b1,
-          nrow = 2, ncol = 3,labels = "auto",
+ggarrange(f1,p1,
+          d1,a1,
+          nrow = 2, ncol = 2,labels = "auto",
           common.legend = TRUE, legend = "right")
 dev.off()
 
@@ -385,7 +335,7 @@ dfish <- color_branches(dfish) #, k=3)
 dfish <- set(dfish, "labels_cex", 0.8)
 
 
-png(paste0(figp,"hclust_wardD_heatmap_USLME_A_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
+png(paste0(figp,"hclust_wardD_heatmap_USLME_Anu_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
     width = 5*300,        # 5 x 300 pixels
     height = 5*300,
     res = 300,            # 300 pixels per inch
@@ -426,7 +376,7 @@ dfish <- color_branches(dfish) #, k=3)
 # reduce the size of the labels:
 dfish <- set(dfish, "labels_cex", 0.8)
 
-png(paste0(figp,"hclust_wardD_heatmap_USLME_F_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
+png(paste0(figp,"hclust_wardD_heatmap_USLME_Fnu_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
     width = 5*300,        # 5 x 300 pixels
     height = 5*300,
     res = 300,            # 300 pixels per inch
@@ -465,7 +415,7 @@ dfish <- color_branches(dfish) #, k=3)
 # reduce the size of the labels:
 dfish <- set(dfish, "labels_cex", 0.8)
 
-png(paste0(figp,"hclust_wardD_heatmap_USLME_P_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
+png(paste0(figp,"hclust_wardD_heatmap_USLME_Pnu_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
     width = 5*300,        # 5 x 300 pixels
     height = 5*300,
     res = 300,            # 300 pixels per inch
@@ -504,7 +454,7 @@ dfish <- color_branches(dfish) #, k=3)
 # reduce the size of the labels:
 dfish <- set(dfish, "labels_cex", 0.8)
 
-png(paste0(figp,"hclust_wardD_heatmap_USLME_D_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
+png(paste0(figp,"hclust_wardD_heatmap_USLME_Dnu_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
     width = 5*300,        # 5 x 300 pixels
     height = 5*300,
     res = 300,            # 300 pixels per inch
@@ -526,43 +476,6 @@ gplots::heatmap.2(as.matrix(Dcoef2),
 dev.off()
 
 
-## Bent
-Bcoef2 <- Bcoef[,1:24]
-rownames(Bcoef2) <- Bcoef$lname
-Bcoef2[is.na(Bcoef2)] <- 0
-#summary(Bcoef2)
-#bn <- c("Det0","Det1","Det2","TB0","TB2","TP0", "TP1","TP2", "Zmeso0","Zmeso1",
-#        "Zmeso2","ZmLoss0","ZmLoss1","ZmLoss2","Det0.TB0", "Det2.TB2",
-#        "TP0.Zmeso0")
-#Bcoef2 <- Bcoef2[,bn]
-d_fish <- dist(Bcoef2) # method="man" # is a bit better
-hc_fish <- hclust(d_fish, method = "ward.D")
-dfish <- as.dendrogram(hc_fish)
-# Color the branches based on the clusters:
-dfish <- color_branches(dfish) #, k=3) 
-# reduce the size of the labels:
-dfish <- set(dfish, "labels_cex", 0.8)
-
-png(paste0(figp,"hclust_wardD_heatmap_USLME_B_mlr_coeffs_ALLdiv2SD_alllags.png"),    # create PNG for the heat map        
-    width = 5*300,        # 5 x 300 pixels
-    height = 5*300,
-    res = 300,            # 300 pixels per inch
-    pointsize = 8)  
-gplots::heatmap.2(as.matrix(Bcoef2), 
-                  main = "Benthos",
-                  srtCol = 45,
-                  dendrogram = "row",
-                  Rowv = dfish,
-                  Colv = "NA", # this to make sure the columns are not ordered
-                  trace="none",          
-                  margins =c(3,6),      
-                  key.xlab = "Coefficient",
-                  denscol = "grey",
-                  key.title=NA, # no title
-                  density.info = "none",
-                  offsetCol=-0.6,
-                  col = some_col_func)
-dev.off()
 
 
 
