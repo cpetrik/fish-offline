@@ -57,7 +57,7 @@ set(groot,'defaultAxesColorOrder',cm10);
 cmBP50=cbrewer('seq','BuPu',50,'PCHIP');
 
 %% Plots in time
-t = 1:length(sp_tmean); %time;
+t = 1:length(sp_tmean); %time; 1948 to 2015
 y = t/12;
 
 % All size classes of all

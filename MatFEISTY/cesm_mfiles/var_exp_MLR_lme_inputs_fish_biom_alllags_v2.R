@@ -135,9 +135,51 @@ for (i in 1:nlme) {
   ffish$Fish[(yst-3):(yen-3)] <- F2[,cn]
   ffish <- na.omit(ffish)
   
-  # best model
-  fmod <- fcoef[i,1:22]
-  fmod2 <- fmod[,!is.na(fmod)]
+  ## Test mod for creating array with results
+  # Create arrays for coefficients & p-vals
+  options(na.action = "na.fail")
+  if (i==1) {
+    tmod <- lm(Fish ~ TP0+TP1+TP2 + TB0+TB1+TB2 + Det0+Det1+Det2 + 
+                 ZmLoss0+ZmLoss1+ZmLoss2 + 
+                 Det0*ZmLoss0 + Det1*ZmLoss1 + Det2*ZmLoss2 + 
+                 TP0*ZmLoss0 + TP1*ZmLoss1 + TP2*ZmLoss2 + 
+                 TB0*Det0 + TB1*Det1 + TB2*Det2, data=ffish)
+    tcombo <- dredge(tmod)
+    fcoef <- data.frame(matrix(ncol = length(tcombo), nrow = nlme))
+    names(fcoef) <- names(tcombo)
+    fpval <- fcoef[,1:22]
+    fcoef$LME <- cname
+    fpval$LME <- cname
+    pcoef <- fcoef
+    ppval <- fpval
+    dcoef <- fcoef
+    dpval <- fpval
+    acoef <- fcoef
+    apval <- fpval
+    bcoef <- fcoef
+    bpval <- fpval
+  }
+  
+  # F actual
+  fmod <- lm(Fish ~ TP0+TP1 + TB0+TB1 + Det0+Det1 + ZmLoss0+ZmLoss1 + 
+               Det0*ZmLoss0 + Det1*ZmLoss1 +  
+               TP0*ZmLoss0 + TP1*ZmLoss1 +  
+               TB0*Det0 + TB1*Det1, data=ffish)
+  fcombo <- dredge(fmod, extra = c("R^2", F = function(x)
+    summary(x)$fstatistic[[1]]))
+  ## Put coefficients & p-val of best model in arrays for saving
+  xx <- (fcombo)[1]
+  fcoef[i, match(names(xx), colnames(fcoef))] = xx
+  y <- summary(get.models(fcombo, 1)[[1]])
+  yy <- (y$coefficients[,4])
+  fpval[i, match(names(yy), colnames(fpval))] = yy
+  
+  
+  
+  
+ 
+  
+  
   m <- glm( vs ~ LH + cvF + LH:cvF, family = Gamma( link = 'log' ), data = dds )
   # m <- glm( I( 1000 * vs ) ~ LH + cvF + LH:cvF, family = Gamma( link = 'log' ), data = dds ) # altering the scale does not affect the estimates [beyond the intercept]
   

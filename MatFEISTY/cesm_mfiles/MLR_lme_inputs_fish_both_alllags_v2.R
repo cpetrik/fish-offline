@@ -131,7 +131,8 @@ for (i in 1:nlme) {
                  Det0*ZmLoss0 + Det1*ZmLoss1 + Det2*ZmLoss2 + 
                  TP0*ZmLoss0 + TP1*ZmLoss1 + TP2*ZmLoss2 + 
                  TB0*Det0 + TB1*Det1 + TB2*Det2, data=ffish)
-    tcombo <- dredge(tmod)
+    tcombo <- dredge(tmod, extra = c("R^2", F = function(x)
+      summary(x)$fstatistic[[1]]))
     fcoef <- data.frame(matrix(ncol = length(tcombo), nrow = nlme))
     names(fcoef) <- names(tcombo)
     fpval <- fcoef[,1:22]
@@ -152,7 +153,8 @@ for (i in 1:nlme) {
                Det0*ZmLoss0 + Det1*ZmLoss1 +  
                TP0*ZmLoss0 + TP1*ZmLoss1 +  
                TB0*Det0 + TB1*Det1, data=ffish)
-  fcombo <- dredge(fmod)
+  fcombo <- dredge(fmod, extra = c("R^2", F = function(x)
+    summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
   xx <- (fcombo)[1]
   fcoef[i, match(names(xx), colnames(fcoef))] = xx
@@ -170,7 +172,8 @@ for (i in 1:nlme) {
                Det1*ZmLoss1 + Det2*ZmLoss2 + 
                TP1*ZmLoss1 + TP2*ZmLoss2 + 
                TB1*Det1 + TB2*Det2, data=pfish)
-  pcombo <- dredge(pmod)
+  pcombo <- dredge(pmod, extra = c("R^2", F = function(x)
+    summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
   xx <- (pcombo)[1]
   pcoef[i, match(names(xx), colnames(pcoef))] = xx
@@ -189,7 +192,8 @@ for (i in 1:nlme) {
                Det1*ZmLoss1 + Det2*ZmLoss2 + 
                TP1*ZmLoss1 + TP2*ZmLoss2 + 
                TB1*Det1 + TB2*Det2, data=dfish)
-  dcombo <- dredge(dmod)
+  dcombo <- dredge(dmod, extra = c("R^2", F = function(x)
+    summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
   xx <- (dcombo)[1]
   dcoef[i, match(names(xx), colnames(dcoef))] = xx
@@ -207,7 +211,8 @@ for (i in 1:nlme) {
                Det1*ZmLoss1 + Det2*ZmLoss2 + 
                TP1*ZmLoss1 + TP2*ZmLoss2 + 
                TB1*Det1 + TB2*Det2, data=afish)
-  acombo <- dredge(amod)
+  acombo <- dredge(amod, extra = c("R^2", F = function(x)
+    summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
   xx <- (acombo)[1]
   acoef[i, match(names(xx), colnames(acoef))] = xx
@@ -226,7 +231,8 @@ for (i in 1:nlme) {
                Det0*ZmLoss0 + Det1*ZmLoss1 + 
                TP0*ZmLoss0 + TP1*ZmLoss1 + 
                TB0*Det0 + TB1*Det1, data=bent)
-  bcombo <- dredge(bmod)
+  bcombo <- dredge(bmod, extra = c("R^2", F = function(x)
+    summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
   xx <- (bcombo)[1]
   bcoef[i, match(names(xx), colnames(bcoef))] = xx
@@ -340,7 +346,8 @@ for (i in 1:nlme) {
                Det0*ZmLoss0 + Det1*ZmLoss1 + 
                TP0*ZmLoss0 + TP1*ZmLoss1 + 
                TB0*Det0 + TB1*Det1, data=ffish)
-  fcombo <- dredge(fmod)
+  fcombo <- dredge(fmod, extra = c("R^2", F = function(x)
+    summary(x)$fstatistic[[1]]))
   
   ## Create arrays for coefficients & p-vals
   if (i==1) {
@@ -375,7 +382,8 @@ for (i in 1:nlme) {
                Det0*ZmLoss0 + Det1*ZmLoss1 + 
                TP0*ZmLoss0 + TP1*ZmLoss1 + 
                TB0*Det0 + TB1*Det1, data=pfish)
-  pcombo <- dredge(pmod)
+  pcombo <- dredge(pmod, extra = c("R^2", F = function(x)
+    summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
   xx <- (pcombo)[1]
   pcoef[i, match(names(xx), colnames(pcoef))] = xx
@@ -393,7 +401,8 @@ for (i in 1:nlme) {
                Det0*ZmLoss0 + Det1*ZmLoss1 + 
                TP0*ZmLoss0 + TP1*ZmLoss1 + 
                TB0*Det0 + TB1*Det1, data=dfish)
-  dcombo <- dredge(dmod)
+  dcombo <- dredge(dmod, extra = c("R^2", F = function(x)
+    summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
   xx <- (dcombo)[1]
   dcoef[i, match(names(xx), colnames(dcoef))] = xx
@@ -411,7 +420,8 @@ for (i in 1:nlme) {
                Det0*ZmLoss0 + Det1*ZmLoss1 + 
                TP0*ZmLoss0 + TP1*ZmLoss1 + 
                TB0*Det0 + TB1*Det1, data=afish)
-  acombo <- dredge(amod)
+  acombo <- dredge(amod, extra = c("R^2", F = function(x)
+    summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
   xx <- (acombo)[1]
   acoef[i, match(names(xx), colnames(acoef))] = xx
