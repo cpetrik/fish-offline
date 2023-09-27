@@ -9,8 +9,7 @@ close all
 %fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/';
 fpath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
-load([fpath 'FishMIP_Phase3a_LME_Catch_annual.mat']);
-
+load([fpath 'FishMIP_Phase3a_LME_Catch_annual_1948-2015.mat']);
 
 %% Cols: Year, LME, F, P, D
 yr = unique(LMECatch(:,1));
@@ -28,10 +27,13 @@ nj = length(lid);
 % mf2 = reshape(mf(:,2),ni,nj);
 % mf3 = reshape(mf(:,3),ni,nj);
 
+LMECatch(:,6) = sum(LMECatch(:,3:5),2,'omitnan');
+
 %% Brute force
-lme_f_ts  = nan*ones(66,ni);
-lme_p_ts  = nan*ones(66,ni);
-lme_d_ts  = nan*ones(66,ni);
+lme_f_ts  = zeros(66,ni);
+lme_p_ts  = zeros(66,ni);
+lme_d_ts  = zeros(66,ni);
+lme_a_ts  = zeros(66,ni);
 
 for L=1:66
     for i = 1:ni
@@ -43,6 +45,7 @@ for L=1:66
             lme_f_ts(L,i) = LMECatch(id,3);
             lme_p_ts(L,i) = LMECatch(id,4);
             lme_d_ts(L,i) = LMECatch(id,5);
+            lme_a_ts(L,i) = LMECatch(id,6);
         end
     end
 end
@@ -53,26 +56,31 @@ end
 lme_f_mean  = mean(lme_f_ts,2,'omitnan');
 lme_p_mean  = mean(lme_p_ts,2,'omitnan');
 lme_d_mean  = mean(lme_d_ts,2,'omitnan');
+lme_a_mean  = mean(lme_a_ts,2,'omitnan');
 
 % Std dev
 lme_f_std  = std(lme_f_ts,0,2,'omitnan');
 lme_p_std  = std(lme_p_ts,0,2,'omitnan');
 lme_d_std  = std(lme_d_ts,0,2,'omitnan');
+lme_a_std  = std(lme_a_ts,0,2,'omitnan');
 
 % Coefficient of variance
 lme_f_cv = lme_f_std ./ lme_f_mean;
 lme_p_cv = lme_p_std ./ lme_p_mean;
 lme_d_cv = lme_d_std ./ lme_d_mean;
+lme_a_cv = lme_a_std ./ lme_a_mean;
 
 %% ANOMALIES -------------------------------------------------
 
 % FOSI is 1948 to 2015
-% catches are 1961 to 2005
+% catches are 1948 to 2015
 
 %% remove linear trend
-F = NaN*ones(66,nyr);
-P = NaN*ones(66,nyr);
-D = NaN*ones(66,nyr);
+nyr = ni;
+F = zeros(66,nyr);
+P = zeros(66,nyr);
+D = zeros(66,nyr);
+A = zeros(66,nyr);
 
 for i = 1:66 %in future should remove interior seas 23, 33, 62
 
@@ -119,7 +127,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
     end
     clear R T t b m tH dR data
 
-    xi = lme_a_mean_ts(i,:);
+    xi = lme_a_ts(i,:);
     inan = ~isnan(xi);
     if(sum(inan)~=0)
         R = (xi(inan))';
@@ -148,16 +156,16 @@ vd = var(ad,0,2,'omitnan');
 va = var(aa,0,2,'omitnan');
 
 %% save
-units = 'per year';
+units = 'MT?';
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-save([fpath 'FEISTY_FOSI_',mod,'lme_nu_interann_var.mat'],...
+save([fpath 'FishMIP_Phase3a_LME_Catch_1948-2015_interann_var.mat'],...
     'lme_f_std','lme_p_std','lme_d_std','lme_a_std',...
     'lme_f_mean','lme_p_mean','lme_d_mean','lme_a_mean',...
-    'lme_f_ts','lme_p_ts','lme_d_ts','lme_a_mean_ts',...
+    'lme_f_ts','lme_p_ts','lme_d_ts','lme_a_ts',...
     'lme_f_cv','lme_p_cv','lme_d_cv','lme_a_cv','units');
 
 %%
-save([fpath 'FEISTY_FOSI_',mod,'lme_nu_ann_mean_anoms.mat'],...
-    'af','ap','ad','aa',...
-    'vf','vp','vd','va','units');
+aall = aa;
+vall = va;
+save([fpath 'FishMIP_Phase3a_LME_Catch_1948-2015_ann_mean_anoms.mat'],...
+    'af','ap','ad','vf','vp','vd','aall','vall','units');

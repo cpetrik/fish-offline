@@ -148,7 +148,8 @@ for (i in 1:nlme) {
   }
   
   # F actual
-  fmod <- lm(Fish ~ TP0+TP1 + TB0+TB1 + Det0+Det1 + ZmLoss0+ZmLoss1 , data=ffish)
+  fmod <- lm(Fish ~ TP0+TP1+TP2 + TB0+TB1+TB2 + Det0+Det1+Det2 + 
+               ZmLoss0+ZmLoss1+ZmLoss2 , data=ffish)
   fcombo <- dredge(fmod, extra = c("R^2", F = function(x)
     summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
@@ -164,7 +165,8 @@ for (i in 1:nlme) {
   pfish$Fish[(yst-3):(yen-3)] <- P2[,cn]
   pfish <- na.omit(pfish)
   
-  pmod <- lm(Fish ~ TP1+TP2 + TB1+TB2 + Det1+Det2 + ZmLoss1+ZmLoss2 , data=pfish)
+  pmod <- lm(Fish ~ TP0+TP1+TP2 + TB0+TB1+TB2 + Det0+Det1+Det2 + 
+               ZmLoss0+ZmLoss1+ZmLoss2, data=pfish)
   pcombo <- dredge(pmod, extra = c("R^2", F = function(x)
     summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
@@ -181,7 +183,8 @@ for (i in 1:nlme) {
   dfish$Fish[(yst-3):(yen-3)] <- D2[,cn]
   dfish <- na.omit(dfish)
   
-  dmod <- lm(Fish ~ TP1+TP2 + TB1+TB2 + Det1+Det2 + ZmLoss1+ZmLoss2 , data=dfish)
+  dmod <- lm(Fish ~ TP0+TP1+TP2 + TB0+TB1+TB2 + Det0+Det1+Det2 + 
+               ZmLoss0+ZmLoss1+ZmLoss2, data=dfish)
   dcombo <- dredge(dmod, extra = c("R^2", F = function(x)
     summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
@@ -197,7 +200,8 @@ for (i in 1:nlme) {
   afish$Fish[(yst-3):(yen-3)] <- A2[,cn]
   afish <- na.omit(afish)
   
-  amod <- lm(Fish ~ TP1+TP2 + TB1+TB2 + Det1+Det2 + ZmLoss1+ZmLoss2 , data=afish)
+  amod <- lm(Fish ~ TP0+TP1+TP2 + TB0+TB1+TB2 + Det0+Det1+Det2 + 
+               ZmLoss0+ZmLoss1+ZmLoss2, data=afish)
   acombo <- dredge(amod, extra = c("R^2", F = function(x)
     summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
@@ -214,7 +218,8 @@ for (i in 1:nlme) {
   bent$Bent[(yst-3):(yen-3)] <- B2[,cn]
   bent <- na.omit(bent)
   
-  bmod <- lm(Bent ~ TP0+TP1 + TB0+TB1 + Det0+Det1 + ZmLoss0+ZmLoss1, data=bent)
+  bmod <- lm(Bent ~ TP0+TP1+TP2 + TB0+TB1+TB2 + Det0+Det1+Det2 + 
+               ZmLoss0+ZmLoss1+ZmLoss2, data=bent)
   bcombo <- dredge(bmod, extra = c("R^2", F = function(x)
     summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
@@ -227,17 +232,17 @@ for (i in 1:nlme) {
   
 } # LMEs
 
-write.table(fcoef,paste0(datar,"LME_F_mlr_coeffs_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(pcoef,paste0(datar,"LME_P_mlr_coeffs_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(dcoef,paste0(datar,"LME_D_mlr_coeffs_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(acoef,paste0(datar,"LME_A_mlr_coeffs_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(bcoef,paste0(datar,"LME_B_mlr_coeffs_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
+write.table(fcoef,paste0(datar,"LME_F_mlr_coeffs_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(pcoef,paste0(datar,"LME_P_mlr_coeffs_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(dcoef,paste0(datar,"LME_D_mlr_coeffs_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(acoef,paste0(datar,"LME_A_mlr_coeffs_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(bcoef,paste0(datar,"LME_B_mlr_coeffs_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
 
-write.table(fpval,paste0(datar,"LME_F_mlr_pvals_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(ppval,paste0(datar,"LME_P_mlr_pvals_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(dpval,paste0(datar,"LME_D_mlr_pvals_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(apval,paste0(datar,"LME_A_mlr_pvals_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(bpval,paste0(datar,"LME_B_mlr_pvals_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
+write.table(fpval,paste0(datar,"LME_F_mlr_pvals_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(ppval,paste0(datar,"LME_P_mlr_pvals_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(dpval,paste0(datar,"LME_D_mlr_pvals_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(apval,paste0(datar,"LME_A_mlr_pvals_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(bpval,paste0(datar,"LME_B_mlr_pvals_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
 
 
 ## =================================== NU ===============================
@@ -300,23 +305,27 @@ for (i in 1:nlme) {
   yst <- 1+maxl
   yen <- 68+maxl
   
-  drive <- data.frame(matrix(ncol = (4*2), nrow = yen))
-  names(drive) <- c('TP0','TP1',
-                    'TB0','TB1',
-                    'Det0','Det1',
-                    'ZmLoss0','ZmLoss1')
+  drive <- data.frame(matrix(ncol = (4*3), nrow = yen))
+  names(drive) <- c('TP0','TP1','TP2',
+                    'TB0','TB1','TB2',
+                    'Det0','Det1','Det2',
+                    'ZmLoss0','ZmLoss1','ZmLoss2')
   
   drive$TP0[(yst-3):(yen-3)] <- TP2[,cn]
   drive$TP1[(yst-2):(yen-2)] <- TP2[,cn]
+  drive$TP2[(yst-1):(yen-1)] <- TP2[,cn]
   
   drive$TB0[(yst-3):(yen-3)] <- TB2[,cn]
   drive$TB1[(yst-2):(yen-2)] <- TB2[,cn]
+  drive$TB2[(yst-1):(yen-1)] <- TB2[,cn]
   
   drive$Det0[(yst-3):(yen-3)] <- Det2[,cn]
   drive$Det1[(yst-2):(yen-2)] <- Det2[,cn]
+  drive$Det2[(yst-1):(yen-1)] <- Det2[,cn]
   
   drive$ZmLoss0[(yst-3):(yen-3)] <- ZmLoss2[,cn]
   drive$ZmLoss1[(yst-2):(yen-2)] <- ZmLoss2[,cn]
+  drive$ZmLoss2[(yst-1):(yen-1)] <- ZmLoss2[,cn]
   
   
   ### F ----------------------------------------------------------------
@@ -326,7 +335,8 @@ for (i in 1:nlme) {
   ffish <- na.omit(ffish)
   
   options(na.action = "na.fail")
-  fmod <- lm(Fish ~ TP0+TP1 + TB0+TB1 + Det0+Det1 + ZmLoss0+ZmLoss1 , data=ffish)
+  fmod <- lm(Fish ~ TP0+TP1+TP2 + TB0+TB1+TB2 + Det0+Det1+Det2 + 
+               ZmLoss0+ZmLoss1+ZmLoss2, data=ffish)
   fcombo <- dredge(fmod, extra = c("R^2", F = function(x)
     summary(x)$fstatistic[[1]]))
   
@@ -359,7 +369,8 @@ for (i in 1:nlme) {
   pfish$Fish[(yst-3):(yen-3)] <- P[,cn]
   pfish <- na.omit(pfish)
   
-  pmod <- lm(Fish ~ TP0+TP1 + TB0+TB1 + Det0+Det1 + ZmLoss0+ZmLoss1 , data=pfish)
+  pmod <- lm(Fish ~ TP0+TP1+TP2 + TB0+TB1+TB2 + Det0+Det1+Det2 + 
+               ZmLoss0+ZmLoss1+ZmLoss2, data=pfish)
   pcombo <- dredge(pmod, extra = c("R^2", F = function(x)
     summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
@@ -375,7 +386,8 @@ for (i in 1:nlme) {
   dfish$Fish[(yst-3):(yen-3)] <- D[,cn]
   dfish <- na.omit(dfish)
   
-  dmod <- lm(Fish ~ TP0+TP1 + TB0+TB1 + Det0+Det1 + ZmLoss0+ZmLoss1 , data=dfish)
+  dmod <- lm(Fish ~ TP0+TP1+TP2 + TB0+TB1+TB2 + Det0+Det1+Det2 + 
+               ZmLoss0+ZmLoss1+ZmLoss2, data=dfish)
   dcombo <- dredge(dmod, extra = c("R^2", F = function(x)
     summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
@@ -391,7 +403,8 @@ for (i in 1:nlme) {
   afish$Fish[(yst-3):(yen-3)] <- A[,cn]
   afish <- na.omit(afish)
   
-  amod <- lm(Fish ~ TP0+TP1 + TB0+TB1 + Det0+Det1 + ZmLoss0+ZmLoss1 , data=afish)
+  amod <- lm(Fish ~ TP0+TP1+TP2 + TB0+TB1+TB2 + Det0+Det1+Det2 + 
+               ZmLoss0+ZmLoss1+ZmLoss2, data=afish)
   acombo <- dredge(amod, extra = c("R^2", F = function(x)
     summary(x)$fstatistic[[1]]))
   ## Put coefficients & p-val of best model in arrays for saving
@@ -403,13 +416,13 @@ for (i in 1:nlme) {
   
 } # LMEs
 
-write.table(fcoef,paste0(datar,"LME_Fnu_mlr_coeffs_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(pcoef,paste0(datar,"LME_Pnu_mlr_coeffs_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(dcoef,paste0(datar,"LME_Dnu_mlr_coeffs_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(acoef,paste0(datar,"LME_Anu_mlr_coeffs_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
+write.table(fcoef,paste0(datar,"LME_Fnu_mlr_coeffs_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(pcoef,paste0(datar,"LME_Pnu_mlr_coeffs_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(dcoef,paste0(datar,"LME_Dnu_mlr_coeffs_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(acoef,paste0(datar,"LME_Anu_mlr_coeffs_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
 
-write.table(fpval,paste0(datar,"LME_Fnu_mlr_pvals_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(ppval,paste0(datar,"LME_Pnu_mlr_pvals_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(dpval,paste0(datar,"LME_Dnu_mlr_pvals_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
-write.table(apval,paste0(datar,"LME_Anu_mlr_pvals_ALLdiv2SD_alllags_v2_noint.csv"),sep=",",row.names=F)
+write.table(fpval,paste0(datar,"LME_Fnu_mlr_pvals_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(ppval,paste0(datar,"LME_Pnu_mlr_pvals_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(dpval,paste0(datar,"LME_Dnu_mlr_pvals_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
+write.table(apval,paste0(datar,"LME_Anu_mlr_pvals_ALLdiv2SD_alllags3_v2_noint.csv"),sep=",",row.names=F)
 

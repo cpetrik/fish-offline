@@ -1,7 +1,7 @@
 ################################################################################
 
 # Aggregate F, P, and D again
-# Only 1949-2004
+# Only 1948-2015 saved for comp to FOSI
 
 ################################################################################
 
@@ -13,7 +13,7 @@ setwd("/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/C
 fpath <- "/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/"
 
 ## Load Yannick's data
-saup <- read.csv(paste0(fpath,"calibration_catch_histsoc_1850_2004.csv"),sep=",",header = T,stringsAsFactors = T)
+saup <- read.csv(paste0(fpath,"catch_histsoc_1869_2017_EEZ_addFAO.csv"),sep=",",header = T,stringsAsFactors = T)
 
 
 ## Define subsets in FGroup
@@ -36,6 +36,7 @@ pdgn <- c("shark>=90cm","rays>=90cm")
 
 ## Subset
 feisty1 <- subset.data.frame(saup, Year >= 1948)
+feisty1 <- subset.data.frame(feisty1, Year <= 2015)
 feisty1 <- subset.data.frame(feisty1, FGroup %in% fntypes)
 feisty1$FGroup <- droplevels(feisty1$FGroup)
 summary(feisty1)
@@ -62,7 +63,7 @@ lme <- ddply( feisty1, .( Year, LME ), summarize,
               PwCatch = sum( as.numeric(Pwcatch), na.rm = TRUE ),
               DwCatch = sum( as.numeric(Dwcatch), na.rm = TRUE ))
 
-write.table(lme,paste0(fpath,"FishMIP_Phase3a_LME_Catch_annual_1948-2004.csv"),sep=",",row.names=F)
+write.table(lme,paste0(fpath,"FishMIP_Phase3a_LME_Catch_annual_1948-2015.csv"),sep=",",row.names=F)
 
 
 
