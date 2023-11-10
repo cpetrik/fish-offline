@@ -7,8 +7,8 @@ clear
 close all
 
 %% Fishing data
-fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/Fish-MIP/Phase3/fishing/';
-%fpath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
+%fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/Fish-MIP/Phase3/fishing/';
+fpath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
 load([fpath 'FishMIP_Phase3a_LME_Catch_annual_1948-2015.mat']);
 load([fpath 'FishMIP_Phase3a_LME_Effort_annual_1961-2010.mat']);

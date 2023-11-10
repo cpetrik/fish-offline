@@ -55,7 +55,7 @@ ad_fish <- dist(Acoef) # method="man" # is a bit better
 ahc_fish <- hclust(ad_fish, method = "ward.D")
 adfish <- as.dendrogram(ahc_fish)
 # Color the branches based on the clusters:
-adfish <- color_branches(adfish, k=6) 
+adfish <- color_branches(adfish, k=8) 
 # reduce the size of the labels:
 adfish <- set(adfish, "labels_cex", 0.8)
 
@@ -191,7 +191,7 @@ gplots::heatmap.2(as.matrix(Dcoef),
 dev.off()
 
 ## All
-adend_k <- cutree(adfish, k=6)
+adend_k <- cutree(adfish, k=8)
 acoef25$Cluster <- adend_k
 
 ## Forage
