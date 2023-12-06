@@ -549,6 +549,11 @@ ClusterM((CatMD==alltex(6)),5) = 6;
 ClusterM((CatMD==alltex(7)),5) = 7;
 ClusterM((CatMD==alltex(8)),5) = 8;
 
+%% Save
+LIDs = Abiom(:,1);
+save([spath,'LME_biom_nu_cpue_cme_A_mlr_cluster_ind_drivers.mat'],...
+    'ClusterB','ClusterP','ClusterC','ClusterM','alltex','LIDs');
+
 %%  Colormap
 
 % mcol = [

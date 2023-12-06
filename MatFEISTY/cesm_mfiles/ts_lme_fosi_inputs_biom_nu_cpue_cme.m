@@ -4,53 +4,88 @@
 clear
 close all
 
-%% Climate indices
-apath = '/Users/cpetrik/Dropbox/NCAR/MAPP-METF/NCAR3/DPLE_offline/results_dple/climate_indices/';
-load([apath 'Climate_anomalies_seasonal_means.mat']);
-
-%% FOSI input forcing
-%cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
-cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
-
-% lme means, trend removed, anomaly calc
-%load([cpath 'CESM_FOSI_v15_interann_mean_forcings_anom.mat']);
-load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat']);
-
-%% Fish data
-%cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
+%% % ------------------------------------------------------------
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-%fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
+cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
+ppath = ['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/' cfile '/corrs/'];
+ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-ppath = [pp cfile '/FOSI/'];
-if (~isfolder(ppath))
-    mkdir(ppath)
-end
+mod = 'v15_All_fish03_';
 
-sims = {'v15_All_fish03_';'v15_climatol_';'v15_varFood_';'v15_varTemp_'};
-mod = sims{1};
+%% FOSI input forcing
+% lme means, trend removed, anomaly calc
+load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat'],'adety',...
+    'atb','atp','azlosy','lme_dety_stda','lme_tb_stda','lme_tp_stda',...
+    'lme_mzly_stda');
 
-load([fpath 'FEISTY_FOSI_',mod,'lme_ann_mean_anoms.mat']) 
+%% Fish data
 % Anoms of area-weighted means with linear trend removed
+load([fpath 'FEISTY_FOSI_',mod,'lme_ann_mean_anoms.mat'],'aa','va')
+Ball = aa;
+Bstd = va;
+clear aa va
+
+load([fpath 'FEISTY_FOSI_',mod,'lme_nu_ann_mean_anoms.mat'],'aa','va')
+Pall = aa;
+Pstd = va;
+clear aa va
+
+load([ypath 'FishMIP_Phase3a_LME_CPUE_1961-2010_ann_mean_anoms.mat'],'aall',...
+    'vall')
+Call = aall;
+Cstd = vall;
+clear aall vall
+
+load([ypath 'FishMIP_Phase3a_LME_catch_minus_effort_1961-2010_ann_mean_anoms.mat'],...
+    'aall','vall')
+Mall = aall;
+Mstd = vall;
+clear aall vall
+
+% Ecosystem type
+%load([fpath 'LME_fosi_fished_',mod,cfile '.mat'],'etype','etex','Ebiom');
+
+% Clusters
+%load([spath,'LME_biom_nu_cpue_cme_A_mlr_coeffs_reduc_alllags3_R2_cluster.mat'])
+load([spath,'LME_biom_nu_cpue_cme_A_mlr_cluster_ind_drivers.mat'])
+
+%%
+fyr = 1948:2015;
+cyr = 1961:2010;
+[yr,fid] = intersect(fyr,cyr);
+
+%% subset effort years
+adety  = adety(:,fid);
+atb    = atb(:,fid);
+atp    = atp(:,fid);
+azlosy = azlosy(:,fid);
+Ball   = Ball(:,fid);
+Pall   = Pall(:,fid);
+
+%% divide by 2 std
+adety  = adety ./ repmat(2*lme_dety_stda,1,50);
+atb    = atb ./ repmat(2*lme_tb_stda,1,50);
+atp    = atp ./ repmat(2*lme_tp_stda,1,50);
+azlosy = azlosy ./ repmat(2*lme_mzly_stda,1,50);
+Ball   = Ball ./ repmat(2*Bstd,1,50);
+Pall   = Pall ./ repmat(2*Pstd,1,50);
+Call   = Call ./ repmat(2*Cstd,1,50);
+Mall   = Mall ./ repmat(2*Mstd,1,50);
 
 %%
 % LMEs
 lid = [54,1:2,10,3,5:7,65]; %ADD 65 = Aleutian Islands
 lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE','AI'};
 
-pid = [54,1:2,3];
-pname = {'CHK','EBS','GAK','CCE'};
+% pid = [54,1:2,3];
+% pname = {'CHK','EBS','GAK','CCE'};
+%
+% aid = [7,6,5];
+% aname = {'NE','SE','GMX'};
 
-aid = [7,6,5];
-aname = {'NE','SE','GMX'};
-
-% FEISTY outputs grouped
-gname = {'S','M','L'};
-
-%%
-yr = 1948:2015; %=yanom;
 
 %% colors
 % cm10=[0.5 0.5 0;... %tan/army
@@ -64,426 +99,575 @@ yr = 1948:2015; %=yanom;
 %     0.5 0.5 0.5; ...    %med grey
 %     0 0 0];...      %black
 
-cm10=[0.5 0.5 0.5; ... %med grey
-    0 0 0; ...      %black
-    0 0 0.75;...    %b
-    1 0 0;...       %r
-    0 0.5 0.75;...   %med blue
-    0.5 0 0;...   %maroon
-    0/255 206/255 209/255;... %turq
-    1 0 1;...     %m
-    0 0.7 0;...   %g
+% cm10=[0.5 0.5 0.5; ... %med grey
+%     0 0 0; ...      %black
+%     0 0 0.75;...    %b
+%     1 0 0;...       %r
+%     0 0.5 0.75;...   %med blue
+%     0.5 0 0;...   %maroon
+%     0/255 206/255 209/255;... %turq
+%     1 0 1;...     %m
+%     0 0.7 0;...   %g
+%     ];
+
+cm10 = [
+    34/255 136/255 51/255;...   %green
+    170/255 51/255 119/255;...  %purple
+    238/255 102/255 119/255;... %red
+    0/255 68/255 136/255;...    %blue
+    51/255 187/255 238/255;...  %cyan
+    153/255 153/255 51/255;...  %olive
+    0 0 0;...                   %black
+    0.50 0.50 0.50;...          % grey
     ];
 
 set(groot,'defaultAxesColorOrder',cm10);
 
-%% plot time series by size  =================================
-%WHY ARE FISH AMOUNTS DIFF THAN ANN MEAN FIG?!
-% PDO
-figure(1)
-tiledlayout(4,1, 'TileSpacing', 'compact')
+load('paul_tol_cmaps.mat')
 
-for i=1:length(pid)
-    
-    %scale fish -1 to 1 ? - want to keep 0 at 0
-    ms = max(abs(as(pid(i),:)));
-    mm = max(abs(am(pid(i),:)));
-    ml = max(abs(al(pid(i),:)));
-    
-    sm = as(pid(i),:)./ms;
-    md = am(pid(i),:)./mm;
-    lg = al(pid(i),:)./ml;
-    
-    nexttile
-    %climate = PDO
+%try muted and add greys
+mcol = muted ./ 255;
+mcol = mcol(1:8,:);
+
+%% plot time series  =================================
+%
+
+for i=1:length(lid)
+    lme = lid(i);
+
+    figure(1)
+    clf
+    tiledlayout(4,4, 'TileSpacing', 'compact')
+
+    nexttile % TP-biom
+    %driver
     yyaxis left
-    plot(yr,manom(5,:),'color',0.5*[1 1 1]); hold on;
-    ylim([-2.1 2.1])
-    ylabel('PDO')
-    yyaxis right
-    %Sm
-    plot(yr,sm,'-k'); hold on;
-    %Md
-    plot(yr,md,'-b'); hold on;
-    %Lg
-    plot(yr,lg,'-r'); hold on;
-    ylim([-1 1])
+    plot(yr,atp(lme,:),'color',[0 0.25 0.75]); hold on;
     xlim([yr(1) yr(end)])
-    title(pname{i})
-    ylabel('fish')
-    
-end
-lg = legend(nexttile(4),{'PDO','Sm','Md','Lg'});
-lg.Location = 'southoutside';
-lg.Orientation = 'horizontal';
-print('-dpng',[ppath 'ts_climate_seasonal_FOSI_NPac_PDO_',mod,'size_v2.png'])
+    ylabel('TP')
+    %fish
+    yyaxis right
+    plot(yr,Ball(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    title('Biom')
 
-%% ENSO
-figure(2)
-tiledlayout(4,1, 'TileSpacing', 'compact')
-for i=1:length(pid)
-    
-    %scale fish -1 to 1 ? - want to keep 0 at 0
-    ms = max(abs(as(pid(i),:)));
-    mm = max(abs(am(pid(i),:)));
-    ml = max(abs(al(pid(i),:)));
-    
-    sm = as(pid(i),:)./ms;
-    md = am(pid(i),:)./mm;
-    lg = al(pid(i),:)./ml;
-    
-    nexttile
-    %climate = ENSO
+    nexttile % TP-nu
+    %driver
     yyaxis left
-    plot(yr,manom(4,:),'color',0.5*[1 1 1]); hold on;
-    ylim([-1.5 1.5])
-    ylabel('ENSO')
-    yyaxis right
-    %Sm
-    plot(yr,sm,'-k'); hold on;
-    %Md
-    plot(yr,md,'-b'); hold on;
-    %Lg
-    plot(yr,lg,'-r'); hold on;
-    ylim([-1 1])
+    plot(yr,atp(lme,:),'color',[0 0.25 0.75]); hold on;
     xlim([yr(1) yr(end)])
-    title(pname{i})
-    ylabel('fish')
-    
-end
-lg = legend(nexttile(4),{'ENSO','Sm','Md','Lg'});
-lg.Location = 'southoutside';
-lg.Orientation = 'horizontal';
-print('-dpng',[ppath 'ts_climate_seasonal_FOSI_NPac_ENSO_',mod,'size_v2.png'])
+    %ylabel('TP')
+    %fish
+    yyaxis right
+    plot(yr,Pall(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    title([lname(i); 'Prod'])
 
-%% AMO
-figure(3)
-tiledlayout(3,1, 'TileSpacing', 'compact')
-for i=1:length(aid)
-    
-    %scale fish -1 to 1 ? - want to keep 0 at 0
-    ms = max(abs(as(aid(i),:)));
-    mm = max(abs(am(aid(i),:)));
-    ml = max(abs(al(aid(i),:)));
-    
-    sm = as(aid(i),:)./ms;
-    md = am(aid(i),:)./mm;
-    lg = al(aid(i),:)./ml;
-    
-    nexttile
-    %climate = AMO
+    nexttile % TP-CPUE
+    %driver
     yyaxis left
-    plot(yr,manom(1,:),'color',0.5*[1 1 1]); hold on;
-    ylim([-0.45 0.45])
-    ylabel('AMO')
-    yyaxis right
-    %Sm
-    plot(yr,sm,'-k'); hold on;
-    %Md
-    plot(yr,md,'-b'); hold on;
-    %Lg
-    plot(yr,lg,'-r'); hold on;
-    ylim([-1 1])
+    plot(yr,atp(lme,:),'color',[0 0.25 0.75]); hold on;
     xlim([yr(1) yr(end)])
-    title(aname{i})
-    ylabel('fish')
-    
-end
-lg = legend(nexttile(3),{'AMO','Sm','Md','Lg'});
-lg.Location = 'southoutside';
-lg.Orientation = 'horizontal';
-print('-dpng',[ppath 'ts_climate_seasonal_FOSI_NAtl_AMO_',mod,'size_v2.png'])
+    %ylabel('TP')
+    %fish
+    yyaxis right
+    plot(yr,Call(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    title('CPUE')
 
-%% NAO
-figure(4)
-tiledlayout(3,1, 'TileSpacing', 'compact')
-for i=1:length(aid)
-    
-    %scale fish -1 to 1 ? - want to keep 0 at 0
-    ms = max(abs(as(aid(i),:)));
-    mm = max(abs(am(aid(i),:)));
-    ml = max(abs(al(aid(i),:)));
-    
-    sm = as(aid(i),:)./ms;
-    md = am(aid(i),:)./mm;
-    lg = al(aid(i),:)./ml;
-    
-    nexttile
-    %climate = AMO
+    nexttile % TP-CME
+    %driver
     yyaxis left
-    plot(yr,manom(3,:),'color',0.5*[1 1 1]); hold on;
-    ylim([-3.5 3.5])
-    ylabel('NAO')
-    yyaxis right
-    %Sm
-    plot(yr,sm,'-k'); hold on;
-    %Md
-    plot(yr,md,'-b'); hold on;
-    %Lg
-    plot(yr,lg,'-r'); hold on;
-    ylim([-1 1])
+    plot(yr,atp(lme,:),'color',[0 0.25 0.75]); hold on;
     xlim([yr(1) yr(end)])
-    title(aname{i})
-    ylabel('fish')
-    
-end
-lg = legend(nexttile(3),{'NAO','Sm','Md','Lg'});
-lg.Location = 'southoutside';
-lg.Orientation = 'horizontal';
-print('-dpng',[ppath 'ts_climate_seasonal_FOSI_NAtl_NAO_',mod,'size_v2.png'])
+    %ylabel('TP')
+    %fish
+    yyaxis right
+    plot(yr,Mall(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    title('CME')
 
-%% put text of freq of var on fig
-% EBS
-xi = as(1,:)';
-inan = ~isnan(xi);
-R = (xi(inan));
-T = length(R);
-t = (1:T)';
-data = [t R];
-[m,b] = TheilSen(data);
-tH = m*t + b;
-dR = R - tH;
-[freq1,p1,b1,int1] = powerspectra_TS(dR,1,0);
-Sebs_b = b1;
-Sebs_f = freq1(find(p1==max(p1)));
-clear b1 freq1 p1
-
-xi = am(1,:)';
-inan = ~isnan(xi);
-R = (xi(inan));
-T = length(R);
-t = (1:T)';
-data = [t R];
-[m,b] = TheilSen(data);
-tH = m*t + b;
-dR = R - tH;
-[freq1,p1,b1,int1] = powerspectra_TS(dR,1,0);
-Mebs_b = b1;
-Mebs_f = freq1(find(p1==max(p1)));
-clear b1 freq1 p1
-
-xi = al(1,:)';
-inan = ~isnan(xi);
-R = (xi(inan));
-T = length(R);
-t = (1:T)';
-data = [t R];
-[m,b] = TheilSen(data);
-tH = m*t + b;
-dR = R - tH;
-[freq1,p1,b1,int1] = powerspectra_TS(dR,1,0);
-Lebs_b = b1;
-Lebs_f = freq1(find(p1==max(p1)));
-clear b1 freq1 p1
-
-%CCE
-xi = as(3,:)';
-inan = ~isnan(xi);
-R = (xi(inan));
-T = length(R);
-t = (1:T)';
-data = [t R];
-[m,b] = TheilSen(data);
-tH = m*t + b;
-dR = R - tH;
-[freq1,p1,b1,int1] = powerspectra_TS(dR,1,0);
-Scce_b = b1;
-Scce_f = freq1(find(p1==max(p1)));
-clear b1 freq1 p1
-
-xi = am(3,:)';
-inan = ~isnan(xi);
-R = (xi(inan));
-T = length(R);
-t = (1:T)';
-data = [t R];
-[m,b] = TheilSen(data);
-tH = m*t + b;
-dR = R - tH;
-[freq1,p1,b1,int1] = powerspectra_TS(dR,1,0);
-Mcce_b = b1;
-Mcce_f = freq1(find(p1==max(p1)));
-clear b1 freq1 p1
-
-xi = al(3,:)';
-inan = ~isnan(xi);
-R = (xi(inan));
-T = length(R);
-t = (1:T)';
-data = [t R];
-[m,b] = TheilSen(data);
-tH = m*t + b;
-dR = R - tH;
-[freq1,p1,b1,int1] = powerspectra_TS(dR,1,0);
-Lcce_b = b1;
-Lcce_f = freq1(find(p1==max(p1)));
-clear b1 freq1 p1
-
-%NE
-xi = as(7,:)';
-inan = ~isnan(xi);
-R = (xi(inan));
-T = length(R);
-t = (1:T)';
-data = [t R];
-[m,b] = TheilSen(data);
-tH = m*t + b;
-dR = R - tH;
-[freq1,p1,b1,int1] = powerspectra_TS(dR,1,0);
-Sne_b = b1;
-Sne_f = freq1(find(p1==max(p1)));
-clear b1 freq1 p1
-
-xi = am(7,:)';
-inan = ~isnan(xi);
-R = (xi(inan));
-T = length(R);
-t = (1:T)';
-data = [t R];
-[m,b] = TheilSen(data);
-tH = m*t + b;
-dR = R - tH;
-[freq1,p1,b1,int1] = powerspectra_TS(dR,1,0);
-Mne_b = b1;
-Mne_f = freq1(find(p1==max(p1)));
-clear b1 freq1 p1
-
-xi = al(7,:)';
-inan = ~isnan(xi);
-R = (xi(inan));
-T = length(R);
-t = (1:T)';
-data = [t R];
-[m,b] = TheilSen(data);
-tH = m*t + b;
-dR = R - tH;
-[freq1,p1,b1,int1] = powerspectra_TS(dR,1,0);
-Lne_b = b1;
-Lne_f = freq1(find(p1==max(p1)));
-clear b1 freq1 p1
-
-%%
-%WHY ARE FISH AMOUNTS DIFF THAN ANN MEAN FIG?!
-figure(5)
-tiledlayout(3,3, 'TileSpacing', 'compact')
-nexttile %S EBS
-plot(yr,as(1,:),'-k'); hold on;
-xlim([yr(1) yr(end)])
-ylabel('Sm')
-title('EBS')
-text(1950, 0.017,['b= ' sprintf('%2.2f',Sebs_b)])
-
-nexttile %S CCE
-plot(yr,as(3,:),'-k'); hold on;
-xlim([yr(1) yr(end)])
-title('CCE')
-text(1950,0.008,['b= ' sprintf('%2.2f',Scce_b)])
-
-nexttile %S NE
-plot(yr,as(7,:),'-k'); hold on;
-xlim([yr(1) yr(end)])
-title('NE')
-text(1950,0.017,['b= ' sprintf('%2.2f',Sne_b)])
-
-nexttile %M EBS
-plot(yr,am(1,:),'-k'); hold on;
-xlim([yr(1) yr(end)])
-ylabel('Md')
-text(1950, 0.4,['b= ' sprintf('%2.2f',Mebs_b)])
-
-nexttile %M CCE
-plot(yr,am(3,:),'-k'); hold on;
-xlim([yr(1) yr(end)])
-text(1950,0.4,['b= ' sprintf('%2.2f',Mcce_b)])
-
-nexttile %M NE
-plot(yr,am(7,:),'-k'); hold on;
-xlim([yr(1) yr(end)])
-text(1950,0.4,['b= ' sprintf('%2.2f',Mne_b)])
-
-nexttile %L EBS
-plot(yr,al(1,:),'-k'); hold on;
-xlim([yr(1) yr(end)])
-ylabel('Lg')
-text(1950, 0.8,['b= ' sprintf('%2.2f',Lebs_b)])
-
-nexttile %L CCE
-plot(yr,al(3,:),'-k'); hold on;
-xlim([yr(1) yr(end)])
-text(1950,0.16,['b= ' sprintf('%2.2f',Lcce_b)])
-
-nexttile %L NE
-plot(yr,al(7,:),'-k'); hold on;
-xlim([yr(1) yr(end)])
-text(1950,0.5,['b= ' sprintf('%2.2f',Lne_b)])
-
-print('-dpng',[ppath 'ts_climate_seasonal_FOSI_EBS_CCE_',mod,'size_only_v2.png'])
-
-%% ---------- PDO & AMO ---------------------------------
-f1 = figure('Units','inches','Position',[1 3 8 8]);
-tiledlayout(4,2, 'TileSpacing', 'compact')
-% PDO
-for i=1:length(pid)
-    %scale fish -1 to 1 - want to keep 0 at 0
-    ms = max(abs(as(pid(i),:)));
-    mm = max(abs(am(pid(i),:)));
-    ml = max(abs(al(pid(i),:)));
-    
-    sm = as(pid(i),:)./ms;
-    md = am(pid(i),:)./mm;
-    lg = al(pid(i),:)./ml;
-    
-    nexttile((2*i)-1)
-    %climate = PDO
+    nexttile % TB-biom
+    %driver
     yyaxis left
-    plot(yr,manom(5,:),'color',0.5*[1 1 1]); hold on;
-    ylim([-2.1 2.1])
-    ylabel('PDO')
-    yyaxis right
-    %Sm
-    plot(yr,sm,'-k'); hold on;
-    %Md
-    plot(yr,md,'-b'); hold on;
-    %Lg
-    plot(yr,lg,'-r'); hold on;
-    ylim([-1 1])
+    plot(yr,atb(lme,:),'color',[0 0.25 0.75]); hold on;
     xlim([yr(1) yr(end)])
-    title(pname{i})
-    ylabel('fish')
-    
-end
-% AMO
-for i=1:length(aid)
-    %scale fish -1 to 1  - want to keep 0 at 0
-    ms = max(abs(as(aid(i),:)));
-    mm = max(abs(am(aid(i),:)));
-    ml = max(abs(al(aid(i),:)));
-    
-    sm = as(aid(i),:)./ms;
-    md = am(aid(i),:)./mm;
-    lg = al(aid(i),:)./ml;
-    
-    nexttile((2*i))
-    %climate = AMO
+    ylabel('TB')
+    %fish
+    yyaxis right
+    plot(yr,Ball(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('Biom')
+
+    nexttile % TB-nu
+    %driver
     yyaxis left
-    plot(yr,manom(1,:),'color',0.5*[1 1 1]); hold on;
-    ylim([-0.45 0.45])
-    ylabel('AMO')
-    yyaxis right
-    %Sm
-    plot(yr,sm,'-k'); hold on;
-    %Md
-    plot(yr,md,'-b'); hold on;
-    %Lg
-    plot(yr,lg,'-r'); hold on;
-    ylim([-1 1])
+    plot(yr,atb(lme,:),'color',[0 0.25 0.75]); hold on;
     xlim([yr(1) yr(end)])
-    title(aname{i})
-    ylabel('fish')
-    
+    %ylabel('TB')
+    %fish
+    yyaxis right
+    plot(yr,Pall(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('Prod')
+
+    nexttile % TB-CPUE
+    %driver
+    yyaxis left
+    plot(yr,atb(lme,:),'color',[0 0.25 0.75]); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('TB')
+    %fish
+    yyaxis right
+    plot(yr,Call(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('CPUE')
+
+    nexttile % TB-CME
+    %driver
+    yyaxis left
+    plot(yr,atb(lme,:),'color',[0 0.25 0.75]); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('TB')
+    %fish
+    yyaxis right
+    plot(yr,Mall(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('CME')
+
+    nexttile % ZL-biom
+    %driver
+    yyaxis left
+    plot(yr,azlosy(lme,:),'color',[0 0.25 0.75]); hold on;
+    xlim([yr(1) yr(end)])
+    ylabel('ZL')
+    %fish
+    yyaxis right
+    plot(yr,Ball(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('Biom')
+
+    nexttile % ZL-nu
+    %driver
+    yyaxis left
+    plot(yr,azlosy(lme,:),'color',[0 0.25 0.75]); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('ZL')
+    %fish
+    yyaxis right
+    plot(yr,Pall(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('Prod')
+
+    nexttile % ZL-CPUE
+    %driver
+    yyaxis left
+    plot(yr,azlosy(lme,:),'color',[0 0.25 0.75]); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('ZL')
+    %fish
+    yyaxis right
+    plot(yr,Call(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('CPUE')
+
+    nexttile % ZL-CME
+    %driver
+    yyaxis left
+    plot(yr,azlosy(lme,:),'color',[0 0.25 0.75]); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('ZL')
+    %fish
+    yyaxis right
+    plot(yr,Mall(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('CME')
+
+    nexttile % Det-biom
+    %driver
+    yyaxis left
+    plot(yr,adety(lme,:),'color',[0 0.25 0.75]); hold on;
+    xlim([yr(1) yr(end)])
+    ylabel('Det')
+    %fish
+    yyaxis right
+    plot(yr,Ball(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('Biom')
+
+    nexttile % Det-nu
+    %driver
+    yyaxis left
+    plot(yr,adety(lme,:),'color',[0 0.25 0.75]); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('Det')
+    %fish
+    yyaxis right
+    plot(yr,Pall(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('Prod')
+
+    nexttile % Det-CPUE
+    %driver
+    yyaxis left
+    plot(yr,adety(lme,:),'color',[0 0.25 0.75]); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('Det')
+    %fish
+    yyaxis right
+    plot(yr,Call(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('CPUE')
+
+    nexttile % Det-CME
+    %driver
+    yyaxis left
+    plot(yr,adety(lme,:),'color',[0 0.25 0.75]); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('Det')
+    %fish
+    yyaxis right
+    plot(yr,Mall(lme,:),'-k'); hold on;
+    xlim([yr(1) yr(end)])
+    %ylabel('CME')
+
+    print('-dpng',[ppath 'ts_drivers_FOSI_',mod,'biom_nu_cpue_cme_',lname{i},'.png'])
+
 end
-lg = legend(nexttile(6),{'climate','Sm','Md','Lg'});
-lg.Location = 'southoutside';
-lg.Orientation = 'horizontal';
-print('-dpng',[ppath 'ts_climate_seasonal_FOSI_PDO_AMO_',mod,'size_v2.png'])
+% lg = legend(nexttile(4),{'PDO','Sm','Md','Lg'});
+% lg.Location = 'southoutside';
+% lg.Orientation = 'horizontal';
+
+%% Plot all LMEs by cluster against main driver(s)
+
+% nrows=11;
+% ncols=6;
+% pos = subfigrid(nrows,ncols,[0.05 0.025 0.025 0.05],[0.72 0.75]);
+nrows=7;
+ncols=9;
+pos = subfigrid(nrows,ncols,[0.05 0.025 0.025 0.05],[0.72 0.75]);
+
+%% Biomass
+%figure('Units','inches','Position',[1 3 6.5 8.5]);
+figure('Units','inches','Position',[1 3 9 6.5]);
+i=0;
+%while(i<64)
+for m = 1:nrows
+    for n = 1:ncols
+        i=i+1;
+        iid = LIDs(i);
+        subplot('position',pos(m,:,n))
+
+        %driver
+        yyaxis left
+        if (ClusterB(i,5)==1)
+            plot(yr,adety(iid,:),'color',mcol(1,:)); hold on;
+        end
+        if (ClusterB(i,5)==2)
+            plot(yr,adety(iid,:),'color',mcol(2,:)); hold on;
+        end
+        if (ClusterB(i,4)==3)
+            plot(yr,azlosy(iid,:),'color',mcol(3,:)); hold on;
+        end
+        if (ClusterB(i,4)==4)
+            plot(yr,azlosy(iid,:),'color',mcol(4,:)); hold on;
+        end
+        if (ClusterB(i,3)==5)
+            plot(yr,atb(iid,:),'color',mcol(5,:)); hold on;
+        end
+        if (ClusterB(i,3)==6)
+            plot(yr,atb(iid,:),'color',mcol(6,:)); hold on;
+        end
+        if (ClusterB(i,2)==7)
+            plot(yr,atp(iid,:),'color',mcol(7,:)); hold on;
+        end
+        if (ClusterB(i,2)==8)
+            plot(yr,atp(iid,:),'color',mcol(8,:)); hold on;
+        end
+        xlim([yr(1) yr(end)])
+        %fish
+        yyaxis right
+        plot(yr,Ball(iid,:),'-k'); hold on;
+        xlim([yr(1) yr(end)])
+        %title('Biom')
+        title(num2str(iid))
+
+        if (i<61)
+            set(gca,'XTickLabel',[])
+        end
+    end
+end
+%end
+%stamp(mod)
+print('-dpng',[ppath 'ts_FOSI_',mod,'biom_mlr_cluster_drivers.png'])
+
+%% Prod
+figure('Units','inches','Position',[1 3 9 6.5]);
+i=0;
+for m = 1:nrows
+    for n = 1:ncols
+        i=i+1;
+        iid = LIDs(i);
+        subplot('position',pos(m,:,n))
+
+        %driver
+        yyaxis left
+        if (ClusterP(i,5)==1)
+            plot(yr,adety(iid,:),'color',mcol(1,:)); hold on;
+        end
+        if (ClusterP(i,5)==2)
+            plot(yr,adety(iid,:),'color',mcol(2,:)); hold on;
+        end
+        if (ClusterP(i,4)==3)
+            plot(yr,azlosy(iid,:),'color',mcol(3,:)); hold on;
+        end
+        if (ClusterP(i,4)==4)
+            plot(yr,azlosy(iid,:),'color',mcol(4,:)); hold on;
+        end
+        if (ClusterP(i,3)==5)
+            plot(yr,atb(iid,:),'color',mcol(5,:)); hold on;
+        end
+        if (ClusterP(i,3)==6)
+            plot(yr,atb(iid,:),'color',mcol(6,:)); hold on;
+        end
+        if (ClusterP(i,2)==7)
+            plot(yr,atp(iid,:),'color',mcol(7,:)); hold on;
+        end
+        if (ClusterP(i,2)==8)
+            plot(yr,atp(iid,:),'color',mcol(8,:)); hold on;
+        end
+        xlim([yr(1) yr(end)])
+        %fish
+        yyaxis right
+        plot(yr,Pall(iid,:),'-k'); hold on;
+        xlim([yr(1) yr(end)])
+        %title('Prod')
+        title(num2str(iid))
+
+        if (i<61)
+            set(gca,'XTickLabel',[])
+        end
+    end
+end
+print('-dpng',[ppath 'ts_FOSI_',mod,'nu_mlr_cluster_drivers.png'])
+
+%% CPUE
+figure('Units','inches','Position',[1 3 9 6.5]);
+i=0;
+for m = 1:nrows
+    for n = 1:ncols
+        i=i+1;
+        iid = LIDs(i);
+        subplot('position',pos(m,:,n))
+
+        %driver
+        yyaxis left
+        if (ClusterC(i,5)==1)
+            plot(yr,adety(iid,:),'color',mcol(1,:)); hold on;
+        end
+        if (ClusterC(i,5)==2)
+            plot(yr,adety(iid,:),'color',mcol(2,:)); hold on;
+        end
+        if (ClusterC(i,4)==3)
+            plot(yr,azlosy(iid,:),'color',mcol(3,:)); hold on;
+        end
+        if (ClusterC(i,4)==4)
+            plot(yr,azlosy(iid,:),'color',mcol(4,:)); hold on;
+        end
+        if (ClusterC(i,3)==5)
+            plot(yr,atb(iid,:),'color',mcol(5,:)); hold on;
+        end
+        if (ClusterC(i,3)==6)
+            plot(yr,atb(iid,:),'color',mcol(6,:)); hold on;
+        end
+        if (ClusterC(i,2)==7)
+            plot(yr,atp(iid,:),'color',mcol(7,:)); hold on;
+        end
+        if (ClusterC(i,2)==8)
+            plot(yr,atp(iid,:),'color',mcol(8,:)); hold on;
+        end
+        xlim([yr(1) yr(end)])
+        %fish
+        yyaxis right
+        plot(yr,Call(iid,:),'-k'); hold on;
+        xlim([yr(1) yr(end)])
+        %title('CPUE')
+        title(num2str(iid))
+
+        if (i<61)
+            set(gca,'XTickLabel',[])
+        end
+    end
+end
+print('-dpng',[ppath 'ts_FOSI_',mod,'cpue_mlr_cluster_drivers.png'])
+
+%% CME
+figure('Units','inches','Position',[1 3 9 6.5]);
+i=0;
+for m = 1:nrows
+    for n = 1:ncols
+        i=i+1;
+        iid = LIDs(i);
+        subplot('position',pos(m,:,n))
+
+        %driver
+        yyaxis left
+        if (ClusterM(i,5)==1)
+            plot(yr,adety(iid,:),'color',mcol(1,:)); hold on;
+        end
+        if (ClusterM(i,5)==2)
+            plot(yr,adety(iid,:),'color',mcol(2,:)); hold on;
+        end
+        if (ClusterM(i,4)==3)
+            plot(yr,azlosy(iid,:),'color',mcol(3,:)); hold on;
+        end
+        if (ClusterM(i,4)==4)
+            plot(yr,azlosy(iid,:),'color',mcol(4,:)); hold on;
+        end
+        if (ClusterM(i,3)==5)
+            plot(yr,atb(iid,:),'color',mcol(5,:)); hold on;
+        end
+        if (ClusterM(i,3)==6)
+            plot(yr,atb(iid,:),'color',mcol(6,:)); hold on;
+        end
+        if (ClusterM(i,2)==7)
+            plot(yr,atp(iid,:),'color',mcol(7,:)); hold on;
+        end
+        if (ClusterM(i,2)==8)
+            plot(yr,atp(iid,:),'color',mcol(8,:)); hold on;
+        end
+        xlim([yr(1) yr(end)])
+        %fish
+        yyaxis right
+        plot(yr,Mall(iid,:),'-k'); hold on;
+        xlim([yr(1) yr(end)])
+        %title('CME')
+        title(num2str(iid))
+
+        if (i<61)
+            set(gca,'XTickLabel',[])
+        end
+    end
+end
+print('-dpng',[ppath 'ts_FOSI_',mod,'cme_mlr_cluster_drivers.png'])
+
+%% All fish ts together by LME
+ecol = drainbow(2:3:end,:) ./ 255;
+
+%1st half
+figure('Units','inches','Position',[1 3 9 6.5]);
+i=0;
+for m = 1:2:6
+    for n = 1:ncols
+        i=i+1;
+        iid = LIDs(i);
+        
+        subplot('position',pos(m,:,n))
+        %biom
+        yyaxis left
+        plot(yr,Ball(iid,:),'-','color',cm10(1,:)); hold on;
+        xlim([yr(1) yr(end)])
+        %nu
+        yyaxis right
+        plot(yr,Pall(iid,:),'-','color',cm10(2,:)); hold on;
+        xlim([yr(1) yr(end)])
+        title(num2str(iid))
+
+        subplot('position',pos(m+1,:,n))
+        %cpue
+        yyaxis left
+        plot(yr,Call(iid,:),'-','color',cm10(4,:)); hold on;
+        xlim([yr(1) yr(end)])
+        %cme
+        yyaxis right
+        plot(yr,Mall(iid,:),'-','color',cm10(7,:)); hold on;
+        xlim([yr(1) yr(end)])
+        title(num2str(iid))
+
+        if (i<61)
+            set(gca,'XTickLabel',[])
+        end
+    end
+end
+print('-dpng',[ppath 'ts_FOSI_',mod,'biom_nu_cpue_cme_LMEs1-27.png'])
+
+%2nd half
+figure('Units','inches','Position',[1 3 9 6.5]);
+i=27;
+for m = 1:2:6
+    for n = 1:ncols
+        i=i+1;
+        iid = LIDs(i);
+        
+        subplot('position',pos(m,:,n))
+        %biom
+        yyaxis left
+        plot(yr,Ball(iid,:),'-','color',cm10(1,:)); hold on;
+        xlim([yr(1) yr(end)])
+        %nu
+        yyaxis right
+        plot(yr,Pall(iid,:),'-','color',cm10(2,:)); hold on;
+        xlim([yr(1) yr(end)])
+        title(num2str(iid))
+
+        subplot('position',pos(m+1,:,n))
+        %cpue
+        yyaxis left
+        plot(yr,Call(iid,:),'-','color',cm10(4,:)); hold on;
+        xlim([yr(1) yr(end)])
+        %cme
+        yyaxis right
+        plot(yr,Mall(iid,:),'-','color',cm10(7,:)); hold on;
+        xlim([yr(1) yr(end)])
+        title(num2str(iid))
+
+        if (i<61)
+            set(gca,'XTickLabel',[])
+        end
+    end
+end
+print('-dpng',[ppath 'ts_FOSI_',mod,'biom_nu_cpue_cme_LMEs28-54.png'])
+
+%% last
+figure('Units','inches','Position',[1 3 9 6.5]);
+i=54;
+for m = 1
+    for n = 1:ncols
+        i=i+1;
+        iid = LIDs(i);
+        
+        subplot('position',pos(m,:,n))
+        %biom
+        yyaxis left
+        plot(yr,Ball(iid,:),'-','color',cm10(1,:)); hold on;
+        xlim([yr(1) yr(end)])
+        %nu
+        yyaxis right
+        plot(yr,Pall(iid,:),'-','color',cm10(2,:)); hold on;
+        xlim([yr(1) yr(end)])
+        title(num2str(iid))
+
+        subplot('position',pos(m+1,:,n))
+        %cpue
+        yyaxis left
+        plot(yr,Call(iid,:),'-','color',cm10(4,:)); hold on;
+        xlim([yr(1) yr(end)])
+        %cme
+        yyaxis right
+        plot(yr,Mall(iid,:),'-','color',cm10(7,:)); hold on;
+        xlim([yr(1) yr(end)])
+        title(num2str(iid))
+
+        if i==63
+            subplot('position',pos(m+2,:,n))
+            plot(yr,4*ones(size(yr)),'-','color',cm10(1,:)); hold on;
+            plot(yr,3*ones(size(yr)),'-','color',cm10(2,:)); hold on;
+            plot(yr,2*ones(size(yr)),'-','color',cm10(4,:)); hold on;
+            plot(yr,ones(size(yr)),'-','color',cm10(7,:)); hold on;
+            legend('Biom','Prod','CPUE','CME')
+        end
+    end
+end
+print('-dpng',[ppath 'ts_FOSI_',mod,'biom_nu_cpue_cme_LMEs55-66.png'])
+
 
