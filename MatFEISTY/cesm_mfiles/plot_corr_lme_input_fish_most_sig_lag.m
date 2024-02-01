@@ -11,7 +11,7 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
-ppath = ['/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/' cfile '/corrs/'];
+ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',cfile,'/corrs/'];
 
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
 mod = sims{1};
@@ -20,35 +20,29 @@ load([spath,'LMEs_corr_driver_maxcorrs.mat'])
 
 %%  ---------------------------------------------------------
 cnam = {'coef','p','lag','idriver','driver'};
-ctex = {'TP','TB','Det','Zmeso','ZmLoss'};
+ctex = {'TP','TB','Det','ZmLoss'};
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
 
-% 1= AMO, 2=AO, 3=NAO, 4=Nino34, 5=PDO
 mtype = {'o','s','^','v','d','p'}; %for lag
-mcol = [238/255 102/255 119/255;... %red
-    170/255 51/255 119/255;...  %purple
-    34/255 136/255 51/255;...   %green
-    0/255 68/255 136/255;...    %blue
-    51/255 187/255 238/255;...  %cyan
+mcol = [238/255 102/255 119/255;... %red - TP
+    0/255 68/255 136/255;...    %blue - TB
+    34/255 136/255 51/255;...   %green - Det
+    51/255 187/255 238/255;...  %cyan - ZL
     ];
 
 
 %colorblind friendly
-% cb=[34/255 136/255 51/255;...   %green
-%     153/255 153/255 51/255;...  %olive
-%     51/255 187/255 238/255;...  %cyan
-%     0/255 68/255 136/255;...    %blue
-%     238/255 102/255 119/255;... %red
+% cb = [238/255 102/255 119/255;... %red
 %     170/255 51/255 119/255;...  %purple
-%     0 0 0;...                   %black
-%     0.25 0.25 0.25;...             %dk grey
-%     0.50 0.50 0.50;...             % grey
-%     0.75 0.75 0.75];               %lt grey
+%     34/255 136/255 51/255;...   %green
+%     0/255 68/255 136/255;...    %blue
+%     51/255 187/255 238/255;...  %cyan
+%     ];
 
 %%
 figure(1)
 % Get fake colors first for legend
-for i=1:5
+for i=1:4
     L=lid(i);
     b=bar(L,LAtab(i,1),'EdgeColor','none','FaceColor',mcol(i,:));
     hold on
@@ -80,7 +74,7 @@ xlim([0 67])
 ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 xlabel('LME')
-ylabel('Coeff')
+ylabel('Biomass Corr Coeff')
 title('All fishes')
 print('-dpng',[ppath 'Bar_LMEs_driver_maxcorr_allfish.png'])
 
@@ -88,7 +82,7 @@ print('-dpng',[ppath 'Bar_LMEs_driver_maxcorr_allfish.png'])
 f2 = figure('Units','inches','Position',[1 3 7.5 10]);
 subplot('Position',[0.1 0.24 0.856 0.17])
 % Get fake colors first for legend
-for i=1:5
+for i=1:4
     L=lid(i);
     b=bar(L,LAtab(i,1),'EdgeColor','none','FaceColor',mcol(i,:));
     hold on
@@ -146,6 +140,7 @@ xlim([0 67])
 ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Forage fishes')
+title('Biomass corr')
 
 subplot('Position',[0.1 0.62 0.7 0.17])
 for i=1:length(lid)
@@ -285,7 +280,8 @@ for i=1:length(lid)
 end
 colormap(mcol)
 colorbar('Ticks',1:5,'TickLabels',ctex)
-title('All fishes')
+title('Biomass corr All fishes')
+stamp('Biomass corr')
 print('-dpng',[ppath 'Map_LMEs_driver_maxcorr_allfish.png'])
 
 %%
@@ -394,6 +390,7 @@ end
 colormap(mcol)
 colorbar('Position',[0.7 0.2 0.03 0.25],'Ticks',1:5,'TickLabels',ctex)
 title('Benthos')
+stamp('Biomass corr')
 print('-dpng',[ppath 'Map_LMEs_driver_maxcorr_fntypes.png'])
 
 
