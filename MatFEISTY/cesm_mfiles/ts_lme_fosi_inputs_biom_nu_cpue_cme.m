@@ -39,7 +39,7 @@ Call = aall;
 Cstd = vall;
 clear aall vall
 
-load([ypath 'FishMIP_Phase3a_LME_catch_minus_effort_1961-2010_ann_mean_anoms.mat'],...
+load([ypath 'FishMIP_Phase3a_LME_catch_1961-2010_ann_mean_anoms.mat'],...
     'aall','vall')
 Mall = aall;
 Mstd = vall;
@@ -50,7 +50,7 @@ clear aall vall
 
 % Clusters
 %load([spath,'LME_biom_nu_cpue_cme_A_mlr_coeffs_reduc_alllags3_R2_cluster.mat'])
-load([spath,'LME_biom_nu_cpue_cme_A_mlr_cluster_ind_drivers.mat'])
+load([spath,'LME_biom_nu_cpue_catch_A_mlr_cluster_ind_drivers.mat'])
 
 %%
 fyr = 1948:2015;
