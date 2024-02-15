@@ -1,5 +1,5 @@
 % Find patterns in forcing-fish correlations
-% Prod (nu)
+% Gamma instead of prod (nu)
 % Do not divide by 2SD
 
 clear
@@ -37,8 +37,9 @@ rpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
 mod = 'v15_All_fish03';
 
 % Anoms with linear trend removed
-load([fpath 'FEISTY_FOSI_',mod,'_lme_nu_ann_mean_anoms.mat'],...
-    'af','ap','ad','aa');
+load([fpath 'FEISTY_FOSI_',mod,'_lme_gam_rec_ann_mean_anoms.mat'],...
+    'agf','agp','agd','aga',...
+    'arf','arp','ard','ara','units');
 
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
 % AA = aa(:,1);
@@ -85,25 +86,25 @@ for L = 1:length(lid) %LME
 
             %Fish
             n = n+1;
-            [rp,pp] = corrcoef(sclim , (af(L,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (agf(L,yst+t:yen))');
             FtabC(k) = rp(1,2);
             FtabP(k) = pp(1,2);
             clear rp pp
 
             n = n+1;
-            [rp,pp] = corrcoef(sclim , (ap(L,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (agp(L,yst+t:yen))');
             PtabC(k) = rp(1,2);
             PtabP(k) = pp(1,2);
             clear rp pp
 
             n = n+1;
-            [rp,pp] = corrcoef(sclim , (ad(L,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (agd(L,yst+t:yen))');
             DtabC(k) = rp(1,2);
             DtabP(k) = pp(1,2);
             clear rp pp
 
             n = n+1;
-            [rp,pp] = corrcoef(sclim , (aa(L,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (aga(L,yst+t:yen))');
             AtabC(k) = rp(1,2);
             AtabP(k) = pp(1,2);
             clear rp pp
@@ -159,16 +160,16 @@ Ptab = array2table(LPtab,"VariableNames",cname);
 Dtab = array2table(LDtab,"VariableNames",cname);
 Atab = array2table(LAtab,"VariableNames",cname);
 
-writetable(Ftab,[rpath,'LME_corr_maxlag_driver_nu_F.csv'],...
+writetable(Ftab,[rpath,'LME_corr_maxlag_driver_gam_F.csv'],...
     'Delimiter',',');
-writetable(Ptab,[rpath,'LME_corr_maxlag_driver_nu_P.csv'],...
+writetable(Ptab,[rpath,'LME_corr_maxlag_driver_gam_P.csv'],...
     'Delimiter',',');
-writetable(Dtab,[rpath,'LME_corr_maxlag_driver_nu_D.csv'],...
+writetable(Dtab,[rpath,'LME_corr_maxlag_driver_gam_D.csv'],...
     'Delimiter',',');
-writetable(Atab,[rpath,'LME_corr_maxlag_driver_nu_A.csv'],...
+writetable(Atab,[rpath,'LME_corr_maxlag_driver_gam_A.csv'],...
     'Delimiter',',');
 
-save([rpath,'LME_corr_maxlag_driver_nu.mat'],'lid',...
+save([rpath,'LME_corr_maxlag_driver_gam.mat'],'lid',...
     'LFtab','LFlag','LPtab','LPlag','LDtab','LDlag','LAtab','LAlag',...
     'tanom');
 

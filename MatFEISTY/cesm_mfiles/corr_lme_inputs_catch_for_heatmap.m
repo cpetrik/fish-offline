@@ -1,5 +1,5 @@
 % Find patterns in forcing-fish correlations
-% Prod (nu)
+% SAUp Catch
 % Do not divide by 2SD
 
 clear
@@ -34,12 +34,13 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 rpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
 
-mod = 'v15_All_fish03';
+%% Fish data
+ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
 % Anoms with linear trend removed
-load([fpath 'FEISTY_FOSI_',mod,'_lme_nu_ann_mean_anoms.mat'],...
-    'af','ap','ad','aa');
+load([ypath 'FishMIP_Phase3a_LME_Catch_1948-2015_ann_mean_anoms.mat'])
 
+%%
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
 % AA = aa(:,1);
 % lid = find(~isnan(AA));
@@ -103,7 +104,7 @@ for L = 1:length(lid) %LME
             clear rp pp
 
             n = n+1;
-            [rp,pp] = corrcoef(sclim , (aa(L,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (aall(L,yst+t:yen))');
             AtabC(k) = rp(1,2);
             AtabP(k) = pp(1,2);
             clear rp pp
@@ -159,16 +160,16 @@ Ptab = array2table(LPtab,"VariableNames",cname);
 Dtab = array2table(LDtab,"VariableNames",cname);
 Atab = array2table(LAtab,"VariableNames",cname);
 
-writetable(Ftab,[rpath,'LME_corr_maxlag_driver_nu_F.csv'],...
+writetable(Ftab,[rpath,'LME_corr_maxlag_driver_catch_F.csv'],...
     'Delimiter',',');
-writetable(Ptab,[rpath,'LME_corr_maxlag_driver_nu_P.csv'],...
+writetable(Ptab,[rpath,'LME_corr_maxlag_driver_catch_P.csv'],...
     'Delimiter',',');
-writetable(Dtab,[rpath,'LME_corr_maxlag_driver_nu_D.csv'],...
+writetable(Dtab,[rpath,'LME_corr_maxlag_driver_catch_D.csv'],...
     'Delimiter',',');
-writetable(Atab,[rpath,'LME_corr_maxlag_driver_nu_A.csv'],...
+writetable(Atab,[rpath,'LME_corr_maxlag_driver_catch_A.csv'],...
     'Delimiter',',');
 
-save([rpath,'LME_corr_maxlag_driver_nu.mat'],'lid',...
+save([rpath,'LME_corr_maxlag_driver_catch.mat'],'lid',...
     'LFtab','LFlag','LPtab','LPlag','LDtab','LDlag','LAtab','LAlag',...
     'tanom');
 
