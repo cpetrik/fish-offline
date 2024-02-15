@@ -34,7 +34,7 @@ btex = {'-T',...          %1
     '+T, +prey',...       %3
     '+prey'};             %4
     
-ptex = {'+T, -prey',...  %1
+ptex = {'+T, -Det',...  %1
     '-T, +prey',...     %2
     '+prey',...         %3
     '+T',...            %4
@@ -47,15 +47,15 @@ gtex = {'+T, -Det, +ZL',... %1
 
 %catch
 ctex = {'+T, -prey',... %1
-    '-T, +prey',...    %2
+    '-TB, +prey',...    %2
     'weak',...          %3
     '+T, +prey'};       %4
 
 %cpue
-etex = {'-T, +prey',...  %1
-    '-T, -Det',...      %2    
-    '-ZL',...           %3
-    '+T, +prey'};       %4
+etex = {'-ZL',...  %3
+    '-T, -Det',...  %2
+    '-T, +Det',...  %1
+    '+T, +prey'};    %4
              
    
 %% Add a text descript vector that matches to clusters
@@ -117,7 +117,8 @@ cCatE = char(CatE);
 Atab = table(cCatB,cCatP,cCatG,cCatC,cCatE,'VariableNames',...
     {'Biomass','Production','Recruitment','Catch','CPUE'});
 
-writetable(Atab,[spath,'LME_biom_nu_gamma_catch_cpue_A_corr_coeffs_cluster_matched.csv'])
+writetable(Atab,[spath,'LME_biom_nu_gamma_catch_cpue_A_corr_coeffs_cluster.mat'],...
+    '-append')
 
 
 %% Create one master colormap for all categories
@@ -192,9 +193,6 @@ ClusterE((CatE==alltex(7)),2) = 7;
 ClusterE((CatE==alltex(8)),2) = 8;
 ClusterE((CatE==alltex(9)),2) = 9;
 ClusterE((CatE==alltex(10)),2) = 10;
-
-%% save
-save([spath,'LME_biom_nu_gamma_catch_cpue_A_corr_coeffs_cluster_matched.mat'])
 
 %%  Colormap
 
@@ -336,20 +334,18 @@ print('-dpng',[ppath 'Map_LMEs_driver_biom_nu_gamma_catch_cpue_A_corr_coeffs_clu
 %% on grid after matching
 Bcorr  = nan(ni,nj);
 Pcorr  = nan(ni,nj);
-Gcorr  = nan(ni,nj);
 Ccorr  = nan(ni,nj);
 Ecorr  = nan(ni,nj);
 
-lid = biomA(:,1);
+lid = Abiom4(:,1);
 %use col = 2 after finding matching # to text
 for i=1:length(lid)
     L=lid(i);
     id = find(tlme==L);
-    Bcorr(id) = ClusterB(i,2);
-    Pcorr(id) = ClusterP(i,2);
-    Gcorr(id) = ClusterG(i,2);
-    Ccorr(id) = ClusterC(i,2);
     Ecorr(id) = ClusterE(i,2);
+    Pcorr(id) = ClusterP(i,2);
+    Ccorr(id) = ClusterC(i,2);
+    Bcorr(id) = ClusterB(i,2);
 end
 
 %% All same 12 colors and text ---------------------------
@@ -362,7 +358,7 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.95 0.95 0.95]);
 hold on
 surfm(TLAT,TLONG,Bcorr)
 colormap(mcol)
-clim([1 10])
+clim([1 9])
 title('Biomass')
 
 subplot('Position',[0.33 0.575 0.32 0.4]) %P
@@ -372,7 +368,7 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.95 0.95 0.95]);
 hold on
 surfm(TLAT,TLONG,Pcorr)
 colormap(mcol)
-clim([1 10])
+clim([1 9])
 title('Prod')
 
 subplot('Position',[0.65 0.575 0.32 0.4]) 
@@ -382,7 +378,7 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.95 0.95 0.95]);
 hold on
 surfm(TLAT,TLONG,Gcorr)
 colormap(mcol)
-clim([1 10])
+clim([1 9])
 title('Recruitment')
 
 subplot('Position',[0.01 0.10 0.32 0.4])
@@ -392,7 +388,7 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.95 0.95 0.95]);
 hold on
 surfm(TLAT,TLONG,Ccorr)
 colormap(mcol)
-clim([1 10])
+clim([1 9])
 title('Catch')
 
 subplot('Position',[0.33 0.10 0.32 0.4]) %B
@@ -402,7 +398,7 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.95 0.95 0.95]);
 hold on
 surfm(TLAT,TLONG,Ecorr)
 colormap(mcol)
-clim([1 10])
+clim([1 9])
 title('CPUE')
 colorbar('Position',[0.675 0.125 0.03 0.35],'Ticks',1:12,'TickLabels',alltex,...
     'Direction','reverse')
