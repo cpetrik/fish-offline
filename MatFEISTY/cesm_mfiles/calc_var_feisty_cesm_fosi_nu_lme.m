@@ -43,7 +43,7 @@ xF = mf_anu;
 xP = lp_anu;
 xD = ld_anu;
 
-xA = (mf_anu+lp_anu+ld_anu)./3;
+xA = (mf_anu+lp_anu+ld_anu);
 
 %% mean & std by lme
 tlme = double(lme_mask);

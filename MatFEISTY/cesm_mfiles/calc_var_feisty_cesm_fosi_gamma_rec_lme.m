@@ -50,8 +50,8 @@ rF = mf_arec;
 rP = lp_arec;
 rD = ld_arec;
 
-xA = (mf_agam+lp_agam+ld_agam)./3;
-rA = (mf_arec+lp_arec+ld_arec)./3;
+xA = (mf_agam+lp_agam+ld_agam);
+rA = (mf_arec+lp_arec+ld_arec);
 
 %% mean & std by lme
 tlme = double(lme_mask);

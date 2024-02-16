@@ -21,10 +21,9 @@ ID = GRD.ID;
 manom(:,:,1) = atp;
 manom(:,:,2) = atb;
 manom(:,:,3) = adety;
-manom(:,:,4) = azoo;
-manom(:,:,5) = azlosy;
+manom(:,:,4) = azlosy;
 
-tanom = {'TP','TB','Det','Zmeso','ZmLoss'};
+tanom = {'TP','TB','Det','ZmLoss'};
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
@@ -57,7 +56,6 @@ tanom2(:,2)=tanom2(:,1);
 tanom2(:,3)=tanom2(:,1);
 tanom2(:,4)=tanom2(:,1);
 tanom2(:,5)=tanom2(:,1);
-tanom2(:,6)=tanom2(:,1);
 
 [Ymat,Jmat] = meshgrid(yr,1:length(tanom));
 
