@@ -34,6 +34,7 @@ ctex = {'TP','TB','Det','Zmeso','ZmLoss'};
 lid = [54,1:2,10,3,5:7,65]; %ADD 65 = Aleutian Islands
 lname = {'CHK','EBS','GAK','HI','CCE','GMX','SE','NE','AI'};
 
+load('paul_tol_cmaps.mat')
 
 mcol = [238/255 102/255 119/255;... %red
     0/255 68/255 136/255;...    %blue
@@ -132,6 +133,32 @@ title('Food web structure')
 colorbar('Ticks',1.5:0.75:5,'TickLabels',alltex)
 
 print('-dpng',[ppath 'Map_LMEs_rel_biom_ecosys_types.png'])
+
+%% bright
+bri = bright./255;
+f2 = figure('Units','inches','Position',[1 3 7.5 5]);
+ax1=axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1);
+surfm(TLAT,TLONG,Ebiom)
+colormap(ax1,bri(1:5,:))
+caxis([1 5]);
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+title('Food web structure')
+colorbar('Ticks',1.5:0.75:5,'TickLabels',alltex)
+print('-dpng',[ppath 'Map_LMEs_rel_biom_ecosys_types_bright.png'])
+
+%% night
+nit = flipud(night(1:3:end,:)./255);
+f3 = figure('Units','inches','Position',[1 3 7.5 5]);
+ax1=axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1);
+surfm(TLAT,TLONG,Ebiom)
+colormap(ax1,nit(2:6,:))
+caxis([1 5]);
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+title('Food web structure')
+colorbar('Ticks',1.5:0.75:5,'TickLabels',alltex)
+print('-dpng',[ppath 'Map_LMEs_rel_biom_ecosys_types_night.png'])
 
 %% save etypes for mapping with other results
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];

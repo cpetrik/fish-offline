@@ -1,9 +1,11 @@
 % Calc corr of forcing-fish 
-% Nu instead of biomass
+% Recruit (gam*Biom)
 % find most sig driver and lag
 
 clear
 close all
+
+ppath = "/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/corrs/";
 
 %% FOSI input forcing
 
@@ -31,13 +33,12 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
-ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',cfile,'/corrs'];
 
 mod = 'v15_All_fish03';
 
 % Anoms with linear trend removed
-load([fpath 'FEISTY_FOSI_',mod,'_lme_nu_ann_mean_anoms.mat'],...
-    'aa','ad','af','ap')
+load([fpath 'FEISTY_FOSI_',mod,'_lme_gam_rec_ann_mean_anoms.mat'],...
+    'arf','arp','ard','ara','units');
 
 %% %Corr of forcing ---------------------------------------------------------
 yst = 1;
@@ -46,7 +47,7 @@ yen = 68;
 cnam = {'corr','p','lag','idriver','driver'};
 
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
-AA = aa(:,1);
+AA = ara(:,1);
 lid = find(~isnan(AA));
 
 %Lags
@@ -100,22 +101,22 @@ for L = 1:length(lid)
             sclim = ((manom(i,yst:yen-t,j))') ;
 
             %Fish
-            [rp,pp] = corrcoef(sclim , (af(i,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (arf(i,yst+t:yen))');
             FtabC(j,k) = rp(1,2);
             FtabP(j,k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(sclim , (ap(i,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (arp(i,yst+t:yen))');
             PtabC(j,k) = rp(1,2);
             PtabP(j,k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(sclim , (ad(i,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (ard(i,yst+t:yen))');
             DtabC(j,k) = rp(1,2);
             DtabP(j,k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(sclim , (aa(i,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (ara(i,yst+t:yen))');
             AtabC(j,k) = rp(1,2);
             AtabP(j,k) = pp(1,2);
             clear rp pp
@@ -185,17 +186,17 @@ Atab1.Properties.VariableNames = cnam;
 
 
 %%
-writetable(Ftab1,[spath,'LMEs_corr_driver_maxcorr_Fnu.csv'],...
+writetable(Ftab1,[spath,'LMEs_corr_driver_maxcorr_F_recruit.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[spath,'LMEs_corr_driver_maxcorr_Pnu.csv'],...
+writetable(Ptab1,[spath,'LMEs_corr_driver_maxcorr_P_recruit.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[spath,'LMEs_corr_driver_maxcorr_Dnu.csv'],...
+writetable(Dtab1,[spath,'LMEs_corr_driver_maxcorr_D_recruit.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Atab1,[spath,'LMEs_corr_driver_maxcorr_Anu.csv'],...
+writetable(Atab1,[spath,'LMEs_corr_driver_maxcorr_A_recruit.csv'],...
     'Delimiter',',','WriteRowNames',true);
 
 
-save([spath,'LMEs_nu_corr_driver_maxcorrs.mat'],...
+save([spath,'LMEs_recruit_corr_driver_maxcorrs.mat'],...
     'LFtab','LPtab','LDtab','LAtab',...
     'Ftab1','Ptab1','Dtab1','Atab1','lid');
 

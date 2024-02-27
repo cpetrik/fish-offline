@@ -1,4 +1,4 @@
-% Plot max corr of driver-fish nu corrs
+% Plot max corr of driver-fish gam corrs
 % For all 63 LMEs
 
 clear
@@ -15,7 +15,7 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
 
 mod = 'v15_All_fish03';
 
-load([spath,'LMEs_nu_corr_driver_maxcorrs.mat'])
+load([spath,'LMEs_gam_corr_driver_maxcorrs.mat'])
 
 %%  ---------------------------------------------------------
 cnam = {'coef','p','lag','idriver','driver'};
@@ -78,9 +78,9 @@ ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 xlabel('LME')
 ylabel('Corr Coeff')
-title('Production corr All fishes')
+title('Recruitment corr All fishes')
 stamp('Gamma corr')
-print('-dpng',[ppath 'Bar_LMEs_nu_driver_maxcorr_allfish.png'])
+print('-dpng',[ppath 'Bar_LMEs_gam_driver_maxcorr_allfish.png'])
 
 %%
 f2 = figure('Units','inches','Position',[1 3 7.5 10]);
@@ -144,7 +144,7 @@ xlim([0 67])
 ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Forage fishes')
-title('Production corr')
+title('Recruitment corr')
 
 subplot('Position',[0.1 0.62 0.7 0.17])
 for i=1:length(lid)
@@ -199,7 +199,7 @@ set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Demersals')
 stamp('Gamma corr')
 
-print('-dpng',[ppath 'Bar_LMEs_nu_driver_maxcorr_fntypes.png'])
+print('-dpng',[ppath 'Bar_LMEs_gam_driver_maxcorr_fntypes.png'])
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -256,9 +256,9 @@ for i=1:length(lid)
 end
 colormap(mcol)
 colorbar('Ticks',1:5,'TickLabels',ctex)
-title('Production corr All fishes')
+title('Recruitment corr All fishes')
 stamp('Gamma corr')
-print('-dpng',[ppath 'Map_LMEs_nu_driver_maxcorr_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_gam_driver_maxcorr_allfish.png'])
 
 %%
 f1 = figure('Units','inches','Position',[1 3 7.5 5]);
@@ -347,8 +347,8 @@ for i=1:length(lid)
 end
 colormap(mcol)
 title('Demersals')
-stamp('Nu corr')
-print('-dpng',[ppath 'Map_LMEs_nu_driver_maxcorr_fntypes.png'])
+stamp('Gamma corr')
+print('-dpng',[ppath 'Map_LMEs_gam_driver_maxcorr_fntypes.png'])
 
 
 

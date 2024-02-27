@@ -16,7 +16,7 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
 mod = sims{1};
 
-load([spath,'LMEs_corr_cpue_sat_driver_feisty_maxcorrs.mat'])
+load([spath,'LMEs_corr_cpue_sat_driver_feistyrec_maxcorrs.mat'])
 
 %%  ---------------------------------------------------------
 cnam = {'coef','p','lag','idriver','driver'};
@@ -35,15 +35,15 @@ load('paul_tol_cmaps.mat')
 %colorblind friendly - subselect & re-order drainbow
 %ctex = {'TP','TB','Det','ZmLoss','Biom','Prod','Rec','SST','chl'};
 % orange, dk blue, dk purp, lt green, grey, lt blue, lt purp, red, green
-mcol(1,:) = drainbow(12,:)/255;
-mcol(2,:) = drainbow(4,:)/255;
-mcol(3,:) = drainbow(3,:)/255;
-mcol(4,:) = drainbow(9,:)/255;
-mcol(5,:) = drainbow(15,:)/255;
-mcol(6,:) = drainbow(6,:)/255;
-mcol(7,:) = drainbow(1,:)/255;
-mcol(8,:) = drainbow(14,:)/255;
-mcol(9,:) = drainbow(7,:)/255;
+mcol(1,:) = drainbow(12,:)/255; % orange
+mcol(2,:) = drainbow(4,:)/255; %dk blue
+mcol(3,:) = drainbow(3,:)/255; %dk purp
+mcol(4,:) = drainbow(9,:)/255; %lt green
+mcol(5,:) = drainbow(15,:)/255; %grey
+mcol(6,:) = drainbow(6,:)/255; %lt blue
+mcol(7,:) = drainbow(1,:)/255; %lt purp
+mcol(8,:) = drainbow(14,:)/255; %red
+mcol(9,:) = drainbow(7,:)/255; %green
 
 %%
 figure(1)

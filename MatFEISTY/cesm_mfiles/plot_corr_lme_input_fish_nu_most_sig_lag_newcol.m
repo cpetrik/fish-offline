@@ -5,15 +5,18 @@ clear
 close all
 
 %% % ------------------------------------------------------------
-cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
+%cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
+%spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',cfile,'/corrs/'];
 
 mod = 'v15_All_fish03';
+
+cpath = '/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/';
+spath = '/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/';
 
 load([spath,'LMEs_nu_corr_driver_maxcorrs.mat'])
 
@@ -22,25 +25,17 @@ cnam = {'coef','p','lag','idriver','driver'};
 ctex = {'TP','TB','Det','ZmLoss'};
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
 
-mtype = {'o','s','^','v','d','p'}; %for lag
-mcol = [238/255 102/255 119/255;... %red - TP
-    0/255 68/255 136/255;...    %blue - TB
-    34/255 136/255 51/255;...   %green - Det
-    51/255 187/255 238/255;...  %cyan - ZL
-    ];
+% mcol = [238/255 102/255 119/255;... %red - TP
+%     0/255 68/255 136/255;...    %blue - TB
+%     34/255 136/255 51/255;...   %green - Det
+%     51/255 187/255 238/255;...  %cyan - ZL
+%     ];
 
-
-%colorblind friendly
-% cb=[34/255 136/255 51/255;...   %green
-%     153/255 153/255 51/255;...  %olive
-%     51/255 187/255 238/255;...  %cyan
-%     0/255 68/255 136/255;...    %blue
-%     238/255 102/255 119/255;... %red
-%     170/255 51/255 119/255;...  %purple
-%     0 0 0;...                   %black
-%     0.25 0.25 0.25;...             %dk grey
-%     0.50 0.50 0.50;...             % grey
-%     0.75 0.75 0.75];               %lt grey
+load('paul_tol_cmaps.mat')
+mcol(1,:) = drainbow(12,:)/255; % orange
+mcol(2,:) = drainbow(4,:)/255; %dk blue
+mcol(3,:) = drainbow(15,:)/255; %grey 
+mcol(4,:) = drainbow(6,:)/255; %lt blue
 
 %%
 figure(1)
@@ -202,7 +197,6 @@ stamp('Gamma corr')
 print('-dpng',[ppath 'Bar_LMEs_nu_driver_maxcorr_fntypes.png'])
 
 %% Map
-cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
@@ -350,5 +344,48 @@ title('Demersals')
 stamp('Nu corr')
 print('-dpng',[ppath 'Map_LMEs_nu_driver_maxcorr_fntypes.png'])
 
+
+%% Correlation value map
+cmR = cbrewer('seq','Reds',9,'PCHIP');
+cmRB = cbrewer('div','RdBu',21,'PCHIP');
+cmRB = flipud(cmRB);
+
+% put on grid only significant ones
+Rcorr  = nan(ni,nj);
+for i=1:length(lid)
+    L=lid(i);
+    id = find(tlme==L);
+    if (LAtab(i,2) <= 0.05)
+        Rcorr(id) = LAtab(i,1);
+    end
+end
+
+figure(7)
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+surfm(TLAT,TLONG,Rcorr)
+hold on
+colormap(cmRB)
+colorbar
+clim([-1 1])
+title('Prod corr coeff All fishes')
+stamp('Prod corr')
+print('-dpng',[ppath 'Map_LMEs_driver_nu_maxcorr_coeff_allfish_v2.png'])
+
+figure(8)
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+surfm(TLAT,TLONG,Rcorr.^2)
+hold on
+colormap(cmR)
+colorbar
+clim([0 0.9])
+title('Prod R^2 All fishes')
+stamp('Prod R^2')
+print('-dpng',[ppath 'Map_LMEs_driver_nu_maxcorrR2_allfish_v2.png'])
 
 
