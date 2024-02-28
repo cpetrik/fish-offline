@@ -25,10 +25,10 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
 mod = 'v15_All_fish03';
 
 % Anoms with linear trend removed
-load([fpath 'FEISTY_FOSI_',mod,'_lme_nu_ann_mean_anoms.mat'],...
-    'af','ap','ad','aa');
+load([fpath 'FEISTY_FOSI_',mod,'_lme_ann_mean_anoms.mat'],...
+    'af','ap','ad','aa','ab');
 
-%% put into a matrix & use annual production
+%% put into a matrix 
 manom(:,:,1) = atp;
 manom(:,:,2) = atb;
 manom(:,:,3) = adety;
@@ -46,6 +46,7 @@ af = af ./ (2*std(af,0,2));
 ap = ap ./ (2*std(ap,0,2));
 ad = ad ./ (2*std(ad,0,2));
 aa = aa ./ (2*std(aa,0,2));
+ab = ab ./ (2*std(ab,0,2));
 
 %% %Corr of forcing ---------------------------------------------------------
 cnam = {'corr','p','R2','lag','idriver','driver'};
@@ -73,11 +74,13 @@ LFtab = nan*ones(length(lid),5);
 LPtab = nan*ones(length(lid),5);
 LDtab = nan*ones(length(lid),5);
 LAtab = nan*ones(length(lid),5);
+LBtab = nan*ones(length(lid),5);
 
 LFt = cell(length(lid),1);
 LPt = cell(length(lid),1);
 LDt = cell(length(lid),1);
 LAt = cell(length(lid),1);
+LBt = cell(length(lid),1);
 
 FtabC = nan*ones(length(tanom),length(yr));
 FtabP = nan*ones(length(tanom),length(yr));
@@ -87,10 +90,13 @@ DtabC = FtabC;
 DtabP = FtabC;
 AtabC = FtabC;
 AtabP = FtabC;
+BtabC = FtabC;
+BtabP = FtabC;
 FtabR2 = FtabC;
 PtabR2 = FtabC;
 DtabR2 = FtabC;
 AtabR2 = FtabC;
+BtabR2 = FtabC;
 
 %%
 yst = 1;
@@ -136,6 +142,12 @@ for L = 1:length(lid)
             AtabC(j,k) = mdl0.Coefficients.Estimate(2);
             AtabP(j,k) = mdl0.Coefficients.pValue(2);
             AtabR2(j,k) = mdl0.Rsquared.Ordinary;
+            clear mdl0
+
+            mdl0 = fitlm(sclim, (ab(i,yst+t:yen))');
+            BtabC(j,k) = mdl0.Coefficients.Estimate(2);
+            BtabP(j,k) = mdl0.Coefficients.pValue(2);
+            BtabR2(j,k) = mdl0.Rsquared.Ordinary;
             clear mdl0
 
         end % time lag
@@ -185,6 +197,16 @@ for L = 1:length(lid)
     LDt(L) = tanom2(pid);
     clear pid maxC
 
+    maxC = max(abs(BtabR2(:)));
+    pid = find(abs(BtabR2(:))==maxC);
+    LBtab(L,1) = BtabC(pid);
+    LBtab(L,2) = BtabP(pid);
+    LBtab(L,3) = BtabR2(pid);
+    LBtab(L,4) = Ymat(pid);
+    LBtab(L,5) = Jmat(pid);
+    LBt(L) = tanom2(pid);
+    clear pid maxC
+
 end %LME
 
 %%
@@ -206,33 +228,40 @@ Dtab1 = array2table(LDtab,"RowNames",lname);
 Dtab1(:,6) = LDt;
 Dtab1.Properties.VariableNames = cnam;
 
+Btab1 = array2table(LBtab,"RowNames",lname);
+Btab1(:,6) = LBt;
+Btab1.Properties.VariableNames = cnam;
 
 %%
 dpath = '/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/';
 
-writetable(Atab1,[spath,'LMEs_SLR_nu_driver_maxR2_A.csv'],...
+writetable(Atab1,[spath,'LMEs_SLR_biom_driver_maxR2_A.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ftab1,[spath,'LMEs_SLR_nu_driver_maxR2_F.csv'],...
+writetable(Ftab1,[spath,'LMEs_SLR_biom_driver_maxR2_F.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[spath,'LMEs_SLR_nu_driver_maxR2_P.csv'],...
+writetable(Ptab1,[spath,'LMEs_SLR_biom_driver_maxR2_P.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[spath,'LMEs_SLR_nu_driver_maxR2_D.csv'],...
+writetable(Dtab1,[spath,'LMEs_SLR_biom_driver_maxR2_D.csv'],...
     'Delimiter',',','WriteRowNames',true);
-
-save([spath,'LMEs_SLR_nu_driver_maxR2s.mat'],...
-    'LFtab','LPtab','LDtab','LAtab',...
-    'Ftab1','Ptab1','Dtab1','Atab1','lid');
-
-writetable(Atab1,[dpath,'LMEs_SLR_nu_driver_maxR2_A.csv'],...
-    'Delimiter',',','WriteRowNames',true);
-writetable(Ftab1,[dpath,'LMEs_SLR_nu_driver_maxR2_F.csv'],...
-    'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[dpath,'LMEs_SLR_nu_driver_maxR2_P.csv'],...
-    'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[dpath,'LMEs_SLR_nu_driver_maxR2_D.csv'],...
+writetable(Btab1,[spath,'LMEs_SLR_biom_driver_maxR2_B.csv'],...
     'Delimiter',',','WriteRowNames',true);
 
-save([dpath,'LMEs_SLR_nu_driver_maxR2s.mat'],...
-    'LFtab','LPtab','LDtab','LAtab',...
-    'Ftab1','Ptab1','Dtab1','Atab1','lid');
+save([spath,'LMEs_SLR_biom_driver_maxR2s.mat'],...
+    'LFtab','LPtab','LDtab','LAtab','LBtab',...
+    'Ftab1','Ptab1','Dtab1','Atab1','Btab1','lid');
+
+writetable(Atab1,[dpath,'LMEs_SLR_biom_driver_maxR2_A.csv'],...
+    'Delimiter',',','WriteRowNames',true);
+writetable(Ftab1,[dpath,'LMEs_SLR_biom_driver_maxR2_F.csv'],...
+    'Delimiter',',','WriteRowNames',true);
+writetable(Ptab1,[dpath,'LMEs_SLR_biom_driver_maxR2_P.csv'],...
+    'Delimiter',',','WriteRowNames',true);
+writetable(Dtab1,[dpath,'LMEs_SLR_biom_driver_maxR2_D.csv'],...
+    'Delimiter',',','WriteRowNames',true);
+writetable(Btab1,[dpath,'LMEs_SLR_biom_driver_maxR2_B.csv'],...
+    'Delimiter',',','WriteRowNames',true);
+
+save([dpath,'LMEs_SLR_biom_driver_maxR2s.mat'],...
+    'LFtab','LPtab','LDtab','LAtab','LBtab',...
+    'Ftab1','Ptab1','Dtab1','Atab1','Btab1','lid');
 

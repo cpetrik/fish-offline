@@ -1,4 +1,4 @@
-% Calc linear regression of cpue with forcing
+% Calc linear regression of cpue with sst, chl, forcing
 % find most sig driver and lag
 
 clear
@@ -24,34 +24,53 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
 
 mod = 'v15_All_fish03';
 
+%% Fish data
+ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
+
 % Anoms with linear trend removed
-load([fpath 'FEISTY_FOSI_',mod,'_lme_nu_ann_mean_anoms.mat'],...
-    'af','ap','ad','aa');
+load([ypath 'FishMIP_Phase3a_LME_CPUE_1961-2010_ann_mean_anoms.mat'])
 
-%% put into a matrix & use annual production
-manom(:,:,1) = atp;
-manom(:,:,2) = atb;
-manom(:,:,3) = adety;
-manom(:,:,4) = azlosy;
+%% subset effort years
+fyr = 1948:2015;
+eyr = 1961:2010;
+[yr,fid] = intersect(fyr,eyr);
 
-tanom = {'TP','TB','Det','ZmLoss'};
+% put into a matrix & use annual production
+manom(:,:,1) = atp(:,fid);
+manom(:,:,2) = atb(:,fid);
+manom(:,:,3) = adety(:,fid);
+manom(:,:,4) = azlosy(:,fid);
 
 %% Divide anoms by 2SD
 sdm = std(manom,0,2);
-sdm2 = repmat(sdm,1,68,1);
+sdm2 = repmat(sdm,1,50,1);
 manom = manom ./ (2*sdm2);
 
 %Fish
 af = af ./ (2*std(af,0,2));
 ap = ap ./ (2*std(ap,0,2));
 ad = ad ./ (2*std(ad,0,2));
-aa = aa ./ (2*std(aa,0,2));
+aall = aall ./ (2*std(aall,0,2));
+
+%% Drivers from satellite obs
+load([fpath 'lme_satellite_sst_chl_ann_mean_anoms.mat'])
+
+%% match years
+[~,cid] = intersect(eyr,cyr);
+[~,tid] = intersect(eyr,tyr);
+
+sst = asst(:,1:length(tid)); 
+chl = achl(:,1:length(cid));
+manom(:,tid,5) = sst ./ (2*std(sst,0,2));
+manom(:,cid,6) = chl ./ (2*std(chl,0,2));
+
+tanom = {'TP','TB','Det','ZmLoss','SST','chl'};
 
 %% %Corr of forcing ---------------------------------------------------------
 cnam = {'corr','p','R2','lag','idriver','driver'};
 
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
-AA = aa(:,1);
+AA = adety(:,1);
 lid = find(~isnan(AA));
 
 %Lags
@@ -66,6 +85,13 @@ tanom2(:,5)=tanom2(:,1);
 tanom2(:,6)=tanom2(:,1);
 tanom2(:,7)=tanom2(:,1);
 tanom2(:,8)=tanom2(:,1);
+tanom2(:,9)=tanom2(:,1);
+tanom2(:,10)=tanom2(:,1);
+tanom2(:,11)=tanom2(:,1);
+tanom2(:,12)=tanom2(:,1);
+tanom2(:,13)=tanom2(:,1);
+tanom2(:,14)=tanom2(:,1);
+tanom2(:,15)=tanom2(:,1);
 
 [Ymat,Jmat] = meshgrid(yr,1:length(tanom));
 
@@ -93,9 +119,6 @@ DtabR2 = FtabC;
 AtabR2 = FtabC;
 
 %%
-yst = 1;
-yen = 68;
-        
 for L = 1:length(lid)
 
     %LME
@@ -106,7 +129,19 @@ for L = 1:length(lid)
 
         %input forcing
         driver = tanom{j};
-        
+
+        if j==7
+            yst = tid(1);
+            yen = tid(end);
+
+        elseif j==8
+            yst = cid(1);
+            yen = cid(end);
+        else
+            yst = 1;
+            yen = length(eyr);
+        end
+
         for k=1:length(yr) %Lin reg at diff lags
             t = yr(k);
 
@@ -132,7 +167,7 @@ for L = 1:length(lid)
             DtabR2(j,k) = mdl0.Rsquared.Ordinary;
             clear mdl0
 
-            mdl0 = fitlm(sclim, (aa(i,yst+t:yen))');
+            mdl0 = fitlm(sclim, (aall(i,yst+t:yen))');
             AtabC(j,k) = mdl0.Coefficients.Estimate(2);
             AtabP(j,k) = mdl0.Coefficients.pValue(2);
             AtabR2(j,k) = mdl0.Rsquared.Ordinary;
@@ -164,7 +199,7 @@ for L = 1:length(lid)
     clear pid maxC
 
     maxC = max(abs(PtabR2(:)));
-    %if(i~=64)
+    if(i~=64)
         pid = find(abs(PtabR2(:))==maxC);
         LPtab(L,1) = PtabC(pid);
         LPtab(L,2) = PtabP(pid);
@@ -172,7 +207,7 @@ for L = 1:length(lid)
         LPtab(L,4) = Ymat(pid);
         LPtab(L,5) = Jmat(pid);
         LPt(L) = tanom2(pid);
-    %end
+    end
     clear pid maxC
 
     maxC = max(abs(DtabR2(:)));
@@ -210,29 +245,29 @@ Dtab1.Properties.VariableNames = cnam;
 %%
 dpath = '/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/';
 
-writetable(Atab1,[spath,'LMEs_SLR_nu_driver_maxR2_A.csv'],...
+writetable(Atab1,[spath,'LMEs_SLR_cpue_sat_driver_maxR2_A.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ftab1,[spath,'LMEs_SLR_nu_driver_maxR2_F.csv'],...
+writetable(Ftab1,[spath,'LMEs_SLR_cpue_sat_driver_maxR2_F.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[spath,'LMEs_SLR_nu_driver_maxR2_P.csv'],...
+writetable(Ptab1,[spath,'LMEs_SLR_cpue_sat_driver_maxR2_P.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[spath,'LMEs_SLR_nu_driver_maxR2_D.csv'],...
+writetable(Dtab1,[spath,'LMEs_SLR_cpue_sat_driver_maxR2_D.csv'],...
     'Delimiter',',','WriteRowNames',true);
 
-save([spath,'LMEs_SLR_nu_driver_maxR2s.mat'],...
+save([spath,'LMEs_SLR_cpue_sat_driver_maxR2s.mat'],...
     'LFtab','LPtab','LDtab','LAtab',...
     'Ftab1','Ptab1','Dtab1','Atab1','lid');
 
-writetable(Atab1,[dpath,'LMEs_SLR_nu_driver_maxR2_A.csv'],...
+writetable(Atab1,[dpath,'LMEs_SLR_cpue_sat_driver_maxR2_A.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ftab1,[dpath,'LMEs_SLR_nu_driver_maxR2_F.csv'],...
+writetable(Ftab1,[dpath,'LMEs_SLR_cpue_sat_driver_maxR2_F.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[dpath,'LMEs_SLR_nu_driver_maxR2_P.csv'],...
+writetable(Ptab1,[dpath,'LMEs_SLR_cpue_sat_driver_maxR2_P.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[dpath,'LMEs_SLR_nu_driver_maxR2_D.csv'],...
+writetable(Dtab1,[dpath,'LMEs_SLR_cpue_sat_driver_maxR2_D.csv'],...
     'Delimiter',',','WriteRowNames',true);
 
-save([dpath,'LMEs_SLR_nu_driver_maxR2s.mat'],...
+save([dpath,'LMEs_SLR_cpue_sat_driver_maxR2s.mat'],...
     'LFtab','LPtab','LDtab','LAtab',...
     'Ftab1','Ptab1','Dtab1','Atab1','lid');
 
