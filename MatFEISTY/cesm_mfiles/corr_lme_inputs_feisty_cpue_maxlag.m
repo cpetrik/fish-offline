@@ -85,21 +85,6 @@ tanom = {'TP','TB','Det','ZmLoss','Biom','Prod','Rec'};
 
 manom = manom(:,fid,:);
 
-fanom = manom;
-fanom(:,:,5) = abf(:,fid);
-fanom(:,:,6) = anf(:,fid);
-fanom(:,:,7) = agf(:,fid);
-
-panom = manom;
-panom(:,:,5) = abp(:,fid);
-panom(:,:,6) = anp(:,fid);
-panom(:,:,7) = agp(:,fid);
-
-danom = manom;
-danom(:,:,5) = abd(:,fid);
-danom(:,:,6) = and(:,fid);
-danom(:,:,7) = agd(:,fid);
-
 %% % LM of forcing ---------------------------------------------------------
 %Loop over drivers and responses
 yr = 0:5;
@@ -141,28 +126,29 @@ for L = 1:length(lid) %LME
             t = yr(k);
 
             %               LME  time   driver
-            aclim = ((manom(L,yst:yen-t,j))');
-            fclim = ((fanom(L,yst:yen-t,j))');
-            pclim = ((panom(L,yst:yen-t,j))');
-            dclim = ((danom(L,yst:yen-t,j))');
+            sclim = ((manom(L,yst:yen-t,j))');
 
             %Fish
-            [rp,pp] = corrcoef(fclim , (af(L,yst+t:yen))');
+            n = n+1;
+            [rp,pp] = corrcoef(sclim , (af(L,yst+t:yen))');
             FtabC(k) = rp(1,2);
             FtabP(k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(pclim , (ap(L,yst+t:yen))');
+            n = n+1;
+            [rp,pp] = corrcoef(sclim , (ap(L,yst+t:yen))');
             PtabC(k) = rp(1,2);
             PtabP(k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(dclim , (ad(L,yst+t:yen))');
+            n = n+1;
+            [rp,pp] = corrcoef(sclim , (ad(L,yst+t:yen))');
             DtabC(k) = rp(1,2);
             DtabP(k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(aclim , (aall(L,yst+t:yen))');
+            n = n+1;
+            [rp,pp] = corrcoef(sclim , (aall(L,yst+t:yen))');
             AtabC(k) = rp(1,2);
             AtabP(k) = pp(1,2);
             clear rp pp

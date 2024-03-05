@@ -17,34 +17,25 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
 mod = sims{1};
 
-load([spath,'LMEs_corr_cpue_sat_driver_feisty_maxcorrs.mat'])
+load([spath,'LMEs_SLR_cpue_sat_driver_feisty_norec_maxR2s.mat']) %table of coeff of best driver at best lag
 
 %%  ---------------------------------------------------------
-cnam = {'coef','p','lag','idriver','driver'};
-ctex = {'TP','TB','Det','ZmLoss','Biom','Prod','Rec','SST','Chl'};
+cnam = {'coef','p','R2','lag','idriver','driver'};
+ctex = {'TP','TB','Det','ZmLoss','Biom','Prod','SST','Chl'};
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
 
-%% remove "Recruitment"
-ctex = {'TP','TB','Det','ZmLoss','Biom','Prod','SST','Chl'};
-LAtab(LAtab(:,4)==8,4) = 7;
-LAtab(LAtab(:,4)==9,4) = 8;
-LFtab(LFtab(:,4)==8,4) = 7;
-LFtab(LFtab(:,4)==9,4) = 8;
-LPtab(LPtab(:,4)==8,4) = 7;
-LPtab(LPtab(:,4)==9,4) = 8;
-LDtab(LDtab(:,4)==8,4) = 7;
-LDtab(LDtab(:,4)==9,4) = 8;
-
+%% 
 Atab = LAtab;
 Ftab = LFtab;
 Ptab = LPtab;
 Dtab = LDtab;
 
-% CPUE of Lg Pel in LME 61 is 0, fix nans
+% CPUE of Lg Pel in LME 64 (row 61) is 0, fix nans
 LPtab(61,1) = 0;
 LPtab(61,2) = 1;
-%LPtab(61,3) = 0;
+LPtab(61,3) = 0;
 LPtab(61,4) = 0;
+LPtab(61,5) = 0;
 
 %% colorblind friendly
 load('paul_tol_cmaps.mat')
@@ -91,15 +82,15 @@ lgd.AutoUpdate = 'off';
 for i=1:length(lid)
     L=lid(i);
     if (LAtab(i,2) <= 0.05)
-        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,4),:),'FaceColor',mcol(LAtab(i,4),:));
+        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,5),:),'FaceColor',mcol(LAtab(i,5),:));
         hold on
     else
-        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,4),:),'FaceColor',[1 1 1]);
+        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,5),:),'FaceColor',[1 1 1]);
         hold on
     end
     xtips1 = b(1).XEndPoints;
     ytips1 = b(1).YEndPoints;
-    labels = num2str(LAtab(i,3));
+    labels = num2str(LAtab(i,4));
     if (LAtab(i,1) < 0)
         text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
             'VerticalAlignment','top')
@@ -109,17 +100,17 @@ for i=1:length(lid)
     end
 end
 xlim([0 67])
-ylim([-1 1])
+ylim([-1.1 1.6])
 set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 xlabel('LME')
-ylabel('Corr Coeff')
+ylabel('LR Coeff')
 title('CPUE All fishes')
-print('-dpng',[ppath 'Bar_LMEs_cpue_sat_driver_feisty_maxcorr_allfish_v2.png'])
+print('-dpng',[ppath 'Bar_LMEs_cpue_sat_driver_feisty_SLR_maxR2s_allfish_coeff.png'])
 
 
-%% Biom and Prod are for all fish, but here plot corr with fn types, doesn't make sense
+%% These are corr with simulated total fish biom and prod - UPDATE WITH IND FN TYPES
 f2 = figure('Units','inches','Position',[1 3 7.5 10]);
-subplot('Position',[0.1 0.24 0.856 0.17])
+subplot('Position',[0.1 0.74 0.856 0.22])
 % Get fake colors first for legend
 for i=1:length(ctex)
     L=lid(i);
@@ -132,15 +123,15 @@ lgd.AutoUpdate = 'off';
 for i=1:length(lid)
     L=lid(i);
     if (LAtab(i,2) <= 0.05)
-        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,4),:),'FaceColor',mcol(LAtab(i,4),:));
+        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,5),:),'FaceColor',mcol(LAtab(i,5),:));
         hold on
     else
-        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,4),:),'FaceColor',[1 1 1]);
+        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,5),:),'FaceColor',[1 1 1]);
         hold on
     end
     xtips1 = b(1).XEndPoints;
     ytips1 = b(1).YEndPoints;
-    labels = num2str(LAtab(i,3));
+    labels = num2str(LAtab(i,4));
     if (LAtab(i,1) < 0)
         text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
             'VerticalAlignment','top')
@@ -150,23 +141,23 @@ for i=1:length(lid)
     end
 end
 xlim([0 67])
-ylim([-1.1 1.1])
+ylim([-1.1 1.6])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('All fishes')
 
-subplot('Position',[0.1 0.81 0.7 0.17])
+subplot('Position',[0.1 0.51 0.7 0.22])
 for i=1:length(lid)
     L=lid(i);
     if (LFtab(i,2) <= 0.05)
-        b=bar(L,LFtab(i,1),'EdgeColor',mcol(LFtab(i,4),:),'FaceColor',mcol(LFtab(i,4),:));
+        b=bar(L,LFtab(i,1),'EdgeColor',mcol(LFtab(i,5),:),'FaceColor',mcol(LFtab(i,5),:));
         hold on
     else
-        b=bar(L,LFtab(i,1),'EdgeColor',mcol(LFtab(i,4),:),'FaceColor',[1 1 1]);
+        b=bar(L,LFtab(i,1),'EdgeColor',mcol(LFtab(i,5),:),'FaceColor',[1 1 1]);
         hold on
     end
     xtips1 = b(1).XEndPoints;
     ytips1 = b(1).YEndPoints;
-    labels = num2str(LFtab(i,3));
+    labels = num2str(LFtab(i,4));
     if (LFtab(i,1) < 0)
         text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
             'VerticalAlignment','top')
@@ -176,25 +167,25 @@ for i=1:length(lid)
     end
 end
 xlim([0 67])
-ylim([-1.1 1.1])
+ylim([-1.1 1.6])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Forage fishes')
-title('CPUE corr')
+title('CPUE LR coeff')
 
-subplot('Position',[0.1 0.62 0.7 0.17])
+subplot('Position',[0.1 0.28 0.7 0.22])
 for i=1:length(lid)
     L=lid(i);
     if(i~=61)
         if (LPtab(i,2) <= 0.05)
-            b=bar(L,LPtab(i,1),'EdgeColor',mcol(LPtab(i,4),:),'FaceColor',mcol(LPtab(i,4),:));
+            b=bar(L,LPtab(i,1),'EdgeColor',mcol(LPtab(i,5),:),'FaceColor',mcol(LPtab(i,5),:));
             hold on
         else
-            b=bar(L,LPtab(i,1),'EdgeColor',mcol(LPtab(i,4),:),'FaceColor',[1 1 1]);
+            b=bar(L,LPtab(i,1),'EdgeColor',mcol(LPtab(i,5),:),'FaceColor',[1 1 1]);
             hold on
         end
         xtips1 = b(1).XEndPoints;
         ytips1 = b(1).YEndPoints;
-        labels = num2str(LPtab(i,3));
+        labels = num2str(LPtab(i,4));
         if (LPtab(i,1) < 0)
             text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
                 'VerticalAlignment','top')
@@ -205,23 +196,23 @@ for i=1:length(lid)
     end
 end
 xlim([0 67])
-ylim([-1.1 1.1])
+ylim([-1.1 1.6])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Large pelagics')
 
-subplot('Position',[0.1 0.43 0.7 0.17])
+subplot('Position',[0.1 0.05 0.7 0.22])
 for i=1:length(lid)
     L=lid(i);
     if (LDtab(i,2) <= 0.05)
-        b=bar(L,LDtab(i,1),'EdgeColor',mcol(LDtab(i,4),:),'FaceColor',mcol(LDtab(i,4),:));
+        b=bar(L,LDtab(i,1),'EdgeColor',mcol(LDtab(i,5),:),'FaceColor',mcol(LDtab(i,5),:));
         hold on
     else
-        b=bar(L,LDtab(i,1),'EdgeColor',mcol(LDtab(i,4),:),'FaceColor',[1 1 1]);
+        b=bar(L,LDtab(i,1),'EdgeColor',mcol(LDtab(i,5),:),'FaceColor',[1 1 1]);
         hold on
     end
     xtips1 = b(1).XEndPoints;
     ytips1 = b(1).YEndPoints;
-    labels = num2str(LDtab(i,3));
+    labels = num2str(LDtab(i,4));
     if (LDtab(i,1) < 0)
         text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
             'VerticalAlignment','top')
@@ -231,12 +222,12 @@ for i=1:length(lid)
     end
 end
 xlim([0 67])
-ylim([-1.1 1.1])
+ylim([-1.1 1.6])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Demersals')
-stamp('CPUE corr')
+stamp('CPUE SLR')
 
-print('-dpng',[ppath 'Bar_LMEs_cpue_sat_driver_feisty_maxcorr_fntypes.png'])
+print('-dpng',[ppath 'Bar_LMEs_cpue_sat_driver_feisty_SLR_maxR2s_fntypes_coeff.png'])
 
 
 %% Map
@@ -270,95 +261,71 @@ for i=1:length(lid)
     L=lid(i);
     id = find(tlme==L);
     Acorr  = nan(ni,nj);
-    Acorr(id) = LAtab(i,4);
+    Acorr(id) = LAtab(i,5);
 
     if (LAtab(i,2) <= 0.05)
         surfm(TLAT,TLONG,Acorr)
         hold on
     end
-    str = {['coef=' sprintf('%0.2f',LAtab(i,1))] , ['lag=' num2str(LAtab(i,3))]};
+    str = {['coef=' sprintf('%0.2f',LAtab(i,1))] , ['lag=' num2str(LAtab(i,4))]};
     loc = round(length(id)/2);
     %     textm(TLAT(id(loc)),TLONG(id(loc)),str,...
     %         'HorizontalAlignment','center')
 end
 colormap(mcol)
-colorbar('Ticks',1:9,'TickLabels',ctex)
-title('CPUE corr All fishes')
-stamp('CPUE corr')
-print('-dpng',[ppath 'Map_LMEs_cpue_sat_driver_feisty_maxcorr_allfish_v2.png'])
+colorbar('Ticks',1:8,'TickLabels',ctex)
+title('CPUE LR coeff All fishes')
+stamp('CPUE LR')
+print('-dpng',[ppath 'Map_LMEs_cpue_sat_driver_feisty_SLR_maxR2s_allfish_dominant.png'])
 
-%% Correlation value map
+%% Coeff value map
 cmR = cbrewer('seq','Reds',9,'PCHIP');
 cmRB = cbrewer('div','RdBu',21,'PCHIP');
 cmRB = flipud(cmRB);
 
 % put on grid only significant ones
 Rcorr  = nan(ni,nj);
+Acoef  = nan(ni,nj);
 for i=1:length(lid)
     L=lid(i);
     id = find(tlme==L);
     if (LAtab(i,2) <= 0.05)
-        Rcorr(id) = LAtab(i,1);
+        Acoef(id) = LAtab(i,1);
+        Rcorr(id) = LAtab(i,3);
     end
 end
 
 figure(4)
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+surfm(TLAT,TLONG,Acoef)
+hold on
+colormap(cmRB)
+colorbar
+caxis([-1 1])
+title('CPUE LR coeff All fishes')
+stamp('CPUE LR')
+print('-dpng',[ppath 'Map_LMEs_cpue_sat_driver_feisty_SLR_maxR2s_allfish_coeff.png'])
+
+%% R2 value map
+
+figure(5)
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 hold on
 surfm(TLAT,TLONG,Rcorr)
 hold on
-colormap(cmRB)
-colorbar
-caxis([-1 1])
-title('CPUE corr coeff All fishes')
-stamp('CPUE corr')
-print('-dpng',[ppath 'Map_LMEs_cpue_sat_driver_feisty_maxcorr_coeff_allfish_v2.png'])
-
-figure(4)
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-hold on
-surfm(TLAT,TLONG,Rcorr.^2)
-hold on
 colormap(cmR)
 colorbar
 caxis([0 0.9])
 title('CPUE R^2 All fishes')
-stamp('CPUE R^2')
-print('-dpng',[ppath 'Map_LMEs_cpue_sat_driver_feisty_maxcorrR2_allfish_v2.png'])
+stamp('CPUE LR')
+print('-dpng',[ppath 'Map_LMEs_cpue_sat_driver_feisty_SLR_maxR2s_allfish_R2.png'])
 
 %% Dominant driver map - no satellite
-figure(5)
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-hold on
-for i=1:length(lid)
-    L=lid(i);
-    id = find(tlme==L);
-    Acorr  = nan(ni,nj);
-    Acorr(id) = LAtab(i,4);
-
-    if (LAtab(i,2) <= 0.05)
-        surfm(TLAT,TLONG,Acorr)
-        hold on
-    end
-    str = {['coef=' sprintf('%0.2f',LAtab(i,1))] , ['lag=' num2str(LAtab(i,3))]};
-    loc = round(length(id)/2);
-    %     textm(TLAT(id(loc)),TLONG(id(loc)),str,...
-    %         'HorizontalAlignment','center')
-end
-colormap(dcol)
-colorbar('Ticks',1:8,'TickLabels',ctex)
-title('CPUE corr All fishes')
-stamp('CPUE corr')
-print('-dpng',[ppath 'Map_LMEs_cpue_driver_feisty_maxcorr_allfish_v2.png'])
-
-
-%% Dominant driver map - FEISTY only
 figure(6)
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
@@ -368,13 +335,41 @@ for i=1:length(lid)
     L=lid(i);
     id = find(tlme==L);
     Acorr  = nan(ni,nj);
-    Acorr(id) = LAtab(i,4);
+    Acorr(id) = LAtab(i,5);
 
     if (LAtab(i,2) <= 0.05)
         surfm(TLAT,TLONG,Acorr)
         hold on
     end
-    str = {['coef=' sprintf('%0.2f',LAtab(i,1))] , ['lag=' num2str(LAtab(i,3))]};
+    str = {['coef=' sprintf('%0.2f',LAtab(i,1))] , ['lag=' num2str(LAtab(i,4))]};
+    loc = round(length(id)/2);
+    %     textm(TLAT(id(loc)),TLONG(id(loc)),str,...
+    %         'HorizontalAlignment','center')
+end
+colormap(dcol)
+colorbar('Ticks',1:8,'TickLabels',ctex)
+title('CPUE corr All fishes')
+stamp('CPUE corr')
+print('-dpng',[ppath 'Map_LMEs_cpue_driver_feisty_SLR_maxR2s_allfish_dominant.png'])
+
+
+%% Dominant driver map - FEISTY only
+figure(7)
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+for i=1:length(lid)
+    L=lid(i);
+    id = find(tlme==L);
+    Acorr  = nan(ni,nj);
+    Acorr(id) = LAtab(i,5);
+
+    if (LAtab(i,2) <= 0.05)
+        surfm(TLAT,TLONG,Acorr)
+        hold on
+    end
+    str = {['coef=' sprintf('%0.2f',LAtab(i,1))] , ['lag=' num2str(LAtab(i,4))]};
     loc = round(length(id)/2);
     %     textm(TLAT(id(loc)),TLONG(id(loc)),str,...
     %         'HorizontalAlignment','center')
@@ -383,5 +378,5 @@ colormap(fcol)
 colorbar('Ticks',1:8,'TickLabels',ctex)
 title('CPUE corr All fishes')
 stamp('CPUE corr')
-print('-dpng',[ppath 'Map_LMEs_cpue_feisty_maxcorr_allfish_v2.png'])
+print('-dpng',[ppath 'Map_LMEs_cpue_feisty_SLR_maxR2s_allfish_dominant.png'])
 

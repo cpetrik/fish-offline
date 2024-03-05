@@ -1,4 +1,4 @@
-% Plot corrs of driver-cpue corrs
+% Plot coefs of driver-cpue SLR
 % Lag with max R2
 % For all 63 LMEs
 
@@ -17,13 +17,7 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
 mod = sims{1};
 
-load([spath,'LME_corr_maxlag_driver_cpue.mat'])
-
-%%  ---------------------------------------------------------
-cnam = {'coef','p','lag','idriver','driver'};
-ctex = {'TP','TB','Det','ZmLoss','Biom','Prod','Rec'};
-
-% All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
+load([spath,'LME_linreg_maxR2lag_driver_cpue.mat'])
 
 %% colorblind friendly
 load('paul_tol_cmaps.mat')
@@ -47,7 +41,6 @@ mcol(7,:) = drainbow(14,:)/255; %red
 mcol(8,:) = drainbow(7,:)/255; %green
 
 %% Map
-cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
@@ -72,12 +65,12 @@ cmR = cbrewer('seq','Reds',10,'PCHIP');
 cmRB = cbrewer('div','RdBu',21,'PCHIP');
 cmRB = flipud(cmRB);
 
-lid = LAtab(:,8);
+lid = LAtab(:,7);
 
-%Now these are fn type biom & prod, correlated with CPUE fn types,
+%These are LRs with CPUE fn types by fn type
 
 figure(1)
-for j=1:4
+for j=1:6
     clf
     Fcorr  = nan(ni,nj);
     Pcorr  = nan(ni,nj);
@@ -111,7 +104,7 @@ for j=1:4
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     caxis([-1 1]);
     set(gcf,'renderer','painters')
-    title(['corr CPUE Forage with ' tanom{j}])
+    title(['LR CPUE Forage with ' tanom{j}])
 
     %P
     subplot('Position',[0.5 0.53 0.5 0.5])
@@ -122,7 +115,7 @@ for j=1:4
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     caxis([-1 1]);
     set(gcf,'renderer','painters')
-    title(['corr CPUE LgPel with ' tanom{j}])
+    title(['LR CPUE LgPel with ' tanom{j}])
 
     %D
     subplot('Position',[0.0 0.0 0.5 0.5])
@@ -133,7 +126,7 @@ for j=1:4
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     caxis([-1 1]);
     set(gcf,'renderer','painters')
-    title(['corr CPUE Dem with ' tanom{j}])
+    title(['LR CPUE Dem with ' tanom{j}])
 
     %All
     subplot('Position',[0.5 0.0 0.5 0.5])
@@ -145,14 +138,14 @@ for j=1:4
     caxis([-1 1]);
     colorbar('Position',[0.2 0.5 0.6 0.05],'orientation','horizontal','AxisLocation','in')
     set(gcf,'renderer','painters')
-    title(['corr CPUE All with ' tanom{j}])
+    title(['LR CPUE All with ' tanom{j}])
     %stamp('')
 
-    print('-dpng',[ppath 'Map_LMEs_corr_coeff_',tanom{j},'_cpue_fntypes.png'])
+    print('-dpng',[ppath 'Map_LMEs_SLR_coeff_',tanom{j},'_cpue_fntypes.png'])
 end
 
 %% Just pos fish corrs
-for j=5:7
+for j=5:6
     Fcorr  = nan(ni,nj);
     Pcorr  = nan(ni,nj);
     Dcorr  = nan(ni,nj);
@@ -195,7 +188,7 @@ for j=5:7
         colormap(cmR)
         caxis([0 1]);
         set(gcf,'renderer','painters')
-        title(['corr CPUE Forage with ' tanom{j}])
+        title(['LR CPUE Forage with ' tanom{j}])
     
         %P
         subplot('Position',[0.5 0.53 0.5 0.5])
@@ -206,7 +199,7 @@ for j=5:7
         colormap(cmR)
         caxis([0 1]);
         set(gcf,'renderer','painters')
-        title(['corr CPUE LgPel with ' tanom{j}])
+        title(['LR CPUE LgPel with ' tanom{j}])
     
         %D
         subplot('Position',[0.0 0.0 0.5 0.5])
@@ -216,8 +209,9 @@ for j=5:7
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         colormap(cmR)
         caxis([0 1]);
+        colorbar('Position',[0.2 0.485 0.6 0.05],'orientation','horizontal')
         set(gcf,'renderer','painters')
-        title(['corr CPUE Dem with ' tanom{j}])
+        title(['LR CPUE Dem with ' tanom{j}])
     
         %All
         subplot('Position',[0.5 0.0 0.5 0.5])
@@ -227,11 +221,11 @@ for j=5:7
         h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
         colormap(cmR)
         caxis([0 1]);
-        colorbar('Position',[0.2 0.5 0.6 0.05],'orientation','horizontal','AxisLocation','in')
+        colorbar('Position',[0.2 0.485 0.6 0.05],'orientation','horizontal')
         set(gcf,'renderer','painters')
-        title(['corr CPUE All with ' tanom{j}])
+        title(['LR CPUE All with ' tanom{j}])
         %stamp('')
-        print('-dpng',[ppath 'Map_LMEs_pos_corr_coeff_',tanom{j},'_cpue_fntypes.png'])
+        print('-dpng',[ppath 'Map_LMEs_pos_LR_coeff_',tanom{j},'_cpue_fntypes.png'])
 
     %All
     figure(5)
@@ -244,9 +238,9 @@ for j=5:7
     caxis([0 1]);
     colorbar
     set(gcf,'renderer','painters')
-    title(['corr CPUE All with ' tanom{j}])
+    title(['LR CPUE All with ' tanom{j}])
     %stamp('')
-    print('-dpng',[ppath 'Map_LMEs_pos_corr_coeff_',tanom{j},'_cpue_all.png'])
+    print('-dpng',[ppath 'Map_LMEs_pos_LR_coeff_',tanom{j},'_cpue_all.png'])
 
 end
 
@@ -275,85 +269,9 @@ for j=5:6
     caxis([-1 1]);
     colorbar
     set(gcf,'renderer','painters')
-    title(['corr CPUE All with ' tanom{j}])
+    title(['LR CPUE All with ' tanom{j}])
     %stamp('')
-    print('-dpng',[ppath 'Map_LMEs_corr_coeff_',tanom{j},'_cpue_all.png'])
-
-end
-
-%% Just pos fish corrs
-for j=5:7
-    Fcorr  = nan(ni,nj);
-    Pcorr  = nan(ni,nj);
-    Dcorr  = nan(ni,nj);
-    Acorr  = nan(ni,nj);
-
-    for i=1:length(lid)
-        L=lid(i);
-        id = find(tlme==L);
-
-        if (LFsig(i,j) <= 0.05)
-            Fcorr(id) = LFtab(i,j);
-        end
-        if (LPsig(i,j) <= 0.05)
-            Pcorr(id) = LPtab(i,j);
-        end
-        if (LDsig(i,j) <= 0.05)
-            Dcorr(id) = LDtab(i,j);
-        end
-        if (LAsig(i,j) <= 0.05)
-            Acorr(id) = LAtab(i,j);
-        end
-    end
-
-        figure(2)
-        clf
-        subplot('Position',[0 0.53 0.5 0.5])
-        %F
-        axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-            'Grid','off','FLineWidth',1)
-        surfm(TLAT,TLONG,Fcorr.^2)
-        h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-        colormap(cmR)
-        caxis([0 1]);
-        set(gcf,'renderer','painters')
-        title(['R^2 of CPUE Forage corr with ' tanom{j}])
-    
-        %P
-        subplot('Position',[0.5 0.53 0.5 0.5])
-        axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-            'Grid','off','FLineWidth',1)
-        surfm(TLAT,TLONG,Pcorr.^2)
-        h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-        colormap(cmR)
-        caxis([0 1]);
-        set(gcf,'renderer','painters')
-        title(['R^2 of CPUE LgPel corr with ' tanom{j}])
-    
-        %D
-        subplot('Position',[0.0 0.0 0.5 0.5])
-        axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-            'Grid','off','FLineWidth',1)
-        surfm(TLAT,TLONG,Dcorr.^2)
-        h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-        colormap(cmR)
-        caxis([0 1]);
-        set(gcf,'renderer','painters')
-        title(['R^2 of CPUE Dem corr with ' tanom{j}])
-    
-        %All
-        subplot('Position',[0.5 0.0 0.5 0.5])
-        axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
-            'Grid','off','FLineWidth',1)
-        surfm(TLAT,TLONG,Acorr.^2)
-        h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-        colormap(cmR)
-        caxis([0 1]);
-        colorbar('Position',[0.2 0.5 0.6 0.05],'orientation','horizontal','AxisLocation','in')
-        set(gcf,'renderer','painters')
-        title(['R^2 of CPUE All corr with ' tanom{j}])
-        %stamp('')
-        print('-dpng',[ppath 'Map_LMEs_corr_coeff_',tanom{j},'_cpue_fntypes_R2.png'])
+    print('-dpng',[ppath 'Map_LMEs_LR_coeff_',tanom{j},'_cpue_all.png'])
 
 end
 
@@ -412,6 +330,7 @@ surfm(TLAT,TLONG,TBcorr)
 colormap(cmRB)
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 caxis([-1 1]);
+colorbar('Position',[0.2 0.485 0.6 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
 title('TB')
 
@@ -426,7 +345,7 @@ caxis([-1 1]);
 colorbar('Position',[0.2 0.485 0.6 0.05],'orientation','horizontal')
 set(gcf,'renderer','painters')
 title('Det')
-print('-dpng',[ppath 'Map_LMEs_corr_coeff_drivers_cpue_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_LR_coeff_drivers_cpue_allfish.png'])
 
 %% Just all fish CPUE with ind drivers & biom, prod
 TPcorr  = nan(ni,nj);
@@ -523,7 +442,7 @@ colormap(cmRB)
 caxis([-1 1]);
 title('Production')
 colorbar('Position',[0.25 0.5 0.5 0.03],'Orientation','horizontal','AxisLocation','in')
-print('-dpng',[ppath 'Map_LMEs_corr_coeff_drivers_fish_cpue_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_LR_coeff_drivers_fish_cpue_allfish.png'])
 
 %% Only pos corrs for fish
 Bcorr2  = Bcorr;
@@ -593,5 +512,5 @@ colormap(cmRB)
 caxis([-1 1]);
 title('Production')
 colorbar('Position',[0.25 0.5 0.5 0.03],'Orientation','horizontal','AxisLocation','in')
-print('-dpng',[ppath 'Map_LMEs_corr_coeff_drivers_posfish_cpue_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_LR_coeff_drivers_posfish_cpue_allfish.png'])
 
