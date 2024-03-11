@@ -23,9 +23,10 @@ if locs_cesm
 end
 if spinup_cesm
 %     Spinup_cesm()
-    Spinup_FOSI_climatol()
-    Spinup_FOSI_varFood()
-    Spinup_FOSI_varTemp()
+    Spinup_cesm_FOSI_obsfish()
+%     Spinup_FOSI_climatol()
+%     Spinup_FOSI_varFood()
+%     Spinup_FOSI_varTemp()
 %     Spinup_4p4z()
 %     Spinup_4p4z_comb()
 end
@@ -41,7 +42,9 @@ if fosi_cesm
 %     FOSI_cesm()
 %     FOSI_cesm_catch()
 %     FOSI_cesm_nu()
-    FOSI_cesm_rec()
+%     FOSI_cesm_rec()
+    FOSI_cesm_obsfish()
+    FOSI_cesm_obsfish_catch_nu()
 %     FOSI_cesm_climatol()
 %     FOSI_cesm_varFood()
 %     FOSI_cesm_varTemp()

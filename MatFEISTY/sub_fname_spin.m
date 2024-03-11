@@ -62,19 +62,23 @@ else
     simname = [coup,'_Lam',tlam(2:end),'_enc',tefn,'-b',tbenc(2:end),'_m',tmfn,'-b',tbfn(2:end),'-k',tkfn(2:end),'_c',tcfn,'-b',tbcmx(2:end),'_D',td(2:end),'_A',ta(2:end),'_sMZ',tmzp(2:end),'_mMZ',tmzp2(2:end),'_nmort',tmort,'_BE',tbe(2:end),'_CC',tcc,'_RE',tre(2:end)];    
 end
 
-if (~isfolder(['/Volumes/MIP/NC/CESM_MAPP/',simname]))
-    mkdir(['/Volumes/MIP/NC/CESM_MAPP/',simname])
+outdir = ['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/',simname,'/FOSI'];
+
+if (~isfolder(outdir))
+    mkdir(outdir)
 end
 
 %! Setup netcdf path to store to
 if (frate==0)
-    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_',exper,'pristine'];
+    fname = [outdir, '/Spinup_',exper,'pristine'];
+elseif (isnan(frate))
+    fname = [outdir, '/Spinup_',exper,'obsfish'];
 elseif (param.Jsel~=0.1)
-    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_',exper,sel,'_fish',tfish(2:end),'_Juve',tJ(2:end)];
+    fname = [outdir, '/Spinup_',exper,sel,'_fish',tfish(2:end),'_Juve',tJ(2:end)];
 elseif (param.MFsel~=param.LPsel)
-    fname = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_',exper,'fish_F',tF(2:end),'_P',tP(2:end),'_D',tD(2:end)];
+    fname = [outdir, '/Spinup_',exper,'fish_F',tF(2:end),'_P',tP(2:end),'_D',tD(2:end)];
 else
-    fname  = ['/Volumes/MIP/NC/CESM_MAPP/',simname, '/Spinup_',exper,sel,'_fish',tfish(2:end)];  
+    fname  = [outdir, '/Spinup_',exper,sel,'_fish',tfish(2:end)];  
 end
 
 

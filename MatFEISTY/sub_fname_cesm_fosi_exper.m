@@ -69,6 +69,8 @@ end
 %! Setup netcdf path to store to
 if (frate==0)
     fname = ['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/',simname, '/FOSI_',exper,'pristine'];
+elseif (isnan(frate))
+    fname = ['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/',simname, '/FOSI_',exper,'obsfish'];
 elseif (param.Jsel~=0.1)
     fname = ['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/',simname, '/FOSI_',exper,sel,'_fish',tfish(2:end),'_Juve',tJ(2:end)];
 elseif (param.MFsel~=param.LPsel)
