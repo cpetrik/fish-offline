@@ -1,4 +1,4 @@
-% Calc corr of cpue with forcing, biomass, nu, gamma
+% Calc corr of cpue with forcing, biomass, nu
 % find most sig driver and lag
 
 clear

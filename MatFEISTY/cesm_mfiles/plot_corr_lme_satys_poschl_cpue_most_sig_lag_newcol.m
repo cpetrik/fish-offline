@@ -1,4 +1,4 @@
-% Plot corrs of driver-cpue corrs
+% Plot corrs of sat-cpue corrs
 % Lag with max R2
 % For all 63 LMEs
 
@@ -17,19 +17,26 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
 mod = sims{1};
 
-load([spath,'LMEs_corr_cpue_sat_driver_feisty_maxcorrs.mat'])
+load([spath,'LMEs_corr_cpue_satyrs_poschl_maxcorrs.mat'])
 
 %%  ---------------------------------------------------------
 cnam = {'coef','p','lag','idriver','driver'};
-ctex = {'TP','TB','Det','ZmLoss','Biom','Prod','SST','Chl'};
+ctex = {'SST','Chl'};
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
+iis = [23;33;62];
+[ll,lid] = setdiff(1:66,iis);
+
+LAtab = LAtab(lid,:);
+LFtab = LFtab(lid,:);
+LPtab = LPtab(lid,:);
+LDtab = LDtab(lid,:);
 
 Atab = LAtab;
 Ftab = LFtab;
 Ptab = LPtab;
 Dtab = LDtab;
 
-% CPUE of Lg Pel in LME 61 is 0, fix nans
+% CPUE of Lg Pel in LME 64 (row 61) is 0, fix nans
 LPtab(61,1) = 0;
 LPtab(61,2) = 1;
 %LPtab(61,3) = 0;
@@ -47,24 +54,9 @@ load('paul_tol_cmaps.mat')
 %colorblind friendly - subselect & re-order drainbow
 %ctex = {'TP','TB','Det','ZmLoss','Biom','Prod','SST','chl'};
 % orange, dk blue, grey, lt blue, dk purp, lt purp, red, green
-mcol(1,:) = drainbow(12,:)/255; % orange
-mcol(2,:) = drainbow(4,:)/255; %dk blue
-mcol(3,:) = drainbow(15,:)/255; %grey 
-mcol(4,:) = drainbow(6,:)/255; %lt blue
-mcol(5,:) = drainbow(3,:)/255; %dk purp
-mcol(6,:) = drainbow(1,:)/255; %lt purp
-mcol(7,:) = drainbow(14,:)/255; %red
-mcol(8,:) = drainbow(7,:)/255; %green
 
-dcol = mcol;
-dcol(7,:) = [1 1 1]; %white
-dcol(8,:) = [1 1 1]; %white
-
-fcol = dcol;
-fcol(1,:) = [1 1 1]; %white
-fcol(2,:) = [1 1 1]; %white
-fcol(3,:) = [1 1 1]; %white
-fcol(4,:) = [1 1 1]; %white
+mcol(1,:) = drainbow(14,:)/255; %red
+mcol(2,:) = drainbow(7,:)/255; %green
 
 %%
 figure(1)
@@ -103,7 +95,7 @@ set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 xlabel('LME')
 ylabel('Corr Coeff')
 title('CPUE All fishes')
-print('-dpng',[ppath 'Bar_LMEs_cpue_sat_driver_feisty_maxcorr_allfish_v2.png'])
+print('-dpng',[ppath 'Bar_LMEs_cpue_satyrs_poschl_maxcorr_allfish_v2.png'])
 
 
 %% Biom and Prod are for all fish, but here plot corr with fn types, doesn't make sense
@@ -225,7 +217,7 @@ set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Demersals')
 stamp('CPUE corr')
 
-print('-dpng',[ppath 'Bar_LMEs_cpue_sat_driver_feisty_maxcorr_fntypes.png'])
+print('-dpng',[ppath 'Bar_LMEs_cpue_satyrs_poschl_maxcorr_fntypes.png'])
 
 
 %% Map
@@ -274,7 +266,7 @@ colormap(mcol)
 colorbar('Ticks',1:9,'TickLabels',ctex)
 title('CPUE corr All fishes')
 stamp('CPUE corr')
-print('-dpng',[ppath 'Map_LMEs_cpue_sat_driver_feisty_maxcorr_allfish_v2.png'])
+print('-dpng',[ppath 'Map_LMEs_cpue_satyrs_poschl_maxcorr_allfish_v2.png'])
 
 %% Correlation value map
 cmR = cbrewer('seq','Reds',9,'PCHIP');
@@ -303,7 +295,7 @@ colorbar
 caxis([-1 1])
 title('CPUE corr coeff All fishes')
 stamp('CPUE corr')
-print('-dpng',[ppath 'Map_LMEs_cpue_sat_driver_feisty_maxcorr_coeff_allfish_v2.png'])
+print('-dpng',[ppath 'Map_LMEs_cpue_sat_maxcorr_allfish_v2.png'])
 
 figure(14)
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -317,60 +309,6 @@ colorbar
 caxis([0 0.9])
 title('CPUE R^2 All fishes')
 stamp('CPUE R^2')
-print('-dpng',[ppath 'Map_LMEs_cpue_sat_driver_feisty_maxcorrR2_allfish_v2.png'])
+print('-dpng',[ppath 'Map_LMEs_cpue_satyrs_poschl_maxcorrR2_allfish_v2.png'])
 
-%% Dominant driver map - no satellite
-figure(5)
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-hold on
-for i=1:length(lid)
-    L=lid(i);
-    id = find(tlme==L);
-    Acorr  = nan(ni,nj);
-    Acorr(id) = LAtab(i,4);
-
-    if (LAtab(i,2) <= 0.05)
-        surfm(TLAT,TLONG,Acorr)
-        hold on
-    end
-    str = {['coef=' sprintf('%0.2f',LAtab(i,1))] , ['lag=' num2str(LAtab(i,3))]};
-    loc = round(length(id)/2);
-    %     textm(TLAT(id(loc)),TLONG(id(loc)),str,...
-    %         'HorizontalAlignment','center')
-end
-colormap(dcol)
-colorbar('Ticks',1:8,'TickLabels',ctex)
-title('CPUE corr All fishes')
-stamp('CPUE corr')
-print('-dpng',[ppath 'Map_LMEs_cpue_driver_feisty_maxcorr_allfish_v2.png'])
-
-
-%% Dominant driver map - FEISTY only
-figure(6)
-axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
-    'Grid','off','FLineWidth',1)
-h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-hold on
-for i=1:length(lid)
-    L=lid(i);
-    id = find(tlme==L);
-    Acorr  = nan(ni,nj);
-    Acorr(id) = LAtab(i,4);
-
-    if (LAtab(i,2) <= 0.05)
-        surfm(TLAT,TLONG,Acorr)
-        hold on
-    end
-    str = {['coef=' sprintf('%0.2f',LAtab(i,1))] , ['lag=' num2str(LAtab(i,3))]};
-    loc = round(length(id)/2);
-    %     textm(TLAT(id(loc)),TLONG(id(loc)),str,...
-    %         'HorizontalAlignment','center')
-end
-colormap(fcol)
-colorbar('Ticks',1:8,'TickLabels',ctex)
-title('CPUE corr All fishes')
-stamp('CPUE corr')
-print('-dpng',[ppath 'Map_LMEs_cpue_feisty_maxcorr_allfish_v2.png'])
 

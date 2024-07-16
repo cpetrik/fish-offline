@@ -1,5 +1,6 @@
-% Calc corr of cpue with forcing, biomass, nu, gamma
+% Calc corr of cpue with forcing, biomass, nu
 % find most sig driver and lag
+% min yrs as sat chl
 
 clear
 close all
@@ -67,7 +68,7 @@ azlosy = azlosy(:,fid);
 aba    = aba(:,fid);
 ana    = ana(:,fid);
 
-% put into a matrix & use annual production
+% put into a matrix & use annual nuuction
 manom(:,:,1) = atp;
 manom(:,:,2) = atb;
 manom(:,:,3) = adety;
@@ -86,6 +87,13 @@ manom(:,tid,7) = asst(:,1:length(tid));
 manom(:,cid,8) = achl(:,1:length(cid));
 
 tanom = {'TP','TB','Det','ZmLoss','Biom','Prod','SST','chl'};
+
+%% restrict analysis to only years with satellite chl data
+manom = manom(:,cid,:);
+aall = aall(:,cid);
+af = af(:,cid);
+ap = ap(:,cid);
+ad = ad(:,cid);
 
 %% %Corr of forcing ---------------------------------------------------------
 cnam = {'corr','p','lag','idriver','driver'};
@@ -131,6 +139,9 @@ AtabC = FtabC;
 AtabP = FtabC;
 
 %%
+yst = 1;
+yen = length(cid);
+
 for L = 1:length(lid)
 
     %LME
@@ -142,22 +153,10 @@ for L = 1:length(lid)
         %input forcing
         driver = tanom{j};
 
-        if j==7
-            yst = tid(1);
-            yen = tid(end);
-
-        elseif j==8
-            yst = cid(1);
-            yen = cid(end);
-        else
-            yst = 1;
-            yen = length(eyr);
-        end
-
         for k=1:length(yr) %Correlations at diff lags
             t = yr(k);
 
-            %               LME     time      driver         
+            %               LME     time      driver
             sclim = ((manom(i,yst:yen-t,j))') ;
 
             %Fish
@@ -249,31 +248,16 @@ Dtab1.Properties.VariableNames = cnam;
 
 
 %%
-dpath = '/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/';
-
-writetable(Atab1,[spath,'LMEs_corr_cpue_sat_driver_feisty_norec_maxcorr_A.csv'],...
+writetable(Atab1,[spath,'LMEs_corr_cpue_satyrs_driver_feisty_maxcorr_A.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ftab1,[spath,'LMEs_corr_cpue_sat_driver_feisty_norec_maxcorr_F.csv'],...
+writetable(Ftab1,[spath,'LMEs_corr_cpue_satyrs_driver_feisty_maxcorr_F.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[spath,'LMEs_corr_cpue_sat_driver_feisty_norec_maxcorr_P.csv'],...
+writetable(Ptab1,[spath,'LMEs_corr_cpue_satyrs_driver_feisty_maxcorr_P.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[spath,'LMEs_corr_cpue_sat_driver_feisty_norec_maxcorr_D.csv'],...
+writetable(Dtab1,[spath,'LMEs_corr_cpue_satyrs_driver_feisty_maxcorr_D.csv'],...
     'Delimiter',',','WriteRowNames',true);
 
-save([spath,'LMEs_corr_cpue_sat_driver_feisty_norec_maxcorrs.mat'],...
-    'LFtab','LPtab','LDtab','LAtab',...
-    'Ftab1','Ptab1','Dtab1','Atab1','lid');
-
-writetable(Atab1,[dpath,'LMEs_corr_cpue_sat_driver_feisty_norec_maxcorr_A.csv'],...
-    'Delimiter',',','WriteRowNames',true);
-writetable(Ftab1,[dpath,'LMEs_corr_cpue_sat_driver_feisty_norec_maxcorr_F.csv'],...
-    'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[dpath,'LMEs_corr_cpue_sat_driver_feisty_norec_maxcorr_P.csv'],...
-    'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[dpath,'LMEs_corr_cpue_sat_driver_feisty_norec_maxcorr_D.csv'],...
-    'Delimiter',',','WriteRowNames',true);
-
-save([dpath,'LMEs_corr_cpue_sat_driver_feisty_norec_maxcorrs.mat'],...
+save([spath,'LMEs_corr_cpue_satyrs_driver_feisty_maxcorrs.mat'],...
     'LFtab','LPtab','LDtab','LAtab',...
     'Ftab1','Ptab1','Dtab1','Atab1','lid');
 
