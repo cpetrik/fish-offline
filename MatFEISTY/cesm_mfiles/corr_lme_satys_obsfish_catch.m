@@ -1,6 +1,7 @@
-% Calc corr of cpue with biomass, nu
+% Calc corr of catch with forcing, biomass, nu
 % calc only once, then put together with others
 % min yrs as sat chl
+% Obs fishing effort
 
 clear
 close all
@@ -21,11 +22,11 @@ fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',cfile,'/corrs'];
 
-mod = 'v15_All_fish03';
+mod = 'v15_obsfish';
 
 % Anoms with linear trend removed
 %Biomass
-load([fpath 'FEISTY_FOSI_',mod,'_lme_ann_mean_anoms.mat'],...
+load([fpath 'FEISTY_FOSI_',mod,'_lme_biom_ann_mean_anoms.mat'],...
     'aa','ad','af','ap');
 
 aba = aa;
@@ -46,32 +47,45 @@ anp = ap;
 
 clear aa ad af ap
 
+%% Catch
+load([fpath 'FEISTY_FOSI_',mod,'_lme_catch_ann_mean_anoms.mat'],...
+    'aa','ad','af','ap');
+
+aca = aa;
+acd = ad;
+acf = af;
+acp = ap;
+
+clear aa ad af ap
+
 %% Fish data
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
 % Anoms with linear trend removed
-load([ypath 'FishMIP_Phase3a_LME_CPUE_1961-2010_ann_mean_anoms.mat'])
+load([ypath 'FishMIP_Phase3a_LME_Catch_1948-2015_ann_mean_anoms.mat'])
 
 %% subset effort years
-fyr = 1948:2015;
-eyr = 1961:2010;
+fyr = 1948:2010;
+eyr = 1948:2015;
 [yr,fid] = intersect(fyr,eyr);
 
 aba    = aba(:,fid);
 ana    = ana(:,fid);
+aca    = aca(:,fid);
 
 % put into a matrix & use annual nuuction
 manom(:,:,1) = aba;
 manom(:,:,2) = ana;
+manom(:,:,3) = aca;
 
 %% Drivers from satellite obs
 load([fpath 'lme_satellite_sst_chl_ann_mean_anoms.mat'])
 
 %% match years
-[~,cid] = intersect(eyr,cyr);
-[~,tid] = intersect(eyr,tyr);
+[~,cid] = intersect(yr,cyr);
+[~,tid] = intersect(yr,tyr);
 
-tanom = {'Biom','Prod'};
+tanom = {'Biom','Prod','Catch'};
 
 %% restrict analysis to only years with satellite chl data
 manom = manom(:,cid,:);
@@ -88,7 +102,7 @@ AA = aba(:,1);
 lid = find(~isnan(AA));
 
 %Lags
-yr = 0:3;  %reduce lags 
+yr = 0:3;  %reduce lags 0:4
 
 % Drivers
 [Ymat,Jmat] = meshgrid(yr,1:length(tanom));
@@ -116,6 +130,11 @@ for L = 1:length(lid)
 
         %input forcing
         driver = tanom{j};
+
+        %Lags based on driver
+        if(j==3)
+            yr = 0:1; %catch that yr or next
+        end
 
         for k=1:length(yr) %Correlations at diff lags
             t = yr(k);
@@ -149,7 +168,7 @@ for L = 1:length(lid)
 end %LME
 
 %%
-save([spath,'LMEs_corr_cpue_satyrs_feisty_lags.mat'],...
+save([spath,'LMEs_corr_catch_satyrs_obsfish_lags.mat'],...
     'FtabC','PtabC','DtabC','AtabC',...
     'FtabP','PtabP','DtabP','AtabP','lid','cnam','tanom');
 

@@ -1,4 +1,4 @@
-% Calc corr of catch with forcing, biomass, nu
+% Use calc corr of catch with forcing, biomass, nu
 % find most sig driver and lag
 % min yrs as sat chl
 
@@ -6,18 +6,12 @@ clear
 close all
 
 %% FOSI input forcing
-
-%cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
-
-% lme means, trend removed, anomaly calc
-load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat'],...
-    'adety','atb','atp','azlosy','azoo');
 
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 ID = GRD.ID;
 
-%% FEISTY outputs
+% FEISTY outputs
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
@@ -27,80 +21,56 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
 
 mod = 'v15_All_fish03';
 
-% Anoms with linear trend removed
-%Biomass
-load([fpath 'FEISTY_FOSI_',mod,'_lme_ann_mean_anoms.mat'],...
-    'aa','ad','af','ap');
-
-aba = aa;
-abd = ad;
-abf = af;
-abp = ap;
-
-clear aa ad af ap
-
-%% Nu
-load([fpath 'FEISTY_FOSI_',mod,'_lme_nu_ann_mean_anoms.mat'],...
-    'aa','ad','af','ap');
-
-ana = aa;
-and = ad;
-anf = af;
-anp = ap;
-
-clear aa ad af ap
-
-%% Fish data
+% Fishing data
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
-% Anoms with linear trend removed
-load([ypath 'FishMIP_Phase3a_LME_Catch_1948-2015_ann_mean_anoms.mat'])
+%% All corrs
+CFtab = nan*ones(63,8,5);
+PFtab = nan*ones(63,8,5);
+CPtab = CFtab;
+PPtab = CFtab;
+CDtab = CFtab;
+PDtab = CFtab;
+CAtab = CFtab;
+PAtab = CFtab;
 
-%% subset effort years
-fyr = 1948:2015;
-eyr = 1948:2015;
-[yr,fid] = intersect(fyr,eyr);
+%% sat & driver
+load([spath 'LMEs_corr_catch_satyrs_driver_lags.mat'])
+stex = tanom;
 
-adety  = adety(:,fid);
-atb    = atb(:,fid);
-atp    = atp(:,fid);
-azlosy = azlosy(:,fid);
-aba    = aba(:,fid);
-ana    = ana(:,fid);
+%drivers & sat
+CAtab(:,1:6,:) = AtabC;
+CFtab(:,1:6,:) = FtabC;
+CPtab(:,1:6,:) = PtabC;
+CDtab(:,1:6,:) = DtabC;
 
-% put into a matrix & use annual nuuction
-manom(:,:,1) = atp;
-manom(:,:,2) = atb;
-manom(:,:,3) = adety;
-manom(:,:,4) = azlosy;
-manom(:,:,5) = aba;
-manom(:,:,6) = ana;
+PAtab(:,1:6,:) = AtabP;
+PFtab(:,1:6,:) = FtabP;
+PPtab(:,1:6,:) = PtabP;
+PDtab(:,1:6,:) = DtabP;
 
-%% Drivers from satellite obs
-load([fpath 'lme_satellite_sst_chl_ann_mean_anoms.mat'])
+clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
-%% match years
-[~,cid] = intersect(eyr,cyr);
-[~,tid] = intersect(eyr,tyr);
+%%
+load([spath 'LMEs_corr_catch_satyrs_feisty_lags.mat'])
+ftex = tanom;
 
-manom(:,tid,7) = asst(:,1:length(tid));
-manom(:,cid,8) = achl(:,1:length(cid));
+%sat
+CAtab(:,7:8,1:4) = AtabC(:,1:2,:);
+CFtab(:,7:8,1:4) = FtabC(:,1:2,:);
+CPtab(:,7:8,1:4) = PtabC(:,1:2,:);
+CDtab(:,7:8,1:4) = DtabC(:,1:2,:);
 
-tanom = {'TP','TB','Det','ZmLoss','Biom','Prod','SST','chl'};
+PAtab(:,7:8,1:4) = AtabP(:,1:2,:);
+PFtab(:,7:8,1:4) = FtabP(:,1:2,:);
+PPtab(:,7:8,1:4) = PtabP(:,1:2,:);
+PDtab(:,7:8,1:4) = DtabP(:,1:2,:);
 
-%% restrict analysis to only years with satellite chl data
-manom = manom(:,cid,:);
-aall = aall(:,cid);
-af = af(:,cid);
-ap = ap(:,cid);
-ad = ad(:,cid);
+clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
-%% %Corr of forcing ---------------------------------------------------------
+%%
+tanom = {'TP','TB','Det','ZmLoss','SST','chl','Biom','Prod'};
 cnam = {'corr','p','lag','idriver','driver'};
-
-% All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
-AA = aba(:,1);
-lid = find(~isnan(AA));
 
 %Lags
 yr = 0:4;  %reduce lags 0:4
@@ -129,93 +99,47 @@ LPt = cell(length(lid),1);
 LDt = cell(length(lid),1);
 LAt = cell(length(lid),1);
 
-FtabC = nan*ones(length(tanom),length(yr));
-FtabP = nan*ones(length(tanom),length(yr));
-PtabC = FtabC;
-PtabP = FtabC;
-DtabC = FtabC;
-DtabP = FtabC;
-AtabC = FtabC;
-AtabP = FtabC;
-
 %%
-yst = 1;
-yen = length(cid);
-
 for L = 1:length(lid)
 
     %LME
     i = lid(L);
     ilme = num2str(i);
 
-    for j = 1:length(tanom)
+    AtabC = squeeze(CAtab(L,:,:));
+    FtabC = squeeze(CFtab(L,:,:));
+    PtabC = squeeze(CPtab(L,:,:));
+    DtabC = squeeze(CDtab(L,:,:));
 
-        %input forcing
-        driver = tanom{j};
+    AtabP = squeeze(PAtab(L,:,:));
+    FtabP = squeeze(PFtab(L,:,:));
+    PtabP = squeeze(PPtab(L,:,:));
+    DtabP = squeeze(PDtab(L,:,:));
 
-        %Lags based on driver
-        if(j>4 && j<7)
-            yr = 0:3;
-        else
-            yr = 0:4;  %reduce lags 0:4
-        end
-
-        for k=1:length(yr) %Correlations at diff lags
-            t = yr(k);
-
-            %               LME     time      driver
-            sclim = ((manom(i,yst:yen-t,j))') ;
-
-            %Fish
-            [rp,pp] = corrcoef(sclim , (aall(i,yst+t:yen))');
-            AtabC(j,k) = rp(1,2);
-            AtabP(j,k) = pp(1,2);
-            clear rp pp
-
-            [rp,pp] = corrcoef(sclim , (af(i,yst+t:yen))');
-            FtabC(j,k) = rp(1,2);
-            FtabP(j,k) = pp(1,2);
-            clear rp pp
-
-            [rp,pp] = corrcoef(sclim , (ap(i,yst+t:yen))');
-            PtabC(j,k) = rp(1,2);
-            PtabP(j,k) = pp(1,2);
-            clear rp pp
-
-            [rp,pp] = corrcoef(sclim , (ad(i,yst+t:yen))');
-            DtabC(j,k) = rp(1,2);
-            DtabP(j,k) = pp(1,2);
-            clear rp pp
-
-        end % time lag
-
-    end % driver
-    
-    %% force prey & fish corrs to be pos or zero (3,4,5,6,8)
+    %% force prey & fish corrs to be pos or zero (3,4,6,7,8)
     AtabC(3,AtabC(3,:)<0) = 0;
     AtabC(4,AtabC(4,:)<0) = 0;
-    AtabC(5,AtabC(5,:)<0) = 0;
     AtabC(6,AtabC(6,:)<0) = 0;
+    AtabC(7,AtabC(7,:)<0) = 0;
     AtabC(8,AtabC(8,:)<0) = 0;
 
     FtabC(3,FtabC(3,:)<0) = 0;
     FtabC(4,FtabC(4,:)<0) = 0;
-    FtabC(5,FtabC(5,:)<0) = 0;
     FtabC(6,FtabC(6,:)<0) = 0;
+    FtabC(7,FtabC(7,:)<0) = 0;
     FtabC(8,FtabC(8,:)<0) = 0;
 
     PtabC(3,PtabC(3,:)<0) = 0;
     PtabC(4,PtabC(4,:)<0) = 0;
-    PtabC(5,PtabC(5,:)<0) = 0;
     PtabC(6,PtabC(6,:)<0) = 0;
+    PtabC(7,PtabC(7,:)<0) = 0;
     PtabC(8,PtabC(8,:)<0) = 0;
 
     DtabC(3,DtabC(3,:)<0) = 0;
     DtabC(4,DtabC(4,:)<0) = 0;
-    DtabC(5,DtabC(5,:)<0) = 0;
     DtabC(6,DtabC(6,:)<0) = 0;
+    DtabC(7,DtabC(7,:)<0) = 0;
     DtabC(8,DtabC(8,:)<0) = 0;
-
 
     %%
     maxC = max(abs(AtabC(:)));
@@ -257,6 +181,8 @@ for L = 1:length(lid)
     LDtab(L,4) = Jmat(pid);
     LDt(L) = tanom2(pid);
     clear pid maxC
+
+    clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP
 
 end %LME
 

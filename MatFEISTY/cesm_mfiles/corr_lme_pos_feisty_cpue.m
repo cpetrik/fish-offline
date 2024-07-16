@@ -125,23 +125,23 @@ for L = 1:length(lid)
 
             %Fish
             [rp,pp] = corrcoef(sclim , (aall(i,yst+t:yen))');
-            AtabC(L,j,k) = rp(1,2);
-            AtabP(L,j,k) = pp(1,2);
+            AtabC(j,k) = rp(1,2);
+            AtabP(j,k) = pp(1,2);
             clear rp pp
 
             [rp,pp] = corrcoef(sclim , (af(i,yst+t:yen))');
-            FtabC(L,j,k) = rp(1,2);
-            FtabP(L,j,k) = pp(1,2);
+            FtabC(j,k) = rp(1,2);
+            FtabP(j,k) = pp(1,2);
             clear rp pp
 
             [rp,pp] = corrcoef(sclim , (ap(i,yst+t:yen))');
-            PtabC(L,j,k) = rp(1,2);
-            PtabP(L,j,k) = pp(1,2);
+            PtabC(j,k) = rp(1,2);
+            PtabP(j,k) = pp(1,2);
             clear rp pp
 
             [rp,pp] = corrcoef(sclim , (ad(i,yst+t:yen))');
-            DtabC(L,j,k) = rp(1,2);
-            DtabP(L,j,k) = pp(1,2);
+            DtabC(j,k) = rp(1,2);
+            DtabP(j,k) = pp(1,2);
             clear rp pp
 
         end % time lag

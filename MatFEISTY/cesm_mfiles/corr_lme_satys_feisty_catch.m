@@ -1,4 +1,4 @@
-% Calc corr of cpue with biomass, nu
+% Calc corr of catch with forcing, biomass, nu
 % calc only once, then put together with others
 % min yrs as sat chl
 
@@ -50,11 +50,11 @@ clear aa ad af ap
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
 % Anoms with linear trend removed
-load([ypath 'FishMIP_Phase3a_LME_CPUE_1961-2010_ann_mean_anoms.mat'])
+load([ypath 'FishMIP_Phase3a_LME_Catch_1948-2015_ann_mean_anoms.mat'])
 
 %% subset effort years
 fyr = 1948:2015;
-eyr = 1961:2010;
+eyr = 1948:2015;
 [yr,fid] = intersect(fyr,eyr);
 
 aba    = aba(:,fid);
@@ -88,7 +88,7 @@ AA = aba(:,1);
 lid = find(~isnan(AA));
 
 %Lags
-yr = 0:3;  %reduce lags 
+yr = 0:3;  %reduce lags 0:4
 
 % Drivers
 [Ymat,Jmat] = meshgrid(yr,1:length(tanom));
@@ -149,9 +149,11 @@ for L = 1:length(lid)
 end %LME
 
 %%
-save([spath,'LMEs_corr_cpue_satyrs_feisty_lags.mat'],...
+save([spath,'LMEs_corr_catch_satyrs_feisty_lags.mat'],...
     'FtabC','PtabC','DtabC','AtabC',...
     'FtabP','PtabP','DtabP','AtabP','lid','cnam','tanom');
+
+
 
 
 
