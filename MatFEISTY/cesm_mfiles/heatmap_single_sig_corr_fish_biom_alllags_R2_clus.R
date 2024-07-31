@@ -1,4 +1,4 @@
-# Heatmaps of Pearson corrs of single forcing on fish "recruitment" (gamma)
+# Heatmaps of Pearson corrs of single forcing on fish biomass
 # Includes 3 lags: 0,1,2
 # From (2/7/2024) output
 # No zmeso

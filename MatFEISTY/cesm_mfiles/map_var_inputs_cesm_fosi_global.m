@@ -7,7 +7,7 @@ close all
 %% Paths
 %fpath='/Volumes/MIP/GCM_DATA/CESM/FOSI/';
 fpath='/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/CESM_MAPP/FOSI/';
 
 load([fpath 'gridspec_POP_gx1v6_noSeas.mat'],'mask');
 load([fpath 'Data_grid_POP_gx1v6_noSeas.mat'],'GRD');

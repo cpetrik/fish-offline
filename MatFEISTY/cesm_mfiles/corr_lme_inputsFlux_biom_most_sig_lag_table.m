@@ -33,11 +33,11 @@ spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',cfile,'/corrs'];
 
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
-mod = sims{1};
+mod = 'v15_obsfish';
 
 % Anoms with linear trend removed
 load([fpath 'FEISTY_FOSI_',mod,'_lme_ann_mean_anoms.mat'],...
-    'aa','ab','ad','af','ap','as','am','al')
+    'aa','ab','ad','af','ap');%,'as','am','al')
 
 %% % Corr of forcing ---------------------------------------------------------
 yst = 1;

@@ -86,8 +86,7 @@ for n=1:nyr
     dety(:,:,n)=nanmean(POC_FLUX_year(:,:,st(n):en(n)),3);
 end
 
-%% remove linear trend
-%vectorize
+%% vectorize
 tp2 = reshape(tp,ni*nj,nyr);
 tb2 = reshape(tb,ni*nj,nyr);
 det2 = reshape(det,ni*nj,nyr);
@@ -106,6 +105,7 @@ mzl = mzl(GRD.ID,:);
 mzly = mzly(GRD.ID,:);
 det2y = det2y(GRD.ID,:);
 
+%% remove linear trend
 xtp = NaN*ones(size(tp2));
 xtb = NaN*ones(size(tb2));
 xdet = NaN*ones(size(det2));
@@ -283,13 +283,13 @@ zlos_std = std(zlos,0,3,'omitnan');
 zlosy_std = std(zlosy,0,3,'omitnan');
 dety_std = std(dety,0,3,'omitnan');
 
-tp_stda = std(atp,0,3,'omitnan');
-tb_stda = std(atb,0,3,'omitnan');
-det_stda = std(adet,0,3,'omitnan');
-zoo_stda = std(azoo,0,3,'omitnan');
-zlos_stda = std(azlos,0,3,'omitnan');
-zlosy_stda = std(azlosy,0,3,'omitnan');
-dety_stda = std(adety,0,3,'omitnan');
+tp_stda = std(atp,0,2,'omitnan');
+tb_stda = std(atb,0,2,'omitnan');
+det_stda = std(adet,0,2,'omitnan');
+zoo_stda = std(azoo,0,2,'omitnan');
+zlos_stda = std(azlos,0,2,'omitnan');
+zlosy_stda = std(azlosy,0,2,'omitnan');
+dety_stda = std(adety,0,2,'omitnan');
 
 %% Coefficient of variance
 cvtp = tp_std ./ tp_mean;

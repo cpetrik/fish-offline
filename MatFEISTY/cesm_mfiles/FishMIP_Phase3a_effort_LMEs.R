@@ -10,14 +10,14 @@ rm(list=ls())
 library( plyr )
 
 setwd("/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/fish-offline/MatFEISTY/cesm_mfiles/")
-#fpath <- "/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/"
-fpath <- "/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/Fish-MIP/Phase3/fishing/"
+spath <- "/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/"
+fpath <- "/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Fish-MIP/Phase3/fishing/"
 
 ## Load Yannick's data
 #saup <- read.csv(paste0(fpath,"catch_histsoc_1869_2017_EEZ_addFAO.csv"),sep=",",header = T,stringsAsFactors = T)
 # 1841-2010 effort only has LMEs 0-32
-#effort <- read.csv(paste0(fpath,"effort_histsoc_1841_2010.csv"),sep=",",header = T,stringsAsFactors = T)
-effort <- read.csv(paste0(fpath,"effort_histsoc_1961_2010.csv"),sep=",",header = T,stringsAsFactors = T)
+effort <- read.csv(paste0(fpath,"effort_isimip3a_histsoc_1841_2010.csv"),sep=",",header = T,stringsAsFactors = T)
+#effort <- read.csv(paste0(fpath,"effort_histsoc_1961_2010.csv"),sep=",",header = T,stringsAsFactors = T)
 
 ## Define subsets in FGroup
 levels(effort$FGroup)
@@ -66,7 +66,9 @@ lme <- ddply( feisty1, .( Year, LME ), summarize,
               Pweffort = sum( as.numeric(Pweffort), na.rm = TRUE ),
               Dweffort = sum( as.numeric(Dweffort), na.rm = TRUE ))
 
-write.table(lme,paste0(fpath,"FishMIP_Phase3a_LME_Effort_annual_1961-2010.csv"),sep=",",row.names=F)
+## Save in both places
+write.table(lme,paste0(fpath,"FishMIP_Phase3a_LME_Effort_annual_1948-2010.csv"),sep=",",row.names=F)
+write.table(lme,paste0(spath,"FishMIP_Phase3a_LME_Effort_annual_1948-2010.csv"),sep=",",row.names=F)
 
 
 

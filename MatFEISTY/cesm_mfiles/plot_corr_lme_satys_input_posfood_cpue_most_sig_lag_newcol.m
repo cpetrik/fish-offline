@@ -91,74 +91,22 @@ set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 xlabel('LME')
 ylabel('Corr Coeff')
 title('CPUE All fishes')
-print('-dpng',[ppath 'Bar_LMEs_cpue_satyrs_driver_pos_maxcorr_allfish_v2.png'])
+print('-dpng',[ppath 'Bar_LMEs_cpue_satyrs_driver_pos_maxcorr_v3_allfish.png'])
 
 
 %% Biom and Prod are for all fish, but here plot corr with fn types, doesn't make sense
 f2 = figure('Units','inches','Position',[1 3 7.5 10]);
-subplot('Position',[0.1 0.24 0.856 0.17])
+
+subplot('Position',[0.1 0.52 0.856 0.22])
 % Get fake colors first for legend
 for i=1:length(ctex)
     L=lid(i);
-    b=bar(L,LAtab(i,1),'EdgeColor','none','FaceColor',mcol(i,:));
+    b=bar(L,LPtab(i,1),'EdgeColor','none','FaceColor',mcol(i,:));
     hold on
 end
 %legend of colors and shapes
 lgd = legend(ctex,'Location','eastoutside');
 lgd.AutoUpdate = 'off';
-for i=1:length(lid)
-    L=lid(i);
-    if (LAtab(i,2) <= 0.05)
-        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,4),:),'FaceColor',mcol(LAtab(i,4),:));
-        hold on
-    else
-        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,4),:),'FaceColor',[1 1 1]);
-        hold on
-    end
-    xtips1 = b(1).XEndPoints;
-    ytips1 = b(1).YEndPoints;
-    labels = num2str(LAtab(i,3));
-    if (LAtab(i,1) < 0)
-        text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
-            'VerticalAlignment','top')
-    else
-        text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
-            'VerticalAlignment','bottom')
-    end
-end
-xlim([0 67])
-ylim([-1.1 1.1])
-set(gca,'XTick',1:3:66,'XTickLabel','')
-ylabel('All fishes')
-
-subplot('Position',[0.1 0.81 0.7 0.17])
-for i=1:length(lid)
-    L=lid(i);
-    if (LFtab(i,2) <= 0.05)
-        b=bar(L,LFtab(i,1),'EdgeColor',mcol(LFtab(i,4),:),'FaceColor',mcol(LFtab(i,4),:));
-        hold on
-    else
-        b=bar(L,LFtab(i,1),'EdgeColor',mcol(LFtab(i,4),:),'FaceColor',[1 1 1]);
-        hold on
-    end
-    xtips1 = b(1).XEndPoints;
-    ytips1 = b(1).YEndPoints;
-    labels = num2str(LFtab(i,3));
-    if (LFtab(i,1) < 0)
-        text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
-            'VerticalAlignment','top')
-    else
-        text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
-            'VerticalAlignment','bottom')
-    end
-end
-xlim([0 67])
-ylim([-1.1 1.1])
-set(gca,'XTick',1:3:66,'XTickLabel','')
-ylabel('Forage fishes')
-title('CPUE corr')
-
-subplot('Position',[0.1 0.62 0.7 0.17])
 for i=1:length(lid)
     L=lid(i);
     if(i~=61)
@@ -186,7 +134,34 @@ ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Large pelagics')
 
-subplot('Position',[0.1 0.43 0.7 0.17])
+subplot('Position',[0.1 0.75 0.7 0.22])
+for i=1:length(lid)
+    L=lid(i);
+    if (LFtab(i,2) <= 0.05)
+        b=bar(L,LFtab(i,1),'EdgeColor',mcol(LFtab(i,4),:),'FaceColor',mcol(LFtab(i,4),:));
+        hold on
+    else
+        b=bar(L,LFtab(i,1),'EdgeColor',mcol(LFtab(i,4),:),'FaceColor',[1 1 1]);
+        hold on
+    end
+    xtips1 = b(1).XEndPoints;
+    ytips1 = b(1).YEndPoints;
+    labels = num2str(LFtab(i,3));
+    if (LFtab(i,1) < 0)
+        text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
+            'VerticalAlignment','top')
+    else
+        text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
+            'VerticalAlignment','bottom')
+    end
+end
+xlim([0 67])
+ylim([-1.1 1.1])
+set(gca,'XTick',1:3:66,'XTickLabel','')
+ylabel('Forage fishes')
+title('CPUE corr')
+
+subplot('Position',[0.1 0.29 0.7 0.22])
 for i=1:length(lid)
     L=lid(i);
     if (LDtab(i,2) <= 0.05)
@@ -213,7 +188,33 @@ set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Demersals')
 stamp('CPUE corr')
 
-print('-dpng',[ppath 'Bar_LMEs_cpue_satyrs_driver_pos_maxcorr_fntypes.png'])
+subplot('Position',[0.1 0.05 0.7 0.22])
+for i=1:length(lid)
+    L=lid(i);
+    if (LAtab(i,2) <= 0.05)
+        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,4),:),'FaceColor',mcol(LAtab(i,4),:));
+        hold on
+    else
+        b=bar(L,LAtab(i,1),'EdgeColor',mcol(LAtab(i,4),:),'FaceColor',[1 1 1]);
+        hold on
+    end
+    xtips1 = b(1).XEndPoints;
+    ytips1 = b(1).YEndPoints;
+    labels = num2str(LAtab(i,3));
+    if (LAtab(i,1) < 0)
+        text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
+            'VerticalAlignment','top')
+    else
+        text(xtips1,ytips1,labels,'HorizontalAlignment','center',...
+            'VerticalAlignment','bottom')
+    end
+end
+xlim([0 67])
+ylim([-1.1 1.1])
+set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
+ylabel('All fishes')
+
+print('-dpng',[ppath 'Bar_LMEs_cpue_satyrs_driver_pos_maxcorr_v3_fntypes.png'])
 
 
 %% Map
@@ -262,7 +263,7 @@ colormap(mcol)
 colorbar('Ticks',1:9,'TickLabels',ctex)
 title('CPUE corr All fishes')
 stamp('CPUE corr')
-print('-dpng',[ppath 'Map_LMEs_cpue_satyrs_driver_pos_maxcorr_allfish_v2.png'])
+print('-dpng',[ppath 'Map_LMEs_cpue_satyrs_driver_pos_maxcorr_v3_allfish.png'])
 
 %% Correlation value map
 cmR = cbrewer('seq','Reds',9,'PCHIP');
@@ -288,10 +289,10 @@ surfm(TLAT,TLONG,Rcorr)
 hold on
 colormap(cmRB)
 colorbar
-caxis([-1 1])
+clim([-1 1])
 title('CPUE corr coeff All fishes')
 stamp('CPUE corr')
-print('-dpng',[ppath 'Map_LMEs_cpue_sat_driver_feisty_maxcorr_pos_coeff_allfish_v2.png'])
+print('-dpng',[ppath 'Map_LMEs_cpue_sat_driver_feisty_maxcorr_v3_pos_coeff_allfish.png'])
 
 figure(14)
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -302,9 +303,9 @@ surfm(TLAT,TLONG,Rcorr.^2)
 hold on
 colormap(cmR)
 colorbar
-caxis([0 0.9])
+clim([0 0.9])
 title('CPUE R^2 All fishes')
 stamp('CPUE R^2')
-print('-dpng',[ppath 'Map_LMEs_cpue_satyrs_driver_pos_maxcorrR2_allfish_v2.png'])
+print('-dpng',[ppath 'Map_LMEs_cpue_satyrs_driver_pos_maxcorr_v3_R2_allfish.png'])
 
 
