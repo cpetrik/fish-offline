@@ -1,6 +1,7 @@
 % Plot corrs of ind driver combos with catch
 % Add effort as top-down driver
 % Const eff and Obs effort FEISTY sims
+% Don't include simulated catch as driver
 
 clear
 close all
@@ -26,11 +27,8 @@ DtabC = LDtab;
 
 clear LAtab LFtab LPtab LDtab
 
-eft = (AtabC(:,4)==9);
-AtabC(eft,4) = 10;
-
 %%
-load([spath,'LMEs_corr_catch_satyrs_driver_obsfish_effort_maxcorr_posfoods.mat'],...
+load([spath,'LMEs_corr_catch_satyrs_driver_obsfish_effort_maxcorr_posfoods2.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 AtabO = LAtab;
@@ -75,7 +73,7 @@ cnam = {'coef','p','lag','idriver','driver'};
 load('paul_tol_cmaps.mat')
 
 %colorblind friendly - subselect & re-order drainbow
-ctex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod','Yield','Effort'};
+ctex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod','Effort'};
 % orange, dk blue, grey, lt blue, dk purp, lt purp, red, green
 mcol(1,:) = drainbow(12,:)/255; % orange
 mcol(2,:) = drainbow(4,:)/255; %dk blue
@@ -85,10 +83,10 @@ mcol(5,:) = drainbow(14,:)/255; %red
 mcol(6,:) = drainbow(7,:)/255; %green
 mcol(7,:) = drainbow(3,:)/255; %dk purp
 mcol(8,:) = drainbow(1,:)/255; %lt purp
-mcol(9,:) = drainbow(9,:)/255; %lt green
-mcol(10,:) = [82,26,15]/255;   %brown
+%mcol(9,:) = drainbow(9,:)/255; %lt green
+mcol(9,:) = [82,26,15]/255;   %brown
 
-ccol = mcol([1:8,10],:);
+ccol = mcol;
 
 scol = mcol(5:6,:);
 
@@ -217,7 +215,7 @@ set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Const Effort')
 stamp('')
 
-print('-dpng',[ppath 'Bar_LMEs_catch_driver_effort_comp_maxcorr_v3_allfish.png'])
+print('-dpng',[ppath 'Bar_LMEs_catch_driver_effort_comp_maxcorr_v3_allfish2.png'])
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -322,5 +320,5 @@ colorbar('eastoutside','Ticks',1:10,'TickLabels',ctex)
 %colorbar('Ticks',1:9,'TickLabels',ctex)
 title('Catch Obs Effort')
 
-print('-dpng',[ppath 'Map_LMEs_catch_driver_effort_comp_maxcorr_v3_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_catch_driver_effort_comp_maxcorr_v3_allfish2.png'])
 

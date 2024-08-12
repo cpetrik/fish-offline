@@ -1,5 +1,4 @@
-% Plot corrs of driver-catch corrs
-% Barplots and maps
+% Plot corrs of sat-catch corrs
 % Lag with max R2
 % For all 63 LMEs
 
@@ -18,18 +17,26 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
 mod = sims{1};
 
-load([spath,'LMEs_corr_catch_satyrs_driver_feisty_maxcorr_posfoods.mat'])
+load([spath,'LMEs_corr_catch_satyrs_maxcorr_poschl.mat'])
 
 %%  ---------------------------------------------------------
 cnam = {'coef','p','lag','idriver','driver'};
-% All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
+ctex = {'SST','Chl'};
+% % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
+% iis = [23;33;62];
+% [ll,lid] = setdiff(1:66,iis);
+%
+% LAtab = LAtab(lid,:);
+% LFtab = LFtab(lid,:);
+% LPtab = LPtab(lid,:);
+% LDtab = LDtab(lid,:);
 
 Atab = LAtab;
 Ftab = LFtab;
 Ptab = LPtab;
 Dtab = LDtab;
 
-% Catch of Lg Pel in LME 61 is 0, fix nans
+% Catch of Lg Pel in LME 64 (row 61) is 0, fix nans
 LPtab(61,1) = 0;
 LPtab(61,2) = 1;
 %LPtab(61,3) = 0;
@@ -45,16 +52,11 @@ load('paul_tol_cmaps.mat')
 %     ];
 
 %colorblind friendly - subselect & re-order drainbow
-ctex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod'};
+%ctex = {'TP','TB','Det','ZmLoss','Biom','Prod','SST','chl'};
 % orange, dk blue, grey, lt blue, dk purp, lt purp, red, green
-mcol(1,:) = drainbow(12,:)/255; % orange
-mcol(2,:) = drainbow(4,:)/255; %dk blue
-mcol(3,:) = drainbow(15,:)/255; %grey
-mcol(4,:) = drainbow(6,:)/255; %lt blue
-mcol(5,:) = drainbow(14,:)/255; %red
-mcol(6,:) = drainbow(7,:)/255; %green
-mcol(7,:) = drainbow(3,:)/255; %dk purp
-mcol(8,:) = drainbow(1,:)/255; %lt purp
+
+mcol(1,:) = drainbow(14,:)/255; %red
+mcol(2,:) = drainbow(7,:)/255; %green
 
 %%
 figure(1)
@@ -93,10 +95,10 @@ set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 xlabel('LME')
 ylabel('Corr Coeff')
 title('Catch All fishes')
-print('-dpng',[ppath 'Bar_LMEs_catch_satyrs_driver_feisty_pos_maxcorr_v3_allfish.png'])
+print('-dpng',[ppath 'Bar_LMEs_catch_satyrs_poschl_maxcorr_v3_allfish.png'])
 
 
-%% Biom and Prod are for all fish, but here plot corr with fn types, doesn't make sense
+%% 
 f2 = figure('Units','inches','Position',[1 3 7.5 10]);
 
 subplot('Position',[0.1 0.52 0.856 0.22])
@@ -138,7 +140,7 @@ ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Large pelagics')
 
-subplot('Position',[0.1 0.75 0.7 0.22])
+subplot('Position',[0.1 0.75 0.73 0.22])
 for i=1:length(lid)
     L=lid(i);
     if(i~=55)
@@ -167,9 +169,9 @@ xlim([0 67])
 ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Forage fishes')
-title('Catch corr')
+title('CPUE corr')
 
-subplot('Position',[0.1 0.29 0.7 0.22])
+subplot('Position',[0.1 0.29 0.73 0.22])
 for i=1:length(lid)
     L=lid(i);
     if (LDtab(i,2) <= 0.05)
@@ -194,8 +196,9 @@ xlim([0 67])
 ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Demersals')
+stamp('CPUE corr')
 
-subplot('Position',[0.1 0.05 0.7 0.22])
+subplot('Position',[0.1 0.05 0.73 0.22])
 for i=1:length(lid)
     L=lid(i);
     if (LAtab(i,2) <= 0.05)
@@ -221,7 +224,8 @@ ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 ylabel('All fishes')
 
-print('-dpng',[ppath 'Bar_LMEs_catch_satyrs_driver_feisty_pos_maxcorr_v3_fntypes.png'])
+print('-dpng',[ppath 'Bar_LMEs_catch_satyrs_poschl_maxcorr_v3_fntypes.png'])
+
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -242,6 +246,7 @@ clatlim=[plotminlat plotmaxlat];
 clonlim=[plotminlon plotmaxlon];
 
 load coastlines;
+
 
 %% Dominant driver map
 figure(3)
@@ -268,7 +273,7 @@ colormap(mcol)
 colorbar('Ticks',1:9,'TickLabels',ctex)
 title('Catch corr All fishes')
 stamp('Catch corr')
-print('-dpng',[ppath 'Map_LMEs_catch_satyrs_driver_feisty_pos_maxcorr_v3_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_catch_satyrs_poschl_maxcorr_v3_allfish.png'])
 
 %% Correlation value map
 cmR = cbrewer('seq','Reds',9,'PCHIP');
@@ -297,7 +302,7 @@ colorbar
 clim([-1 1])
 title('Catch corr coeff All fishes')
 stamp('Catch corr')
-print('-dpng',[ppath 'Map_LMEs_catch_sat_driver_feisty_maxcorr_v3_pos_coeff_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_catch_sat_maxcorr_v3_allfish.png'])
 
 figure(14)
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -311,6 +316,6 @@ colorbar
 clim([0 0.9])
 title('Catch R^2 All fishes')
 stamp('Catch R^2')
-print('-dpng',[ppath 'Map_LMEs_catch_satyrs_driver_feisty_pos_maxcorr_v3_R2_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_catch_satyrs_poschl_maxcorr_v3_R2_allfish.png'])
 
 

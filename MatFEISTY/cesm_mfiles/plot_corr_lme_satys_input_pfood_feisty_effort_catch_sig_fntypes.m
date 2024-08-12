@@ -2,6 +2,8 @@
 % Barplots and maps
 % Lag with max R2
 % For all 63 LMEs
+% Used constant effort
+% Corr with obs effort, but no sim catch
 
 clear
 close all
@@ -18,7 +20,7 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
 sims = {'v15_All_fish03';'v15_climatol';'v15_varFood';'v15_varTemp'};
 mod = sims{1};
 
-load([spath,'LMEs_corr_catch_satyrs_driver_feisty_maxcorr_posfoods.mat'])
+load([spath,'LMEs_corr_catch_satyrs_driver_feisty_effort_maxcorr_posfoods.mat'])
 
 %%  ---------------------------------------------------------
 cnam = {'coef','p','lag','idriver','driver'};
@@ -45,7 +47,7 @@ load('paul_tol_cmaps.mat')
 %     ];
 
 %colorblind friendly - subselect & re-order drainbow
-ctex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod'};
+ctex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod','Effort'};
 % orange, dk blue, grey, lt blue, dk purp, lt purp, red, green
 mcol(1,:) = drainbow(12,:)/255; % orange
 mcol(2,:) = drainbow(4,:)/255; %dk blue
@@ -55,6 +57,7 @@ mcol(5,:) = drainbow(14,:)/255; %red
 mcol(6,:) = drainbow(7,:)/255; %green
 mcol(7,:) = drainbow(3,:)/255; %dk purp
 mcol(8,:) = drainbow(1,:)/255; %lt purp
+mcol(9,:) = [82,26,15]/255;   %brown
 
 %%
 figure(1)
@@ -93,7 +96,7 @@ set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 xlabel('LME')
 ylabel('Corr Coeff')
 title('Catch All fishes')
-print('-dpng',[ppath 'Bar_LMEs_catch_satyrs_driver_feisty_pos_maxcorr_v3_allfish.png'])
+print('-dpng',[ppath 'Bar_LMEs_catch_satyrs_driver_feisty_effort_pos_maxcorr_v3_allfish.png'])
 
 
 %% Biom and Prod are for all fish, but here plot corr with fn types, doesn't make sense
@@ -221,7 +224,7 @@ ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 ylabel('All fishes')
 
-print('-dpng',[ppath 'Bar_LMEs_catch_satyrs_driver_feisty_pos_maxcorr_v3_fntypes.png'])
+print('-dpng',[ppath 'Bar_LMEs_catch_satyrs_driver_feisty_effort_pos_maxcorr_v3_fntypes.png'])
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -268,7 +271,7 @@ colormap(mcol)
 colorbar('Ticks',1:9,'TickLabels',ctex)
 title('Catch corr All fishes')
 stamp('Catch corr')
-print('-dpng',[ppath 'Map_LMEs_catch_satyrs_driver_feisty_pos_maxcorr_v3_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_catch_satyrs_driver_feisty_effort_pos_maxcorr_v3_allfish.png'])
 
 %% Correlation value map
 cmR = cbrewer('seq','Reds',9,'PCHIP');
@@ -311,6 +314,6 @@ colorbar
 clim([0 0.9])
 title('Catch R^2 All fishes')
 stamp('Catch R^2')
-print('-dpng',[ppath 'Map_LMEs_catch_satyrs_driver_feisty_pos_maxcorr_v3_R2_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_catch_satyrs_driver_feisty_effort_pos_maxcorr_v3_R2_allfish.png'])
 
 
