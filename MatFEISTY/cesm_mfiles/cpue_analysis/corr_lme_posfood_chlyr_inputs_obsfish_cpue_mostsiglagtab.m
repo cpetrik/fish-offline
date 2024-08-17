@@ -1,6 +1,7 @@
 % Use calc corr of cpue with forcing, biomass, nu
-% find most sig driver and lag
+% find most sig lag of each driver in each LME
 % min yrs as sat chl
+% obs fishing effort
 
 clear
 close all
@@ -74,153 +75,104 @@ clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
 tanom = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod'};
-cnam = {'corr','p','lag','idriver','driver'};
+cnam = {'corr','p','lag'};
 
 %Lags
 yr = 0:3;  %reduce lags 0:4
 
-% Drivers
-tanom2=tanom';
-tanom2(:,2)=tanom2(:,1);
-tanom2(:,3)=tanom2(:,1);
-tanom2(:,4)=tanom2(:,1);
-tanom2(:,5)=tanom2(:,1);
-tanom2(:,6)=tanom2(:,1);
-tanom2(:,7)=tanom2(:,1);
-tanom2(:,8)=tanom2(:,1);
-tanom2(:,9)=tanom2(:,1);
-tanom2(:,10)=tanom2(:,1);
-
-[Ymat,Jmat] = meshgrid(yr,1:length(tanom));
-
-LFtab = nan*ones(length(lid),4);
-LPtab = nan*ones(length(lid),4);
-LDtab = nan*ones(length(lid),4);
-LAtab = nan*ones(length(lid),4);
-
-LFt = cell(length(lid),1);
-LPt = cell(length(lid),1);
-LDt = cell(length(lid),1);
-LAt = cell(length(lid),1);
+LFtab = nan*ones(length(lid),length(tanom),3);
+LPtab = nan*ones(length(lid),length(tanom),3);
+LDtab = nan*ones(length(lid),length(tanom),3);
+LAtab = nan*ones(length(lid),length(tanom),3);
 
 %%
-for L = 1:length(lid)
+for j=1:length(tanom)
+    driver = tanom{j};
 
-    %LME
-    i = lid(L);
-    ilme = num2str(i);
+    for L = 1:length(lid)
 
-    AtabC = squeeze(CAtab(L,:,:));
-    FtabC = squeeze(CFtab(L,:,:));
-    PtabC = squeeze(CPtab(L,:,:));
-    DtabC = squeeze(CDtab(L,:,:));
+        %LME
+        i = lid(L);
+        ilme = num2str(i);
 
-    AtabP = squeeze(PAtab(L,:,:));
-    FtabP = squeeze(PFtab(L,:,:));
-    PtabP = squeeze(PPtab(L,:,:));
-    DtabP = squeeze(PDtab(L,:,:));
+        AtabC = squeeze(CAtab(L,j,:));
+        FtabC = squeeze(CFtab(L,j,:));
+        PtabC = squeeze(CPtab(L,j,:));
+        DtabC = squeeze(CDtab(L,j,:));
 
-    %% force prey & fish corrs to be pos or zero (3,4,6,7,8)
-    AtabC(3,AtabC(3,:)<0) = 0;
-    AtabC(4,AtabC(4,:)<0) = 0;
-    AtabC(6,AtabC(6,:)<0) = 0;
-    AtabC(7,AtabC(7,:)<0) = 0;
-    AtabC(8,AtabC(8,:)<0) = 0;
+        AtabP = squeeze(PAtab(L,j,:));
+        FtabP = squeeze(PFtab(L,j,:));
+        PtabP = squeeze(PPtab(L,j,:));
+        DtabP = squeeze(PDtab(L,j,:));
 
-    FtabC(3,FtabC(3,:)<0) = 0;
-    FtabC(4,FtabC(4,:)<0) = 0;
-    FtabC(6,FtabC(6,:)<0) = 0;
-    FtabC(7,FtabC(7,:)<0) = 0;
-    FtabC(8,FtabC(8,:)<0) = 0;
+        %% force prey & fish corrs to be pos or zero (3,4,6,7,8)
+        if j~=1
+            if j~=2
+                if j~=5
+                    AtabP(AtabC<0) = 1;
+                    FtabP(FtabC<0) = 1;
+                    PtabP(PtabC<0) = 1;
+                    DtabP(DtabC<0) = 1;
 
-    PtabC(3,PtabC(3,:)<0) = 0;
-    PtabC(4,PtabC(4,:)<0) = 0;
-    PtabC(6,PtabC(6,:)<0) = 0;
-    PtabC(7,PtabC(7,:)<0) = 0;
-    PtabC(8,PtabC(8,:)<0) = 0;
+                    AtabC(AtabC<0) = 0;
+                    FtabC(FtabC<0) = 0;
+                    PtabC(PtabC<0) = 0;
+                    DtabC(DtabC<0) = 0;
+                end
+            end
+        end
 
-    DtabC(3,DtabC(3,:)<0) = 0;
-    DtabC(4,DtabC(4,:)<0) = 0;
-    DtabC(6,DtabC(6,:)<0) = 0;
-    DtabC(7,DtabC(7,:)<0) = 0;
-    DtabC(8,DtabC(8,:)<0) = 0;
+        %%
+        maxC = max(abs(AtabC(:)));
+        pid = find(abs(AtabC(:))==maxC);
+        if(length(pid)>1)
+            pid = pid(1);
+        end
+        LAtab(L,j,1) = AtabC(pid);
+        LAtab(L,j,2) = AtabP(pid);
+        LAtab(L,j,3) = yr(pid);
+        clear pid maxC
 
-    %%
-    maxC = max(abs(AtabC(:)));
-    pid = find(abs(AtabC(:))==maxC);
-    LAtab(L,1) = AtabC(pid);
-    LAtab(L,2) = AtabP(pid);
-    LAtab(L,3) = Ymat(pid);
-    LAtab(L,4) = Jmat(pid);
-    LAt(L) = tanom2(pid);
-    clear pid maxC
+        maxC = max(abs(FtabC(:)));
+        if(~isnan(maxC))
+            pid = find(abs(FtabC(:))==maxC);
+            if(length(pid)>1)
+                pid = pid(1);
+            end
+            LFtab(L,j,1) = FtabC(pid);
+            LFtab(L,j,2) = FtabP(pid);
+            LFtab(L,j,3) = yr(pid);
+        end
+        clear pid maxC
 
-    maxC = max(abs(FtabC(:)));
-    if(~isnan(maxC))
-        pid = find(abs(FtabC(:))==maxC);
-        LFtab(L,1) = FtabC(pid);
-        LFtab(L,2) = FtabP(pid);
-        LFtab(L,3) = Ymat(pid);
-        LFtab(L,4) = Jmat(pid);
-        LFt(L) = tanom2(pid);
-    end
-    clear pid maxC
+        maxC = max(abs(PtabC(:)));
+        if(~isnan(maxC))
+            pid = find(abs(PtabC(:))==maxC);
+            if(length(pid)>1)
+                pid = pid(1);
+            end
+            LPtab(L,j,1) = PtabC(pid);
+            LPtab(L,j,2) = PtabP(pid);
+            LPtab(L,j,3) = yr(pid);
+        end
+        clear pid maxC
 
-    maxC = max(abs(PtabC(:)));
-    if(~isnan(maxC))
-        pid = find(abs(PtabC(:))==maxC);
-        LPtab(L,1) = PtabC(pid);
-        LPtab(L,2) = PtabP(pid);
-        LPtab(L,3) = Ymat(pid);
-        LPtab(L,4) = Jmat(pid);
-        LPt(L) = tanom2(pid);
-    end
-    clear pid maxC
+        maxC = max(abs(DtabC(:)));
+        pid = find(abs(DtabC(:))==maxC);
+        if(length(pid)>1)
+            pid = pid(1);
+        end
+        LDtab(L,j,1) = DtabC(pid);
+        LDtab(L,j,2) = DtabP(pid);
+        LDtab(L,j,3) = yr(pid);
+        clear pid maxC
 
-    maxC = max(abs(DtabC(:)));
-    pid = find(abs(DtabC(:))==maxC);
-    LDtab(L,1) = DtabC(pid);
-    LDtab(L,2) = DtabP(pid);
-    LDtab(L,3) = Ymat(pid);
-    LDtab(L,4) = Jmat(pid);
-    LDt(L) = tanom2(pid);
-    clear pid maxC
+        clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP
 
-    clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP
+    end %LME
 
-end %LME
+end %driver
 
-%%
-lname = cellstr(num2str(lid));
-% cnam, lname, tanom2
-Atab1 = array2table(LAtab,"RowNames",lname);
-Atab1(:,5) = LAt;
-Atab1.Properties.VariableNames = cnam;
-
-Ftab1 = array2table(LFtab,"RowNames",lname);
-Ftab1(:,5) = LFt;
-Ftab1.Properties.VariableNames = cnam;
-
-Ptab1 = array2table(LPtab,"RowNames",lname);
-Ptab1(:,5) = LPt;
-Ptab1.Properties.VariableNames = cnam;
-
-Dtab1 = array2table(LDtab,"RowNames",lname);
-Dtab1(:,5) = LDt;
-Dtab1.Properties.VariableNames = cnam;
-
-
-%%
-writetable(Atab1,[spath,'LMEs_corr_cpue_chlyrs_driver_obsfish_maxcorr_posfood_A.csv'],...
-    'Delimiter',',','WriteRowNames',true);
-writetable(Ftab1,[spath,'LMEs_corr_cpue_chlyrs_driver_obsfish_maxcorr_posfood_F.csv'],...
-    'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[spath,'LMEs_corr_cpue_chlyrs_driver_obsfish_maxcorr_posfood_P.csv'],...
-    'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[spath,'LMEs_corr_cpue_chlyrs_driver_obsfish_maxcorr_posfood_D.csv'],...
-    'Delimiter',',','WriteRowNames',true);
-
-save([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish_maxcorr_posfood.mat'],...
-    'LFtab','LPtab','LDtab','LAtab',...
-    'Ftab1','Ptab1','Dtab1','Atab1','lid');
+save([spath,'LMEs_corr_cpue_chlyrs_inputs_obsfish_mostsiglag_posfood.mat'],...
+    'LFtab','LPtab','LDtab','LAtab','lid','tanom','cnam','yr');
 

@@ -38,10 +38,10 @@ CAtab = CFtab;
 PAtab = CFtab;
 
 %% sat & inputs
-load([spath 'LMEs_corr_cpue_chlyrs_driver_lags.mat'])
+load([spath 'LMEs_corr_catch_chlyrs_driver_lags.mat'])
 stex = tanom;
 
-load([spath 'LMEs_corr_cpue_chlyrs_feisty_lags.mat'],'lid')
+load([spath 'LMEs_corr_catch_chlyrs_feisty_lags.mat'],'lid')
 
 %inputss & sat
 CAtab(:,1:6,:) = AtabC(lid,:,:);
@@ -57,7 +57,7 @@ PDtab(:,1:6,:) = DtabP(lid,:,:);
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-load([spath 'LMEs_corr_cpue_chlyrs_feisty_lags.mat'])
+load([spath 'LMEs_corr_catch_chlyrs_feisty_lags.mat'])
 ftex = tanom;
 
 %sat
@@ -106,28 +106,20 @@ for j=1:length(tanom)
         DtabP = squeeze(PDtab(L,j,:));
 
         %% force prey & fish corrs to be pos or zero (3,4,6,7,8)
-        if j~=1
-            if j~=2
-                if j~=5
-                    AtabP(AtabC<0) = 1;
-                    FtabP(FtabC<0) = 1;
-                    PtabP(PtabC<0) = 1;
-                    DtabP(DtabC<0) = 1;
+        % if j~=1
+        %     if j~=5
+        %         AtabC(AtabC<0) = 0;
+        %         FtabC(FtabC<0) = 0;
+        %         PtabC(PtabC<0) = 0;
+        %         DtabC(DtabC<0) = 0;
+        %     end
+        % end
 
-                    AtabC(AtabC<0) = 0;
-                    FtabC(FtabC<0) = 0;
-                    PtabC(PtabC<0) = 0;
-                    DtabC(DtabC<0) = 0;
-                end
-            end
-        end
+        % - Don't force to be pos, can always restrict analyses to pos only
 
         %%
         maxC = max(abs(AtabC(:)));
         pid = find(abs(AtabC(:))==maxC);
-        if(length(pid)>1)
-            pid = pid(1);
-        end
         LAtab(L,j,1) = AtabC(pid);
         LAtab(L,j,2) = AtabP(pid);
         LAtab(L,j,3) = yr(pid);
@@ -136,9 +128,6 @@ for j=1:length(tanom)
         maxC = max(abs(FtabC(:)));
         if(~isnan(maxC))
             pid = find(abs(FtabC(:))==maxC);
-            if(length(pid)>1)
-                pid = pid(1);
-            end
             LFtab(L,j,1) = FtabC(pid);
             LFtab(L,j,2) = FtabP(pid);
             LFtab(L,j,3) = yr(pid);
@@ -148,9 +137,6 @@ for j=1:length(tanom)
         maxC = max(abs(PtabC(:)));
         if(~isnan(maxC))
             pid = find(abs(PtabC(:))==maxC);
-            if(length(pid)>1)
-                pid = pid(1);
-            end
             LPtab(L,j,1) = PtabC(pid);
             LPtab(L,j,2) = PtabP(pid);
             LPtab(L,j,3) = yr(pid);
@@ -159,9 +145,6 @@ for j=1:length(tanom)
 
         maxC = max(abs(DtabC(:)));
         pid = find(abs(DtabC(:))==maxC);
-        if(length(pid)>1)
-            pid = pid(1);
-        end
         LDtab(L,j,1) = DtabC(pid);
         LDtab(L,j,2) = DtabP(pid);
         LDtab(L,j,3) = yr(pid);
@@ -173,6 +156,6 @@ for j=1:length(tanom)
 
 end %driver
 
-save([spath,'LMEs_corr_cpue_chlyrs_inputs_feisty_mostsiglag_posfood.mat'],...
+save([spath,'LMEs_corr_catch_chlyrs_inputs_feisty_mostsiglag.mat'],...
     'LFtab','LPtab','LDtab','LAtab','lid','tanom','cnam','yr');
 

@@ -20,11 +20,18 @@ mod2 = 'v15_obsfish';
 cnam = {'coef','p','lag','idriver','driver'};
 
 %%  ---------------- sat --------------------------
-load([spath,'LMEs_corr_cpue_chlyrs_maxcorr_posfood.mat'])
+load([spath,'LMEs_corr_cpue_chlyrs_maxcorr_posfood.mat'],...
+    'LAtab','LFtab','LPtab','LDtab')
+load([spath 'LMEs_corr_cpue_sstyrs_feisty_lags.mat'],'lid')
 
 stex = {'SST','Chl'};
 
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
+LAtab = LAtab(lid,:);
+LFtab = LFtab(lid,:);
+LPtab = LPtab(lid,:);
+LDtab = LDtab(lid,:);
+
 sigA = (LAtab(:,2) <= 0.05);
 sigF = (LFtab(:,2) <= 0.05);
 sigP = (LPtab(:,2) <= 0.05);
@@ -37,12 +44,18 @@ DtabS = LDtab(sigD,:);
 
 clear sigA sigF sigP sigD LAtab LFtab LPtab LDtab
 
-%%  ---------------- inputss --------------------------
-load([spath,'LMEs_corr_cpue_chlyrs_driver_maxcorr_posfood.mat'])
+%%  ---------------- inputs --------------------------
+load([spath,'LMEs_corr_cpue_chlyrs_driver_maxcorr_posfood.mat'],...
+    'LAtab','LFtab','LPtab','LDtab')
 
 dtex = {'TP','TB','Det','ZmLoss','SST','Chl'};
 
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
+LAtab = LAtab(lid,:);
+LFtab = LFtab(lid,:);
+LPtab = LPtab(lid,:);
+LDtab = LDtab(lid,:);
+
 sigA = (LAtab(:,2) <= 0.05);
 sigF = (LFtab(:,2) <= 0.05);
 sigP = (LPtab(:,2) <= 0.05);
@@ -56,7 +69,8 @@ DtabD = LDtab(sigD,:);
 clear sigA sigF sigP sigD LAtab LFtab LPtab LDtab
 
 %%  ---------------- constfish --------------------------
-load([spath,'LMEs_corr_cpue_chlyrs_inputs_feisty_maxcorr_posfood.mat'])
+load([spath,'LMEs_corr_cpue_chlyrs_inputs_feisty_maxcorr_posfood.mat'],...
+    'LAtab','LFtab','LPtab','LDtab')
 
 ftex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod'};
 
@@ -74,7 +88,8 @@ DtabF = LDtab(sigD,:);
 clear sigA sigF sigP sigD LAtab LFtab LPtab LDtab
 
 %%  ---------------- obsfish --------------------------
-load([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish_maxcorr_posfood.mat'])
+load([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish_maxcorr_posfood.mat'],...
+    'LAtab','LFtab','LPtab','LDtab')
 
 otex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod'};
 

@@ -1,6 +1,6 @@
-% Use calc corr of cpue with forcing, biomass, nu
+% Use calc corr of catch with forcing, biomass, nu
 % find most sig driver and lag
-% min yrs as sat sst
+% min yrs as sat chl
 
 clear
 close all
@@ -21,14 +21,14 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
     cfile,'/corrs_cpue'];
 
 
-mod = 'v15_All_fish03';
+mod = 'v15_obsfish';
 
 % Fishing data
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
 %% All corrs
-CFtab = nan*ones(63,7,4);
-PFtab = nan*ones(63,7,4);
+CFtab = nan*ones(63,9,4);
+PFtab = nan*ones(63,9,4);
 CPtab = CFtab;
 PPtab = CFtab;
 CDtab = CFtab;
@@ -37,43 +37,43 @@ CAtab = CFtab;
 PAtab = CFtab;
 
 %% sat & inputs
-load([spath 'LMEs_corr_cpue_sstyrs_driver_lags.mat'])
+load([spath 'LMEs_corr_catch_chlyrs_driver_lags.mat'])
 stex = tanom;
 
-load([spath 'LMEs_corr_cpue_sstyrs_feisty_lags.mat'],'lid')
+load([spath 'LMEs_corr_catch_chlyrs_feisty_lags.mat'],'lid')
 
-%inputs & sat
-CAtab(:,1:5,:) = AtabC(lid,:,:);
-CFtab(:,1:5,:) = FtabC(lid,:,:);
-CPtab(:,1:5,:) = PtabC(lid,:,:);
-CDtab(:,1:5,:) = DtabC(lid,:,:);
+%inputss & sat
+CAtab(:,1:6,:) = AtabC(lid,:,:);
+CFtab(:,1:6,:) = FtabC(lid,:,:);
+CPtab(:,1:6,:) = PtabC(lid,:,:);
+CDtab(:,1:6,:) = DtabC(lid,:,:);
 
-PAtab(:,1:5,:) = AtabP(lid,:,:);
-PFtab(:,1:5,:) = FtabP(lid,:,:);
-PPtab(:,1:5,:) = PtabP(lid,:,:);
-PDtab(:,1:5,:) = DtabP(lid,:,:);
+PAtab(:,1:6,:) = AtabP(lid,:,:);
+PFtab(:,1:6,:) = FtabP(lid,:,:);
+PPtab(:,1:6,:) = PtabP(lid,:,:);
+PDtab(:,1:6,:) = DtabP(lid,:,:);
 
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-load([spath 'LMEs_corr_cpue_sstyrs_feisty_lags.mat'])
+load([spath 'LMEs_corr_catch_chlyrs_obsfish_lags.mat'])
 ftex = tanom;
 
-%sat
-CAtab(:,6:7,1:3) = AtabC(:,1:2,:);
-CFtab(:,6:7,1:3) = FtabC(:,1:2,:);
-CPtab(:,6:7,1:3) = PtabC(:,1:2,:);
-CDtab(:,6:7,1:3) = DtabC(:,1:2,:);
+%fish
+CAtab(:,7:9,1:3) = AtabC;
+CFtab(:,7:9,1:3) = FtabC;
+CPtab(:,7:9,1:3) = PtabC;
+CDtab(:,7:9,1:3) = DtabC;
 
-PAtab(:,6:7,1:3) = AtabP(:,1:2,:);
-PFtab(:,6:7,1:3) = FtabP(:,1:2,:);
-PPtab(:,6:7,1:3) = PtabP(:,1:2,:);
-PDtab(:,6:7,1:3) = DtabP(:,1:2,:);
+PAtab(:,7:9,1:3) = AtabP;
+PFtab(:,7:9,1:3) = FtabP;
+PPtab(:,7:9,1:3) = PtabP;
+PDtab(:,7:9,1:3) = DtabP;
 
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-tanom = {'TP','TB','Det','ZmLoss','SST','Biom','Prod'};
+tanom = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod','Yield'};
 cnam = {'corr','p','lag','idriver','driver'};
 
 %Lags
@@ -120,26 +120,34 @@ for L = 1:length(lid)
     PtabP = squeeze(PPtab(L,:,:));
     DtabP = squeeze(PDtab(L,:,:));
 
-    %% force prey & fish corrs to be pos or zero (3,4,6,7)
+    %% force prey & fish corrs to be pos or zero (3,4,6,7,8,9)
     AtabC(3,AtabC(3,:)<0) = 0;
     AtabC(4,AtabC(4,:)<0) = 0;
     AtabC(6,AtabC(6,:)<0) = 0;
     AtabC(7,AtabC(7,:)<0) = 0;
+    AtabC(8,AtabC(8,:)<0) = 0;
+    AtabC(9,AtabC(9,:)<0) = 0;
 
     FtabC(3,FtabC(3,:)<0) = 0;
     FtabC(4,FtabC(4,:)<0) = 0;
     FtabC(6,FtabC(6,:)<0) = 0;
     FtabC(7,FtabC(7,:)<0) = 0;
+    FtabC(8,FtabC(8,:)<0) = 0;
+    FtabC(9,FtabC(9,:)<0) = 0;
 
     PtabC(3,PtabC(3,:)<0) = 0;
     PtabC(4,PtabC(4,:)<0) = 0;
     PtabC(6,PtabC(6,:)<0) = 0;
     PtabC(7,PtabC(7,:)<0) = 0;
+    PtabC(8,PtabC(8,:)<0) = 0;
+    PtabC(9,PtabC(9,:)<0) = 0;
 
     DtabC(3,DtabC(3,:)<0) = 0;
     DtabC(4,DtabC(4,:)<0) = 0;
     DtabC(6,DtabC(6,:)<0) = 0;
     DtabC(7,DtabC(7,:)<0) = 0;
+    DtabC(8,DtabC(8,:)<0) = 0;
+    DtabC(9,DtabC(9,:)<0) = 0;
 
     %%
     maxC = max(abs(AtabC(:)));
@@ -207,16 +215,16 @@ Dtab1.Properties.VariableNames = cnam;
 
 
 %%
-writetable(Atab1,[spath,'LMEs_corr_cpue_sstyrs_inputs_feisty_maxcorr_posfood_A.csv'],...
+writetable(Atab1,[spath,'LMEs_corr_catch_chlyrs_inputs_obsfish_maxcorr_posfood_A.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ftab1,[spath,'LMEs_corr_cpue_sstyrs_inputs_feisty_maxcorr_posfood_F.csv'],...
+writetable(Ftab1,[spath,'LMEs_corr_catch_chlyrs_inputs_obsfish_maxcorr_posfood_F.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[spath,'LMEs_corr_cpue_sstyrs_inputs_feisty_maxcorr_posfood_P.csv'],...
+writetable(Ptab1,[spath,'LMEs_corr_catch_chlyrs_inputs_obsfish_maxcorr_posfood_P.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[spath,'LMEs_corr_cpue_sstyrs_inputs_feisty_maxcorr_posfood_D.csv'],...
+writetable(Dtab1,[spath,'LMEs_corr_catch_chlyrs_inputs_obsfish_maxcorr_posfood_D.csv'],...
     'Delimiter',',','WriteRowNames',true);
 
-save([spath,'LMEs_corr_cpue_sstyrs_inputs_feisty_maxcorr_posfood.mat'],...
+save([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish_maxcorr_posfood.mat'],...
     'LFtab','LPtab','LDtab','LAtab',...
     'Ftab1','Ptab1','Dtab1','Atab1','lid');
 
