@@ -1,6 +1,6 @@
 % Use calc corr of cpue with forcing, biomass, nu
 % find most sig lag of each driver in each LME
-% min yrs as sat chl
+% min yrs as sat sst
 % const fishing effort
 
 clear
@@ -28,8 +28,8 @@ mod = 'v15_All_fish03';
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
 %% All corrs
-CFtab = nan*ones(63,8,4);
-PFtab = nan*ones(63,8,4);
+CFtab = nan*ones(63,7,4);
+PFtab = nan*ones(63,7,4);
 CPtab = CFtab;
 PPtab = CFtab;
 CDtab = CFtab;
@@ -38,43 +38,43 @@ CAtab = CFtab;
 PAtab = CFtab;
 
 %% sat & inputs
-load([spath 'LMEs_corr_cpue_chlyrs_driver_lags.mat'])
+load([spath 'LMEs_corr_cpue_sstyrs15_driver_lags.mat'])
 stex = tanom;
 
-load([spath 'LMEs_corr_cpue_chlyrs_feisty_lags.mat'],'lid')
+load([spath 'LMEs_corr_cpue_sstyrs15_feisty_lags.mat'],'lid')
 
 %inputss & sat
-CAtab(:,1:6,:) = AtabC(lid,:,:);
-CFtab(:,1:6,:) = FtabC(lid,:,:);
-CPtab(:,1:6,:) = PtabC(lid,:,:);
-CDtab(:,1:6,:) = DtabC(lid,:,:);
+CAtab(:,1:5,:) = AtabC(lid,:,:);
+CFtab(:,1:5,:) = FtabC(lid,:,:);
+CPtab(:,1:5,:) = PtabC(lid,:,:);
+CDtab(:,1:5,:) = DtabC(lid,:,:);
 
-PAtab(:,1:6,:) = AtabP(lid,:,:);
-PFtab(:,1:6,:) = FtabP(lid,:,:);
-PPtab(:,1:6,:) = PtabP(lid,:,:);
-PDtab(:,1:6,:) = DtabP(lid,:,:);
+PAtab(:,1:5,:) = AtabP(lid,:,:);
+PFtab(:,1:5,:) = FtabP(lid,:,:);
+PPtab(:,1:5,:) = PtabP(lid,:,:);
+PDtab(:,1:5,:) = DtabP(lid,:,:);
 
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-load([spath 'LMEs_corr_cpue_chlyrs_feisty_lags.mat'])
+load([spath 'LMEs_corr_cpue_sstyrs15_feisty_lags.mat'])
 ftex = tanom;
 
 %sat
-CAtab(:,7:8,1:3) = AtabC(:,1:2,:);
-CFtab(:,7:8,1:3) = FtabC(:,1:2,:);
-CPtab(:,7:8,1:3) = PtabC(:,1:2,:);
-CDtab(:,7:8,1:3) = DtabC(:,1:2,:);
+CAtab(:,6:7,1:3) = AtabC(:,1:2,:);
+CFtab(:,6:7,1:3) = FtabC(:,1:2,:);
+CPtab(:,6:7,1:3) = PtabC(:,1:2,:);
+CDtab(:,6:7,1:3) = DtabC(:,1:2,:);
 
-PAtab(:,7:8,1:3) = AtabP(:,1:2,:);
-PFtab(:,7:8,1:3) = FtabP(:,1:2,:);
-PPtab(:,7:8,1:3) = PtabP(:,1:2,:);
-PDtab(:,7:8,1:3) = DtabP(:,1:2,:);
+PAtab(:,6:7,1:3) = AtabP(:,1:2,:);
+PFtab(:,6:7,1:3) = FtabP(:,1:2,:);
+PPtab(:,6:7,1:3) = PtabP(:,1:2,:);
+PDtab(:,6:7,1:3) = DtabP(:,1:2,:);
 
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-tanom = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod'};
+tanom = {'TP','TB','Det','ZmLoss','SST','Biom','Prod'};
 cnam = {'corr','p','lag'};
 
 %Lags
@@ -173,6 +173,6 @@ for j=1:length(tanom)
 
 end %driver
 
-save([spath,'LMEs_corr_cpue_chlyrs_inputs_feisty_mostsiglag_posfood.mat'],...
+save([spath,'LMEs_corr_cpue_sstyrs15_inputs_feisty_mostsiglag_posfood.mat'],...
     'LFmat','LPmat','LDmat','LAmat','lid','tanom','cnam','yr');
 
