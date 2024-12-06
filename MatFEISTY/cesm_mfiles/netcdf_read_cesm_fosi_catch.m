@@ -145,9 +145,9 @@ md_ttc=sum(MD.catch,1,'omitnan');
 lp_ttc=sum(LP.catch,1,'omitnan');
 ld_ttc=sum(LD.catch,1,'omitnan');
 
-mf_tnu = mean(MF.nu,1,'omitnan');
-lp_tnu = mean(LP.nu,1,'omitnan');
-ld_tnu = mean(LD.nu,1,'omitnan');
+% mf_tnu = mean(MF.nu,1,'omitnan');
+% lp_tnu = mean(LP.nu,1,'omitnan');
+% ld_tnu = mean(LD.nu,1,'omitnan');
 
 %% Spatially
 %mean yield per mo
@@ -176,9 +176,9 @@ md_stc=sum(MD.catch,2,'omitnan');
 lp_stc=sum(LP.catch,2,'omitnan');
 ld_stc=sum(LD.catch,2,'omitnan');
 
-mf_snu = mean(MF.nu,2,'omitnan');
-lp_snu = mean(LP.nu,2,'omitnan');
-ld_snu = mean(LD.nu,2,'omitnan');
+% mf_snu = mean(MF.nu,2,'omitnan');
+% lp_snu = mean(LP.nu,2,'omitnan');
+% ld_snu = mean(LD.nu,2,'omitnan');
 
 %% Every year
 st=1:12:nt;
@@ -197,9 +197,15 @@ for n=1:length(st)
     lp_tac(:,n)=sum(LP.catch(:,st(n):en(n)),2,'omitnan');
     ld_tac(:,n)=sum(LD.catch(:,st(n):en(n)),2,'omitnan');
 
-    mf_anu(:,n)=mean(MF.nu(:,st(n):en(n)),2,'omitnan');
-    lp_anu(:,n)=mean(LP.nu(:,st(n):en(n)),2,'omitnan');
-    ld_anu(:,n)=mean(LD.nu(:,st(n):en(n)),2,'omitnan');
+    mp_may(:,n)=mean(MP.yield(:,st(n):en(n)),2,'omitnan');
+    mf_may(:,n)=mean(MF.yield(:,st(n):en(n)),2,'omitnan');
+    md_may(:,n)=mean(MD.yield(:,st(n):en(n)),2,'omitnan');
+    lp_may(:,n)=mean(LP.yield(:,st(n):en(n)),2,'omitnan');
+    ld_may(:,n)=mean(LD.yield(:,st(n):en(n)),2,'omitnan');
+
+    % mf_anu(:,n)=mean(MF.nu(:,st(n):en(n)),2,'omitnan');
+    % lp_anu(:,n)=mean(LP.nu(:,st(n):en(n)),2,'omitnan');
+    % ld_anu(:,n)=mean(LD.nu(:,st(n):en(n)),2,'omitnan');
 end
 
 tmn = mf_tac + mp_tac + md_tac + lp_tac + ld_tac;
@@ -217,20 +223,23 @@ save([spath 'Time_Means_FOSI_' harv '_' cfile '.mat'],'units_yield','units_catch
     'mf_tmc','mp_tmc','md_tmc','lp_tmc','ld_tmc',...
     'mf_tty','mp_tty','md_tty','lp_tty','ld_tty',...
     'mf_ttc','mp_ttc','md_ttc','lp_ttc','ld_ttc',...
-    'mf_tnu','lp_tnu','ld_tnu','-append');
+    '-append');
+    %'mf_tnu','lp_tnu','ld_tnu','-append');
 
 save([spath 'Space_Means_FOSI_' harv '_' cfile '.mat'],'units_yield','units_catch',...
     'mf_smy','mp_smy','md_smy','lp_smy','ld_smy',...
     'mf_smc','mp_smc','md_smc','lp_smc','ld_smc',...
     'mf_sty','mp_sty','md_sty','lp_sty','ld_sty',...
     'mf_stc','mp_stc','md_stc','lp_stc','ld_stc',...
-    'mf_snu','lp_snu','ld_snu','-append');
+    '-append');
+    %'mf_snu','lp_snu','ld_snu','-append');
 
 save([spath 'Annual_Means_FOSI_' harv '_' cfile '.mat'],...
     'mf_tac','mp_tac','md_tac','lp_tac','ld_tac',...
     'mf_tsac','mp_tsac','md_tsac','lp_tsac','ld_tsac',...
     'units_yield','units_catch',...
-    'mf_anu','lp_anu','ld_anu','-append');
+    'mf_may','mp_may','md_may','lp_may','ld_may','-append');
+    %'mf_anu','lp_anu','ld_anu','-append');
 
 %%
 mo = (1:nt)/12;

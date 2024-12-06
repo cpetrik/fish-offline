@@ -2,17 +2,17 @@
 % CESM FOSI
 % Time series plots and maps
 
-clear all
+clear 
 close all
 
 %% Fish data
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-mod = 'v15_All_fish03';
+mod = 'v15_obsfish';
 %mod = 'All_fish03';
 
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/'];
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/CESM_MAPP/FOSI/';
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 ppath = [pp cfile '/'];
 if (~isfolder(ppath))
     mkdir(ppath)
@@ -25,7 +25,7 @@ load([fpath 'Annual_Means_FOSI_' mod '_' cfile '.mat'],'mz_mtf');
 % load([fpath 'Annual_Means_FOSI_' cfile '.mat'],'mz_mtf');
 
 % Map data
-cpath = '/Volumes/MIP/GCM_DATA/CESM/FOSI/';
+cpath = '/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 

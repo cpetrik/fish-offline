@@ -1,9 +1,9 @@
 %%%%!! RUN HISTORIC FOR ALL LOCATIONS
-function FOSI_cesm_rec()
+function FOSI_cesm_rec_gamIn()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Make core parameters/constants 
-param = make_parameters_1meso(); 
+param = make_parameters_1meso_test(); 
 
 %! Grid
 load('/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
@@ -31,9 +31,6 @@ S_Med_d = zeros(NX,DAYS);
 S_Lrg_p = zeros(NX,DAYS);
 S_Lrg_d = zeros(NX,DAYS);
 
-G_Sml_f = zeros(NX,DAYS);
-G_Sml_p = zeros(NX,DAYS);
-G_Sml_d = zeros(NX,DAYS);
 G_Med_f = zeros(NX,DAYS);
 G_Med_p = zeros(NX,DAYS);
 G_Med_d = zeros(NX,DAYS);
@@ -75,19 +72,16 @@ netcdf.setDefaultFormat('NC_FORMAT_64BIT');
 xy_dim      = netcdf.defDim(ncidSF,'nid',NX);
 time_dim    = netcdf.defDim(ncidSF,'ntime',nt);
 vidrecSF    = netcdf.defVar(ncidSF,'rec','double',[xy_dim,time_dim]);
-vidgamSF    = netcdf.defVar(ncidSF,'gamma','double',[xy_dim,time_dim]);
 netcdf.endDef(ncidSF);
 
 xy_dim      = netcdf.defDim(ncidSP,'nid',NX);
 time_dim    = netcdf.defDim(ncidSP,'ntime',nt);
 vidrecSP    = netcdf.defVar(ncidSP,'rec','double',[xy_dim,time_dim]);
-vidgamSP    = netcdf.defVar(ncidSP,'gamma','double',[xy_dim,time_dim]);
 netcdf.endDef(ncidSP);
 
 xy_dim      = netcdf.defDim(ncidSD,'nid',NX);
 time_dim    = netcdf.defDim(ncidSD,'ntime',nt);
 vidrecSD    = netcdf.defVar(ncidSD,'rec','double',[xy_dim,time_dim]);
-vidgamSD    = netcdf.defVar(ncidSD,'gamma','double',[xy_dim,time_dim]);
 netcdf.endDef(ncidSD);
 
 xy_dim      = netcdf.defDim(ncidMP,'nid',NX);
@@ -163,10 +157,18 @@ for YR = 1:YEARS % years
         MNT = MNT+1;     % Update monthly ticker
         
         %! Put vars of netcdf file
+        netcdf.putVar(ncidSF,vidrecSF,[0 MNT-1],[NX 1],mean(S_Sml_f(:,a(i):b(i)),2));
+        netcdf.putVar(ncidSP,vidrecSP,[0 MNT-1],[NX 1],mean(S_Sml_p(:,a(i):b(i)),2));
+        netcdf.putVar(ncidSD,vidrecSD,[0 MNT-1],[NX 1],mean(S_Sml_d(:,a(i):b(i)),2));
         netcdf.putVar(ncidMF,vidrecMF,[0 MNT-1],[NX 1],mean(S_Med_f(:,a(i):b(i)),2));
+        netcdf.putVar(ncidMP,vidrecMP,[0 MNT-1],[NX 1],mean(S_Med_p(:,a(i):b(i)),2));
+        netcdf.putVar(ncidMD,vidrecMD,[0 MNT-1],[NX 1],mean(S_Med_d(:,a(i):b(i)),2));
         netcdf.putVar(ncidLP,vidrecLP,[0 MNT-1],[NX 1],mean(S_Lrg_p(:,a(i):b(i)),2));
         netcdf.putVar(ncidLD,vidrecLD,[0 MNT-1],[NX 1],mean(S_Lrg_d(:,a(i):b(i)),2));
+
         netcdf.putVar(ncidMF,vidgamMF,[0 MNT-1],[NX 1],mean(G_Med_f(:,a(i):b(i)),2));
+        netcdf.putVar(ncidMP,vidgamMF,[0 MNT-1],[NX 1],mean(G_Med_p(:,a(i):b(i)),2));
+        netcdf.putVar(ncidMD,vidgamMF,[0 MNT-1],[NX 1],mean(G_Med_d(:,a(i):b(i)),2));
         netcdf.putVar(ncidLP,vidgamLP,[0 MNT-1],[NX 1],mean(G_Lrg_p(:,a(i):b(i)),2));
         netcdf.putVar(ncidLD,vidgamLD,[0 MNT-1],[NX 1],mean(G_Lrg_d(:,a(i):b(i)),2));
        
@@ -176,7 +178,12 @@ end %Years
 
 %%
 %! Close save
+netcdf.close(ncidSF);
+netcdf.close(ncidSP);
+netcdf.close(ncidSD);
 netcdf.close(ncidMF);
+netcdf.close(ncidMP);
+netcdf.close(ncidMD);
 netcdf.close(ncidLP);
 netcdf.close(ncidLD);
 

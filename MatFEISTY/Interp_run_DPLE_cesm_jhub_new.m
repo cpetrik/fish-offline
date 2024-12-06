@@ -1,34 +1,93 @@
-%%%%!! RUN DPLE
-function DPLE_cesm()
+% Code for running DPLE simulations
+% Order of operations:
+% 1. Calc FOSI climatology
+% 2. GET DPLE time info
+% Year, Lead year, and Member loop starts here
+% 3. Convert DPLE from anom to raw
+% 4. Interpolate from monthly to daily
+% 5. Run FEISTY DPLE
+% Stop loop
 
-%%%%%%%%%%%%%%% Initialize Model Variables
+clear 
+close all
+
+%%
+Cdir = '/glade/u/home/cpetrik/fish-offline/MatFEISTY/input_files/';
+%fpath='/glade/scratch/kristenk/fish-offline/';
+fpath = '/glade/campaign/cesm/development/bgcwg/projects/DPLE-FEISTY/';
+%spath = '/glade/scratch/cpetrik/fish-offline/dailies/';
+
+% LOAD GRIDDATA
+load([Cdir 'gridspec_POP_gx1v6_noSeas.mat'],'mask');
+load([Cdir 'Data_grid_POP_gx1v6_noSeas.mat'],'GRD');
+
+%% 1. Calc FOSI climatology ----------------------------
+[clim_Tp,clim_Tb,clim_POC,clim_zooC,clim_loss] = fosi_clim_for_dple(Cdir);
+
+%% 2. GET DPLE time info ----------------------------
+ncdisp([fpath 'DPLE-FIESTY-forcing_zooC_150m.nc'])
+
+% Pelagic temperature
+ncid = netcdf.open([fpath 'DPLE-FIESTY-forcing_TEMP_150m.nc'],'NC_NOWRITE');
+[ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
+for i = 1:(nvars-1)
+    varname = netcdf.inqVar(ncid, i-1);
+    eval([ varname ' = netcdf.getVar(ncid,i-1);']);
+    eval([ varname '(' varname ' == 9.969209968386869e+36) = NaN;']);
+end
+[ni,nj] = size(TLONG);
+whos M L Y
+
+%% Times
+% FOSI is 1948-2015
+% DPLE is 1954-2017
+% leadtimes = 1:24;
+firstyear = 1954; %of DPLE initializations
+lastyear  = 2015; %of DPLE initializations
+startmonth = 11;  %of DPLE initializations
+
+% TIME PERIOD FOR INTERPOLATION
+mos = length(L);
+mstart = 3:12:mos; %starts at Nov
+mend = 14:12:mos;  %ends at Dec
+mstart = [1 mstart];
+mend = [2 mend];
+nyrs = ceil(mos/12);
+simy = 1:nyrs;
+
+Tdays=1:365;
+
+%% Set up FEISTY  --------------------------------------------
+% Initialize Model Variables
 %! Make core parameters/constants
 param = make_parameters_1meso();
 
 %! Grid
-spath = '/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
-Cdir = '/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/';
-load([Cdir 'Data_grid_POP_gx1v6_noSeas.mat'],'GRD');
-%load('/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
 param.NX = GRD.N;
 param.ID = 1:param.NX;
 NX = param.NX;
 ID = 1:param.NX;
 
 %! How long to run the model
-YEARS = 10;
+StartYr = 1954:2017;
 DAYS = 365;
 MNTH = [31,28,31,30,31,30,31,31,30,31,30,31];
-StartYr = 1954:2017; %will loop over
-submem = 1:40;
+YEARS = 10;
 
-for sim = 1:length(StartYr)
-    for mem = 1:length(submem) %will loop over
-        Member = submem(mem);
+%% START LOOP ===============================================================
+% Loop over initialization year
+for yr=3%1:length(Y) %Y(62)
 
+    % Loop over member
+    for mem=1:length(M)
+
+        im = M(mem);
+        iy = yr;
+
+        %% More FEISTY set up
         %! Create a directory for output
-        exper = ['v14_Y' num2str(StartYr) '_M' num2str(Member) '_' ];
-        [fname,simname] = sub_fname_dple_exper(param,exper);
+        exper = ['v15_Y' num2str(StartYr(yr)) '_M' num2str(im) '_' ];
+        [fname,simname] = sub_fname_dple_exper_jhub(param,exper);
 
         %! Storage variables
         S_Bent_bio = zeros(NX,DAYS);
@@ -58,14 +117,6 @@ for sim = 1:length(StartYr)
         C_Lrg_p = zeros(NX,DAYS);
         C_Lrg_d = zeros(NX,DAYS);
 
-        %! Initialize
-        % this will have to be the biomass from the last mo before the start year
-        % from the FOSI
-        init_sim = ['v14_All_fish03_' simname];
-        load([Cdir,simname,'/Last_mo_FOSI_' num2str(StartYr) '_' init_sim '.mat']);
-        BENT.mass = BENT.bio;
-        [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish(ID,Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT);
-
         %%%%%%%%%%%%%%% Setup NetCDF save
         %! Setup netcdf path to store to
         file_sml_f = [fname,'_sml_f.nc'];
@@ -91,7 +142,7 @@ for sim = 1:length(StartYr)
         ncidMZ = netcdf.create(file_mzoo,'NC_WRITE');
 
         %! Dims of netcdf file
-        nt = 12*YEARS;
+        nt = 2+(12*YEARS); %Nov, Dec, plus full 12-mo years
         netcdf.setDefaultFormat('NC_FORMAT_64BIT');
 
         %% ! Def vars of netcdf file
@@ -161,21 +212,59 @@ for sim = 1:length(StartYr)
         vidTMZ      = netcdf.defVar(ncidMZ,'time','double',time_dim);
         netcdf.endDef(ncidMZ);
 
-        %% %%%%%%%%%%%%%%%%%%%% Run the Model
-        MNT = 0;
-        %! Run model with no fishing
-        for YR = 1:YEARS % years
-            %! Load a year's ESM data
-            ti = num2str(YR);
-            ['Y',num2str(YR),' M',num2str(Member)]
-            load([spath 'Data_cesm_dple_daily_Y',num2str(StartYr(sim)),'_M',...
-                num2str(Member),'_LY',ti,'.mat'],'ESM')
 
-            for DAY = 1:param.DT:DAYS % days
+        %% 3. Convert DPLE from anom to raw ----------------------------
+        [TEMP_150m,TEMP_bottom,POC_FLUX_IN_bottom,LzooC_150m,Lzoo_loss_150m] = dple_anom_to_raw(fpath,im,yr,ni,nj,L,...
+                                                                                clim_Tp,clim_Tb,clim_POC,clim_zooC,clim_loss);
+
+
+        %% Loop over 10 yrs + 2 months (run each year individually)
+        MNT = 0;
+        for y = 1:nyrs
+            lyr = simy(y);
+            ['Y',num2str(Y(iy)),'_M',num2str(im),'_LY',num2str(lyr)]
+
+
+            %% 4. Interpolate from monthly to daily ----------------------------
+            % 1ST MONTH IS NOV, ADJUSTED
+
+            if y==1
+                range = mstart(y):(mend(y)+1);
+                Time=315:30:395;
+            elseif y==nyrs
+                range = (mstart(y)-1):mend(y);
+                Time=-15:30:365;
+            else
+                range = (mstart(y)-1):(mend(y)+1);
+                Time=-15:30:395;
+            end
+
+            ESM = daily_interp_dple_member(range,Time,Tdays,...
+                TEMP_150m,TEMP_bottom,POC_FLUX_IN_bottom,LzooC_150m,Lzoo_loss_150m);
+
+
+            %% 5. Run FEISTY DPLE -----------------------------------
+            if y==1
+                %! Initialize FEISTY
+                % FEISTY INIT IS now OCT
+                % this will have to be the biomass from the last mo before the start year
+                % from the FOSI
+                init_sim = ['v15_All_fish03_' simname];
+                load([Cdir,simname,'/Last_mo_FOSI_' num2str(StartYr(yr)) '_' init_sim '.mat']);
+                BENT.mass = BENT.bio;
+                [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT] = sub_init_fish(ID,Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT);
+
+                frange = 305:param.DT:DAYS;
+                mrange = 11:12;
+            else
+                frange = 1:param.DT:DAYS;
+                mrange = 1:12;
+            end
+
+            for DAY = frange % days
 
                 %%%! Future time step
                 DY = int64(ceil(DAY));
-                %         [num2str(YR),' , ', num2str(mod(DY,365))]
                 [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
                     sub_futbio_1meso(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
                     Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);
@@ -214,7 +303,7 @@ for sim = 1:length(StartYr)
             aa = (cumsum(MNTH)+1);
             a = [1,aa(1:end-1)]; % start of the month
             b = cumsum(MNTH);    % end of the month
-            for i = 1:12
+            for i = mrange
                 MNT = MNT+1;     % Update monthly ticker
 
                 %! Put vars of netcdf file
@@ -250,7 +339,7 @@ for sim = 1:length(StartYr)
 
             end %Monthly mean
 
-        end %Years
+        end %Lead year loop
 
         %%
         %! Close save
@@ -265,6 +354,6 @@ for sim = 1:length(StartYr)
         netcdf.close(ncidB);
         netcdf.close(ncidMZ);
 
-    end %member loop
-end %calendar year
-end
+    end %loop over M members
+
+end %loop over Y years

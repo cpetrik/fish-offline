@@ -1,5 +1,5 @@
 %%%%!! RUN DPLE with observed fishing effort
-function DPLE_cesm_catch()
+function DPLE_cesm_obsfish_catch()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Make core parameters/constants 

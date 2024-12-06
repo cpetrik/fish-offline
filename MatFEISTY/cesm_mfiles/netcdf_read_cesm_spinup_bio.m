@@ -1,14 +1,14 @@
 % FEISTY output at all locations
 
-clear all
+clear 
 close all
 
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A075_nmort1_BE08_noCC_RE00100';
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-harv = 'v15_obsfish';
-mod  = 'v15_obsfish';
+harv = 'v15_All_fish02';
+%mod  = 'v15_obsfish';
 
 %% SP
 ncid = netcdf.open([fpath 'Spinup_' harv '_sml_p.nc'],'NC_NOWRITE');

@@ -9,7 +9,7 @@ function param = make_parameters_1meso()
     param.K = 600.0;
     
     %! Set fishing rate
-    param.frate = 0.3;
+    param.frate = 0.3; %0.3
     param.dfrate = param.frate/365.0;
 
     %! Which fishes harvested

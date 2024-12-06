@@ -6,7 +6,7 @@ function Spinup_cesm()
 param = make_parameters_1meso();
 
 %! Grid
-load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
+load('/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/Data_grid_POP_gx1v6_noSeas.mat','GRD');
 param.NX = GRD.N;
 param.ID = 1:param.NX;
 NX = param.NX;
@@ -138,7 +138,7 @@ netcdf.endDef(ncidMZ);
 
 %% %%%%%%%%%%%%%%%%%%%% Run the Model
 %! Loop over first year of FOSI
-load('/Volumes/MIP/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_1.mat','ESM');
+load('/Volumes/petrik-lab/Feisty/GCM_DATA/CESM/FOSI/Data_cesm_fosi_v7_daily_1.mat','ESM');
 MNT = 0;
 %! Run model 
 for YR = 1:YEARS % years

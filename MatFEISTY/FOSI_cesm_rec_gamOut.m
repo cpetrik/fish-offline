@@ -1,5 +1,5 @@
 %%%%!! RUN HISTORIC FOR ALL LOCATIONS
-function FOSI_cesm_rec()
+function FOSI_cesm_rec_gamOut()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Make core parameters/constants 
@@ -147,11 +147,14 @@ for YR = 1:YEARS % years
         S_Lrg_p(:,DY) = Lrg_p.rec;
         S_Lrg_d(:,DY) = Lrg_d.rec;
         
-        G_Med_f(:,DY) = Sml_f.gamma;
-        G_Med_p(:,DY) = Sml_p.gamma;
-        G_Med_d(:,DY) = Sml_d.gamma;
-        G_Lrg_p(:,DY) = Med_p.gamma;
-        G_Lrg_d(:,DY) = Med_d.gamma;
+        G_Sml_f(:,DY) = Sml_f.gamma;
+        G_Sml_p(:,DY) = Sml_p.gamma;
+        G_Sml_d(:,DY) = Sml_d.gamma;
+        G_Med_f(:,DY) = Med_f.gamma;
+        G_Med_p(:,DY) = Med_p.gamma;
+        G_Med_d(:,DY) = Med_d.gamma;
+        G_Lrg_p(:,DY) = Lrg_p.gamma;
+        G_Lrg_d(:,DY) = Lrg_d.gamma;
         
     end %Days
     

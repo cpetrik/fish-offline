@@ -1,4 +1,4 @@
-%%%%!! RUN HISTORIC FOR ALL LOCATIONS
+%%%%!! RUN FOSI FOR ALL LOCATIONS
 function FOSI_cesm_obsfish()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
@@ -171,7 +171,6 @@ for YR = 1:YEARS % years
         
         %%%! Future time step
         DY = int64(ceil(DAY));
-%         [num2str(YR),' , ', num2str(mod(DY,365))]
         [Sml_f,Sml_p,Sml_d,Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,ENVR] = ...
             sub_futbio_1meso_obsfish(DY,ESM,GRD,Sml_f,Sml_p,Sml_d,...
             Med_f,Med_p,Med_d,Lrg_p,Lrg_d,BENT,param);

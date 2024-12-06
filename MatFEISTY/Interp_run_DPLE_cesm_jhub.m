@@ -13,8 +13,8 @@ close all
 
 %%
 Cdir = '/glade/u/home/cpetrik/fish-offline/MatFEISTY/input_files/';
-fpath='/glade/scratch/kristenk/fish-offline/';
-%fpath = '/glade/campaign/cesm/development/bgcwg/projects/DPLE-FEISTY/';
+%fpath='/glade/scratch/kristenk/fish-offline/';
+fpath = '/glade/campaign/cesm/development/bgcwg/projects/DPLE-FEISTY/';
 %spath = '/glade/scratch/cpetrik/fish-offline/dailies/';
 
 % LOAD GRIDDATA

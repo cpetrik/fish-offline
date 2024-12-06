@@ -1,5 +1,5 @@
 %%%%!! RUN DPLE
-function DPLE_cesm()
+function DPLE_cesm_obsfish()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
 %! Make core parameters/constants

@@ -1,4 +1,4 @@
-%%%%!! RUN HISTORIC FOR ALL LOCATIONS
+%%%%!! RUN FOSI FOR ALL LOCATIONS
 function FOSI_cesm_obsfish_catch()
 
 %%%%%%%%%%%%%%% Initialize Model Variables
