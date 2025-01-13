@@ -131,3 +131,7 @@ dmypy.json
 # R data
 .RData
 .Rhistory
+MatFEISTY/cesm_mfiles/.Rhistory
+MatFEISTY/cesm_mfiles/.RData
+MatFEISTY/cesm_mfiles/.DS_Store
+MatFEISTY/.DS_Store
