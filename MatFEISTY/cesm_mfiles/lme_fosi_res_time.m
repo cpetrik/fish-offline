@@ -73,7 +73,7 @@ Ald_mean = Cld .* AREA_OCN;
 tlme = double(lme_mask);
 tlme(tlme<0) = nan;
 
-lme_ares = NaN*ones(66,8);
+lme_medres = NaN*ones(66,8);
 lme_sres = NaN*ones(66,8);
 lme_area = NaN*ones(66,1);
 
@@ -82,14 +82,14 @@ lme_type = NaN*ones(66,4);
 for L=1:66
     lid = find(tlme==L);
     %plain means
-    lme_ares(L,1) = mean(Csf(lid),'omitnan');
-    lme_ares(L,2) = mean(Csp(lid),'omitnan');
-    lme_ares(L,3) = mean(Csd(lid),'omitnan');
-    lme_ares(L,4) = mean(Cmf(lid),'omitnan');
-    lme_ares(L,5) = mean(Cmp(lid),'omitnan');
-    lme_ares(L,6) = mean(Cmd(lid),'omitnan');
-    lme_ares(L,7) = mean(Clp(lid),'omitnan');
-    lme_ares(L,8) = mean(Cld(lid),'omitnan');
+    lme_medres(L,1) = median(Csf(lid),'omitnan');
+    lme_medres(L,2) = median(Csp(lid),'omitnan');
+    lme_medres(L,3) = median(Csd(lid),'omitnan');
+    lme_medres(L,4) = median(Cmf(lid),'omitnan');
+    lme_medres(L,5) = median(Cmp(lid),'omitnan');
+    lme_medres(L,6) = median(Cmd(lid),'omitnan');
+    lme_medres(L,7) = median(Clp(lid),'omitnan');
+    lme_medres(L,8) = median(Cld(lid),'omitnan');
 
     %area-weighted means
     lme_sres(L,1) = sum(Asf_mean(lid),'omitnan');
@@ -109,12 +109,9 @@ end
 lme_area_mat = repmat(lme_area,1,8);
 lme_awmres = lme_sres ./ lme_area_mat;
 
-%% Change anything over 50 years to 50
-%lme_awmres(lme_awmres(:) > (50*365)) = (50*365);
-
 %%
 save([fpath 'LME_fosi_fished_',harv,cfile '.mat'],...
-    'lme_ares','lme_awmres','-append');
+    'lme_medres','lme_awmres','-append');
 
 %% Put LME means on grid
 
@@ -139,14 +136,14 @@ Rld=NaN*ones(ni,nj);
 for i=1:66
     id = find(tlme==i);
 
-    Msf(id) = lme_ares(i,1);
-    Msp(id) = lme_ares(i,2);
-    Msd(id) = lme_ares(i,3);
-    Mmf(id) = lme_ares(i,4);
-    Mmp(id) = lme_ares(i,5);
-    Mmd(id) = lme_ares(i,6);
-    Mlp(id) = lme_ares(i,7);
-    Mld(id) = lme_ares(i,8);
+    Msf(id) = lme_medres(i,1);
+    Msp(id) = lme_medres(i,2);
+    Msd(id) = lme_medres(i,3);
+    Mmf(id) = lme_medres(i,4);
+    Mmp(id) = lme_medres(i,5);
+    Mmd(id) = lme_medres(i,6);
+    Mlp(id) = lme_medres(i,7);
+    Mld(id) = lme_medres(i,8);
    
     Rsf(id) = lme_awmres(i,1);
     Rsp(id) = lme_awmres(i,2);
@@ -169,7 +166,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Msf))
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 45])
 set(gcf,'renderer','painters')
 text(0,1.75,'SF res','HorizontalAlignment','center')
 c1=colorbar('orientation','vertical','AxisLocation','out');
@@ -182,7 +179,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Msp))
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 45])
 set(gcf,'renderer','painters')
 text(0,1.75,'SP res','HorizontalAlignment','center')
 c2=colorbar('orientation','vertical','AxisLocation','out');
@@ -195,7 +192,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Msd))
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 45])
 set(gcf,'renderer','painters')
 text(0,1.75,'SD res','HorizontalAlignment','center')
 c3=colorbar('orientation','vertical','AxisLocation','out');
@@ -208,7 +205,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Mmf)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 2])
+clim([0 1])
 set(gcf,'renderer','painters')
 text(0,1.75,'MF res','HorizontalAlignment','center')
 c4=colorbar('orientation','vertical','AxisLocation','out');
@@ -234,7 +231,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Mmd)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 1])
+clim([0 2])
 %cb = colorbar('Position',[0.9 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out');
 %xlabel(cb,'y')
 set(gcf,'renderer','painters')
@@ -249,7 +246,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Mlp)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 4])
 set(gcf,'renderer','painters')
 text(0,1.75,'LP res','HorizontalAlignment','center')
 c7=colorbar('orientation','vertical','AxisLocation','out');
@@ -262,12 +259,12 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Mld)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 4])
 c8=colorbar('orientation','vertical','AxisLocation','out');
 xlabel(c8,'y')
 set(gcf,'renderer','painters')
 text(0,1.75,'LD res','HorizontalAlignment','center')
-print('-dpng',[ppath 'FOSI_map_LMEmean_resMean_stages.png'])
+print('-dpng',[ppath 'FOSI_map_LMEmedian_resMean_stages.png'])
 
 
 %% map - 8 plot of area-weighted mean res
@@ -280,7 +277,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rsf))
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 45])
 set(gcf,'renderer','painters')
 text(0,1.75,'SF res','HorizontalAlignment','center')
 c1=colorbar('orientation','vertical','AxisLocation','out');
@@ -293,7 +290,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rsp))
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 45])
 set(gcf,'renderer','painters')
 text(0,1.75,'SP res','HorizontalAlignment','center')
 c2=colorbar('orientation','vertical','AxisLocation','out');
@@ -306,7 +303,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rsd))
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 45])
 set(gcf,'renderer','painters')
 text(0,1.75,'SD res','HorizontalAlignment','center')
 c3=colorbar('orientation','vertical','AxisLocation','out');
@@ -319,7 +316,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rmf)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 2])
+clim([0 1])
 set(gcf,'renderer','painters')
 text(0,1.75,'MF res','HorizontalAlignment','center')
 c4=colorbar('orientation','vertical','AxisLocation','out');
@@ -345,7 +342,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rmd)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 1])
+clim([0 2])
 %cb = colorbar('Position',[0.9 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out');
 %xlabel(cb,'y')
 set(gcf,'renderer','painters')
@@ -360,7 +357,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rlp)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 4])
 set(gcf,'renderer','painters')
 text(0,1.75,'LP res','HorizontalAlignment','center')
 c7=colorbar('orientation','vertical','AxisLocation','out');
@@ -373,7 +370,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rld)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 4])
 c8=colorbar('orientation','vertical','AxisLocation','out');
 xlabel(c8,'y')
 set(gcf,'renderer','painters')
@@ -381,4 +378,24 @@ text(0,1.75,'LD res','HorizontalAlignment','center')
 print('-dpng',[ppath 'FOSI_map_LMEmean_areaweighted_resMean_stages.png'])
 
 
+%% means of each type
+lme_type(:,1) = mean(lme_medres(:,1:3),2,'omitnan');
+lme_type(:,2) = mean(lme_medres(:,4:6),2,'omitnan');
+lme_type(:,3) = mean(lme_medres(:,7:8),2,'omitnan');
+lme_type(:,4) = mean(lme_medres(:,[1,4]),2,'omitnan');
+lme_type(:,5) = mean(lme_medres(:,[2,5,7]),2,'omitnan');
+lme_type(:,6) = mean(lme_medres(:,[3,6,8]),2,'omitnan');
+
+%% Save as table for HGL
+lnum = 1:66;
+ltex = char(lnum);
+
+Ltab = array2table(lme_medres,'VariableNames',...
+    {'SF','SP','SD','MF','MP','MD','LP','LD'});
+
+Ttab = array2table(lme_type,'VariableNames',...
+    {'S','M','L','F','P','D'});
+
+writetable(Ltab,[fpath 'Residence_time_smeans_FOSI_' harv 'stages.csv'],'WriteRowNames',true);
+writetable(Ttab,[fpath 'Residence_time_smeans_FOSI_' harv 'types.csv'],'WriteRowNames',true);
 

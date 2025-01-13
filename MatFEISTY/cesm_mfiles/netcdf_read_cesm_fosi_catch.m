@@ -7,10 +7,10 @@ close all
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-harv = 'v15_obsfish';
+harv = 'v15_All_fish03';
 
 %% MP
-ncid = netcdf.open([spath 'FOSI_' harv '_catch_nu_med_p.nc'],'NC_NOWRITE');
+ncid = netcdf.open([spath 'FOSI_' harv '_catch_med_p.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -26,7 +26,7 @@ MP.yield = yield;
 clear yield
 
 % MF
-ncid = netcdf.open([spath 'FOSI_' harv '_catch_nu_med_f.nc'],'NC_NOWRITE');
+ncid = netcdf.open([spath 'FOSI_' harv '_catch_med_f.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -37,11 +37,9 @@ netcdf.close(ncid);
 
 MF.yield = yield;
 clear yield
-MF.nu = nu;
-clear nu
 
 % MD
-ncid = netcdf.open([spath 'FOSI_' harv '_catch_nu_med_d.nc'],'NC_NOWRITE');
+ncid = netcdf.open([spath 'FOSI_' harv '_catch_med_d.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -54,7 +52,7 @@ MD.yield = yield;
 clear yield
 
 % LP
-ncid = netcdf.open([spath 'FOSI_' harv '_catch_nu_lrg_p.nc'],'NC_NOWRITE');
+ncid = netcdf.open([spath 'FOSI_' harv '_catch_lrg_p.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -65,11 +63,10 @@ netcdf.close(ncid);
 
 LP.yield = yield;
 clear yield
-LP.nu = nu;
-clear nu
+
 
 % LD
-ncid = netcdf.open([spath 'FOSI_' harv '_catch_nu_lrg_d.nc'],'NC_NOWRITE');
+ncid = netcdf.open([spath 'FOSI_' harv '_catch_lrg_d.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for i = 1:nvars
     varname = netcdf.inqVar(ncid, i-1);
@@ -80,8 +77,7 @@ netcdf.close(ncid);
 
 LD.yield = yield;
 clear yield
-LD.nu = nu;
-clear nu
+
 
 %% Take means and totals
 % Catch totals only in lmes
@@ -145,9 +141,6 @@ md_ttc=sum(MD.catch,1,'omitnan');
 lp_ttc=sum(LP.catch,1,'omitnan');
 ld_ttc=sum(LD.catch,1,'omitnan');
 
-% mf_tnu = mean(MF.nu,1,'omitnan');
-% lp_tnu = mean(LP.nu,1,'omitnan');
-% ld_tnu = mean(LD.nu,1,'omitnan');
 
 %% Spatially
 %mean yield per mo
@@ -176,9 +169,6 @@ md_stc=sum(MD.catch,2,'omitnan');
 lp_stc=sum(LP.catch,2,'omitnan');
 ld_stc=sum(LD.catch,2,'omitnan');
 
-% mf_snu = mean(MF.nu,2,'omitnan');
-% lp_snu = mean(LP.nu,2,'omitnan');
-% ld_snu = mean(LD.nu,2,'omitnan');
 
 %% Every year
 st=1:12:nt;
@@ -189,6 +179,12 @@ mp_tac = nan*ones(ni,nyr);
 md_tac = nan*ones(ni,nyr);
 lp_tac = nan*ones(ni,nyr);
 ld_tac = nan*ones(ni,nyr);
+mf_may = nan*ones(ni,nyr);
+mp_may = nan*ones(ni,nyr);
+md_may = nan*ones(ni,nyr);
+lp_may = nan*ones(ni,nyr);
+ld_may = nan*ones(ni,nyr);
+
 for n=1:length(st)
 
     mp_tac(:,n)=sum(MP.catch(:,st(n):en(n)),2,'omitnan');
@@ -202,10 +198,6 @@ for n=1:length(st)
     md_may(:,n)=mean(MD.yield(:,st(n):en(n)),2,'omitnan');
     lp_may(:,n)=mean(LP.yield(:,st(n):en(n)),2,'omitnan');
     ld_may(:,n)=mean(LD.yield(:,st(n):en(n)),2,'omitnan');
-
-    % mf_anu(:,n)=mean(MF.nu(:,st(n):en(n)),2,'omitnan');
-    % lp_anu(:,n)=mean(LP.nu(:,st(n):en(n)),2,'omitnan');
-    % ld_anu(:,n)=mean(LD.nu(:,st(n):en(n)),2,'omitnan');
 end
 
 tmn = mf_tac + mp_tac + md_tac + lp_tac + ld_tac;
@@ -242,15 +234,15 @@ save([spath 'Annual_Means_FOSI_' harv '_' cfile '.mat'],...
     %'mf_anu','lp_anu','ld_anu','-append');
 
 %%
-mo = (1:nt)/12;
-figure
-plot(mo,(lp_tnu),'b'); hold on;
-plot(mo,(mf_tnu),'r'); hold on;
-plot(mo,(ld_tnu),'k'); hold on;
-
-figure
-plot(mo,5.5902e3*(lp_tnu),'b'); hold on;
-plot(mo,11.1803*(mf_tnu),'r'); hold on;
-plot(mo,5.5902e3*(ld_tnu),'k'); hold on;
-
+% mo = (1:nt)/12;
+% figure
+% plot(mo,(lp_tnu),'b'); hold on;
+% plot(mo,(mf_tnu),'r'); hold on;
+% plot(mo,(ld_tnu),'k'); hold on;
+% 
+% figure
+% plot(mo,5.5902e3*(lp_tnu),'b'); hold on;
+% plot(mo,11.1803*(mf_tnu),'r'); hold on;
+% plot(mo,5.5902e3*(ld_tnu),'k'); hold on;
+% 
 

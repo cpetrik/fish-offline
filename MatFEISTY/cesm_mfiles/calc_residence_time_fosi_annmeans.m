@@ -67,14 +67,14 @@ ld_in = max(0,ld_aprod) + ld_arec;
 % ld_out = ld_arep + ld_amort + ld_adie + ld_amy;
 
 %All g/m2/d
-sf_out = (mf_agam.*sf_abio) + (sf_amort.*sf_abio) + sf_adie;
-sp_out = mp_agam + sp_amort + sp_adie;
-sd_out = md_agam + sd_amort + sd_adie;
-mp_out = lp_agam + mp_amort + mp_adie + mp_may;
-md_out = ld_agam + md_amort + md_adie + md_may;
-mf_out = mf_arep + mf_amort + mf_adie + mf_may;
-lp_out = lp_arep + lp_amort + lp_adie + lp_may;
-ld_out = ld_arep + ld_amort + ld_adie + ld_may;
+sf_out = ((mf_agam + sf_amort) .* sf_abio) + sf_adie;
+sp_out = ((mp_agam + sp_amort) .* sp_abio) + sp_adie;
+sd_out = ((md_agam + sd_amort) .* sd_abio) + sd_adie;
+mp_out = ((lp_agam + mp_amort) .* mp_abio) + mp_adie + mp_may;
+md_out = ((ld_agam + md_amort) .* md_abio) + md_adie + md_may;
+mf_out = ((mf_arep + mf_amort) .* mf_abio) + mf_adie + mf_may;
+lp_out = ((lp_arep + lp_amort) .* lp_abio) + lp_adie + lp_may;
+ld_out = ((ld_arep + ld_amort) .* ld_abio) + ld_adie + ld_may;
 
 %% I THINK I NEED TO REMOVE LOW BIOMASS AREAS
 
@@ -90,40 +90,40 @@ gr_bio_m = repmat(0.5,nid,68) ./ repmat(varea,1,68);
 gr_bio_l = repmat(250,nid,68) ./ repmat(varea,1,68);
 
 %% test lowest first
-sid = (sf_sbio(:)<gr_bio_s(:));
-sf_sbio(sid) = nan;
+sid = (sf_abio(:)<gr_bio_s(:));
+sf_abio(sid) = nan;
 
-sid = (sp_sbio(:)<gr_bio_s(:));
-sp_sbio(sid) = nan;
+sid = (sp_abio(:)<gr_bio_s(:));
+sp_abio(sid) = nan;
 
-sid = (sd_sbio(:)<gr_bio_s(:));
-sd_sbio(sid) = nan;
+sid = (sd_abio(:)<gr_bio_s(:));
+sd_abio(sid) = nan;
 
-sid = (mf_sbio(:)<gr_bio_m(:));
-mf_sbio(sid) = nan;
+sid = (mf_abio(:)<gr_bio_m(:));
+mf_abio(sid) = nan;
 
-sid = (mp_sbio(:)<gr_bio_m(:));
-mp_sbio(sid) = nan;
+sid = (mp_abio(:)<gr_bio_m(:));
+mp_abio(sid) = nan;
 
-sid = (md_sbio(:)<gr_bio_m(:));
-md_sbio(sid) = nan;
+sid = (md_abio(:)<gr_bio_m(:));
+md_abio(sid) = nan;
 
-sid = (lp_sbio(:)<gr_bio_l(:));
-lp_sbio(sid) = nan;
+sid = (lp_abio(:)<gr_bio_l(:));
+lp_abio(sid) = nan;
 
-sid = (ld_sbio(:)<gr_bio_l(:));
-ld_sbio(sid) = nan;
+sid = (ld_abio(:)<gr_bio_l(:));
+ld_abio(sid) = nan;
 
 
 %% v1: d =  g/m2   /  g/m2/d
-sf_res1 = sf_sbio ./ sf_in;
-sp_res1 = sp_sbio ./ sp_in;
-sd_res1 = sd_sbio ./ sd_in;
-mf_res1 = mf_sbio ./ mf_in;
-mp_res1 = mp_sbio ./ mp_in;
-md_res1 = md_sbio ./ md_in;
-lp_res1 = lp_sbio ./ lp_in;
-ld_res1 = ld_sbio ./ ld_in;
+sf_res1 = sf_abio ./ sf_in;
+sp_res1 = sp_abio ./ sp_in;
+sd_res1 = sd_abio ./ sd_in;
+mf_res1 = mf_abio ./ mf_in;
+mp_res1 = mp_abio ./ mp_in;
+md_res1 = md_abio ./ md_in;
+lp_res1 = lp_abio ./ lp_in;
+ld_res1 = ld_abio ./ ld_in;
 
 sf_res1(isinf(sf_res1(:))) = NaN;
 sp_res1(isinf(sp_res1(:))) = NaN;
@@ -135,14 +135,14 @@ lp_res1(isinf(lp_res1(:))) = NaN;
 ld_res1(isinf(ld_res1(:))) = NaN;
 
 %% v2
-sf_res2 = sf_sbio ./ sf_out;
-sp_res2 = sp_sbio ./ sp_out;
-sd_res2 = sd_sbio ./ sd_out;
-mf_res2 = mf_sbio ./ mf_out;
-mp_res2 = mp_sbio ./ mp_out;
-md_res2 = md_sbio ./ md_out;
-lp_res2 = lp_sbio ./ lp_out;
-ld_res2 = ld_sbio ./ ld_out;
+sf_res2 = sf_abio ./ sf_out;
+sp_res2 = sp_abio ./ sp_out;
+sd_res2 = sd_abio ./ sd_out;
+mf_res2 = mf_abio ./ mf_out;
+mp_res2 = mp_abio ./ mp_out;
+md_res2 = md_abio ./ md_out;
+lp_res2 = lp_abio ./ lp_out;
+ld_res2 = ld_abio ./ ld_out;
 
 sf_res2(isinf(sf_res2(:))) = NaN;
 sp_res2(isinf(sp_res2(:))) = NaN;
@@ -154,14 +154,14 @@ lp_res2(isinf(lp_res2(:))) = NaN;
 ld_res2(isinf(ld_res2(:))) = NaN;
 
 %% means (if using annual values)
-sf_mbio = mean(sf_bio,2,'omitnan');
-sp_mbio = mean(sp_bio,2,'omitnan');
-sd_mbio = mean(sd_bio,2,'omitnan');
-mf_mbio = mean(mf_bio,2,'omitnan');
-mp_mbio = mean(mp_bio,2,'omitnan');
-md_mbio = mean(md_bio,2,'omitnan');
-lp_mbio = mean(lp_bio,2,'omitnan');
-ld_mbio = mean(ld_bio,2,'omitnan');
+sf_mbio = mean(sf_abio,2,'omitnan');
+sp_mbio = mean(sp_abio,2,'omitnan');
+sd_mbio = mean(sd_abio,2,'omitnan');
+mf_mbio = mean(mf_abio,2,'omitnan');
+mp_mbio = mean(mp_abio,2,'omitnan');
+md_mbio = mean(md_abio,2,'omitnan');
+lp_mbio = mean(lp_abio,2,'omitnan');
+ld_mbio = mean(ld_abio,2,'omitnan');
 
 % sf_min = mean(sf_in,2);
 % sp_min = mean(sp_in,2);
@@ -211,7 +211,7 @@ lp_mres = (lp_mres1 + lp_mres2) ./2;
 ld_mres = (ld_mres1 + ld_mres2) ./2;
 
 %% Save
-save([fpath 'Residence_time_momeans_FOSI_' harv cfile '.mat'],...
+save([fpath 'Residence_time_annmeans_FOSI_' harv cfile '.mat'],...
     'sf_mres','sp_mres','sd_mres','mf_mres','mp_mres','md_mres','lp_mres','ld_mres',...
     'sf_mres1','sp_mres1','sd_mres1','mf_mres1','mp_mres1','md_mres1','lp_mres1','ld_mres1',...
     'sf_mres2','sp_mres2','sd_mres2','mf_mres2','mp_mres2','md_mres2','lp_mres2','ld_mres2')
@@ -342,32 +342,32 @@ Rlp=NaN*ones(ni,nj);
 Rld=NaN*ones(ni,nj);
 
 %bio
-Bsf(ID)=sf_sbio;
-Bsp(ID)=sp_sbio;
-Bsd(ID)=sd_sbio;
-Bmf(ID)=mf_sbio;
-Bmp(ID)=mp_sbio;
-Bmd(ID)=md_sbio;
-Blp(ID)=lp_sbio;
-Bld(ID)=ld_sbio;
+Bsf(ID)=sf_mbio;
+Bsp(ID)=sp_mbio;
+Bsd(ID)=sd_mbio;
+Bmf(ID)=mf_mbio;
+Bmp(ID)=mp_mbio;
+Bmd(ID)=md_mbio;
+Blp(ID)=lp_mbio;
+Bld(ID)=ld_mbio;
 %in
-Isf(ID)=sf_res1;
-Isp(ID)=sp_res1;
-Isd(ID)=sd_res1;
-Imf(ID)=mf_res1;
-Imp(ID)=mp_res1;
-Imd(ID)=md_res1;
-Ilp(ID)=lp_res1;
-Ild(ID)=ld_res1;
+Isf(ID)=sf_mres1;
+Isp(ID)=sp_mres1;
+Isd(ID)=sd_mres1;
+Imf(ID)=mf_mres1;
+Imp(ID)=mp_mres1;
+Imd(ID)=md_mres1;
+Ilp(ID)=lp_mres1;
+Ild(ID)=ld_mres1;
 %out
-Osf(ID)=sf_res2;
-Osp(ID)=sp_res2;
-Osd(ID)=sd_res2;
-Omf(ID)=mf_res2;
-Omp(ID)=mp_res2;
-Omd(ID)=md_res2;
-Olp(ID)=lp_res2;
-Old(ID)=ld_res2;
+Osf(ID)=sf_mres2;
+Osp(ID)=sp_mres2;
+Osd(ID)=sd_mres2;
+Omf(ID)=mf_mres2;
+Omp(ID)=mp_mres2;
+Omd(ID)=md_mres2;
+Olp(ID)=lp_mres2;
+Old(ID)=ld_mres2;
 %mres
 Rsf(ID)=sf_mres;
 Rsp(ID)=sp_mres;
@@ -444,7 +444,7 @@ surfm(geolat_t,geolon_t,log10(Bmd))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 clim([-2 2])
-cb = colorbar('Position',[0.9 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out');
+cb = colorbar('Position',[0.89 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out');
 xlabel(cb,'log_1_0 g m^-^2')
 set(gcf,'renderer','painters')
 text(0,1.75,'MD bio','HorizontalAlignment','center')
@@ -470,7 +470,7 @@ h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 clim([-2 2])
 set(gcf,'renderer','painters')
 text(0,1.75,'LD bio','HorizontalAlignment','center')
-print('-dpng',[ppath 'FOSI_map_momean_bio_stages.png'])
+print('-dpng',[ppath 'FOSI_map_annmean_bio_stages.png'])
 
 %% 8 plot of flux in (in)
 f4 = figure('Units','inches','Position',[1 3 6.5 8]);
@@ -482,7 +482,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Isf))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'SF res in','HorizontalAlignment','center')
 
@@ -493,7 +493,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Isp))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'SP res in','HorizontalAlignment','center')
 
@@ -504,7 +504,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Isd))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'SD res in','HorizontalAlignment','center')
 
@@ -515,7 +515,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Imf))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'MF res in','HorizontalAlignment','center')
 
@@ -526,7 +526,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Imp))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'MP res in','HorizontalAlignment','center')
 
@@ -537,8 +537,8 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Imd))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
-cb = colorbar('Position',[0.9 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out');
+clim([0 3.5])
+cb = colorbar('Position',[0.89 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out');
 xlabel(cb,'log_1_0 d')
 set(gcf,'renderer','painters')
 text(0,1.75,'MD res in','HorizontalAlignment','center')
@@ -550,7 +550,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Ilp))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'LP res in','HorizontalAlignment','center')
 
@@ -561,10 +561,10 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Ild))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'LD res in','HorizontalAlignment','center')
-print('-dpng',[ppath 'FOSI_map_momean_resIn_stages.png'])
+print('-dpng',[ppath 'FOSI_map_annmean_resIn_stages.png'])
 
 %% 8 plot of flux out
 f5 = figure('Units','inches','Position',[1 3 6.5 8]);
@@ -576,7 +576,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Osf))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'SF res out','HorizontalAlignment','center')
 
@@ -587,7 +587,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Osp))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'SP res out','HorizontalAlignment','center')
 
@@ -598,7 +598,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Osd))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'SD res out','HorizontalAlignment','center')
 
@@ -609,7 +609,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Omf))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'MF res out','HorizontalAlignment','center')
 
@@ -620,7 +620,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Omp))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'MP res out','HorizontalAlignment','center')
 
@@ -631,8 +631,8 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Omd))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
-cb = colorbar('Position',[0.9 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out');
+clim([0 3.5])
+cb = colorbar('Position',[0.89 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out');
 xlabel(cb,'log_1_0 d')
 set(gcf,'renderer','painters')
 text(0,1.75,'MD res out','HorizontalAlignment','center')
@@ -644,7 +644,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Olp))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'LP res out','HorizontalAlignment','center')
 
@@ -655,10 +655,10 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,log10(Old))
 cmocean('matter')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([-2 3])
+clim([0 3.5])
 set(gcf,'renderer','painters')
 text(0,1.75,'LD res out','HorizontalAlignment','center')
-print('-dpng',[ppath 'FOSI_map_momean_resOut_stages.png'])
+print('-dpng',[ppath 'FOSI_map_annmean_resOut_stages.png'])
 
 %% 8 plot of mean res
 f6 = figure('Units','inches','Position',[1 3 6.5 8]);
@@ -670,7 +670,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rsf))
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 45])
 set(gcf,'renderer','painters')
 text(0,1.75,'SF res','HorizontalAlignment','center')
 c1=colorbar('orientation','vertical','AxisLocation','out');
@@ -683,7 +683,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rsp))
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 45])
 set(gcf,'renderer','painters')
 text(0,1.75,'SP res','HorizontalAlignment','center')
 c2=colorbar('orientation','vertical','AxisLocation','out');
@@ -696,7 +696,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rsd))
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 45])
 set(gcf,'renderer','painters')
 text(0,1.75,'SD res','HorizontalAlignment','center')
 c3=colorbar('orientation','vertical','AxisLocation','out');
@@ -709,7 +709,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rmf)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 2])
+clim([0 1])
 set(gcf,'renderer','painters')
 text(0,1.75,'MF res','HorizontalAlignment','center')
 c4=colorbar('orientation','vertical','AxisLocation','out');
@@ -735,7 +735,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rmd)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 1])
+clim([0 2])
 %cb = colorbar('Position',[0.9 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out');
 %xlabel(cb,'y')
 set(gcf,'renderer','painters')
@@ -750,7 +750,7 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rlp)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 4])
 set(gcf,'renderer','painters')
 text(0,1.75,'LP res','HorizontalAlignment','center')
 c7=colorbar('orientation','vertical','AxisLocation','out');
@@ -763,12 +763,12 @@ axesm ('Robinson','MapLatLimit',latlim,'MapLonLimit',lonlim,'frame','on',...
 surfm(geolat_t,geolon_t,(Rld)./365)
 cmocean('speed')
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
-clim([0 5])
+clim([0 4])
 c8=colorbar('orientation','vertical','AxisLocation','out');
 xlabel(c8,'y')
 set(gcf,'renderer','painters')
 text(0,1.75,'LD res','HorizontalAlignment','center')
-print('-dpng',[ppath 'FOSI_map_momean_resMean_stages.png'])
+print('-dpng',[ppath 'FOSI_map_annmean_resMean_stages.png'])
 
 
 
