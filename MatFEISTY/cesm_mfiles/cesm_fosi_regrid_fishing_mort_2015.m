@@ -32,13 +32,16 @@ TLON(TLONG>180) = TLONG(TLONG>180)-360;
 
 %% ! --> use assessment estimate
 alt1 = 'assessment';
-spath = ['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/',...
-    'FEISTY_other/fishing_ms_ideas/fishing_effort_ms/fishing_for_FEISTY/',alt1,'/'];
-load([spath 'grid_mortality_all_',alt1,'.mat'])
+% spath = ['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/',...
+%     'FEISTY_other/fishing_ms_ideas/fishing_effort_ms/fishing_for_FEISTY/',alt1,'/'];
+% load([spath 'grid_mortality_all_',alt1,'.mat'])
+
+spath = '/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/assessment/';
+load([spath 'grid_mortality_all_enom_FFmsy_1841_2017.mat']);
 
 %% ! --> subset 1948-2015
-yrall = 1841:2010;
-yid = find(yrall>=1948);
+yrall = 1841:2017;
+yid = find(yrall>=1948 & yrall<=2015);
 
 fmortD = fmortD(:,yid);
 fmortF = fmortF(:,yid);
@@ -107,8 +110,8 @@ load([cpath 'CESM_FOSI_v15_interann_mean_forcings_anom.mat'],...
 TP = reshape(tp,ni*nj,ft);
 TB = reshape(tb,ni*nj,ft);
 
-vmtp = zeros(NID,nt);
-vmtb = zeros(NID,nt);
+vmtp = zeros(NID,ft);
+vmtb = zeros(NID,ft);
 
 for t=1:nt
     clear testB testP
@@ -141,11 +144,11 @@ fmF(fmF<0) = 0.0;
 fmP(fmP<0) = 0.0;
 
 %% save
-year = 1948:2010;
+year = 1948:2015;
 
-save([cpath 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2010_tempSc_',alt1,'.mat'],'year','WID',...
+save([cpath 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2015_tempSc_',alt1,'.mat'],'year','WID',...
     'fmD','fmF','fmP');
-save([spath 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2010_tempSc_',alt1,'.mat'],'year','WID',...
+save([spath 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2015_tempSc_',alt1,'.mat'],'year','WID',...
     'fmD','fmF','fmP');
 
 

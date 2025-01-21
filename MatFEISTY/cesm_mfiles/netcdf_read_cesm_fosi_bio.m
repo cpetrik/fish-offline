@@ -7,7 +7,7 @@ close all
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-harv = 'v15_obsfish_';
+harv = 'v15_obsfish2015_';
 
 %% SP
 ncid = netcdf.open([fpath 'FOSI_' harv 'sml_p.nc'],'NC_NOWRITE');
@@ -245,9 +245,9 @@ for n=1:length(st)
     Lrg_d.bio = nanmean(LD.bio(:,en(n)-2),2);
     BENT.bio  = nanmean(Bent.bio(:,en(n)-2),2);
 
-    save([fpath 'Last_mo_FOSI_' num2str(1947+n) '_' harv cfile '.mat'],...
-        'Sml_f','Sml_p','Sml_d','Med_f','Med_p','Med_d','Lrg_p','Lrg_d',...
-        'BENT')
+    % save([fpath 'Last_mo_FOSI_' num2str(1947+n) '_' harv cfile '.mat'],...
+    %     'Sml_f','Sml_p','Sml_d','Med_f','Med_p','Med_d','Lrg_p','Lrg_d',...
+    %     'BENT')
 
 end
 

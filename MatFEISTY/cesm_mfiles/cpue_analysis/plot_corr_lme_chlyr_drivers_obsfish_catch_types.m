@@ -9,17 +9,19 @@ close all
 
 %% ------------------------------------------------------------
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
+fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+spath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
 
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
+% fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+% spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/CESM_MAPP/FOSI/',...
     cfile,'/corrs_cpue/'];
 
 %mod = 'v15_All_fish03';
-mod = 'v15_obsfish';
+mod = 'v15_obsfish2015';
 
 %%
-load([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab','lid')
 
 cnam = {'coef','p','lag','idriver','driver'};
@@ -186,7 +188,9 @@ ylabel('All fishes')
 print('-dpng',[ppath 'Bar_LMEs_chlyr_catch_driver_obsfish_maxcorr_fntypes.png'])
 
 %% Map
-cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
+fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+
+% cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
@@ -290,7 +294,7 @@ colormap(mcol)
 colorbar('TickLabels',ctex,'Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
 title('Catch corr All fishes')
 
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_obsfish_maxcorr_fntypes.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_obsfish2015_maxcorr_fntypes.png'])
 
 
 

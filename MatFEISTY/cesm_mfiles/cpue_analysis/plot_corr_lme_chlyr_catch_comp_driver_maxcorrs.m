@@ -8,8 +8,11 @@ close all
 %% % ------------------------------------------------------------
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
+fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+spath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+
+% fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+% spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/CESM_MAPP/FOSI/',...
     cfile,'/corrs_cpue/'];
 
@@ -28,7 +31,7 @@ DtabC = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 AtabO = LAtab;
@@ -90,6 +93,18 @@ ccol = mcol(1:8,:);
 scol = mcol(5:6,:);
 
 dcol = mcol(1:6,:);
+
+%group by temp, resources, fish
+gtex = {'T','T','P','P','T','P','F','F','F'};
+gcol(1,:) = drainbow(12,:)/255; % orange
+gcol(2,:) = drainbow(12,:)/255; % orange dk blue
+gcol(3,:) = drainbow(7,:)/255; %green %grey
+gcol(4,:) = drainbow(7,:)/255; %green %lt blue
+gcol(5,:) = drainbow(12,:)/255; % orange %red
+gcol(6,:) = drainbow(7,:)/255; %green
+gcol(7,:) = drainbow(3,:)/255; %dk purp
+gcol(8,:) = drainbow(3,:)/255; %dk purp%lt purp
+gcol(9,:) = drainbow(3,:)/255; %dk purp %lt green
 
 %% Barplot 4x1
 f1 = figure('Units','inches','Position',[1 3 7.5 10]);
@@ -217,7 +232,9 @@ stamp('')
 print('-dpng',[ppath 'Bar_LMEs_chlyr_catch_driver_comp_maxcorr_allfish.png'])
 
 %% Map
-cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
+cpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+
+%cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 load([cpath 'gridspec_POP_gx1v6_noSeas.mat']);
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 load([cpath 'LME-mask-POP_gx1v6.mat']);
@@ -320,4 +337,89 @@ colorbar('eastoutside','Ticks',1:9,'TickLabels',ctex)
 title('Catch Obs Effort')
 
 print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_comp_maxcorr_allfish.png'])
+
+%% Dominant driver map - grouped
+f3 = figure('Units','inches','Position',[1 3 7.5 5]);
+
+axs = subplot('Position',[0.1 0.525 0.35 0.45]); %Top L
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+for i=1:length(lid)
+    L=lid(i);
+    id = find(tlme==L);
+    Acorr  = nan(ni,nj);
+    Acorr(id) = AtabS(i,4);
+
+    if (AtabS(i,2) <= 0.05)
+        surfm(TLAT,TLONG,Acorr)
+        hold on
+    end
+end
+colormap(axs,gcol(5:6,:));
+title('Catch Sat')
+
+axd = subplot('Position',[0.5 0.525 0.35 0.45]); %Top R
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+for i=1:length(lid)
+    L=lid(i);
+    id = find(tlme==L);
+    Acorr  = nan(ni,nj);
+    Acorr(id) = AtabD(i,4);
+
+    if (AtabD(i,2) <= 0.05)
+        surfm(TLAT,TLONG,Acorr)
+        hold on
+    end
+end
+colormap(axd, gcol(1:6,:));
+title('Catch Sat+OBGC')
+
+axc = subplot('Position',[0.1 0.05 0.35 0.45]); %Bottom L
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+for i=1:length(lid)
+    L=lid(i);
+    id = find(tlme==L);
+    Acorr  = nan(ni,nj);
+    Acorr(id) = AtabC(i,4);
+
+    if (AtabC(i,2) <= 0.05)
+        surfm(TLAT,TLONG,Acorr)
+        hold on
+    end
+end
+colormap(axc,gcol(1:8,:))
+title('Catch Const Effort')
+
+axo = subplot('Position',[0.5 0.05 0.43 0.45]); %Bottom R
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+for i=1:length(lid)
+    L=lid(i);
+    id = find(tlme==L);
+    Acorr  = nan(ni,nj);
+    Acorr(id) = AtabO(i,4);
+
+    if (AtabO(i,2) <= 0.05)
+        surfm(TLAT,TLONG,Acorr)
+        hold on
+    end
+    str = {['coef=' sprintf('%0.2f',AtabO(i,1))] , ['lag=' num2str(AtabO(i,3))]};
+    loc = round(length(id)/2);
+end
+colormap(axo,gcol)
+colorbar('eastoutside','Ticks',1:9,'TickLabels',gtex)
+%colorbar('Ticks',1:9,'TickLabels',ctex)
+title('Catch Obs Effort')
+
+print('-dpng',[ppath 'Map_LMEs_chlyr_catch_groupdriver_comp_maxcorr_allfish.png'])
 

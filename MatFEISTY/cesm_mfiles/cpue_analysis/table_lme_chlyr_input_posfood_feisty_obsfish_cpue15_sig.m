@@ -7,15 +7,18 @@ clear
 close all
 
 %% % ------------------------------------------------------------
-cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
+% cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
+cpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
 
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
+fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+spath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+% fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+% spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 
 mod = 'v15_All_fish03';
-mod2 = 'v15_obsfish';
+mod2 = 'v15_obsfish2015';
 
 cnam = {'coef','p','lag','idriver','driver'};
 
@@ -88,8 +91,8 @@ DtabF = LDtab(sigD,:);
 clear sigA sigF sigP sigD LAtab LFtab LPtab LDtab
 
 %%  ---------------- obsfish --------------------------
-load([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish_maxcorr_posfood.mat'],...
-    'LAtab','LFtab','LPtab','LDtab') %UPDATE later
+load([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish2015_maxcorr_posfood.mat'],...
+    'LAtab','LFtab','LPtab','LDtab') 
 
 otex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod'};
 

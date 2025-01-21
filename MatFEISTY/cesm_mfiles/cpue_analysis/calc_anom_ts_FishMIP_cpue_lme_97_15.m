@@ -77,7 +77,7 @@ end
 %% Calc Catch/Effort
 % FOSI is 1948 to 2015
 % catches are 1948 to 2015
-% effort is 1961 to 2010
+% effort is 1961 to 2017
 [yrs,yid] = intersect(yr,eyr);
 
 cpue_f_ts  = lme_f_ts(:,yid) ./ eff_f_ts(:,yid);

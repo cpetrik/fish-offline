@@ -18,77 +18,52 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
-ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',cfile,'/corrs'];
+spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
+ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',...
+    cfile,'/corrs_cpue'];
 
 mod = 'v15_All_fish03';
 
 % Anoms with linear trend removed
-%Biomass
-load([fpath 'FEISTY_FOSI_',mod,'_lme_ann_mean_anoms.mat'],...
-    'aa','ad','af','ap');
+% Biomass
+load([fpath 'FEISTY_FOSI_',mod,'_lme_biom_ann_mean_anoms_1982_2010_2015.mat'],'eyr',...
+    'aba15','abd15','abf15','abp15');
 
-aba = aa;
-abd = ad;
-abf = af;
-abp = ap;
-
-clear aa ad af ap
-
-%% Nu
-load([fpath 'FEISTY_FOSI_',mod,'_lme_nu_ann_mean_anoms.mat'],...
-    'aa','ad','af','ap');
-
-ana = aa;
-and = ad;
-anf = af;
-anp = ap;
-
-clear aa ad af ap
+% Nu
+load([fpath 'FEISTY_FOSI_',mod,'_lme_nu_ann_mean_anoms_1982_2010_2015.mat'],...
+    'ana15','and15','anf15','anp15');
 
 %% Fish data
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
 % Anoms with linear trend removed
-load([ypath 'FishMIP_Phase3a_LME_CPUE_1961-2010_ann_mean_anoms.mat'])
+load([ypath 'FishMIP_Phase3a_LME_CPUE_1982-2015_ann_mean_anoms.mat'],...
+    'aa_cpue82','af_cpue82','ap_cpue82','ad_cpue82')
 
-%% subset effort years
-fyr = 1948:2015;
-eyr = 1961:2010;
-[yr,fid] = intersect(fyr,eyr);
+%% put into a matrix & use annual nuuction
+aanom(:,:,1) = aba15;
+aanom(:,:,2) = ana15;
 
-aba    = aba(:,fid);
-ana    = ana(:,fid);
+fanom(:,:,1) = abf15;
+fanom(:,:,2) = anf15;
 
-% put into a matrix & use annual nuuction
-manom(:,:,1) = aba;
-manom(:,:,2) = ana;
+panom(:,:,1) = abp15;
+panom(:,:,2) = anp15;
 
-%% Drivers from satellite obs
-load([fpath 'lme_satellite_sst_chl_ann_mean_anoms.mat'])
-
-%% match years
-[~,cid] = intersect(eyr,cyr);
-[~,tid] = intersect(eyr,tyr);
+danom(:,:,1) = abd15;
+danom(:,:,2) = and15;
 
 tanom = {'Biom','Prod'};
-
-%% restrict analysis to only years with satellite chl data
-manom = manom(:,cid,:);
-aall = aall(:,cid);
-af = af(:,cid);
-ap = ap(:,cid);
-ad = ad(:,cid);
 
 %% %Corr of forcing ---------------------------------------------------------
 cnam = {'corr','p','lag','idriver','driver'};
 
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
-AA = aba(:,1);
+AA = aba15(:,1);
 lid = find(~isnan(AA));
 
 %Lags
-yr = 0:3;  %reduce lags 
+yr = 0:2;  %reduce lags 
 
 % Drivers
 [Ymat,Jmat] = meshgrid(yr,1:length(tanom));
@@ -104,7 +79,7 @@ AtabP = FtabC;
 
 %%
 yst = 1;
-yen = length(cid);
+yen = length(eyr);
 
 for L = 1:length(lid)
 
@@ -121,25 +96,23 @@ for L = 1:length(lid)
             t = yr(k);
 
             %               LME     time      driver
-            sclim = ((manom(i,yst:yen-t,j))') ;
-
             %Fish
-            [rp,pp] = corrcoef(sclim , (aall(i,yst+t:yen))');
+            [rp,pp] = corrcoef(((aanom(i,yst:yen-t,j))') , (aa_cpue82(i,yst+t:yen))');
             AtabC(L,j,k) = rp(1,2);
             AtabP(L,j,k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(sclim , (af(i,yst+t:yen))');
+            [rp,pp] = corrcoef(((fanom(i,yst:yen-t,j))') , (af_cpue82(i,yst+t:yen))');
             FtabC(L,j,k) = rp(1,2);
             FtabP(L,j,k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(sclim , (ap(i,yst+t:yen))');
+            [rp,pp] = corrcoef(((panom(i,yst:yen-t,j))') , (ap_cpue82(i,yst+t:yen))');
             PtabC(L,j,k) = rp(1,2);
             PtabP(L,j,k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(sclim , (ad(i,yst+t:yen))');
+            [rp,pp] = corrcoef(((danom(i,yst:yen-t,j))') , (ad_cpue82(i,yst+t:yen))');
             DtabC(L,j,k) = rp(1,2);
             DtabP(L,j,k) = pp(1,2);
             clear rp pp

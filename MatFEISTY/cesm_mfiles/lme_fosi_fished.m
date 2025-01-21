@@ -7,7 +7,7 @@ close all
 %% Fish data
 %cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_nmort1_BE08_noCC_RE00100';
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-mod = 'v15_obsfish_';
+mod = 'v15_obsfish2015_';
 
 pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
 dpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
@@ -124,8 +124,8 @@ end
 Tlme_mcatch = nansum(lme_mcatch(:));
 tot_catch = (Amf_mcatch+Amp_mcatch+Amd_mcatch+Alp_mcatch+Ald_mcatch);
 tot_catch2 = nansum(tot_catch(:));
-frac_mcatch_lme = Tlme_mcatch/tot_catch2
+frac_mcatch_lme = Tlme_mcatch/tot_catch2 %0.8772
 
 %%
 save([dpath 'LME_fosi_fished_',mod,cfile '.mat'],...
-    'lme_mcatch','lme_tcatch','lme_area');
+    'lme_mcatch','lme_tcatch','lme_area','-append');

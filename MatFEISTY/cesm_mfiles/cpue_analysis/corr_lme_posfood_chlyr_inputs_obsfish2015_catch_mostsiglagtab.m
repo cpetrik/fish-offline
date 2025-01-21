@@ -1,7 +1,7 @@
-% Use calc corr of cpue with forcing, biomass, nu
+% Use calc corr of catch with forcing, biomass, nu
 % find most sig lag of each driver in each LME
 % min yrs as sat chl
-% const fishing effort
+% obs fishing effort
 
 clear
 close all
@@ -24,7 +24,7 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
     cfile,'/corrs_cpue'];
 
 
-mod = 'v15_All_fish03';
+mod = 'v15_obsfish2015';
 
 % Fishing data
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
@@ -59,24 +59,24 @@ PDtab(:,1:6,:) = DtabP(lid,:,:);
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-load([spath 'LMEs_corr_catch_chlyrs_feisty_lags.mat'])
+load([spath 'LMEs_corr_catch_chlyrs_obsfish2015_lags.mat'])
 ftex = tanom;
 
 %sat
-CAtab(:,7:8,1:3) = AtabC(:,1:2,:);
-CFtab(:,7:8,1:3) = FtabC(:,1:2,:);
-CPtab(:,7:8,1:3) = PtabC(:,1:2,:);
-CDtab(:,7:8,1:3) = DtabC(:,1:2,:);
+CAtab(:,7:9,1:3) = AtabC(:,1:3,:);
+CFtab(:,7:9,1:3) = FtabC(:,1:3,:);
+CPtab(:,7:9,1:3) = PtabC(:,1:3,:);
+CDtab(:,7:9,1:3) = DtabC(:,1:3,:);
 
-PAtab(:,7:8,1:3) = AtabP(:,1:2,:);
-PFtab(:,7:8,1:3) = FtabP(:,1:2,:);
-PPtab(:,7:8,1:3) = PtabP(:,1:2,:);
-PDtab(:,7:8,1:3) = DtabP(:,1:2,:);
+PAtab(:,7:9,1:3) = AtabP(:,1:3,:);
+PFtab(:,7:9,1:3) = FtabP(:,1:3,:);
+PPtab(:,7:9,1:3) = PtabP(:,1:3,:);
+PDtab(:,7:9,1:3) = DtabP(:,1:3,:);
 
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-tanom = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod'};
+tanom = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod','Yield'};
 cnam = {'corr','p','lag'};
 
 %Lags
@@ -175,6 +175,6 @@ for j=1:length(tanom)
 
 end %driver
 
-save([spath,'LMEs_corr_catch_chlyrs_inputs_feisty_mostsiglag_posfood.mat'],...
+save([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish2015_mostsiglag_posfood.mat'],...
     'LFtab','LPtab','LDtab','LAtab','lid','tanom','cnam','yr');
 

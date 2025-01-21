@@ -37,7 +37,7 @@ corr_lme_posfood_chlyr_inputs_cpue15_maxcorrtab.m
 corr_lme_posfood_chlyr_inputs_feisty_cpue15_maxcorrtab.m
 corr_lme_posfood_chlyr_inputs_obsfish_cpue15_maxcorrtab.m
 
-%% 4. Calc most significant lag of each driver
+%% 4. Calc most significant lag of each driver 
 
 %e.g.
 corr_lme_posfood_chlyr_inputs_feisty_catch_mostsiglagtab.m
@@ -46,38 +46,35 @@ corr_lme_posfood_chlyr_inputs_obsfish_catch_mostsiglagtab.m
 corr_lme_posfood_chlyr15_inputs_feisty_cpue15_mostsiglagtab.m
 corr_lme_posfood_chlyr15_inputs_obsfish_cpue15_mostsiglagtab.m
 
-%% 5. Create tables of # of LMEs with most sig driver
+%% 5. Create tables of # of LMEs with most sig driver 
 % Table 1 of ms
 
 table_lme_chlyr_input_posfood_feisty_obsfish_catch_sig.m
 table_lme_chlyr_input_posfood_feisty_obsfish_cpue15_sig.m
 
-%% 6. Plot - bar graphs and maps of all fishes combined
+%% 6. Plot - bar graphs and maps of all fishes combined 
 % Figs 1 and 2 of ms
 
 plot_corr_lme_chlyr_cpue15_comp_driver_maxcorrs
-
 plot_corr_lme_chlyr_catch_comp_driver_maxcorrs.m
-plot_corr_lme_chlyr_drivers_feisty_catch_types.m
-plot_corr_lme_chlyr_drivers_feisty_cpue_types.m
-plot_corr_lme_chlyr_drivers_obsfish_catch_types.m
-plot_corr_lme_chlyr_drivers_obsfish_cpue_types.m
 
 
-%% 7. Map R2 of each fn type, driver comp
+%% 7. Map R2 of each fn type, driver comp 
 % Fig 3 in ms for all fishes
 % fn types in Supp
 
 map_corrR2_lme_chlyr_cpue15_comp_driver_maxcorrs
 map_corrR2_lme_chlyr_catch_comp_driver_maxcorrs
 
-%% 8. Plot - bar graphs and maps of each fn type
+%% 8. Plot - bar graphs and maps of each fn type 
 % Supp figs
 
-plot_corr_lme_chlyr_drivers_feisty_cpue15_types
-plot_corr_lme_chlyr_drivers_feisty_catch_types
+plot_corr_lme_chlyr_drivers_feisty_catch_types.m
+plot_corr_lme_chlyr_drivers_feisty_cpue_types.m
+plot_corr_lme_chlyr_drivers_obsfish_catch_types.m
+plot_corr_lme_chlyr_drivers_obsfish_cpue_types.m
 
-%% 9. 8-plot maps of corr coeff of all drivers (8)
+%% 9. 8-plot maps of corr coeff of all drivers (8) % - left off here
 % for each fn type
 % Supp figs
 

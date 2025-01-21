@@ -1,6 +1,6 @@
 % Calc corr of cpue with sat and driver forcing
 % calc only once, then put together with others
-% min yrs as sat chl
+% min yrs as sat sst 1982-2015
 
 clear
 close all
@@ -11,8 +11,8 @@ close all
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
 
 % lme means, trend removed, anomaly calc
-load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom.mat'],...
-    'adety','atb','atp','azlosy','azoo');
+load([cpath 'CESM_FOSI_v15_lme_interann_mean_forcings_anom_1982_2010_2015.mat'],...
+    'adet15','atb15','atp15','azlos15');
 
 load([cpath 'Data_grid_POP_gx1v6_noSeas.mat']);
 ID = GRD.ID;
@@ -22,8 +22,9 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regressions/'];
-ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/CESM_MAPP/FOSI/',cfile,'/corrs'];
+spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
+ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',...
+    cfile,'/corrs_cpue'];
 
 mod = 'v15_All_fish03';
 
@@ -31,52 +32,32 @@ mod = 'v15_All_fish03';
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
 % Anoms with linear trend removed
-load([ypath 'FishMIP_Phase3a_LME_CPUE_1961-2010_ann_mean_anoms.mat'])
+load([ypath 'FishMIP_Phase3a_LME_CPUE_1982-2015_ann_mean_anoms.mat'],...
+    'aa_cpue82','af_cpue82','ap_cpue82','ad_cpue82')
 
-%% subset effort years
-fyr = 1948:2015;
-eyr = 1961:2010;
-[yr,fid] = intersect(fyr,eyr);
-
-adety  = adety(:,fid);
-atb    = atb(:,fid);
-atp    = atp(:,fid);
-azlosy = azlosy(:,fid);
-
-% put into a matrix & use annual nuuction
-manom(:,:,1) = atp;
-manom(:,:,2) = atb;
-manom(:,:,3) = adety;
-manom(:,:,4) = azlosy;
+%% put into a matrix & use annual production
+manom(:,:,1) = atp15;
+manom(:,:,2) = atb15;
+manom(:,:,3) = adet15;
+manom(:,:,4) = azlos15;
 
 %% Drivers from satellite obs
-load([fpath 'lme_satellite_sst_chl_ann_mean_anoms.mat'])
+load([fpath 'lme_satellite_sst_ann_mean_anoms_1982_2010_2015.mat'],...
+    'asst15','eyr')
 
-%% match years
-[~,cid] = intersect(eyr,cyr);
-[~,tid] = intersect(eyr,tyr);
+manom(:,:,5) = asst15;
 
-manom(:,tid,5) = asst(:,1:length(tid));
-manom(:,cid,6) = achl(:,1:length(cid));
-
-tanom = {'TP','TB','Det','ZmLoss','SST','chl'};
-
-%% restrict analysis to only years with satellite chl data
-manom = manom(:,cid,:);
-aall = aall(:,cid);
-af = af(:,cid);
-ap = ap(:,cid);
-ad = ad(:,cid);
+tanom = {'TP','TB','Det','ZmLoss','SST'};
 
 %% %Corr of forcing ---------------------------------------------------------
 cnam = {'corr','p','lag','idriver','driver'};
 
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
-AA = azlosy(:,1);
+AA = azlos15(:,1);
 lid = find(~isnan(AA));
 
 %Lags
-yr = 0:4;  %reduce lags 0:4
+yr = 0:3;  %reduce lags b/c need >=10 yrs in ts
 
 % Drivers
 [Ymat,Jmat] = meshgrid(yr,1:length(tanom));
@@ -92,7 +73,7 @@ AtabP = FtabC;
 
 %%
 yst = 1;
-yen = length(cid);
+yen = length(eyr);
 
 for L = 1:length(lid)
 
@@ -112,22 +93,22 @@ for L = 1:length(lid)
             sclim = ((manom(i,yst:yen-t,j))') ;
 
             %Fish
-            [rp,pp] = corrcoef(sclim , (aall(i,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (aa_cpue82(i,yst+t:yen))');
             AtabC(L,j,k) = rp(1,2);
             AtabP(L,j,k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(sclim , (af(i,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (af_cpue82(i,yst+t:yen))');
             FtabC(L,j,k) = rp(1,2);
             FtabP(L,j,k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(sclim , (ap(i,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (ap_cpue82(i,yst+t:yen))');
             PtabC(L,j,k) = rp(1,2);
             PtabP(L,j,k) = pp(1,2);
             clear rp pp
 
-            [rp,pp] = corrcoef(sclim , (ad(i,yst+t:yen))');
+            [rp,pp] = corrcoef(sclim , (ad_cpue82(i,yst+t:yen))');
             DtabC(L,j,k) = rp(1,2);
             DtabP(L,j,k) = pp(1,2);
             clear rp pp
