@@ -14,7 +14,7 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
     cfile,'/corrs_cpue/'];
 
 mod = 'v15_All_fish03';
-mod2 = 'v15_obsfish';
+mod2 = 'v15_obsfish2015';
 
 %PC:cpue const, PO:cpue obs, CC:catch const, CO:catch obs
 
@@ -30,7 +30,7 @@ DtabPC = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab') %UPDATE later
 
 AtabPO = LAtab;
@@ -52,7 +52,7 @@ DtabCC = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 AtabCO = LAtab;
@@ -206,7 +206,7 @@ ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 title('Catch Obs Effort')
 
-print('-dpng',[ppath 'Bar_LMEs_chlyr_cpue15_catch_feisty_obsfish_maxcorr_allfish.png'])
+print('-dpng',[ppath 'Bar_LMEs_chlyr_cpue15_catch_feisty_obsfish2015_maxcorr_allfish.png'])
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -318,5 +318,5 @@ colormap(ax4,mcol)
 colorbar('eastoutside','TickLabels',ctex,'Direction','reverse')
 title('Catch Obs Effort')
 
-print('-dpng',[ppath 'Map_LMEs_chlyr_cpue15_catch_feisty_obsfish_pos_maxcorr_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr_cpue15_catch_feisty_obsfish2015_pos_maxcorr_allfish.png'])
 

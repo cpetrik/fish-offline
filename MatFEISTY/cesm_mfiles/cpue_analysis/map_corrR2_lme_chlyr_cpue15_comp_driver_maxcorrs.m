@@ -351,12 +351,107 @@ colorbar('Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
 title('CPUE Obs Effort')
 print('-dpng',[ppath 'Map_LMEs_chlyr_cpue15_driver_comp_maxcorr_R2_Dem.png'])
 
-%%
-% subplot('Position',[0.01 0.575 0.45 0.4])
-% 
-% subplot('Position',[0.5 0.575 0.45 0.4])
-% 
-% subplot('Position',[0.01 0.125 0.45 0.4])
-% 
-% subplot('Position',[0.5 0.125 0.45 0.4])
-% colorbar('Position',[0.25 0.075 0.5 0.03],'orientation','horizontal')
+%% Create 8 plot of 4 fn types w/ CPUE and Catch
+
+subpos = [0.015 0.75 0.43 0.25;...
+    0.015 0.5 0.43 0.25;...
+    0.015 0.25 0.43 0.25;...
+    0.015 0.0 0.43 0.25;...
+    0.48 0.75 0.43 0.25;...
+    0.48 0.5 0.43 0.25;...
+    0.48 0.25 0.43 0.25;...
+    0.48 0.0 0.43 0.25];
+
+f10 = figure('Units','inches','Position',[1 3 6.5 8]);
+
+% F Const
+subplot('Position',subpos(1,:))
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+surfm(TLAT,TLONG,R2FC)
+colormap(cmR);
+clim([0 1])
+text(0,1.75,'F CPUE Const Effort','HorizontalAlignment','center')
+
+% F Obs
+subplot('Position',subpos(5,:))
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+surfm(TLAT,TLONG,R2FO)
+colormap(cmR);
+clim([0 1])
+text(0,1.75,'F CPUE Obs Effort','HorizontalAlignment','center')
+
+% P Const
+subplot('Position',subpos(2,:))
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+surfm(TLAT,TLONG,R2PC)
+colormap(cmR);
+clim([0 1])
+text(0,1.75,'P CPUE Const Effort','HorizontalAlignment','center')
+
+%P Obs
+subplot('Position',subpos(6,:))
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+surfm(TLAT,TLONG,R2PO)
+colormap(cmR);
+clim([0 1])
+text(0,1.75,'P CPUE Obs Effort','HorizontalAlignment','center')
+
+% D Const
+subplot('Position',subpos(3,:))
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+surfm(TLAT,TLONG,R2DC)
+colormap(cmR);
+clim([0 1])
+text(0,1.75,'D CPUE Const Effort','HorizontalAlignment','center')
+
+%D Obs
+subplot('Position',subpos(7,:))
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+surfm(TLAT,TLONG,R2DO)
+colormap(cmR);
+clim([0 1])
+text(0,1.75,'D CPUE Obs Effort','HorizontalAlignment','center')
+
+% All CPUE Const
+subplot('Position',subpos(4,:))
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+surfm(TLAT,TLONG,R2AC)
+colormap(cmR);
+clim([0 1])
+text(0,1.75,'All CPUE Const Effort','HorizontalAlignment','center')
+
+% All CPUE Obs
+subplot('Position',subpos(8,:))
+axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
+    'Grid','off','FLineWidth',1)
+h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
+hold on
+surfm(TLAT,TLONG,R2AO)
+colormap(cmR);
+clim([0 1])
+colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
+text(0,1.75,'All CPUE Obs Effort','HorizontalAlignment','center')
+
+print('-dpng',[ppath 'Map_LMEs_chlyr_cpue15_feisty_obsfish2015_maxcorr_R2_types.png'])
+

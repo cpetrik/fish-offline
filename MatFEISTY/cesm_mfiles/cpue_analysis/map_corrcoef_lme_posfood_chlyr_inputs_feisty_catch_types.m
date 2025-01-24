@@ -15,7 +15,7 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
     cfile,'/corrs_cpue/'];
 
 mod = 'v15_All_fish03';
-mod2 = 'v15_obsfish';
+mod2 = 'v15_obsfish2015';
 
 %%
 load([spath 'LMEs_corr_catch_chlyrs_inputs_feisty_mostsiglag_posfood.mat'])

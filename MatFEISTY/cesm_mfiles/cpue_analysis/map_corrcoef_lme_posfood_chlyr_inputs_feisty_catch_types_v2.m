@@ -1,11 +1,12 @@
-% Mapp corr coefs of ind driver combos with cpue
+% Mapp corr coefs of ind driver combos with catch
 % Subplots together for comparison
-% Restricted analysis to chl yrs 1997-2015
+% Restricted analysis to chl yrs
 % Const effort
+% Add biom & prod from obsfish
 
 clear
 close all
-
+clos
 %% % ------------------------------------------------------------
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
@@ -18,8 +19,29 @@ mod = 'v15_All_fish03';
 mod2 = 'v15_obsfish2015';
 
 %%
-load([spath 'LMEs_corr_cpue_chlyrs15_inputs_feisty_mostsiglag_posfood.mat'])
+load([spath 'LMEs_corr_catch_chlyrs_inputs_feisty_mostsiglag_posfood.mat'])
 %dim: LME x driver x (corr, p-val, lag)
+
+LAtab2 = LAtab;
+LFtab2 = LFtab;
+LPtab2 = LPtab;
+LDtab2 = LDtab;
+
+%%
+clear LAtab LFtab LPtab LDtab
+
+%%
+load([spath 'LMEs_corr_catch_chlyrs_inputs_obsfish2015_mostsiglag_posfood.mat'])
+
+LAtab2(:,9:10,:) = LAtab(:,7:8,:);
+LFtab2(:,9:10,:) = LFtab(:,7:8,:);
+LPtab2(:,9:10,:) = LPtab(:,7:8,:);
+LDtab2(:,9:10,:) = LDtab(:,7:8,:);
+
+tanom2 = {'TP','TB','Det','ZmLoss','SST','Chl','CBiom','CProd','OBiom','OProd'};
+
+%%
+clear LAtab LFtab LPtab LDtab
 
 %% Map data
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -44,26 +66,29 @@ load coastlines;
 cmRB = cbrewer('div','RdBu',21,'PCHIP');
 cmRB = flipud(cmRB);
 
-subpos = [0.015 0.75 0.43 0.25;...
-    0.015 0.5 0.43 0.25;...
-    0.015 0.25 0.43 0.25;...
-    0.015 0.0 0.43 0.25;...
-    0.48 0.75 0.43 0.25;...
-    0.48 0.5 0.43 0.25;...
-    0.48 0.25 0.43 0.25;...
-    0.48 0.0 0.43 0.25];
+subpos = [0.015 0.6 0.43 0.2;... 
+    0.015 0.4 0.43 0.2;... 
+    0.48 0.4 0.43 0.2;... 
+    0.48 0.6 0.43 0.2;... 
+    0.015 0.8 0.43 0.2;... 
+    0.48 0.8 0.43 0.2;... 
+    0.015 0.2 0.43 0.2;... 
+    0.015 0.0 0.43 0.2;... 
+    0.48 0.2 0.43 0.2;... 
+    0.48 0.0 0.43 0.2];   
+
 
 %% All fish 
 f1 = figure('Units','inches','Position',[1 3 6.5 8]);
-for j=1:8 
+for j=1:10 
     Cmat = nan(ni,nj);
 
     for i=1:length(lid)
         L=lid(i);
         id = find(tlme==L);
 
-        if (LAmat(i,j,2) <= 0.05)
-            Cmat(id) = LAmat(i,j,1);
+        if (LAtab2(i,j,2) <= 0.05)
+            Cmat(id) = LAtab2(i,j,1);
         end
     end
 
@@ -75,23 +100,23 @@ for j=1:8
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     clim([-1 1])
     set(gcf,'renderer','painters')
-    text(0,1.75,tanom{j},'HorizontalAlignment','center')
+    text(0,1.75,tanom2{j},'HorizontalAlignment','center')
 
 end
 colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
-print('-dpng',[ppath 'Map_LMEs_chlyr_cpue15_driver_feisty_corrcoef_All.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_feisty_obsfish2015_corrcoef_All.png'])
 
 %% Forage
 f2 = figure('Units','inches','Position',[1 3 6.5 8]);
-for j=1:8 
+for j=1:10 
     Cmat = nan(ni,nj);
 
     for i=1:length(lid)
         L=lid(i);
         id = find(tlme==L);
 
-        if (LFmat(i,j,2) <= 0.05)
-            Cmat(id) = LFmat(i,j,1);
+        if (LFtab2(i,j,2) <= 0.05)
+            Cmat(id) = LFtab2(i,j,1);
         end
     end
 
@@ -103,23 +128,23 @@ for j=1:8
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     clim([-1 1])
     set(gcf,'renderer','painters')
-    text(0,1.75,tanom{j},'HorizontalAlignment','center')
+    text(0,1.75,tanom2{j},'HorizontalAlignment','center')
 
 end
 colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
-print('-dpng',[ppath 'Map_LMEs_chlyr_cpue15_driver_feisty_corrcoef_F.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_feisty_obsfish2015_corrcoef_F.png'])
 
 %% Lg Pel
 f3 = figure('Units','inches','Position',[1 3 6.5 8]);
-for j=1:8 
+for j=1:10 
     Cmat = nan(ni,nj);
 
     for i=1:length(lid)
         L=lid(i);
         id = find(tlme==L);
 
-        if (LPmat(i,j,2) <= 0.05)
-            Cmat(id) = LPmat(i,j,1);
+        if (LPtab2(i,j,2) <= 0.05)
+            Cmat(id) = LPtab2(i,j,1);
         end
     end
 
@@ -131,23 +156,23 @@ for j=1:8
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     clim([-1 1])
     set(gcf,'renderer','painters')
-    text(0,1.75,tanom{j},'HorizontalAlignment','center')
+    text(0,1.75,tanom2{j},'HorizontalAlignment','center')
 
 end
 colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
-print('-dpng',[ppath 'Map_LMEs_chlyr_cpue15_driver_feisty_corrcoef_P.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_feisty_obsfish2015_corrcoef_P.png'])
 
 %% Demersal
 f4 = figure('Units','inches','Position',[1 3 6.5 8]);
-for j=1:8 
+for j=1:10 
     Cmat = nan(ni,nj);
 
     for i=1:length(lid)
         L=lid(i);
         id = find(tlme==L);
 
-        if (LDmat(i,j,2) <= 0.05)
-            Cmat(id) = LDmat(i,j,1);
+        if (LDtab2(i,j,2) <= 0.05)
+            Cmat(id) = LDtab2(i,j,1);
         end
     end
 
@@ -159,11 +184,11 @@ for j=1:8
     h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
     clim([-1 1])
     set(gcf,'renderer','painters')
-    text(0,1.75,tanom{j},'HorizontalAlignment','center')
+    text(0,1.75,tanom2{j},'HorizontalAlignment','center')
 
 end
 colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
-print('-dpng',[ppath 'Map_LMEs_chlyr_cpue15_driver_feisty_corrcoef_D.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_feisty_obsfish2015_corrcoef_D.png'])
 
 
 %% 8plot by driver
