@@ -1,6 +1,6 @@
 % Calc corr of catch with forcing, biomass, nu
 % calc only once, then put together with others
-% min yrs as sat chl 1982-2010
+% min yrs as sat chl 1982-2015
 % Obs fishing effort
 
 clear
@@ -23,44 +23,44 @@ spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',...
     cfile,'/corrs_cpue'];
 
-mod = 'v15_obsfish';
+mod = 'v15_obsfish2015';
 
 % Anoms with linear trend removed
 % Biomass
-load([fpath 'FEISTY_FOSI_',mod,'_lme_biom_ann_mean_anoms_1982_2010.mat'],...
-    'aba10','abd10','abf10','abp10','eyr');
+load([fpath 'FEISTY_FOSI_',mod,'_lme_biom_ann_mean_anoms_1982_2015.mat'],...
+    'aba15','abd15','abf15','abp15','eyr');
 
 % Nu
-load([fpath 'FEISTY_FOSI_',mod,'_lme_nu_ann_mean_anoms_1982_2010.mat'],...
-    'ana10','and10','anf10','anp10');
+load([fpath 'FEISTY_FOSI_',mod,'_lme_nu_ann_mean_anoms_1982_2015.mat'],...
+    'ana15','and15','anf15','anp15');
 
 % Yield/Catch
-load([fpath 'FEISTY_FOSI_',mod,'_lme_catch_ann_mean_anoms_1982_2010.mat'],...
-    'aya10','ayf10','ayp10','ayd10');
+load([fpath 'FEISTY_FOSI_',mod,'_lme_yield_ann_mean_anoms_1982_2015.mat'],...
+    'aya15','ayf15','ayp15','ayd15');
 
 %% Fish data
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
 % Anoms with linear trend removed
-load([ypath 'FishMIP_Phase3a_LME_Catch_1982-2010_ann_mean_anoms.mat'],...
+load([ypath 'FishMIP_Phase3a_LME_Catch_1982-2015_ann_mean_anoms.mat'],...
     'aa_catch82','af_catch82','ap_catch82','ad_catch82')
 
 %% put into a matrix 
-aanom(:,:,1) = aba10;
-aanom(:,:,2) = ana10;
-aanom(:,:,3) = aya10;
+aanom(:,:,1) = aba15;
+aanom(:,:,2) = ana15;
+aanom(:,:,3) = aya15;
 
-fanom(:,:,1) = abf10;
-fanom(:,:,2) = anf10;
-fanom(:,:,3) = ayf10;
+fanom(:,:,1) = abf15;
+fanom(:,:,2) = anf15;
+fanom(:,:,3) = ayf15;
 
-panom(:,:,1) = abp10;
-panom(:,:,2) = anp10;
-panom(:,:,3) = ayp10;
+panom(:,:,1) = abp15;
+panom(:,:,2) = anp15;
+panom(:,:,3) = ayp15;
 
-danom(:,:,1) = abd10;
-danom(:,:,2) = and10;
-danom(:,:,3) = ayd10;
+danom(:,:,1) = abd15;
+danom(:,:,2) = and15;
+danom(:,:,3) = ayd15;
 
 tanom = {'Biom','Prod','Yield'};
 
@@ -68,7 +68,7 @@ tanom = {'Biom','Prod','Yield'};
 cnam = {'corr','p','lag','idriver','driver'};
 
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
-AA = aba10(:,1);
+AA = aba15(:,1);
 lid = find(~isnan(AA));
 
 %Lags
@@ -137,7 +137,7 @@ for L = 1:length(lid)
 end %LME
 
 %%
-save([spath,'LMEs_corr_catch_sstyrs_obsfish_lags.mat'],...
+save([spath,'LMEs_corr_catch_sstyrs15_obsfish2015_lags.mat'],...
     'FtabC','PtabC','DtabC','AtabC',...
     'FtabP','PtabP','DtabP','AtabP','lid','cnam','tanom');
 

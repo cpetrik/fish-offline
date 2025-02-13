@@ -33,7 +33,7 @@ ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 load([ypath 'FishMIP_Phase3a_LME_CPUE_1982-2015_ann_mean_anoms.mat'],...
     'aa_cpue82','af_cpue82','ap_cpue82','ad_cpue82')
 
-%% put into a matrix & use annual nuuction
+%% put into a matrix & use annual production
 manom(:,:,1) = atp15;
 manom(:,:,2) = atb15;
 manom(:,:,3) = adet15;

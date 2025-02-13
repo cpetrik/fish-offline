@@ -14,7 +14,7 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
     cfile,'/corrs_cpue/'];
 
 mod = 'v15_All_fish03';
-mod2 = 'v15_obsfish';
+mod2 = 'v15_obsfish2015';
 
 %%
 load([spath,'LMEs_corr_cpue_sstyrs15_inputs_feisty_maxcorr_posfood.mat'],...
@@ -28,7 +28,7 @@ DtabC = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_cpue_sstyrs_inputs_obsfish_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_cpue_sstyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab') %UPDATE later
 
 AtabO = LAtab;
@@ -213,7 +213,7 @@ set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Const Effort')
 stamp('')
 
-print('-dpng',[ppath 'Bar_LMEs_sstyr_cpue15_driver_comp_maxcorr_allfish.png'])
+print('-dpng',[ppath 'Bar_LMEs_sstyrs15_cpue15_driver_comp_maxcorr_allfish.png'])
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -320,5 +320,5 @@ colorbar('eastoutside','Ticks',1:8,'TickLabels',ctex)
 %colorbar('Ticks',1:9,'TickLabels',ctex)
 title('CPUE Obs Effort')
 
-print('-dpng',[ppath 'Map_LMEs_sstyr_cpue15_driver_comp_maxcorr_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_cpue15_driver_comp_maxcorr_allfish.png'])
 

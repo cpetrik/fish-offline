@@ -65,17 +65,17 @@ for i=1:length(lid)
     L=lid(i);
     id = find(tlme==L);
 
-    if (LAtab(i,9,2) <= 0.05)
-        Amat(id) = LAtab(i,9,1);
+    if (LAtab(i,8,2) <= 0.05)
+        Amat(id) = LAtab(i,8,1);
     end
-    if (LFtab(i,9,2) <= 0.05)
-        Fmat(id) = LFtab(i,9,1);
+    if (LFtab(i,8,2) <= 0.05)
+        Fmat(id) = LFtab(i,8,1);
     end
-    if (LPtab(i,9,2) <= 0.05)
-        Pmat(id) = LPtab(i,9,1);
+    if (LPtab(i,8,2) <= 0.05)
+        Pmat(id) = LPtab(i,8,1);
     end
-    if (LDtab(i,9,2) <= 0.05)
-        Dmat(id) = LDtab(i,9,1);
+    if (LDtab(i,8,2) <= 0.05)
+        Dmat(id) = LDtab(i,8,1);
     end
 end
 

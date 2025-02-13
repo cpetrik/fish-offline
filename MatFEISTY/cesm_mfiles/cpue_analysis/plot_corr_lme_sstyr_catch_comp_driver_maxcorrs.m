@@ -14,10 +14,10 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
     cfile,'/corrs_cpue/'];
 
 mod = 'v15_All_fish03';
-mod2 = 'v15_obsfish';
+mod2 = 'v15_obsfish2015';
 
 %%
-load([spath,'LMEs_corr_catch_sstyrs_inputs_feisty_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_sstyrs15_inputs_feisty_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab','lid')
 
 AtabC = LAtab;
@@ -28,7 +28,7 @@ DtabC = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_catch_sstyrs_inputs_obsfish_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_sstyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 AtabO = LAtab;
@@ -39,7 +39,7 @@ DtabO = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_catch_sstyrs_inputs_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_sstyrs15_inputs_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 AtabD = LAtab(lid,:);
@@ -50,7 +50,7 @@ DtabD = LDtab(lid,:);
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_catch_sstyrs_maxcorr.mat'],...
+load([spath,'LMEs_corr_catch_sstyrs15_maxcorr.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 AtabS = LAtab(lid,:);
@@ -211,7 +211,7 @@ set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Const Effort')
 stamp('')
 
-print('-dpng',[ppath 'Bar_LMEs_sstyr_catch_driver_comp_maxcorr_allfish.png'])
+print('-dpng',[ppath 'Bar_LMEs_sstyrs15_catch_driver_comp_maxcorr_allfish.png'])
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -316,5 +316,5 @@ colorbar('eastoutside','Ticks',1:9,'TickLabels',ctex)
 %colorbar('Ticks',1:9,'TickLabels',ctex)
 title('Catch Obs Effort')
 
-print('-dpng',[ppath 'Map_LMEs_sstyr_catch_driver_comp_maxcorr_allfish.png'])
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_catch_driver_comp_maxcorr_allfish.png'])
 

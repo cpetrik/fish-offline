@@ -2,16 +2,16 @@
 % calc interann variability of nu by lme
 % units from per day to per year
 % Calculate anomaly time series for different ranges
-% 1982-2010 
+% 1982-2015 
 
 clear 
 close all
 
 %% Fish data
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-mod = 'v15_obsfish_'; % v15_All_fish03; 'v15_obsfish_'
+mod = 'v15_obsfish2015_'; % v15_All_fish03; 'v15_obsfish_'
 
-pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/';
+pp = '/Users/cpetrik/Dropbox/Princeton/FEISTY/CODE/Figs/CESM_MAPP/FOSI/';
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 ppath = [pp cfile '/FOSI/'];
@@ -69,7 +69,7 @@ end
 
 %% Next select specific yrs
 fyr = 1948:2015;
-eyr = 1982:2010; % subset effort years
+eyr = 1982:2015; % subset effort years
 
 lid=1:66;
 
@@ -77,32 +77,32 @@ lid=1:66;
 
 %% Then calc mean & std dev
 % Mean
-lme_f10_mean  = mean(lme_f_awmean_ts(:,fide),2,'omitnan');
-lme_p10_mean  = mean(lme_p_awmean_ts(:,fide),2,'omitnan');
-lme_d10_mean  = mean(lme_d_awmean_ts(:,fide),2,'omitnan');
-lme_a10_mean  = mean(lme_a_awmean_ts(:,fide),2,'omitnan');
+lme_f15_mean  = mean(lme_f_awmean_ts(:,fide),2,'omitnan');
+lme_p15_mean  = mean(lme_p_awmean_ts(:,fide),2,'omitnan');
+lme_d15_mean  = mean(lme_d_awmean_ts(:,fide),2,'omitnan');
+lme_a15_mean  = mean(lme_a_awmean_ts(:,fide),2,'omitnan');
 
 % Std dev
-lme_f10_std  = std(lme_f_awmean_ts(:,fide),0,2,'omitnan');
-lme_p10_std  = std(lme_p_awmean_ts(:,fide),0,2,'omitnan');
-lme_d10_std  = std(lme_d_awmean_ts(:,fide),0,2,'omitnan');
-lme_a10_std  = std(lme_a_awmean_ts(:,fide),0,2,'omitnan');
+lme_f15_std  = std(lme_f_awmean_ts(:,fide),0,2,'omitnan');
+lme_p15_std  = std(lme_p_awmean_ts(:,fide),0,2,'omitnan');
+lme_d15_std  = std(lme_d_awmean_ts(:,fide),0,2,'omitnan');
+lme_a15_std  = std(lme_a_awmean_ts(:,fide),0,2,'omitnan');
 
 % Coefficient of variance
-lme_f10_cv = lme_f10_std ./ lme_f10_mean;
-lme_p10_cv = lme_p10_std ./ lme_p10_mean;
-lme_d10_cv = lme_d10_std ./ lme_d10_mean;
-lme_a10_cv = lme_a10_std ./ lme_a10_mean;
+lme_f15_cv = lme_f15_std ./ lme_f15_mean;
+lme_p15_cv = lme_p15_std ./ lme_p15_mean;
+lme_d15_cv = lme_d15_std ./ lme_d15_mean;
+lme_a15_cv = lme_a15_std ./ lme_a15_mean;
 
 %% ANOMALIES -------------------------------------------------
 
-nte = length(eyr); %2010
+nte = length(eyr); %2015
 
 %% remove linear trend
-F10 = NaN*ones(66,nte);
-P10 = NaN*ones(66,nte);
-D10 = NaN*ones(66,nte);
-A10 = NaN*ones(66,nte);
+F15 = NaN*ones(66,nte);
+P15 = NaN*ones(66,nte);
+D15 = NaN*ones(66,nte);
+A15 = NaN*ones(66,nte);
 
 for i = 1:66 %in future should remove interior seas 23, 33, 62
     
@@ -117,7 +117,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         [m,b] = TheilSen(data);
         tH = m*t + b;
         dR = R - tH;
-        F10(i,:) = dR;
+        F15(i,:) = dR;
     end
     clear R T t b m tH dR data
     
@@ -131,7 +131,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         [m,b] = TheilSen(data);
         tH = m*t + b;
         dR = R - tH;
-        P10(i,:) = dR;
+        P15(i,:) = dR;
     end
     clear R T t b m tH dR data
     
@@ -145,7 +145,7 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         [m,b] = TheilSen(data);
         tH = m*t + b;
         dR = R - tH;
-        D10(i,:) = dR;
+        D15(i,:) = dR;
     end
     clear R T t b m tH dR data
 
@@ -159,37 +159,37 @@ for i = 1:66 %in future should remove interior seas 23, 33, 62
         [m,b] = TheilSen(data);
         tH = m*t + b;
         dR = R - tH;
-        A10(i,:) = dR;
+        A15(i,:) = dR;
     end
     clear R T t b m tH dR data
    
 end
 
 %% anomalies
-anf10 = F10 - mean(F10,2,'omitnan');
-anp10 = P10 - mean(P10,2,'omitnan');
-and10 = D10 - mean(D10,2,'omitnan');
-ana10 = A10 - mean(A10,2,'omitnan');
+anf15 = F15 - mean(F15,2,'omitnan');
+anp15 = P15 - mean(P15,2,'omitnan');
+and15 = D15 - mean(D15,2,'omitnan');
+ana15 = A15 - mean(A15,2,'omitnan');
 
 
 %% var of anomalies by lme
-vnf10 = var(anf10,0,2,'omitnan');
-vnp10 = var(anp10,0,2,'omitnan');
-vnd10 = var(and10,0,2,'omitnan');
-vna10 = var(ana10,0,2,'omitnan');
+vnf15 = var(anf15,0,2,'omitnan');
+vnp15 = var(anp15,0,2,'omitnan');
+vnd15 = var(and15,0,2,'omitnan');
+vna15 = var(ana15,0,2,'omitnan');
 
 %% save
 units = 'per year';
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-save([fpath 'FEISTY_FOSI_',mod,'lme_nu_interann_var_1982_2010.mat'],...
+save([fpath 'FEISTY_FOSI_',mod,'lme_nu_interann_var_1982_2015.mat'],...
     'lme_f_awmean_ts','lme_p_awmean_ts','lme_d_awmean_ts','lme_a_awmean_ts',...
-    'lme_f10_std','lme_p10_std','lme_d10_std','lme_a10_std',...
-    'lme_f10_mean','lme_p10_mean','lme_d10_mean','lme_a10_mean',...
-    'lme_f10_cv','lme_p10_cv','lme_d10_cv','lme_a10_cv','eyr','units');
+    'lme_f15_std','lme_p15_std','lme_d15_std','lme_a15_std',...
+    'lme_f15_mean','lme_p15_mean','lme_d15_mean','lme_a15_mean',...
+    'lme_f15_cv','lme_p15_cv','lme_d15_cv','lme_a15_cv','eyr','units');
 
 %%
-save([fpath 'FEISTY_FOSI_',mod,'lme_nu_ann_mean_anoms_1982_2010.mat'],...
-    'anf10','anp10','and10','ana10',...
-    'vnf10','vnp10','vnd10','vna10',...
+save([fpath 'FEISTY_FOSI_',mod,'lme_nu_ann_mean_anoms_1982_2015.mat'],...
+    'anf15','anp15','and15','ana15',...
+    'vnf15','vnp15','vnd15','vna15',...
     'units','eyr');

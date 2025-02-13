@@ -31,7 +31,7 @@ clear LAtab LFtab LPtab LDtab
 
 %%
 load([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish2015_maxcorr_posfood.mat'],...
-    'LAtab','LFtab','LPtab','LDtab') %UPDATE later
+    'LAtab','LFtab','LPtab','LDtab') 
 
 AtabPO = LAtab;
 FtabPO = LFtab;

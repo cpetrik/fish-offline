@@ -1,7 +1,7 @@
 % Maps of driver with max corr with cpue & catch
 % Group drivers by temp, prey, fish
 % Subplots together for comparison
-% Restricted analysis to chl yrs 1997-2015
+% Restricted analysis to sst yrs 1997-2015
 
 clear
 close all
@@ -15,10 +15,10 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
     cfile,'/corrs_cpue/'];
 
 mod = 'v15_All_fish03';
-mod2 = 'v15_obsfish';
+mod2 = 'v15_obsfish2015';
 
 %% cpue const
-load([spath,'LMEs_corr_cpue_chlyrs15_inputs_feisty_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_cpue_sstyrs15_inputs_feisty_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab','lid')
 
 EAtabC = LAtab;
@@ -29,7 +29,7 @@ EDtabC = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %% cpue obs
-load([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish2015_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_cpue_sstyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab') 
 
 EAtabO = LAtab;
@@ -40,7 +40,7 @@ EDtabO = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %% catch const
-load([spath,'LMEs_corr_catch_chlyrs_inputs_feisty_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_sstyrs15_inputs_feisty_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab','lid')
 
 CAtabC = LAtab;
@@ -51,7 +51,7 @@ CDtabC = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %% catch obs
-load([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish2015_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_sstyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 CAtabO = LAtab;
@@ -64,11 +64,11 @@ clear LAtab LFtab LPtab LDtab
 %%  ---------------------------------------------------------
 cnam = {'coef','p','lag','idriver','driver','group'};
 % All LMEs except inland seas (23=Baltic, 33=Red Sea, 62=Black Sea)
-ctex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod','Yield'};
+ctex = {'TP','TB','Det','ZmLoss','SST','Biom','Prod','Yield'};
 
 tid = [1,2,5];
-pid = [3,4,6];
-fid = 7:9;
+pid = [3,4];
+fid = 6:8;
 
 %create new column with driver group
 EAtabC(:,5) = nan;
@@ -413,7 +413,7 @@ colormap(gcol);
 colorbar('Ticks',1:3,'TickLabels',gtex, 'Position',[0.9 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out');
 text(0,1.75,'All Obs Effort','HorizontalAlignment','center')
 
-print('-dpng',[ppath 'Map_LMEs_chlyr_cpue15_feisty_obsfish2015_groupdriver_types.png'])
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_cpue15_feisty_obsfish2015_groupdriver_types.png'])
 
 
 %% Catch Dominant driver map
@@ -503,7 +503,7 @@ colormap(gcol);
 colorbar('Ticks',1:3,'TickLabels',gtex, 'Position',[0.9 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
 text(0,1.75,'All Obs Effort','HorizontalAlignment','center')
 
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_feisty_obsfish2015_groupdriver_types.png'])
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_catch_feisty_obsfish2015_groupdriver_types.png'])
 
 
 

@@ -21,7 +21,7 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
     cfile,'/corrs_cpue'];
 
 
-mod = 'v15_obsfish';
+mod = 'v15_obsfish2015';
 
 % Fishing data
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
@@ -37,10 +37,10 @@ CAtab = CFtab;
 PAtab = CFtab;
 
 %% sat & inputs
-load([spath 'LMEs_corr_catch_sstyrs_driver_lags.mat'])
+load([spath 'LMEs_corr_catch_sstyrs15_driver_lags.mat'])
 stex = tanom;
 
-load([spath 'LMEs_corr_catch_sstyrs_feisty_lags.mat'],'lid')
+load([spath 'LMEs_corr_catch_sstyrs15_feisty_lags.mat'],'lid')
 
 %inputss & sat
 CAtab(:,1:5,:) = AtabC(lid,:,:);
@@ -56,7 +56,7 @@ PDtab(:,1:5,:) = DtabP(lid,:,:);
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-load([spath 'LMEs_corr_catch_sstyrs_obsfish_lags.mat'])
+load([spath 'LMEs_corr_catch_sstyrs15_obsfish2015_lags.mat'])
 ftex = tanom;
 
 %fish
@@ -211,16 +211,16 @@ Dtab1.Properties.VariableNames = cnam;
 
 
 %%
-writetable(Atab1,[spath,'LMEs_corr_catch_sstyrs_inputs_obsfish_maxcorr_posfood_A.csv'],...
+writetable(Atab1,[spath,'LMEs_corr_catch_sstyrs15_inputs_obsfish2015_maxcorr_posfood_A.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ftab1,[spath,'LMEs_corr_catch_sstyrs_inputs_obsfish_maxcorr_posfood_F.csv'],...
+writetable(Ftab1,[spath,'LMEs_corr_catch_sstyrs15_inputs_obsfish2015_maxcorr_posfood_F.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Ptab1,[spath,'LMEs_corr_catch_sstyrs_inputs_obsfish_maxcorr_posfood_P.csv'],...
+writetable(Ptab1,[spath,'LMEs_corr_catch_sstyrs15_inputs_obsfish2015_maxcorr_posfood_P.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(Dtab1,[spath,'LMEs_corr_catch_sstyrs_inputs_obsfish_maxcorr_posfood_D.csv'],...
+writetable(Dtab1,[spath,'LMEs_corr_catch_sstyrs15_inputs_obsfish2015_maxcorr_posfood_D.csv'],...
     'Delimiter',',','WriteRowNames',true);
 
-save([spath,'LMEs_corr_catch_sstyrs_inputs_obsfish_maxcorr_posfood.mat'],...
+save([spath,'LMEs_corr_catch_sstyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LFtab','LPtab','LDtab','LAtab',...
     'Ftab1','Ptab1','Dtab1','Atab1','lid');
 

@@ -1,9 +1,8 @@
-% Plot corrs of driver-cpue corrs each fn type
+% Plot corrs of driver-catch corrs
 % Barplots and maps
 % Lag with max R2
 % For all 63 LMEs
-% Const fishing effort
-% sat sst yrs only 1982-2015
+% Obs fishing effort
 
 clear
 close all
@@ -17,10 +16,10 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
     cfile,'/corrs_cpue/'];
 
 mod = 'v15_All_fish03';
-%mod = 'v15_obsfish2015';
+%mod = 'v15_obsfish';
 
 %%
-load([spath,'LMEs_corr_cpue_sstyrs15_inputs_feisty_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_sstyrs15_inputs_feisty_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab','lid')
 
 cnam = {'coef','p','lag','idriver','driver'};
@@ -123,7 +122,7 @@ xlim([0 67])
 ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Forage fishes')
-title('CPUE corr')
+title('Catch corr')
 
 subplot('Position',[0.1 0.29 0.7 0.22])
 for i=1:length(lid)
@@ -177,7 +176,7 @@ ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 ylabel('All fishes')
 
-print('-dpng',[ppath 'Bar_LMEs_sstyrs15_cpue_driver_feisty_maxcorr_fntypes.png'])
+print('-dpng',[ppath 'Bar_LMEs_sstyrs15_catch_driver_feisty_maxcorr_fntypes.png'])
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -221,7 +220,7 @@ for i=1:length(lid)
     
 end
 colormap(mcol)
-title('CPUE corr Forage')
+title('Catch corr Forage')
 
 subplot('Position',[0.5 0.555 0.45 0.4]) %Top R
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -241,7 +240,7 @@ for i=1:length(lid)
     
 end
 colormap(mcol)
-title('CPUE corr Lg Pelagics')
+title('Catch corr Lg Pelagics')
 
 subplot('Position',[0.05 0.105 0.45 0.4]) %Bottom L
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -261,7 +260,7 @@ for i=1:length(lid)
     
 end
 colormap(mcol)
-title('CPUE corr Demersals')
+title('Catch corr Demersals')
 
 subplot('Position',[0.5 0.105 0.45 0.4]) %Bottom R
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -282,9 +281,7 @@ for i=1:length(lid)
 end
 colormap(mcol)
 colorbar('TickLabels',ctex,'Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
-title('CPUE corr All fishes')
+title('Catch corr All fishes')
 
-print('-dpng',[ppath 'Map_LMEs_sstyrs15_cpue_driver_feisty_maxcorr_fntypes.png'])
-
-
-
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_catch_driver_feisty_maxcorr_fntypes.png'])
+ 

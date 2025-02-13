@@ -1,7 +1,7 @@
 % Use calc corr of cpue with forcing, biomass, nu
 % find most sig lag of each driver in each LME
 % min yrs as sat sst
-% const fishing effort
+% obs fishing effort
 
 clear
 close all
@@ -21,7 +21,7 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
     cfile,'/corrs_cpue'];
 
 
-mod = 'v15_All_fish03';
+mod = 'v15_obsfish2015';
 
 % Fishing data
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
@@ -37,10 +37,10 @@ CAtab = CFtab;
 PAtab = CFtab;
 
 %% sat & inputs
-load([spath 'LMEs_corr_catch_sstyrs15_driver_lags.mat'])
+load([spath 'LMEs_corr_cpue_sstyrs15_driver_lags.mat'])
 stex = tanom;
 
-load([spath 'LMEs_corr_catch_sstyrs15_feisty_lags.mat'],'lid')
+load([spath 'LMEs_corr_cpue_sstyrs15_feisty_lags.mat'],'lid')
 
 %inputss & sat
 CAtab(:,1:5,:) = AtabC(lid,:,:);
@@ -56,7 +56,7 @@ PDtab(:,1:5,:) = DtabP(lid,:,:);
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-load([spath 'LMEs_corr_catch_sstyrs15_feisty_lags.mat'])
+load([spath 'LMEs_corr_cpue_sstyrs15_obsfish2015_lags.mat'])
 ftex = tanom;
 
 %sat
@@ -172,6 +172,6 @@ for j=1:length(tanom)
 
 end %driver
 
-save([spath,'LMEs_corr_catch_sstyrs15_inputs_feisty_mostsiglag_posfood.mat'],...
+save([spath,'LMEs_corr_cpue_sstyrs15_inputs_obsfish2015_mostsiglag_posfood.mat'],...
     'LFtab','LPtab','LDtab','LAtab','lid','tanom','cnam','yr');
 

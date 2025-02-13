@@ -1,26 +1,24 @@
-% Plot corrs of driver-cpue corrs each fn type
+% Plot corrs of driver-catch corrs
 % Barplots and maps
 % Lag with max R2
 % For all 63 LMEs
-% Const fishing effort
-% sat sst yrs only 1982-2015
+% Obs fishing effort
 
 clear
 close all
 
 %% ------------------------------------------------------------
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/CESM_MAPP/FOSI/',...
     cfile,'/corrs_cpue/'];
 
-mod = 'v15_All_fish03';
-%mod = 'v15_obsfish2015';
+%mod = 'v15_All_fish03';
+mod = 'v15_obsfish2015';
 
 %%
-load([spath,'LMEs_corr_cpue_sstyrs15_inputs_feisty_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_sstyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab','lid')
 
 cnam = {'coef','p','lag','idriver','driver'};
@@ -32,13 +30,19 @@ Ptab = LPtab;
 Dtab = LDtab;
 
 % Catch of Lg Pel in LME 61 is 0, fix nans
-% LPtab(61,1) = 0;
-% LPtab(61,2) = 1;
-% %LPtab(61,3) = 0;
-% LPtab(61,4) = 0;
+LPtab(61,1) = 0;
+LPtab(61,2) = 1;
+%LPtab(61,3) = 0;
+LPtab(61,4) = 0;
 
 %% colorblind friendly
 load('paul_tol_cmaps.mat')
+
+% mcol = [238/255 102/255 119/255;... %red - TP
+%     0/255 68/255 136/255;...    %blue - TB
+%     34/255 136/255 51/255;...   %green - Det
+%     51/255 187/255 238/255;...  %cyan - ZL
+%     ];
 
 %colorblind friendly - subselect & re-order drainbow
 ctex = {'TP','TB','Det','ZmLoss','SST','Biom','Prod'};
@@ -50,7 +54,7 @@ mcol(4,:) = drainbow(6,:)/255; %lt blue
 mcol(5,:) = drainbow(14,:)/255; %red
 mcol(6,:) = drainbow(3,:)/255; %dk purp
 mcol(7,:) = drainbow(1,:)/255; %lt purp
-%mcol(9,:) = drainbow(9,:)/255; %lt green
+mcol(8,:) = drainbow(9,:)/255; %lt green
 
 %% 
 f1 = figure('Units','inches','Position',[1 3 7.5 10]);
@@ -123,7 +127,7 @@ xlim([0 67])
 ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel','')
 ylabel('Forage fishes')
-title('CPUE corr')
+title('Catch corr')
 
 subplot('Position',[0.1 0.29 0.7 0.22])
 for i=1:length(lid)
@@ -177,7 +181,7 @@ ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 ylabel('All fishes')
 
-print('-dpng',[ppath 'Bar_LMEs_sstyrs15_cpue_driver_feisty_maxcorr_fntypes.png'])
+print('-dpng',[ppath 'Bar_LMEs_sstyrs15_catch_driver_obsfish_maxcorr_fntypes.png'])
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -221,7 +225,7 @@ for i=1:length(lid)
     
 end
 colormap(mcol)
-title('CPUE corr Forage')
+title('Catch corr Forage')
 
 subplot('Position',[0.5 0.555 0.45 0.4]) %Top R
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -241,7 +245,7 @@ for i=1:length(lid)
     
 end
 colormap(mcol)
-title('CPUE corr Lg Pelagics')
+title('Catch corr Lg Pelagics')
 
 subplot('Position',[0.05 0.105 0.45 0.4]) %Bottom L
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -261,7 +265,7 @@ for i=1:length(lid)
     
 end
 colormap(mcol)
-title('CPUE corr Demersals')
+title('Catch corr Demersals')
 
 subplot('Position',[0.5 0.105 0.45 0.4]) %Bottom R
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -282,9 +286,9 @@ for i=1:length(lid)
 end
 colormap(mcol)
 colorbar('TickLabels',ctex,'Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
-title('CPUE corr All fishes')
+title('Catch corr All fishes')
 
-print('-dpng',[ppath 'Map_LMEs_sstyrs15_cpue_driver_feisty_maxcorr_fntypes.png'])
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_catch_driver_obsfish2015_maxcorr_fntypes.png'])
 
 
 

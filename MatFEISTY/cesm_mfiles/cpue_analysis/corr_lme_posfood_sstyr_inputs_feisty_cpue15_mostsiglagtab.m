@@ -18,7 +18,7 @@ cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nm
 %fpath=['/Volumes/MIP/NC/CESM_MAPP/' cfile '/'];
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
-ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',...
+ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/CESM_MAPP/FOSI/',...
     cfile,'/corrs_cpue'];
 
 
@@ -105,7 +105,7 @@ for j=1:length(tanom)
         PtabP = squeeze(PPtab(L,j,:));
         DtabP = squeeze(PDtab(L,j,:));
 
-        %% force prey & fish corrs to be pos or zero (3,4,6,7,8)
+        %% force prey & fish corrs to be pos or zero (3,4,6,7)
         if j~=1
             if j~=2
                 if j~=5

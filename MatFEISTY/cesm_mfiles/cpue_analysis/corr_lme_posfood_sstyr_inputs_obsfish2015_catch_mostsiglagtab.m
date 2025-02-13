@@ -1,7 +1,7 @@
-% Use calc corr of cpue with forcing, biomass, nu
+% Use calc corr of catch with forcing, biomass, nu
 % find most sig lag of each driver in each LME
 % min yrs as sat sst
-% const fishing effort
+% obs fishing effort
 
 clear
 close all
@@ -21,14 +21,14 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
     cfile,'/corrs_cpue'];
 
 
-mod = 'v15_All_fish03';
+mod = 'v15_obsfish2015';
 
 % Fishing data
 ypath='/Volumes/petrik-lab/Feisty/Fish-MIP/Phase3/fishing/';
 
 %% All corrs
-CFtab = nan*ones(63,7,4);
-PFtab = nan*ones(63,7,4);
+CFtab = nan*ones(63,8,4);
+PFtab = nan*ones(63,8,4);
 CPtab = CFtab;
 PPtab = CFtab;
 CDtab = CFtab;
@@ -56,24 +56,24 @@ PDtab(:,1:5,:) = DtabP(lid,:,:);
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-load([spath 'LMEs_corr_catch_sstyrs15_feisty_lags.mat'])
+load([spath 'LMEs_corr_catch_sstyrs15_obsfish2015_lags.mat'])
 ftex = tanom;
 
 %sat
-CAtab(:,6:7,1:3) = AtabC(:,1:2,:);
-CFtab(:,6:7,1:3) = FtabC(:,1:2,:);
-CPtab(:,6:7,1:3) = PtabC(:,1:2,:);
-CDtab(:,6:7,1:3) = DtabC(:,1:2,:);
+CAtab(:,6:8,1:3) = AtabC(:,1:3,:);
+CFtab(:,6:8,1:3) = FtabC(:,1:3,:);
+CPtab(:,6:8,1:3) = PtabC(:,1:3,:);
+CDtab(:,6:8,1:3) = DtabC(:,1:3,:);
 
-PAtab(:,6:7,1:3) = AtabP(:,1:2,:);
-PFtab(:,6:7,1:3) = FtabP(:,1:2,:);
-PPtab(:,6:7,1:3) = PtabP(:,1:2,:);
-PDtab(:,6:7,1:3) = DtabP(:,1:2,:);
+PAtab(:,6:8,1:3) = AtabP(:,1:3,:);
+PFtab(:,6:8,1:3) = FtabP(:,1:3,:);
+PPtab(:,6:8,1:3) = PtabP(:,1:3,:);
+PDtab(:,6:8,1:3) = DtabP(:,1:3,:);
 
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-tanom = {'TP','TB','Det','ZmLoss','SST','Biom','Prod'};
+tanom = {'TP','TB','Det','ZmLoss','SST','Biom','Prod','Yield'};
 cnam = {'corr','p','lag'};
 
 %Lags
@@ -104,7 +104,7 @@ for j=1:length(tanom)
         PtabP = squeeze(PPtab(L,j,:));
         DtabP = squeeze(PDtab(L,j,:));
 
-        %% force prey & fish corrs to be pos or zero (3,4,6,7)
+        %% force prey & fish corrs to be pos or zero (3,4,6,7,8)
         if j~=1
             if j~=2
                 if j~=5
@@ -172,6 +172,6 @@ for j=1:length(tanom)
 
 end %driver
 
-save([spath,'LMEs_corr_catch_sstyrs15_inputs_feisty_mostsiglag_posfood.mat'],...
+save([spath,'LMEs_corr_catch_sstyrs15_inputs_obsfish2015_mostsiglag_posfood.mat'],...
     'LFtab','LPtab','LDtab','LAtab','lid','tanom','cnam','yr');
 

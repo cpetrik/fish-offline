@@ -23,7 +23,7 @@ spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',...
     cfile,'/corrs_cpue'];
 
-mod = 'v15_obsfish';
+mod = 'v15_obsfish2015';
 
 % Anoms with linear trend removed
 % Biomass
@@ -123,7 +123,7 @@ for L = 1:length(lid)
 end %LME
 
 %%
-save([spath,'LMEs_corr_cpue_sstyrs15_obsfish_lags.mat'],...
+save([spath,'LMEs_corr_cpue_sstyrs15_obsfish2015_lags.mat'],...
     'FtabC','PtabC','DtabC','AtabC',...
     'FtabP','PtabP','DtabP','AtabP','lid','cnam','tanom');
 

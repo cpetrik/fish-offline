@@ -1,26 +1,24 @@
-% Plot corrs of driver-cpue corrs each fn type
+% Plot corrs of driver-cpue corrs
 % Barplots and maps
 % Lag with max R2
 % For all 63 LMEs
-% Const fishing effort
-% sat sst yrs only 1982-2015
+% Obs fishing effort
 
 clear
 close all
 
 %% ------------------------------------------------------------
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/CESM_MAPP/FOSI/',...
     cfile,'/corrs_cpue/'];
 
-mod = 'v15_All_fish03';
-%mod = 'v15_obsfish2015';
+%mod = 'v15_All_fish03';
+mod = 'v15_obsfish2015';
 
 %%
-load([spath,'LMEs_corr_cpue_sstyrs15_inputs_feisty_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_cpue_sstyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab','lid')
 
 cnam = {'coef','p','lag','idriver','driver'};
@@ -177,7 +175,7 @@ ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 ylabel('All fishes')
 
-print('-dpng',[ppath 'Bar_LMEs_sstyrs15_cpue_driver_feisty_maxcorr_fntypes.png'])
+print('-dpng',[ppath 'Bar_LMEs_sstyrs15_cpue_driver_obsfish_maxcorr_fntypes.png'])
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -284,7 +282,7 @@ colormap(mcol)
 colorbar('TickLabels',ctex,'Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
 title('CPUE corr All fishes')
 
-print('-dpng',[ppath 'Map_LMEs_sstyrs15_cpue_driver_feisty_maxcorr_fntypes.png'])
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_cpue_driver_obsfish2015_maxcorr_fntypes.png'])
 
 
 

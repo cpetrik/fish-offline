@@ -15,7 +15,7 @@ fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 
 mod = 'v15_All_fish03';
-mod2 = 'v15_obsfish';
+mod2 = 'v15_obsfish2015';
 
 cnam = {'coef','p','lag','idriver','driver'};
 
@@ -56,8 +56,8 @@ LFtab = LFtab(lid,:);
 LPtab = LPtab(lid,:);
 LDtab = LDtab(lid,:);
 
-%Diagnose why SST decr for feisty, but goes up for obsfish
-%But obsfish <= sat+driver, so okay!
+%Diagnose why SST decr for feisty, but goes up for obsfish2015
+%But obsfish2015 <= sat+driver, so okay!
 LAtab(:,5) = lid;
 LDtab(:,5) = lid;
 
@@ -95,8 +95,8 @@ DtabF = LDtab(sigD,:);
 
 clear sigA sigF sigP sigD LAtab LFtab LPtab LDtab
 
-%%  ---------------- obsfish --------------------------
-load([spath,'LMEs_corr_cpue_sstyrs_inputs_obsfish_maxcorr_posfood.mat'],...
+%%  ---------------- obsfish2015 --------------------------
+load([spath,'LMEs_corr_cpue_sstyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab') %UPDATE later
 
 otex = {'TP','TB','Det','ZmLoss','SST','Biom','Prod'};

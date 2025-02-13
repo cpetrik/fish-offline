@@ -1,13 +1,12 @@
-% Map corr R2s of ind driver combos with cpue
+% Plot corrs of ind driver combos with catch
 % Subplots together for comparison
-% sst yrs only 1997-2015
+% sst yrs only
 
 clear
 close all
 
 %% % ------------------------------------------------------------
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-
 fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
 spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/CESM_MAPP/FOSI/',...
@@ -17,7 +16,7 @@ mod = 'v15_All_fish03';
 mod2 = 'v15_obsfish2015';
 
 %%
-load([spath,'LMEs_corr_cpue_sstyrs15_inputs_feisty_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_sstyrs15_inputs_feisty_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab','lid')
 
 AtabC = LAtab;
@@ -28,8 +27,8 @@ DtabC = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_cpue_sstyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
-    'LAtab','LFtab','LPtab','LDtab') 
+load([spath,'LMEs_corr_catch_sstyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
+    'LAtab','LFtab','LPtab','LDtab')
 
 AtabO = LAtab;
 FtabO = LFtab;
@@ -39,7 +38,7 @@ DtabO = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_cpue_sstyrs15_inputs_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_sstyrs15_inputs_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 AtabD = LAtab(lid,:);
@@ -50,7 +49,7 @@ DtabD = LDtab(lid,:);
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_cpue_sstyrs15_maxcorr.mat'],...
+load([spath,'LMEs_corr_catch_sstyrs15_maxcorr.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 AtabS = LAtab(lid,:);
@@ -178,7 +177,7 @@ hold on
 surfm(TLAT,TLONG,R2AS)
 colormap(cmR);
 clim([0 1])
-title('CPUE Sat')
+title('Catch Sat')
 
 subplot('Position',[0.5 0.555 0.45 0.4])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -188,7 +187,7 @@ hold on
 surfm(TLAT,TLONG,R2AD)
 colormap(cmR);
 clim([0 1])
-title('CPUE Sat+OBGC')
+title('Catch Sat+OBGC')
 
 subplot('Position',[0.05 0.105 0.45 0.4]) %Bottom L
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -198,7 +197,7 @@ hold on
 surfm(TLAT,TLONG,R2AC)
 colormap(cmR);
 clim([0 1])
-title('CPUE Const Effort')
+title('Catch Const Effort')
 
 subplot('Position',[0.5 0.105 0.45 0.4]) %Bottom R
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -209,8 +208,8 @@ surfm(TLAT,TLONG,R2AO)
 colormap(cmR);
 clim([0 1])
 colorbar('Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
-title('CPUE Obs Effort')
-print('-dpng',[ppath 'Map_LMEs_sstyrs15_cpue15_driver_comp_maxcorr_R2_All.png'])
+title('Catch Obs Effort')
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_catch_driver_comp_maxcorr_R2_All.png'])
 
 %% R2 of Dominant driver map - Forage
 f2 = figure('Units','inches','Position',[1 4 7.5 5]);
@@ -222,7 +221,7 @@ hold on
 surfm(TLAT,TLONG,R2FS)
 colormap(cmR);
 clim([0 1])
-title('CPUE Sat')
+title('Catch Sat')
 
 subplot('Position',[0.5 0.555 0.45 0.4])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -232,7 +231,7 @@ hold on
 surfm(TLAT,TLONG,R2FD)
 colormap(cmR);
 clim([0 1])
-title('CPUE Sat+BGC')
+title('Catch Sat+OBGC')
 
 subplot('Position',[0.05 0.105 0.45 0.4]) %Bottom L
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -242,7 +241,7 @@ hold on
 surfm(TLAT,TLONG,R2FC)
 colormap(cmR);
 clim([0 1])
-title('CPUE Const Effort')
+title('Catch Const Effort')
 
 subplot('Position',[0.5 0.105 0.45 0.4]) %Bottom R
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -253,8 +252,8 @@ surfm(TLAT,TLONG,R2FO)
 colormap(cmR);
 clim([0 1])
 colorbar('Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
-title('CPUE Obs Effort')
-print('-dpng',[ppath 'Map_LMEs_sstyrs15_cpue15_driver_comp_maxcorr_R2_Forage.png'])
+title('Catch Obs Effort')
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_catch_driver_comp_maxcorr_R2_Forage.png'])
 
 %% R2 of Dominant driver map - Lg Pel
 f3 = figure('Units','inches','Position',[1 5 7.5 5]);
@@ -266,7 +265,7 @@ hold on
 surfm(TLAT,TLONG,R2PS)
 colormap(cmR);
 clim([0 1])
-title('CPUE Sat')
+title('Catch Sat')
 
 subplot('Position',[0.5 0.555 0.45 0.4])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -276,7 +275,7 @@ hold on
 surfm(TLAT,TLONG,R2PD)
 colormap(cmR);
 clim([0 1])
-title('CPUE Sat+BGC')
+title('Catch Sat+OBGC')
 
 subplot('Position',[0.05 0.105 0.45 0.4]) %Bottom L
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -286,7 +285,7 @@ hold on
 surfm(TLAT,TLONG,R2PC)
 colormap(cmR);
 clim([0 1])
-title('CPUE Const Effort')
+title('Catch Const Effort')
 
 subplot('Position',[0.5 0.105 0.45 0.4]) %Bottom R
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -297,8 +296,8 @@ surfm(TLAT,TLONG,R2PO)
 colormap(cmR);
 clim([0 1])
 colorbar('Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
-title('CPUE Obs Effort')
-print('-dpng',[ppath 'Map_LMEs_sstyrs15_cpue15_driver_comp_maxcorr_R2_LgPel.png'])
+title('Catch Obs Effort')
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_catch_driver_comp_maxcorr_R2_LgPel.png'])
 
 %% R2 of Dominant driver map - Dem
 f4 = figure('Units','inches','Position',[1 6 7.5 5]);
@@ -311,7 +310,7 @@ hold on
 surfm(TLAT,TLONG,R2DS)
 colormap(cmR);
 clim([0 1])
-title('CPUE Sat')
+title('Catch Sat')
 
 subplot('Position',[0.5 0.555 0.45 0.4])
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -321,7 +320,7 @@ hold on
 surfm(TLAT,TLONG,R2DD)
 colormap(cmR);
 clim([0 1])
-title('CPUE Sat+BGC')
+title('Catch Sat+OBGC')
 
 subplot('Position',[0.05 0.105 0.45 0.4]) %Bottom L
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -331,7 +330,7 @@ hold on
 surfm(TLAT,TLONG,R2DC)
 colormap(cmR);
 clim([0 1])
-title('CPUE Const Effort')
+title('Catch Const Effort')
 
 subplot('Position',[0.5 0.105 0.45 0.4]) %Bottom R
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
@@ -342,8 +341,9 @@ surfm(TLAT,TLONG,R2DO)
 colormap(cmR);
 clim([0 1])
 colorbar('Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
-title('CPUE Obs Effort')
-print('-dpng',[ppath 'Map_LMEs_sstyrs15_cpue15_driver_comp_maxcorr_R2_Dem.png'])
+title('Catch Obs Effort')
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_catch_driver_comp_maxcorr_R2_Dem.png'])
+
 
 %% Create 8 plot of 4 fn types w/ CPUE and Catch
 subpos = [0.015 0.75 0.43 0.25;...
@@ -366,7 +366,7 @@ hold on
 surfm(TLAT,TLONG,R2FC)
 colormap(cmR);
 clim([0 1])
-text(0,1.75,'F CPUE Const Effort','HorizontalAlignment','center')
+text(0,1.75,'F Catch Const Effort','HorizontalAlignment','center')
 
 % F Obs
 subplot('Position',subpos(5,:))
@@ -377,7 +377,7 @@ hold on
 surfm(TLAT,TLONG,R2FO)
 colormap(cmR);
 clim([0 1])
-text(0,1.75,'F CPUE Obs Effort','HorizontalAlignment','center')
+text(0,1.75,'F Catch Obs Effort','HorizontalAlignment','center')
 
 % P Const
 subplot('Position',subpos(2,:))
@@ -388,7 +388,7 @@ hold on
 surfm(TLAT,TLONG,R2PC)
 colormap(cmR);
 clim([0 1])
-text(0,1.75,'P CPUE Const Effort','HorizontalAlignment','center')
+text(0,1.75,'P Catch Const Effort','HorizontalAlignment','center')
 
 %P Obs
 subplot('Position',subpos(6,:))
@@ -399,7 +399,7 @@ hold on
 surfm(TLAT,TLONG,R2PO)
 colormap(cmR);
 clim([0 1])
-text(0,1.75,'P CPUE Obs Effort','HorizontalAlignment','center')
+text(0,1.75,'P Catch Obs Effort','HorizontalAlignment','center')
 
 % D Const
 subplot('Position',subpos(3,:))
@@ -410,7 +410,7 @@ hold on
 surfm(TLAT,TLONG,R2DC)
 colormap(cmR);
 clim([0 1])
-text(0,1.75,'D CPUE Const Effort','HorizontalAlignment','center')
+text(0,1.75,'D Catch Const Effort','HorizontalAlignment','center')
 
 %D Obs
 subplot('Position',subpos(7,:))
@@ -421,9 +421,9 @@ hold on
 surfm(TLAT,TLONG,R2DO)
 colormap(cmR);
 clim([0 1])
-text(0,1.75,'D CPUE Obs Effort','HorizontalAlignment','center')
+text(0,1.75,'D Catch Obs Effort','HorizontalAlignment','center')
 
-% All CPUE Const
+% All Catch Const
 subplot('Position',subpos(4,:))
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
@@ -432,9 +432,9 @@ hold on
 surfm(TLAT,TLONG,R2AC)
 colormap(cmR);
 clim([0 1])
-text(0,1.75,'All CPUE Const Effort','HorizontalAlignment','center')
+text(0,1.75,'All Catch Const Effort','HorizontalAlignment','center')
 
-% All CPUE Obs
+% All Catch Obs
 subplot('Position',subpos(8,:))
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
@@ -444,7 +444,9 @@ surfm(TLAT,TLONG,R2AO)
 colormap(cmR);
 clim([0 1])
 colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
-text(0,1.75,'All CPUE Obs Effort','HorizontalAlignment','center')
+text(0,1.75,'All Catch Obs Effort','HorizontalAlignment','center')
 
-print('-dpng',[ppath 'Map_LMEs_sstyrs15_cpue_feisty_obsfish2015_maxcorr_R2_types.png'])
+print('-dpng',[ppath 'Map_LMEs_sstyrs15_catch_feisty_obsfish2015_maxcorr_R2_types.png'])
+
+
 
