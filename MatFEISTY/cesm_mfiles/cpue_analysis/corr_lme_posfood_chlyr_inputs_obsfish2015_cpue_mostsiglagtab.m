@@ -16,10 +16,10 @@ ID = GRD.ID;
 % FEISTY outputs
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
-spath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
-%fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-%spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
+%fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+%spath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',...
     cfile,'/corrs_cpue'];
 
@@ -175,6 +175,6 @@ for j=1:length(tanom)
 
 end %driver
 
-save([spath,'LMEs_corr_cpue_chlyrs_inputs_obsfish2015_mostsiglag_posfood.mat'],...
+save([spath,'LMEs_corr_cpue_chlyrs15_inputs_obsfish2015_mostsiglag_posfood.mat'],...
     'LFtab','LPtab','LDtab','LAtab','lid','tanom','cnam','yr');
 

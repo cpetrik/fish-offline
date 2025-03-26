@@ -1,6 +1,6 @@
 % Mapp R2 of simulated yield with observed catch
 % Subplots together for comparison
-% Restricted analysis to sst yrs
+% Restricted analysis to chl yrs
 % Obs effort
 
 clear
@@ -18,7 +18,7 @@ mod = 'v15_All_fish03';
 mod2 = 'v15_obsfish2015';
 
 %%
-load([spath 'LMEs_corr_catch_sstyrs15_inputs_obsfish2015_mostsiglag_posfood.mat'])
+load([spath 'LMEs_corr_catch_chlyrs15_inputs_obsfish2015_mostsiglag_posfood.mat'])
 %dim: LME x driver x (corr, p-val, lag)
 
 %% Map data
@@ -121,7 +121,7 @@ colormap(cmR);
 clim([0 1])
 colorbar('Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
 title('All fishes')
-print('-dpng',[ppath 'Map_LMEs_sstyrs15_catch_obsfish2015_corrcoef_yield.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyrs15_catch_obsfish2015_corrcoef_yield.png'])
 
 %% R2
 f2 = figure('Units','inches','Position',[1 3 7.5 5]);
@@ -165,5 +165,5 @@ colormap(cmR);
 clim([0 1])
 colorbar('Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
 title('All fishes')
-print('-dpng',[ppath 'Map_LMEs_sstyrs15_catch_obsfish2015_R2_yield.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyrs15_catch_obsfish2015_R2_yield.png'])
 

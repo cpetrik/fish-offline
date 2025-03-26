@@ -18,7 +18,7 @@ ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/
 mod = 'v15_obsfish2015';
 
 %%
-load([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish2015_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_cpue_chlyrs15_driver_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab','lid')
 
 cnam = {'coef','p','lag','idriver','driver'};
@@ -176,7 +176,7 @@ ylim([-1.1 1.1])
 set(gca,'XTick',1:3:66,'XTickLabel',1:3:66)
 ylabel('All fishes')
 
-print('-dpng',[ppath 'Bar_LMEs_chlyr_cpue_driver_obsfish_maxcorr_fntypes.png'])
+print('-dpng',[ppath 'Bar_LMEs_chlyr15_cpue_driver_obsfish_maxcorr_fntypes.png'])
 
 %% Map
 cpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/FOSI/';
@@ -283,7 +283,7 @@ colormap(mcol)
 colorbar('TickLabels',ctex,'Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
 title('CPUE corr All fishes')
 
-print('-dpng',[ppath 'Map_LMEs_chlyr_cpue_driver_obsfish2015_maxcorr_fntypes.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_cpue_driver_obsfish2015_maxcorr_fntypes.png'])
 
 
 

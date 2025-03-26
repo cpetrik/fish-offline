@@ -16,10 +16,10 @@ ID = GRD.ID;
 % FEISTY outputs
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
-spath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
-%fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-%spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
+%fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+%spath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/PNG/CESM_MAPP/FOSI/',...
     cfile,'/corrs_cpue'];
 
@@ -40,10 +40,10 @@ CAtab = CFtab;
 PAtab = CFtab;
 
 %% sat & inputs
-load([spath 'LMEs_corr_catch_chlyrs_driver_lags.mat'])
+load([spath 'LMEs_corr_catch_chlyrs15_driver_lags.mat'])
 stex = tanom;
 
-load([spath 'LMEs_corr_catch_chlyrs_feisty_lags.mat'],'lid')
+load([spath 'LMEs_corr_catch_chlyrs15_feisty_lags.mat'],'lid')
 
 %inputss & sat
 CAtab(:,1:6,:) = AtabC(lid,:,:);
@@ -59,7 +59,7 @@ PDtab(:,1:6,:) = DtabP(lid,:,:);
 clear AtabC AtabP FtabC FtabP PtabC PtabP DtabC DtabP tanom
 
 %%
-load([spath 'LMEs_corr_catch_chlyrs_feisty_lags.mat'])
+load([spath 'LMEs_corr_catch_chlyrs15_feisty_lags.mat'])
 ftex = tanom;
 
 %sat
@@ -175,6 +175,6 @@ for j=1:length(tanom)
 
 end %driver
 
-save([spath,'LMEs_corr_catch_chlyrs_inputs_feisty_mostsiglag_posfood.mat'],...
+save([spath,'LMEs_corr_catch_chlyrs15_inputs_feisty_mostsiglag_posfood.mat'],...
     'LFtab','LPtab','LDtab','LAtab','lid','tanom','cnam','yr');
 

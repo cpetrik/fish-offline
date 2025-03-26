@@ -12,10 +12,10 @@ cpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/C
 
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
-fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
-spath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
-%fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-%spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
+% fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+% spath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 
 mod = 'v15_All_fish03';
 mod2 = 'v15_obsfish2015';
@@ -23,7 +23,7 @@ mod2 = 'v15_obsfish2015';
 cnam = {'coef','p','lag','idriver','driver'};
 
 %%  ---------------- sat --------------------------
-load([spath,'LMEs_corr_catch_chlyrs_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs15_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 load([spath 'LMEs_corr_cpue_chlyrs15_feisty_lags.mat'],'lid')
 
@@ -48,7 +48,7 @@ DtabS = LDtab(sigD,:);
 clear sigA sigF sigP sigD LAtab LFtab LPtab LDtab
 
 %%  ---------------- drivers --------------------------
-load([spath,'LMEs_corr_catch_chlyrs_inputs_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs15_inputs_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 dtex = {'TP','TB','Det','ZmLoss','SST','Chl'};
@@ -72,7 +72,7 @@ DtabD = LDtab(sigD,:);
 clear sigA sigF sigP sigD LAtab LFtab LPtab LDtab
 
 %%  ---------------- constfish --------------------------
-load([spath,'LMEs_corr_catch_chlyrs_inputs_feisty_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs15_inputs_feisty_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 ftex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod'};
@@ -91,7 +91,7 @@ DtabF = LDtab(sigD,:);
 clear sigA sigF sigP sigD LAtab LFtab LPtab LDtab
 
 %%  ---------------- obsfish --------------------------
-load([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish2015_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 otex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod','Yield'};
@@ -246,16 +246,16 @@ TabP = array2table(matP,"RowNames",rname,"VariableNames",cname);
 TabD = array2table(matD,"RowNames",rname,"VariableNames",cname);
 
 %%
-writetable(TabA,[spath,'Num_LMEs_corr_catch_chlyrs_inputs_feisty_maxcorr_posfood_A.csv'],...
+writetable(TabA,[spath,'Num_LMEs_corr_catch_chlyrs15_inputs_feisty_maxcorr_posfood_A.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(TabF,[spath,'Num_LMEs_corr_catch_chlyrs_inputs_feisty_maxcorr_posfood_F.csv'],...
+writetable(TabF,[spath,'Num_LMEs_corr_catch_chlyrs15_inputs_feisty_maxcorr_posfood_F.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(TabP,[spath,'Num_LMEs_corr_catch_chlyrs_inputs_feisty_maxcorr_posfood_P.csv'],...
+writetable(TabP,[spath,'Num_LMEs_corr_catch_chlyrs15_inputs_feisty_maxcorr_posfood_P.csv'],...
     'Delimiter',',','WriteRowNames',true);
-writetable(TabD,[spath,'Num_LMEs_corr_catch_chlyrs_inputs_feisty_maxcorr_posfood_D.csv'],...
+writetable(TabD,[spath,'Num_LMEs_corr_catch_chlyrs15_inputs_feisty_maxcorr_posfood_D.csv'],...
     'Delimiter',',','WriteRowNames',true);
 
-save([spath,'Num_LMEs_corr_catch_chlyrs_inputs_feisty_maxcorr_posfood.mat'],...
+save([spath,'Num_LMEs_corr_catch_chlyrs15_inputs_feisty_maxcorr_posfood.mat'],...
     'matF','matP','matD','matA',...
     'TabF','TabP','TabD','TabA','lid');
 

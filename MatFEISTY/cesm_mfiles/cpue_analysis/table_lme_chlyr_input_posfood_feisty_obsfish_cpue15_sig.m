@@ -89,7 +89,7 @@ DtabF = LDtab(sigD,:);
 clear sigA sigF sigP sigD LAtab LFtab LPtab LDtab
 
 %%  ---------------- obsfish --------------------------
-load([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish2015_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_cpue_chlyrs15_driver_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab') 
 
 otex = {'TP','TB','Det','ZmLoss','SST','Chl','Biom','Prod'};

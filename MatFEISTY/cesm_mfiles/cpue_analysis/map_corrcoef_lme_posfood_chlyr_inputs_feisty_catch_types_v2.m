@@ -6,7 +6,7 @@
 
 clear
 close all
-clos
+
 %% % ------------------------------------------------------------
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
 
@@ -19,7 +19,7 @@ mod = 'v15_All_fish03';
 mod2 = 'v15_obsfish2015';
 
 %%
-load([spath 'LMEs_corr_catch_chlyrs_inputs_feisty_mostsiglag_posfood.mat'])
+load([spath 'LMEs_corr_catch_chlyrs15_inputs_feisty_mostsiglag_posfood.mat'])
 %dim: LME x driver x (corr, p-val, lag)
 
 LAtab2 = LAtab;
@@ -31,7 +31,7 @@ LDtab2 = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath 'LMEs_corr_catch_chlyrs_inputs_obsfish2015_mostsiglag_posfood.mat'])
+load([spath 'LMEs_corr_catch_chlyrs15_inputs_obsfish2015_mostsiglag_posfood.mat'])
 
 LAtab2(:,9:10,:) = LAtab(:,7:8,:);
 LFtab2(:,9:10,:) = LFtab(:,7:8,:);
@@ -104,7 +104,7 @@ for j=1:10
 
 end
 colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_feisty_obsfish2015_corrcoef_All.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_catch_driver_feisty_obsfish2015_corrcoef_All.png'])
 
 %% Forage
 f2 = figure('Units','inches','Position',[1 3 6.5 8]);
@@ -132,7 +132,7 @@ for j=1:10
 
 end
 colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_feisty_obsfish2015_corrcoef_F.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_catch_driver_feisty_obsfish2015_corrcoef_F.png'])
 
 %% Lg Pel
 f3 = figure('Units','inches','Position',[1 3 6.5 8]);
@@ -160,7 +160,7 @@ for j=1:10
 
 end
 colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_feisty_obsfish2015_corrcoef_P.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_catch_driver_feisty_obsfish2015_corrcoef_P.png'])
 
 %% Demersal
 f4 = figure('Units','inches','Position',[1 3 6.5 8]);
@@ -188,7 +188,7 @@ for j=1:10
 
 end
 colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_feisty_obsfish2015_corrcoef_D.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_catch_driver_feisty_obsfish2015_corrcoef_D.png'])
 
 
 %% 8plot by driver

@@ -29,7 +29,7 @@ EDtabC = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %% cpue obs
-load([spath,'LMEs_corr_cpue_chlyrs_driver_obsfish2015_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_cpue_chlyrs15_driver_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab') 
 
 EAtabO = LAtab;
@@ -40,8 +40,8 @@ EDtabO = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %% catch const
-load([spath,'LMEs_corr_catch_chlyrs_inputs_feisty_maxcorr_posfood.mat'],...
-    'LAtab','LFtab','LPtab','LDtab','lid')
+load([spath,'LMEs_corr_catch_chlyrs15_inputs_feisty_maxcorr_posfood.mat'],...
+    'LAtab','LFtab','LPtab','LDtab')
 
 CAtabC = LAtab;
 CFtabC = LFtab;
@@ -51,7 +51,7 @@ CDtabC = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %% catch obs
-load([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish2015_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 CAtabO = LAtab;
@@ -413,7 +413,7 @@ colormap(gcol);
 colorbar('Ticks',1:3,'TickLabels',gtex, 'Position',[0.9 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out');
 text(0,1.75,'All Obs Effort','HorizontalAlignment','center')
 
-print('-dpng',[ppath 'Map_LMEs_chlyr_cpue15_feisty_obsfish2015_groupdriver_types.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_cpue15_feisty_obsfish2015_groupdriver_types.png'])
 
 
 %% Catch Dominant driver map
@@ -503,7 +503,7 @@ colormap(gcol);
 colorbar('Ticks',1:3,'TickLabels',gtex, 'Position',[0.9 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
 text(0,1.75,'All Obs Effort','HorizontalAlignment','center')
 
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_feisty_obsfish2015_groupdriver_types.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_catch_feisty_obsfish2015_groupdriver_types.png'])
 
 
 

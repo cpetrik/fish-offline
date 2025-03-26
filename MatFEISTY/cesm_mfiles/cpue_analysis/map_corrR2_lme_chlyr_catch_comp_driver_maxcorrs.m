@@ -7,11 +7,11 @@ close all
 
 %% % ------------------------------------------------------------
 cfile = 'Dc_Lam700_enc70-b200_m400-b175-k086_c20-b250_D075_A050_sMZ090_mMZ045_nmort1_BE08_CC80_RE00100';
-fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
-spath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+% fpath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
+% spath='/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Data/FOSI/cpue2015/';
 
-% fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
-% spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
+fpath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/FOSI/'];
+spath=['/Volumes/petrik-lab/Feisty/NC/CESM_MAPP/' cfile '/regress_cpue/'];
 ppath=['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/FEISTY/CODE/Figs/CESM_MAPP/FOSI/',...
     cfile,'/corrs_cpue/'];
 
@@ -19,7 +19,7 @@ mod = 'v15_All_fish03';
 mod2 = 'v15_obsfish2015';
 
 %%
-load([spath,'LMEs_corr_catch_chlyrs_inputs_feisty_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs15_inputs_feisty_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab','lid')
 
 AtabC = LAtab;
@@ -30,7 +30,7 @@ DtabC = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_catch_chlyrs_inputs_obsfish2015_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs15_inputs_obsfish2015_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 AtabO = LAtab;
@@ -41,7 +41,7 @@ DtabO = LDtab;
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_catch_chlyrs_inputs_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs15_inputs_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 AtabD = LAtab(lid,:);
@@ -52,7 +52,7 @@ DtabD = LDtab(lid,:);
 clear LAtab LFtab LPtab LDtab
 
 %%
-load([spath,'LMEs_corr_catch_chlyrs_maxcorr_posfood.mat'],...
+load([spath,'LMEs_corr_catch_chlyrs15_maxcorr_posfood.mat'],...
     'LAtab','LFtab','LPtab','LDtab')
 
 AtabS = LAtab(lid,:);
@@ -216,7 +216,7 @@ colormap(cmR);
 clim([0 1])
 colorbar('Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
 title('Catch Obs Effort')
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_comp_maxcorr_R2_All.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_catch_driver_comp_maxcorr_R2_All.png'])
 
 %% R2 of Dominant driver map - Forage
 f2 = figure('Units','inches','Position',[1 4 7.5 5]);
@@ -260,7 +260,7 @@ colormap(cmR);
 clim([0 1])
 colorbar('Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
 title('Catch Obs Effort')
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_comp_maxcorr_R2_Forage.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_catch_driver_comp_maxcorr_R2_Forage.png'])
 
 %% R2 of Dominant driver map - Lg Pel
 f3 = figure('Units','inches','Position',[1 5 7.5 5]);
@@ -304,7 +304,7 @@ colormap(cmR);
 clim([0 1])
 colorbar('Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
 title('Catch Obs Effort')
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_comp_maxcorr_R2_LgPel.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_catch_driver_comp_maxcorr_R2_LgPel.png'])
 
 %% R2 of Dominant driver map - Dem
 f4 = figure('Units','inches','Position',[1 6 7.5 5]);
@@ -349,7 +349,7 @@ colormap(cmR);
 clim([0 1])
 colorbar('Position',[0.25 0.055 0.5 0.03],'orientation','horizontal')
 title('Catch Obs Effort')
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_driver_comp_maxcorr_R2_Dem.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_catch_driver_comp_maxcorr_R2_Dem.png'])
 
 
 %% Create 8 plot of 4 fn types w/ CPUE and Catch
@@ -453,7 +453,7 @@ clim([0 1])
 colorbar('Position',[0.92 0.25 0.025 0.5],'orientation','vertical','AxisLocation','out')
 text(0,1.75,'All Catch Obs Effort','HorizontalAlignment','center')
 
-print('-dpng',[ppath 'Map_LMEs_chlyr_catch_feisty_obsfish2015_maxcorr_R2_types.png'])
+print('-dpng',[ppath 'Map_LMEs_chlyr15_catch_feisty_obsfish2015_maxcorr_R2_types.png'])
 
 
 
