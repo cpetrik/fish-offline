@@ -50,7 +50,7 @@ ndays = [50*365; (50*365); (50*365); (15*365)];
 
 %% Water cells only
 
-ncid = netcdf.open([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_mean_150m.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_mean_150m.',num2str(syr(1)),'-',num2str(eyr(1)),'.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for k=18
     varname = netcdf.inqVar(ncid, k-1);
