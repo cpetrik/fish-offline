@@ -3,14 +3,14 @@
 clear
 close all
 
-fpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/4P2Z/Hist/';
+fpath = '/project/Feisty/GCM_Data/CESM/4P2Z/Hist/';
 
 %% All inputs
-ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozooC_zint_150m.18500101-19000101.nc'])
-ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozoo_loss_zint_150m.18500101-19000101.nc'])
-ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.pocToFloor_2.18500101-19000101.nc'])
-ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_BOTTOM_2.18500101-19000101.nc'])
-ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_mean_150m.18500101-19000101.nc'])
+% ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozooC_zint_150m.18500101-19000101.nc'])
+% ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozoo_loss_zint_150m.18500101-19000101.nc'])
+% ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.pocToFloor_2.18500101-19000101.nc'])
+% ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_BOTTOM_2.18500101-19000101.nc'])
+% ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_mean_150m.18500101-19000101.nc'])
 
 %%
 % mesozooC_zint_150m
@@ -63,7 +63,7 @@ WID = find(HT(:)>0);
 
 %%
 
-for j=1%:length(syrs)
+for j=1:length(syr)
     ncid = netcdf.open([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_mean_150m.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
     [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
     for i = nvars %1:(nvars)
