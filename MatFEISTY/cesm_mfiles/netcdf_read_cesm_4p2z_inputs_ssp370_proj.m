@@ -3,14 +3,11 @@
 clear
 close all
 
-fpath = '/Volumes/petrik-lab/Feisty/GCM_Data/CESM/4P2Z/Hist/';
+fpath = '/project/Feisty/GCM_Data/CESM/4P2Z/SSP370/';
 
 %% All inputs
-ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozooC_zint_150m.18500101-19000101.nc'])
-ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozoo_loss_zint_150m.18500101-19000101.nc'])
-ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.pocToFloor_2.18500101-19000101.nc'])
-ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_BOTTOM_2.18500101-19000101.nc'])
-ncdisp([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_mean_150m.18500101-19000101.nc'])
+ncdisp([fpath 'b.e21p4.BSSP370.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozooC_zint_150m.20150101-20650101.nc'])
+ncdisp([fpath 'b.e21p4.BSSP370.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozoo_loss_zint_150m.20650102-21001231.nc'])
 
 %%
 % mesozooC_zint_150m
@@ -43,14 +40,14 @@ calendar   = 'noleap';
 
 
 %%
-syr = [18500101;19000102;19500102;20000102];
-eyr = [19000101;19500101;20000101;20141231];
+syr = [20150101;20650102];
+eyr = [20650101;21001231];
 
-ndays = [50*365; (50*365); (50*365); (15*365)];
+ndays = [50*365; (36*365)];
 
 %% Water cells only
 
-ncid = netcdf.open([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_mean_150m.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
+ncid = netcdf.open([fpath 'b.e21p4.BSSP370.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_mean_150m.',num2str(syr(1)),'-',num2str(eyr(1)),'.nc'],'NC_NOWRITE');
 [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
 for k=18
     varname = netcdf.inqVar(ncid, k-1);
@@ -63,8 +60,8 @@ WID = find(HT(:)>0);
 
 %%
 
-for j=1%:length(syrs)
-    ncid = netcdf.open([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_mean_150m.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
+for j=1:length(syr)
+    ncid = netcdf.open([fpath 'b.e21p4.BSSP370.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_mean_150m.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
     [ndims,nvars,ngatts,unlimdimid] = netcdf.inq(ncid);
     for i = nvars %1:(nvars)
         varname = netcdf.inqVar(ncid, i-1);
@@ -74,7 +71,7 @@ for j=1%:length(syrs)
     netcdf.close(ncid);
 
 
-    bcid = netcdf.open([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_BOTTOM_2.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
+    bcid = netcdf.open([fpath 'b.e21p4.BSSP370.f09_g17.4p2z.002.pop.h.ecosys.nday1.TEMP_BOTTOM_2.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
     [~,bvars,~,~] = netcdf.inq(bcid);
     for i = bvars
         varname = netcdf.inqVar(bcid, i-1);
@@ -84,7 +81,7 @@ for j=1%:length(syrs)
     netcdf.close(bcid);
 
 
-    zcid = netcdf.open([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozooC_zint_150m.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
+    zcid = netcdf.open([fpath 'b.e21p4.BSSP370.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozooC_zint_150m.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
     [~,zvars,~,~] = netcdf.inq(zcid);
     for i = zvars
         varname = netcdf.inqVar(zcid, i-1);
@@ -94,7 +91,7 @@ for j=1%:length(syrs)
     netcdf.close(zcid);
 
 
-    lcid = netcdf.open([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozoo_loss_zint_150m.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
+    lcid = netcdf.open([fpath 'b.e21p4.BSSP370.f09_g17.4p2z.002.pop.h.ecosys.nday1.mesozoo_loss_zint_150m.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
     [~,lvars,~,~] = netcdf.inq(lcid);
     for i = lvars
         varname = netcdf.inqVar(lcid, i-1);
@@ -104,7 +101,7 @@ for j=1%:length(syrs)
     netcdf.close(lcid);
 
 
-    pcid = netcdf.open([fpath 'b.e21p4.BHIST.f09_g17.4p2z.002.pop.h.ecosys.nday1.pocToFloor_2.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
+    pcid = netcdf.open([fpath 'b.e21p4.BSSP370.f09_g17.4p2z.002.pop.h.ecosys.nday1.pocToFloor_2.',num2str(syr(j)),'-',num2str(eyr(j)),'.nc'],'NC_NOWRITE');
     [~,pvars,~,~] = netcdf.inq(pcid);
     for i = 1:(pvars)
         varname = netcdf.inqVar(pcid, i-1);
@@ -173,22 +170,19 @@ for j=1%:length(syrs)
 
         range = dst(y):den(y);
 
-        ESM.Tp = Tp;
-        ESM.Tb = Tb;
-        ESM.Zm = Zm;
-        ESM.dZm = D_dZm;
-        ESM.det = D_det;
+        ESM.Tp = Tp(:,range);
+        ESM.Tb = Tb(:,range);
+        ESM.Zm = Zmeso(:,range);
+        ESM.dZm = ZmLoss(:,range);
+        ESM.det = Det(:,range);
 
         % save
-        save([fpath 'Data_cesm_4p2z_daily_',num2str(yr),'.mat'], 'ESM');
+        save([fpath 'Data_cesm_4p2z_daily_ssp370_',num2str(yr),'.mat'], 'ESM');
     end
 
 end
 
 
-
-%%
-save([fpath 'g.e22a06.G1850ECOIAF_JRA_PHYS_DEV.TL319_g17.4p4z.004.FIESTY-forcing.mat']);
 
 
 
