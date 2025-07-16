@@ -87,7 +87,7 @@ GRD.Z   = HT(ID) * 1e-2;     %from cm to m
 GRD.area = TAREA(ID) * 1e-4; %from cm2 to m2
 GRD.lmask = mask(ID);
 
-%% Save needed variables
+1/100%% Save needed variables
 save([spath 'gridspec_POP_4p2z.mat'],'HT','TLAT','TLONG','TAREA','mask',...
     'HTunits','HTlong_name','AREAunits','AREAlong_name');
 save([spath 'Data_grid_POP_4p2z.mat'],'GRD');
