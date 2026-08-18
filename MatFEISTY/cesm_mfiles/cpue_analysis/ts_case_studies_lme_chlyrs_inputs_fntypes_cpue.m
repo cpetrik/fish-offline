@@ -2,8 +2,6 @@
 % that is not satellite SST or chl
 % CESM FOSI
 % 1997-2015
-% See if significance related to t.s. length, and SST does better with
-% longer record
 
 clear
 close all
@@ -73,6 +71,10 @@ cchl = drainbow(7,:)/255; %green
 cbio = drainbow(3,:)/255; %dk purp
 cnu = drainbow(1,:)/255; %lt purp
 
+cf = bright(5,:)/255;
+cp = bright(1,:)/255;
+cd = bright(3,:)/255;
+
 colororder(mcol)
 close all
 
@@ -94,48 +96,53 @@ cyr2 = yyr(3:end);
 cyr3 = yyr(4:end);
 
 
-%% LME 6
+%% LME 6 F&D - CPUE all most like CPUE D
 % GOOD ONE!!
 figure(6)
 %plot with lags
 h1 = axes('Units','pixels','Position',axesPosition,...
-          'Color','w','XColor','k','YColor',cchl,...
+          'Color','w','XColor','k','YColor',ctb,...
           'XLim',xLimit,'NextPlot','add');
 h2 = axes('Units','pixels','Position',axesPosition+yWidth.*[-1 0 1 0],...
-          'Color','none','XColor','k','YColor',ctb,...
+          'Color','none','XColor','k','YColor',cf,...
           'XLim',xLimit+[xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
-          'Color','none','XColor','k','YColor','k',...
+          'Color','none','XColor','k','YColor',cd,...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
+h4 = axes('Units','pixels','Position',axesPosition+yWidth.*[-3 0 3 0],...
+          'Color','none','XColor','k','YColor','k',...
+          'XLim',xLimit+[3*xOffset 0],'XTick',[],'XTickLabel',[],...
+          'NextPlot','add');
 
-line(dyr3,achl15(6,(1:(end-3))),'color',cchl,'LineWidth',2,'Parent',h1); hold on;
-line(dyr2,atb15(6,(1:(end-2))),'color',ctb,'LineWidth',2,'Parent',h2); 
+line(dyr2,atb15(6,(1:(end-2))),'color',ctb,'LineWidth',1,'Parent',h1); hold on;
+line(cyr2,abf15(6,(3:end)),'color',cf,'LineWidth',1,'Parent',h2); hold on;
+line(cyr2,abd15(6,(3:end)),'color',cd,'LineWidth',1,'Parent',h3); hold on;
 xlabel(h1,'Year');
 
-line(cyr2,aa_cpue97(6,(3:end)),'color','k','LineWidth',2,'Parent',h3); 
-ylabel(h3,'Anomalies')
-title('LME 6, Chl-3, TB-2')
-print('-dpng',[ppath 'ts_LME6_CPUE_sig_drivers_lags.png'])
+line(cyr2,aa_cpue97(6,(3:end)),'color','k','LineWidth',1,'Parent',h4); hold on;
+%line(cyr2,ad_cpue97(6,(3:end)),'color','k','LineStyle','--','LineWidth',1,'Parent',h3); 
+ylabel(h4,'Anomalies')
+title('LME 6, TB-2')
+print('-dpng',[ppath 'ts_LME6_CPUE_sig_drivers_chl15_bestlags_fntypes.png'])
 
-%% LME 12
+%% LME 12 F&P
 % MAYBE
 % LME slag	sat	dlag	driver	flag	fdriver
 % 12	2	SST	1	    Det	    0	    Biom
 
-figure(8)
+figure(12)
 %plot with lags
 h1 = axes('Units','pixels','Position',axesPosition,...
-          'Color','w','XColor','k','YColor',csst,...
-          'XLim',xLimit,'YTick',-0.4:0.1:0.3,'YTickLabel',[0.3,0.2,0.1,0,-0.1,-0.2,-0.3,-0.4],...
-          'NextPlot','add');
+          'Color','w','XColor','k','YColor',cdet,...
+          'XLim',xLimit,'NextPlot','add');
 h2 = axes('Units','pixels','Position',axesPosition+yWidth.*[-1 0 1 0],...
-          'Color','none','XColor','k','YColor',cdet,...
+          'Color','none','XColor','k','YColor',cbio,...
           'XLim',xLimit+[xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
-          'Color','none','XColor','k','YColor',cbio,...
+          'Color','none','XColor','k','YColor',cf,...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 h4 = axes('Units','pixels','Position',axesPosition+yWidth.*[-3 0 3 0],...
@@ -143,88 +150,35 @@ h4 = axes('Units','pixels','Position',axesPosition+yWidth.*[-3 0 3 0],...
           'XLim',xLimit+[3*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr2,-1*asst15(12,(1:(end-2))),'color',csst,'LineWidth',2,'Parent',h1); hold on;
-line(dyr1,adet15(12,(1:(end-1))),'color',cdet,'LineWidth',2,'Parent',h2); hold on;
-line(yyr,aba15(12,:),'color',cbio,'LineWidth',2,'Parent',h3);
+line(dyr1,adet15(12,(1:(end-1))),'color',cdet,'LineWidth',1,'Parent',h1); hold on;
+line(yyr,aba15(12,:),'color',cbio,'LineWidth',1,'Parent',h2);
+line(yyr,abf15(12,:),'color',cf,'LineWidth',1,'Parent',h3);
+%line(yyr,abp15(12,:),'color',cp,'LineWidth',1,'Parent',h4);
 xlabel(h1,'Year');
 
-line(yyr,aa_cpue97(12,:),'color','k','LineWidth',2,'Parent',h4); 
+line(yyr,aa_cpue97(12,:),'color','k','LineWidth',1,'Parent',h4); 
+%line(yyr,af_cpue97(12,:),'color','k','LineStyle','--','LineWidth',1,'Parent',h5); 
+%line(yyr,ap_cpue97(12,:),'color','k','LineStyle',':','LineWidth',1,'Parent',h5); 
 ylabel(h4,'Anomalies')
-title('LME 5, SST-2, Det-1, Biom0')
-print('-dpng',[ppath 'ts_LME12_CPUE_sig_drivers_lags.png'])
+title('LME 12, Det-1, Biom0')
+print('-dpng',[ppath 'ts_LME12_CPUE_sig_drivers_chl15_bestlags_fntypes.png'])
 
-%% LME 26
+%% LME 26 - F&D
 % MAYBE
 % LME slag	sat	dlag	driver	flag	fdriver
 % 26	3	Chl	1	    ZmL	    1	    ZmL
 
-figure(14)
+figure(26)
 %plot with lags
 h1 = axes('Units','pixels','Position',axesPosition,...
-          'Color','w','XColor','k','YColor',cchl,...
+          'Color','w','XColor','k','YColor',czm,...
           'XLim',xLimit,'NextPlot','add');
 h2 = axes('Units','pixels','Position',axesPosition+yWidth.*[-1 0 1 0],...
-          'Color','none','XColor','k','YColor',czm,...
+          'Color','none','XColor','k','YColor',cf,...
           'XLim',xLimit+[xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
-          'Color','none','XColor','k','YColor','k',...
-          'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
-          'NextPlot','add');
-
-line(dyr3,achl15(26,(1:(end-3))),'color',cchl,'LineWidth',2,'Parent',h1); hold on;
-line(dyr1,azlos15(26,(1:(end-1))),'color',czm,'Parent',h2); hold on;
-xlabel(h1,'Year');
-
-line(cyr1,aa_cpue97(26,(2:end)),'color','k','Parent',h3); 
-ylabel(h3,'Anomalies')
-title('LME 26, Chl-3, ZmL-1')
-print('-dpng',[ppath 'ts_LME26_CPUE_sig_drivers_lags.png'])
-
-%% LME 31
-% Pretty good
-% LME slag	sat	dlag	driver	flag	fdriver
-% 31	3	SST	1	    TP	    1	    TP
-
-figure(18)
-%plot with lags
-h1 = axes('Units','pixels','Position',axesPosition,...
-          'Color','w','XColor','k','YColor',csst,...
-          'XLim',xLimit,'NextPlot','add');
-h2 = axes('Units','pixels','Position',axesPosition+yWidth.*[-1 0 1 0],...
-          'Color','none','XColor','k','YColor',ctp,...
-          'XLim',xLimit+[xOffset 0],'XTick',[],'XTickLabel',[],...
-          'NextPlot','add');
-h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
-          'Color','none','XColor','k','YColor','k',...
-          'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
-          'NextPlot','add');
-
-line(dyr3,asst15(31,(1:(end-3))),'color',csst,'Parent',h1); hold on;
-line(dyr1,atp15(31,(1:(end-1))),'color',ctp,'Parent',h2); hold on;
-xlabel(h1,'Year');
-
-line(cyr1,aa_cpue97(31,(2:end)),'color','k','Parent',h3); 
-ylabel(h3,'Anomalies')
-title('LME 31, SST-3, TP-1')
-print('-dpng',[ppath 'ts_LME31_CPUE_sig_drivers_lags.png'])
-
-%% LME 48 
-% Maybe
-% LME slag	sat	dlag	driver	flag	fdriver
-% 48	1	SST	3	    Det	    2	    Biom
-
-figure(28)
-%plot with lags
-h1 = axes('Units','pixels','Position',axesPosition,...
-          'Color','w','XColor','k','YColor',csst,...
-          'XLim',xLimit,'NextPlot','add');
-h2 = axes('Units','pixels','Position',axesPosition+yWidth.*[-1 0 1 0],...
-          'Color','none','XColor','k','YColor',cdet,...
-          'XLim',xLimit+[xOffset 0],'XTick',[],'XTickLabel',[],...
-          'NextPlot','add');
-h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
-          'Color','none','XColor','k','YColor',cbio,...
+          'Color','none','XColor','k','YColor',cd,...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 h4 = axes('Units','pixels','Position',axesPosition+yWidth.*[-3 0 3 0],...
@@ -232,28 +186,97 @@ h4 = axes('Units','pixels','Position',axesPosition+yWidth.*[-3 0 3 0],...
           'XLim',xLimit+[3*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr1,asst15(48,(1:(end-1))),'color',csst,'Parent',h1); hold on;
-line(dyr3,adet15(48,(1:(end-3))),'color',cdet,'Parent',h2); hold on;
-line(dyr2,aba15(48,(1:(end-2))),'color',cbio,'Parent',h3); hold on;
+line(dyr1,azlos15(26,(1:(end-1))),'color',czm,'LineWidth',1,'Parent',h1); hold on;
+line(cyr1,abf15(26,(2:end)),'color',cf,'LineWidth',1,'Parent',h2); 
+line(cyr1,abd15(26,(2:end)),'color',cd,'LineWidth',1,'Parent',h3); 
 xlabel(h1,'Year');
 
-line(cyr1,aa_cpue97(48,(2:end)),'color','k','Parent',h4); 
-ylabel(h3,'Anomalies')
-title('LME 48, SST-1, Det-3, Bio-2')
-print('-dpng',[ppath 'ts_LME48_CPUE_sig_drivers_lags.png'])
+line(cyr1,aa_cpue97(26,(2:end)),'color','k','LineWidth',1,'Parent',h4); 
+%line(cyr1,af_cpue97(26,(2:end)),'color','k','LineStyle','--','LineWidth',1,'Parent',h3); 
+%line(cyr1,ad_cpue97(26,(2:end)),'color','k','LineStyle',':','LineWidth',1,'Parent',h3); 
+ylabel(h4,'Anomalies')
+title('LME 26, ZmL-1')
+print('-dpng',[ppath 'ts_LME26_CPUE_sig_drivers_chl15_bestlags_fntypes.png'])
+
+%% LME 31 - F & P (looks bad)
+% LME slag	sat	dlag	driver	flag	fdriver
+% 31	3	SST	1	    TP	    1	    TP
+
+figure(31)
+%plot with lags
+h1 = axes('Units','pixels','Position',axesPosition,...
+          'Color','w','XColor','k','YColor',ctp,...
+          'XLim',xLimit,'NextPlot','add');
+h2 = axes('Units','pixels','Position',axesPosition+yWidth.*[-1 0 1 0],...
+          'Color','none','XColor','k','YColor',cf,...
+          'XLim',xLimit+[xOffset 0],'XTick',[],'XTickLabel',[],...
+          'NextPlot','add');
+h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
+          'Color','none','XColor','k','YColor',cp,...
+          'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
+          'NextPlot','add');
+h4 = axes('Units','pixels','Position',axesPosition+yWidth.*[-3 0 3 0],...
+          'Color','none','XColor','k','YColor','k',...
+          'XLim',xLimit+[3*xOffset 0],'XTick',[],'XTickLabel',[],...
+          'NextPlot','add');
+
+line(dyr1,atp15(31,(1:(end-1))),'color',ctp,'LineWidth',1,'Parent',h1); hold on;
+line(cyr1,abf15(31,(2:end)),'color',cf,'LineWidth',1,'Parent',h2); 
+line(cyr1,abp15(31,(2:end)),'color',cp,'LineWidth',1,'Parent',h3); 
+xlabel(h1,'Year');
+
+line(cyr1,aa_cpue97(31,(2:end)),'color','k','LineWidth',1,'Parent',h4); 
+%line(cyr1,af_cpue97(31,(2:end)),'color','k','LineStyle','--','LineWidth',1,'Parent',h4); 
+%line(cyr1,ap_cpue97(31,(2:end)),'color','k','LineStyle',':','LineWidth',1,'Parent',h4); 
+ylabel(h4,'Anomalies')
+title('LME 31, SST-3, TP-1')
+print('-dpng',[ppath 'ts_LME31_CPUE_sig_drivers_chl15_bestlags_fntypes.png'])
+
+%% LME 48 - D
+% very good
+% LME slag	sat	dlag	driver	flag	fdriver
+% 48	1	SST	3	    Det	    2	    Biom
+
+figure(48)
+%plot with lags
+h1 = axes('Units','pixels','Position',axesPosition,...
+          'Color','w','XColor','k','YColor',cdet,...
+          'XLim',xLimit,'NextPlot','add');
+h2 = axes('Units','pixels','Position',axesPosition+yWidth.*[-1 0 1 0],...
+          'Color','none','XColor','k','YColor',cbio,...
+          'XLim',xLimit+[xOffset 0],'XTick',[],'XTickLabel',[],...
+          'NextPlot','add');
+h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
+          'Color','none','XColor','k','YColor',cd,...
+          'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
+          'NextPlot','add');
+h4 = axes('Units','pixels','Position',axesPosition+yWidth.*[-3 0 3 0],...
+          'Color','none','XColor','k','YColor','k',...
+          'XLim',xLimit+[3*xOffset 0],'XTick',[],'XTickLabel',[],...
+          'NextPlot','add');
+
+line(dyr3,adet15(48,(1:(end-3))),'color',cdet,'LineWidth',1.5,'Parent',h1); hold on;
+line(dyr2,aba15(48,(1:(end-2))),'color',cbio,'LineWidth',1.5,'Parent',h2); hold on;
+line(dyr2,abd15(48,(1:(end-2))),'color',cd,'LineWidth',1.5,'Parent',h3); hold on;
+xlabel(h1,'Year');
+
+line(cyr1,aa_cpue97(48,(2:end)),'color','k','LineWidth',1.5,'Parent',h4); 
+ylabel(h4,'Anomalies')
+title('LME 48, Det-3, Bio-2')
+print('-dpng',[ppath 'ts_LME48_CPUE_sig_drivers_chl15_bestlags_fntypes.png'])
 
 %% LME 54
 % GOOD ONE
 % LME slag	sat	dlag	driver	flag	fdriver
 % 54	3	Chl	1	    Det	    1	    Det
 
-figure(30)
+figure(54)
 %plot with lags
 h1 = axes('Units','pixels','Position',axesPosition,...
-          'Color','w','XColor','k','YColor',cchl,...
+          'Color','w','XColor','k','YColor',cdet,...
           'XLim',xLimit,'NextPlot','add');
 h2 = axes('Units','pixels','Position',axesPosition+yWidth.*[-1 0 1 0],...
-          'Color','none','XColor','k','YColor',cdet,...
+          'Color','none','XColor','k','YColor',cd,...
           'XLim',xLimit+[xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
@@ -261,28 +284,27 @@ h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr3,achl15(54,(1:(end-3))),'color',cchl,'Parent',h1); hold on;
-line(dyr1,adet15(54,(1:(end-1))),'color',cdet,'Parent',h2); hold on;
+line(dyr1,adet15(54,(1:(end-1))),'color',cdet,'LineWidth',1,'Parent',h1); hold on;
+line(cyr1,abd15(54,(2:end)),'color',cd,'LineWidth',1,'Parent',h2); 
 xlabel(h1,'Year');
 
-line(cyr1,aa_cpue97(54,(2:end)),'color','k','Parent',h3); 
+line(cyr1,aa_cpue97(54,(2:end)),'color','k','LineWidth',1,'Parent',h3); 
 ylabel(h3,'Anomalies')
-title('LME 54, Chl-3, Det-1')
-print('-dpng',[ppath 'ts_LME54_CPUE_sig_drivers_lags.png'])
+title('LME 54, Det-1')
+print('-dpng',[ppath 'ts_LME54_CPUE_sig_drivers_chl15_bestlags_fntypes.png'])
 
 
-%% LME 58
-% Pretty good
+%% LME 58 - D (not great)
 % LME slag	sat	dlag	driver	flag	fdriver
 % 58	2	Chl	    0	-TB	    0	    -TB
 
-figure(32)
+figure(58)
 %plot with lags
 h1 = axes('Units','pixels','Position',axesPosition,...
-          'Color','w','XColor','k','YColor',cchl,...
+          'Color','w','XColor','k','YColor',ctb,...
           'XLim',xLimit,'NextPlot','add');
 h2 = axes('Units','pixels','Position',axesPosition+yWidth.*[-1 0 1 0],...
-          'Color','none','XColor','k','YColor',ctb,...
+          'Color','none','XColor','k','YColor',cd,...
           'XLim',xLimit+[xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
@@ -290,27 +312,27 @@ h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr2,achl15(58,(1:(end-2))),'color',cchl,'Parent',h1); hold on;
-line(yyr,-1*atb15(58,:),'color',ctb,'Parent',h2); hold on;
+line(yyr,-1*atb15(58,:),'color',ctb,'LineWidth',1,'Parent',h1); hold on;
+line(yyr,abd15(58,:),'color',cd,'LineWidth',1,'Parent',h2); 
 xlabel(h1,'Year');
 
-line(yyr,aa_cpue97(58,:),'color','k','Parent',h3); 
+line(yyr,aa_cpue97(58,:),'color','k','LineWidth',1,'Parent',h3); 
 ylabel(h3,'Anomalies')
-title('LME 58, Chl-2, TB0')
-print('-dpng',[ppath 'ts_LME58_CPUE_sig_drivers_lags.png'])
+title('LME 58, TB0')
+print('-dpng',[ppath 'ts_LME58_CPUE_sig_drivers_chl15_bestlags_fntypes.png'])
 
-%% LME 61
+%% LME 61 - D not great
 % MAYBE
 % LME slag	sat	dlag	driver	flag	fdriver
 % 61	3	SST	0	    ZmL	    0	    ZmL
 
-figure(34)
+figure(61)
 %plot with lags
 h1 = axes('Units','pixels','Position',axesPosition,...
-          'Color','w','XColor','k','YColor',csst,...
+          'Color','w','XColor','k','YColor',czm,...
           'XLim',xLimit,'NextPlot','add');
 h2 = axes('Units','pixels','Position',axesPosition+yWidth.*[-1 0 1 0],...
-          'Color','none','XColor','k','YColor',czm,...
+          'Color','none','XColor','k','YColor',cd,...
           'XLim',xLimit+[xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
@@ -318,12 +340,12 @@ h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr3,asst15(61,(1:(end-3))),'color',csst,'Parent',h1); hold on;
-line(yyr,azlos15(61,:),'color',czm,'Parent',h2); 
+line(yyr,azlos15(61,:),'color',czm,'LineWidth',2,'Parent',h1); 
+line(yyr,abd15(61,:),'color',cd,'LineWidth',2,'Parent',h2); 
 xlabel(h1,'Year');
 
-line(yyr,aa_cpue97(61,:),'color','k','Parent',h3); 
+line(yyr,aa_cpue97(61,:),'color','k','LineWidth',2,'Parent',h3); 
 ylabel(h3,'Anomalies')
-title('LME 61, SST-3, ZmL0')
-print('-dpng',[ppath 'ts_LME61_CPUE_sig_drivers_lags.png'])
+title('LME 61, ZmL0')
+print('-dpng',[ppath 'ts_LME61_CPUE_sig_drivers_chl15_bestlags_fntypes.png'])
 

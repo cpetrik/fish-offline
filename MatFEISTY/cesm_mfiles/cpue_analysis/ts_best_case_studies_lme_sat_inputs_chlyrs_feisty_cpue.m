@@ -110,13 +110,15 @@ h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr3,achl15(6,(1:(end-3))),'color',cchl,'LineWidth',2,'Parent',h1); hold on;
+line(dyr3,achl15(6,(1:(end-3))),'color',cchl,'LineWidth',1,'Parent',h1); hold on;
 line(dyr2,atb15(6,(1:(end-2))),'color',ctb,'LineWidth',2,'Parent',h2); 
 xlabel(h1,'Year');
 
 line(cyr2,aa_cpue97(6,(3:end)),'color','k','LineWidth',2,'Parent',h3); 
 ylabel(h3,'Anomalies')
 title('LME 6, Chl-3, TB-2')
+text(2000.5,-0.0005,'R2_{Chl}=0.33, p=0.32','color',cchl)
+text(2000.5,-0.0006,'R2_{TB}=0.70, p=0.01','color',ctb)
 print('-dpng',[ppath 'ts_LME6_CPUE_sig_drivers_chl15_bestlags.png'])
 
 %% LME 12
@@ -143,14 +145,17 @@ h4 = axes('Units','pixels','Position',axesPosition+yWidth.*[-3 0 3 0],...
           'XLim',xLimit+[3*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr2,-1*asst15(12,(1:(end-2))),'color',csst,'LineWidth',2,'Parent',h1); hold on;
-line(dyr1,adet15(12,(1:(end-1))),'color',cdet,'LineWidth',2,'Parent',h2); hold on;
+line(dyr2,-1*asst15(12,(1:(end-2))),'color',csst,'LineWidth',1,'Parent',h1); hold on;
+line(dyr1,adet15(12,(1:(end-1))),'color',cdet,'LineWidth',1.5,'Parent',h2); hold on;
 line(yyr,aba15(12,:),'color',cbio,'LineWidth',2,'Parent',h3);
 xlabel(h1,'Year');
 
 line(yyr,aa_cpue97(12,:),'color','k','LineWidth',2,'Parent',h4); 
 ylabel(h4,'Anomalies')
 title('LME 12, SST-2, Det-1, Biom0')
+text(2000.8,-0.0003,'R2_{SST}=-0.38, p=0.22','color',csst)
+text(2000.8,-0.0004,'R2_{Det}=0.56, p=0.04','color',cdet)
+text(2000.8,-0.0005,'R2_{Bio}=0.59, p=0.02','color',cbio)
 print('-dpng',[ppath 'ts_LME12_CPUE_sig_drivers_chl15_bestlags.png'])
 
 %% LME 26
@@ -172,13 +177,15 @@ h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr3,achl15(26,(1:(end-3))),'color',cchl,'LineWidth',2,'Parent',h1); hold on;
+line(dyr3,achl15(26,(1:(end-3))),'color',cchl,'LineWidth',1,'Parent',h1); hold on;
 line(dyr1,azlos15(26,(1:(end-1))),'color',czm,'LineWidth',2,'Parent',h2); hold on;
 xlabel(h1,'Year');
 
 line(cyr1,aa_cpue97(26,(2:end)),'color','k','LineWidth',2,'Parent',h3); 
 ylabel(h3,'Anomalies')
 title('LME 26, Chl-3, ZmL-1')
+text(1998,0.00025,'R2_{Chl}=0.21, p=0.53','color',cchl)
+text(1998,0.00022,'R2_{ZmL}=0.55, p=0.05','color',czm)
 print('-dpng',[ppath 'ts_LME26_CPUE_sig_drivers_chl15_bestlags.png'])
 
 %% LME 31
@@ -200,7 +207,7 @@ h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr3,asst15(31,(1:(end-3))),'color',csst,'LineWidth',2,'Parent',h1); hold on;
+line(dyr3,asst15(31,(1:(end-3))),'color',csst,'LineWidth',1,'Parent',h1); hold on;
 line(dyr1,atp15(31,(1:(end-1))),'color',ctp,'LineWidth',2,'Parent',h2); hold on;
 xlabel(h1,'Year');
 
@@ -232,14 +239,17 @@ h4 = axes('Units','pixels','Position',axesPosition+yWidth.*[-3 0 3 0],...
           'XLim',xLimit+[3*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr1,asst15(48,(1:(end-1))),'color',csst,'LineWidth',2,'Parent',h1); hold on;
-line(dyr3,adet15(48,(1:(end-3))),'color',cdet,'LineWidth',2,'Parent',h2); hold on;
+line(dyr1,asst15(48,(1:(end-1))),'color',csst,'LineWidth',1,'Parent',h1); hold on;
+line(dyr3,adet15(48,(1:(end-3))),'color',cdet,'LineWidth',1.5,'Parent',h2); hold on;
 line(dyr2,aba15(48,(1:(end-2))),'color',cbio,'LineWidth',2,'Parent',h3); hold on;
 xlabel(h1,'Year');
 
 line(cyr1,aa_cpue97(48,(2:end)),'color','k','LineWidth',2,'Parent',h4); 
-ylabel(h3,'Anomalies')
+ylabel(h4,'Anomalies')
 title('LME 48, SST-1, Det-3, Bio-2')
+text(1997.5,-0.0005,'R2_{SST}=0.47, p=0.10','color',csst)
+text(1997.5,-0.0006,'R2_{Det}=0.62, p=0.04','color',cdet)
+text(1997.5,-0.0007,'R2_{Bio}=0.67, p=0.02','color',cbio)
 print('-dpng',[ppath 'ts_LME48_CPUE_sig_drivers_chl15_bestlags.png'])
 
 %% LME 54
@@ -261,13 +271,15 @@ h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr3,achl15(54,(1:(end-3))),'color',cchl,'LineWidth',2,'Parent',h1); hold on;
+line(dyr3,achl15(54,(1:(end-3))),'color',cchl,'LineWidth',1,'Parent',h1); hold on;
 line(dyr1,adet15(54,(1:(end-1))),'color',cdet,'LineWidth',2,'Parent',h2); hold on;
 xlabel(h1,'Year');
 
 line(cyr1,aa_cpue97(54,(2:end)),'color','k','LineWidth',2,'Parent',h3); 
 ylabel(h3,'Anomalies')
 title('LME 54, Chl-3, Det-1')
+text(1999.5,0.0007,'R2_{Chl}=0.32, p=0.34','color',cchl)
+text(1999.5,0.0006,'R2_{Det}=0.60, p=0.03','color',cdet)
 print('-dpng',[ppath 'ts_LME54_CPUE_sig_drivers_chl15_bestlags.png'])
 
 
@@ -290,13 +302,15 @@ h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr2,achl15(58,(1:(end-2))),'color',cchl,'LineWidth',2,'Parent',h1); hold on;
+line(dyr2,achl15(58,(1:(end-2))),'color',cchl,'LineWidth',1,'Parent',h1); hold on;
 line(yyr,-1*atb15(58,:),'color',ctb,'LineWidth',2,'Parent',h2); hold on;
 xlabel(h1,'Year');
 
 line(yyr,aa_cpue97(58,:),'color','k','LineWidth',2,'Parent',h3); 
 ylabel(h3,'Anomalies')
 title('LME 58, Chl-2, TB0')
+text(2006,-0.005,'R2_{Chl}=0.37, p=0.24','color',cchl)
+text(2006,-0.008,'R2_{TB}=-0.64, p=0.01','color',ctb)
 print('-dpng',[ppath 'ts_LME58_CPUE_sig_drivers_chl15_bestlags.png'])
 
 %% LME 61
@@ -318,12 +332,14 @@ h3 = axes('Units','pixels','Position',axesPosition+yWidth.*[-2 0 2 0],...
           'XLim',xLimit+[2*xOffset 0],'XTick',[],'XTickLabel',[],...
           'NextPlot','add');
 
-line(dyr3,asst15(61,(1:(end-3))),'color',csst,'LineWidth',2,'Parent',h1); hold on;
+line(dyr3,asst15(61,(1:(end-3))),'color',csst,'LineWidth',1,'Parent',h1); hold on;
 line(yyr,azlos15(61,:),'color',czm,'LineWidth',2,'Parent',h2); 
 xlabel(h1,'Year');
 
 line(yyr,aa_cpue97(61,:),'color','k','LineWidth',2,'Parent',h3); 
 ylabel(h3,'Anomalies')
 title('LME 61, SST-3, ZmL0')
+text(1998,-0.01,'R2_{SST}=0.48, p=0.14','color',csst)
+text(1998,-0.012,'R2_{ZmL}=0.66, p=0.01','color',czm)
 print('-dpng',[ppath 'ts_LME61_CPUE_sig_drivers_chl15_bestlags.png'])
 
