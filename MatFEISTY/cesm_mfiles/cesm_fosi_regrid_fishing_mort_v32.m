@@ -1,4 +1,5 @@
 % Regrid fishing effort to POP grid
+% v3.2 uses v1 for P & D, v3 for F
 
 clear
 close all
@@ -29,11 +30,21 @@ load coastlines;
 TLON = TLONG;
 TLON(TLONG>180) = TLONG(TLONG>180)-360;
 
-%% ! --> use assessment estimate
-alt1 = 'assessment';
-spath = ['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/',...
-    'FEISTY_other/fishing_ms_ideas/fishing_effort_ms/fishing_for_FEISTY/',alt1,'/'];
-load([spath 'grid_mortality_all_',alt1,'.mat'])
+%% F/Fmsy estimates
+alt1 = 'grid_mortality_guilds_v1';
+alt3 = 'grid_mortality_guilds_v3';
+
+spath1 = ['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/',...
+    'FEISTY_other/fishing_ms_ideas/fishing_effort_impl/',alt1,'/'];
+load([spath1 'grid_mortality_all_v1.mat'],'fmortD','fmortP','LatD','LatP',...
+    'LonD','LonP','yrD','yrP')
+
+spath3 = ['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/',...
+    'FEISTY_other/fishing_ms_ideas/fishing_effort_impl/',alt3,'/'];
+load([spath3 'grid_mortality_all_v3.mat'],'fmortF','LatF','LonF','yearF')
+
+spath32 = ['/Users/cpetrik/Petrik Lab Group Dropbox/Colleen Petrik/Princeton/',...
+    'FEISTY_other/fishing_ms_ideas/fishing_effort_impl/grid_mortality_guilds_v32/'];
 
 %% ! --> subset 1948-2015
 yrall = 1841:2010;
@@ -73,28 +84,26 @@ for t=1:nt
 end
 
 %%
-clatlim=[-90 90];
-clonlim=[-180 180];
-load coastlines;
+
 figure
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLON,zGridF)
-caxis([0 0.6])
+clim([0 0.6])
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 figure
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLON,zGridP)
-caxis([0 0.6])
+clim([0 0.6])
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 figure
 axesm ('Robinson','MapLatLimit',clatlim,'MapLonLimit',clonlim,'frame','on',...
     'Grid','off','FLineWidth',1)
 surfm(TLAT,TLON,zGridD)
-caxis([0 0.6])
+clim([0 0.6])
 h=patchm(coastlat+0.5,coastlon+0.5,'w','FaceColor',[0.75 0.75 0.75]);
 
 %% temp scaling
@@ -125,14 +134,14 @@ end
 %% save before scaling
 year = 1948:2010;
 
-save([cpath 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2010_NOtempSc_NOmsy_',alt1,'.mat'],'year','WID',...
+save([cpath 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2010_NOtempSc_NOmsy_grid_mortality_guilds_v32.mat'],'year','WID',...
     'fmD','fmF','fmP');
-save([spath 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2010_NOtempSc_NOmsy_',alt1,'.mat'],'year','WID',...
+save([spath32 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2010_NOtempSc_NOmsy_grid_mortality_guilds_v32.mat'],'year','WID',...
     'fmD','fmF','fmP');
 
 %% scale with Fmsy and temp ! --> find temp means from FOSI !
 %fm = F/Fmsy, need to mult by Fmsy ~= 0.3
-tsc = (exp(0.063*(temp-10.0));
+%tsc = (exp(0.063*(temp-10.0));
 
 fmF = 0.3 * fmF .* (exp(0.063*(vmtp-10.0)));
 fmP = 0.3 * fmP .* (exp(0.063*(vmtp-10.0)));
@@ -150,9 +159,10 @@ fmP(fmP<0) = 0.0;
 %% save
 year = 1948:2010;
 
-save([cpath 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2010_tempSc_',alt1,'.mat'],'year','WID',...
+
+save([cpath 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2010_tempSc_grid_mortality_guilds_v32.mat'],'year','WID',...
     'fmD','fmF','fmP');
-save([spath 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2010_tempSc_',alt1,'.mat'],'year','WID',...
+save([spath32 'FOSI_POP_gx1v6_noSeas_fmort_ID_annual_1948_2010_tempSc_grid_mortality_guilds_v32.mat'],'year','WID',...
     'fmD','fmF','fmP');
 
 
